@@ -2,23 +2,17 @@ from __future__ import print_function
 
 from compas.datastructures.volmesh import VolMesh
 
-from compas.geometry import cross_vectors
 from compas.geometry import subtract_vectors
-from compas.geometry import angle_vectors
 from compas.geometry import normalize_vector
-
-from compas.geometry import translate_points
-from compas.geometry import rotate_points
 
 from compas.geometry import area_polygon
 from compas.geometry import normal_polygon
 from compas.geometry import centroid_points
 
-
-
 from compas_rhino.helpers.volmesh import volmesh_draw
 
 from compas_3gs.helpers import sort_points_ccw
+
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'

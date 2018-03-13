@@ -15,7 +15,6 @@ from compas.geometry import project_point_plane
 from compas_3gs.rhino import reciprocation_conduit
 
 
-
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -148,7 +147,7 @@ def VM_reciprocate_NW(volmesh,
     conduit.Enabled = False
     del conduit
 
-    print('iteration stopped at:', iteration)
+    print('reciprocation ended at:', iteration)
     print('deviation:', deviation)
 
     volmesh.draw()
