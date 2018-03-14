@@ -24,6 +24,10 @@ def ForceVM_from_polysurfaces():
     forcepolyhedra = volmesh_from_polysurfaces(forcepolyhedra, guids)
     forcepolyhedra.update_data()
 
+
+
+
+
     rs.AddLayer(name='forcepolyhedra', color=(255, 255, 255))
     forcepolyhedra.draw(layer='forcepolyhedra')
     return forcepolyhedra

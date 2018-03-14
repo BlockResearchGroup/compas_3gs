@@ -49,19 +49,26 @@ class _3gs_VolMesh(VolMesh):
                 else:
                     yield u, v
 
+
+
+
+
     # --------------------------------------------------------------------------
-    # boundary
+    # bremoval
     # --------------------------------------------------------------------------
 
-    def halffaces_on_boundary(self):
-        halffaces = []
-        for ckey in self.cell:
-            hfkeys = self.cell_halffaces(ckey)
-            for hfkey in hfkeys:
-                nbr_hfkey = self.halfface_pair(hfkey)
-                if nbr_hfkey is None:
-                    halffaces.append(hfkey)
-        return halffaces
+    def remove_vertex(self, vkey):
+        pass
+
+    def remove_halfface(self, hfkey):
+        pass
+
+    def remove_cell(self, ckey):
+        pass
+
+
+
+
 
     # --------------------------------------------------------------------------
     # helpers - vertices
@@ -119,10 +126,32 @@ class _3gs_VolMesh(VolMesh):
         area     = area_polygon(hf_v_xyz)
         return area
 
+    def halfface_area_oriented(self, hfkey):
+        """
+
+        takes into account self-overlapping
+
+        """
+
+        hf_vkeys = self.halfface_vertices(hfkey, ordered=True)
+        hf_v_xyz = [self.vertex_coordinates(vkey) for vkey in hf_vkeys]
+        area     = area_polygon(hf_v_xyz)
+        return area
+
     def halfface_normal(self, hfkey):
         vertices = self.halfface_vertices(hfkey, ordered=True)
         normal   = normal_polygon([self.vertex_coordinates(vkey) for vkey in vertices])
         return normal
+
+    def halfface_normal_oriented(self, hfkey):
+        """
+
+        takes into account self-overlapping
+
+        """
+
+        pass
+
 
     def halfface_pair(self, hfkey):
         u   = self.halfface[hfkey].iterkeys().next()
@@ -133,6 +162,19 @@ class _3gs_VolMesh(VolMesh):
                 if nbr_hfkey is not hfkey:
                     return nbr_hfkey
         return None
+
+    def halffaces_on_boundary(self):
+        halffaces = []
+        for ckey in self.cell:
+            hfkeys = self.cell_halffaces(ckey)
+            for hfkey in hfkeys:
+                nbr_hfkey = self.halfface_pair(hfkey)
+                if nbr_hfkey is None:
+                    halffaces.append(hfkey)
+        return halffaces
+
+
+
 
     # --------------------------------------------------------------------------
     # helpers - cell
