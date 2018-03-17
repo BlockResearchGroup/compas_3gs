@@ -32,7 +32,6 @@ class ForceVM(VolMesh):
     def __init__(self):
         super(ForceVM, self).__init__()
         # set global attributes ------------------------------------------------
-        self.attributes.update({'name': 'force_vm'})
         self.v_data = {}
         self.e_data = {}
         self.f_data = {}

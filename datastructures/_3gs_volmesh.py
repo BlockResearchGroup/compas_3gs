@@ -8,10 +8,13 @@ from compas.geometry import normalize_vector
 from compas.geometry import area_polygon
 from compas.geometry import normal_polygon
 from compas.geometry import centroid_points
+from compas.geometry import center_of_mass_polygon
 
 from compas_rhino.helpers.volmesh import volmesh_draw
 
 from compas_3gs.helpers import sort_points_ccw
+
+from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
 
 
 __author__     = ['Juney Lee']
@@ -94,24 +97,21 @@ class _3gs_VolMesh(VolMesh):
         return hfkeys
 
     def edge_cells(self, u, v, ordered=False):
-        """Ordering based on the right hand rule, along the edge.
-        If u-v is the normal, then the cells are ordered in ccw.
-        """
-        ckeys   = [self.halfface_cell(hfkey) for hfkey in self.edge_halffaces(u, v)]
-        c_xyz   = {ckey: self.cell_centroid(ckey) for ckey in ckeys}
-        normal  = self.edge_vector(u, v, unitized=True)
-        plane   = [self.vertex_coordinates(u), normal]
-        ordered = sort_points_ccw(c_xyz, plane)
-        return ordered
+        ckeys = set(self.halfface_cell(key) for key in self.edge_halffaces(u, v))
+        return list(ckeys)
 
     # --------------------------------------------------------------------------
-    # helpers - halffaces
+    # helpers - halffaces and faces
     # --------------------------------------------------------------------------
+
+    def face_center(self, fkey):
+        return center_of_mass_polygon(self.halfface_coordinates(fkey))
+
+    def halfface_coordinates(self, hfkey):
+        return [self.vertex_coordinates(key) for key in self.halfface_vertices(hfkey)]
 
     def halfface_center(self, hfkey):
-        vertices = self.halfface_vertices(hfkey, ordered=True)
-        center   = centroid_points([self.vertex_coordinates(vkey) for vkey in vertices])
-        return center
+        return center_of_mass_polygon(self.halfface_coordinates(hfkey))
 
     def halfface_area(self, hfkey):
         hf_vkeys = self.halfface_vertices(hfkey, ordered=True)
@@ -167,3 +167,15 @@ class _3gs_VolMesh(VolMesh):
 
     def draw(self, **kwattr):
         volmesh_draw(self, **kwattr)
+
+    def draw_vertexlabels(self):
+        artist = VolMeshArtist(self)
+        artist.draw_vertexlabels()
+
+    def draw_facelabels(self):
+        artist = VolMeshArtist(self)
+        artist.draw_facelabels()
+
+    def draw_edgelabels(self):
+        artist = VolMeshArtist(self)
+        artist.draw_edgelabels()
