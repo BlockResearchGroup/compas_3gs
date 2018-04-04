@@ -10,9 +10,9 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-def planarize_VM(volmesh,
-                 count=500,
-                 tolerance=0.001):
+def volmesh_planarize_faces(volmesh,
+                            count=500,
+                            tolerance=0.001):
 
     iteration = 0
 

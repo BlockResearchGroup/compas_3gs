@@ -1,16 +1,7 @@
-# from compas_3gs.datastructures.formvolmesh import FormVolMesh
-from compas_3gs.datastructures.network3gs import Network3gs as Network
-from compas_3gs.datastructures.volmesh3gs import VolMesh3gs as VolMesh
-from compas_3gs.datastructures.formvolmesh import FormVolMesh
+from compas.datastructures import VolMesh
 
 
-__author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
-def volmesh_dual_volmesh(volmesh, cls=None):
+def volmesh_dual_volmesh(volmesh):
     """Constructs the volmesh dual of a volmesh.
 
     Parameters
@@ -25,11 +16,8 @@ def volmesh_dual_volmesh(volmesh, cls=None):
 
     """
 
-    if not cls:
-        cls = VolMesh
-
     # 1. make volmesh instance -------------------------------------------------
-    dual_volmesh = cls()
+    dual_volmesh = VolMesh()
     dual_volmesh.attributes['name'] = 'volmesh_dual_volmesh'
 
     # 2. add vertex for each cell ----------------------------------------------
@@ -67,37 +55,24 @@ def volmesh_dual_volmesh(volmesh, cls=None):
     return dual_volmesh
 
 
-def volmesh_dual_network(volmesh, cls=None):
-    """Constructs the network dual of a volmesh.
+def halffaces_on_boundary(self):
+    halffaces = []
+    for ckey in self.cell:
+        hfkeys = self.cell_halffaces(ckey)
+        for hfkey in hfkeys:
+            u   = self.halfface[hfkey][0]
+            v   = self.halfface[hfkey][1]
+            w   = self.halfface[hfkey][2]
+            if self.plane[w][v][u] is None:
+                halffaces.append(hfkey)
+    return halffaces
 
-    Parameters
-    ----------
-    volmesh : VolMesh
-        A volmesh object.
 
-    Returns
-    -------
-    network : Network
-        The dual network object of the input volmesh.
-
-    """
-    if not cls:
-        cls = Network
-
-    dual_network = cls()
-    dual_network.attributes['name'] = 'volmesh_dual_network'
-
-    for ckey in volmesh.cell:
-        x, y, z = volmesh.cell_centroid(ckey)
-        dual_network.add_vertex(key=ckey, x=x, y=y, z=z)
-        for nbr in volmesh.cell_neighbours(ckey):
-            if nbr in dual_network.edge[ckey]:
-                continue
-            if nbr in dual_network.edge and ckey in dual_network.edge[nbr]:
-                continue
-            dual_network.add_edge(ckey, nbr)
-
-    return dual_network
+def halfface_vertex_descendant(self, hfkey, key):
+    if self.halfface[hfkey][-1] == key:
+        return self.halfface[hfkey][0]
+    i = self.halfface[hfkey].index(key)
+    return self.halfface[hfkey][i + 1]
 
 
 # ==============================================================================
@@ -110,6 +85,9 @@ if __name__ == '__main__':
 
     from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
     from compas_rhino.helpers.volmesh import volmesh_from_polysurfaces
+
+    VolMesh.halffaces_on_boundary = halffaces_on_boundary
+    VolMesh.halfface_vertex_descendant = halfface_vertex_descendant
 
     guids   = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
     rs.HideObjects(guids)

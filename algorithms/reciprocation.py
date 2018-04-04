@@ -21,24 +21,38 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
-#   volmesh --> reciprocates --> network
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
+def volmesh_reciprocate(volmesh,
+                        formdiagram,
+                        weight=1,
+                        count=500,
+                        min_edge=5,
+                        max_edge=50,
+                        tolerance=0.001):
+    """Perpendicularizes the polyhedral form and force diagrams.
 
-def VM_reciprocate_NW(volmesh,
-                      network,
-                      weight=1,
-                      count=500,
-                      min_edge=5,
-                      max_edge=50,
-                      tolerance=0.001):
-    """weight of 1 means only the form diagram will change.
+    Parameters
+    ----------
+    volmesh : VolMesh
+        A mesh object.
+    formdiagram : VolMesh or Network
+        The type of the dual mesh.
+        Defaults to the type of the provided mesh object.
+    weight : float
+        A float, between 0 and 1.
+        Determines how much each diagram changes.
+        Default is 1, where only the form diagram changes.
+        Value of 0 would change the force diagram only.
+    min_edge : float
+        Minimum length constraint for the form diagram edges.
+    max_edge : float
+        Maximum length constraint for the form diagram edges.
+    tolerance: float
+        Sets the convergence tolerance.
+
+    Returns
+    -------
+    perpendicularized volmesh and formdiagram.
+
     """
 
     # ==========================================================================
@@ -47,10 +61,10 @@ def VM_reciprocate_NW(volmesh,
     target_normals = {}
     halfface_uv    = {}
     #   for internal halffaces -------------------------------------------------
-    for u, v in network.edges_iter():
+    for u, v in formdiagram.edges_iter():
         u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
         face_normal   = scale_vector(volmesh.halfface_normal(u_hfkey), weight)
-        edge_vector   = scale_vector(network.edge_vector(u, v), 1 - weight)
+        edge_vector   = scale_vector(formdiagram.edge_vector(u, v), 1 - weight)
         target_vector = add_vectors(face_normal, edge_vector)
         target_normals[u_hfkey] = normalize_vector(target_vector)
         halfface_uv[u_hfkey]    = (u, v)
@@ -60,7 +74,7 @@ def VM_reciprocate_NW(volmesh,
     # ==========================================================================
     #   conduit
     # ==========================================================================
-    conduit = reciprocation_conduit(volmesh, network)
+    conduit = reciprocation_conduit(volmesh, formdiagram)
     conduit.Enabled  = True
 
     # ==========================================================================
@@ -73,7 +87,7 @@ def VM_reciprocate_NW(volmesh,
         deviation = 0
 
         new_volmesh_xyz = {vkey: [] for vkey in volmesh.vertex}
-        new_network_xyz = {vkey: [] for vkey in network.vertex}
+        new_formdiagram_xyz = {vkey: [] for vkey in formdiagram.vertex}
 
         for hfkey in target_normals:
 
@@ -100,7 +114,7 @@ def VM_reciprocate_NW(volmesh,
             if hfkey in halfface_uv:
                 u, v = halfface_uv[hfkey]
                 #   checking orientations --------------------------------------
-                edge_vector = network.edge_vector(u, v, unitized=False)
+                edge_vector = formdiagram.edge_vector(u, v, unitized=False)
                 dot_v       = dot_vectors(normalize_vector(edge_vector), target_normal)
                 if dot_v < 0:
                     target_normal = scale_vector(target_normal, -1)
@@ -115,10 +129,10 @@ def VM_reciprocate_NW(volmesh,
                 if dist > max_edge:
                     dist = max_edge
                 #   compute and add new xyz for v ------------------------------
-                new_u_xyz = add_vectors(network.vertex_coordinates(v), scale_vector(target_normal, -1 * dist))
-                new_network_xyz[u].append(new_u_xyz)
-                new_v_xyz = add_vectors(network.vertex_coordinates(u), scale_vector(target_normal, dist))
-                new_network_xyz[v].append(new_v_xyz)
+                new_u_xyz = add_vectors(formdiagram.vertex_coordinates(v), scale_vector(target_normal, -1 * dist))
+                new_formdiagram_xyz[u].append(new_u_xyz)
+                new_v_xyz = add_vectors(formdiagram.vertex_coordinates(u), scale_vector(target_normal, dist))
+                new_formdiagram_xyz[v].append(new_v_xyz)
 
         # ======================================================================
         #   UPDATE
@@ -127,10 +141,10 @@ def VM_reciprocate_NW(volmesh,
             if new_volmesh_xyz[vkey]:
                 final_xyz = centroid_points(new_volmesh_xyz[vkey])
                 volmesh.vertex_update_xyz(vkey, final_xyz)
-        for vkey in new_network_xyz:
-            if new_network_xyz[vkey]:
-                final_xyz = centroid_points(new_network_xyz[vkey])
-                network.vertex_update_xyz(vkey, final_xyz)
+        for vkey in new_formdiagram_xyz:
+            if new_formdiagram_xyz[vkey]:
+                final_xyz = centroid_points(new_formdiagram_xyz[vkey])
+                formdiagram.vertex_update_xyz(vkey, final_xyz)
 
         # ======================================================================
         #   EVALUATE
@@ -151,18 +165,12 @@ def VM_reciprocate_NW(volmesh,
     print('deviation:', deviation)
 
     volmesh.draw()
-    network.draw()
+    formdiagram.draw()
 
 
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
-#   volmesh --> reciprocates --> volmesh
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
+# ==============================================================================
+# Main
+# ==============================================================================
 
-def VM_reciprocate_VM(ForceVM, formVM):
+if __name__ == '__main__':
     pass
