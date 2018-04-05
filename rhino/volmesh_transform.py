@@ -10,11 +10,9 @@ import rhinoscriptsyntax as rs
 from Rhino.Geometry import Vector3d
 from Rhino.Geometry import Point3d
 
-
 from compas.geometry import intersection_line_plane
 
 from compas_rhino.helpers.selectors import FaceSelector
-
 
 
 feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
@@ -93,39 +91,7 @@ def cell_pull_face(volmesh):
         # for vkey in v_xyz:
         #     for nbr_vkey in
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     normal = Rhino.Geometry.Vector3d(*normal)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # ******************************************************************************
@@ -164,11 +130,3 @@ def _get_target_point(constraint, OnDynamicDraw, option='None', message='Point t
     gp.Get()
     gp = gp.Point()
     return gp
-
-
-
-
-
-
-
-

@@ -139,15 +139,19 @@ class VolMesh3gs(VolMesh):
                 halffaces.append(hfkey)
         return halffaces
 
-    def vertex_update_xyz(self, vkey, xyz):
-        # X
-        if self.v_data[vkey]['x_fix'] is False:
+    def vertex_update_xyz(self, vkey, xyz, constrained=True):
+        if constrained:
+            if self.v_data[vkey]['x_fix'] is False:
+                self.vertex[vkey]['x'] = xyz[0]
+            # Y
+            if self.v_data[vkey]['y_fix'] is False:
+                self.vertex[vkey]['y'] = xyz[1]
+            # Z
+            if self.v_data[vkey]['z_fix'] is False:
+                self.vertex[vkey]['z'] = xyz[2]
+        else:
             self.vertex[vkey]['x'] = xyz[0]
-        # Y
-        if self.v_data[vkey]['y_fix'] is False:
             self.vertex[vkey]['y'] = xyz[1]
-        # Z
-        if self.v_data[vkey]['z_fix'] is False:
             self.vertex[vkey]['z'] = xyz[2]
 
     # --------------------------------------------------------------------------
@@ -232,33 +236,27 @@ class VolMesh3gs(VolMesh):
     #   cells
     # --------------------------------------------------------------------------
 
-    def cell_vertex_neighbours(self, ckey, vkey, ordered=True):
-        cell_vertices = self.cell_vertices(ckey)
-        nbr_vkeys = []
-        for nbr_vkey in self.vertex_neighbours(vkey):
-            if nbr_vkey in cell_vertices:
-                nbr_vkeys.append(nbr_vkey)
-        if not ordered:
-            return nbr_vkeys
-        u       = vkey
-        v       = nbr_vkeys[0]
-        ordered = [v]
+    def cell_vertex_neighbours(self, ckey, vkey):
+        nbr_vkeys = self.cell[ckey][vkey].keys()
+        u = vkey
+        v = nbr_vkeys[0]
+        ordered_vkeys = [v]
         for i in range(len(nbr_vkeys) - 1):
             hfkey = self.cell[ckey][u][v]
             v     = self.halfface_vertex_ancestor(hfkey, u)
-            ordered.append(v)
-        return ordered
+            ordered_vkeys.append(v)
+        return ordered_vkeys
 
     def cell_vertex_halffaces(self, ckey, vkey):
         nbr_vkeys = self.cell[ckey][vkey].keys()
-        u       = vkey
-        v       = nbr_vkeys[0]
-        ordered = []
-        for i in range(len(nbr_vkeys) - 1):
+        u = vkey
+        v = nbr_vkeys[0]
+        ordered_hfkeys = []
+        for i in range(len(nbr_vkeys)):
             hfkey = self.cell[ckey][u][v]
             v     = self.halfface_vertex_ancestor(hfkey, u)
-            ordered.append(hfkey)
-        return ordered
+            ordered_hfkeys.append(hfkey)
+        return ordered_hfkeys
 
     def cell_pair_hfkeys(self, ckey_1, ckey_2):
         for hfkey in self.cell_halffaces(ckey_1):
@@ -277,17 +275,17 @@ class VolMesh3gs(VolMesh):
     def draw(self, **kwattr):
         volmesh_draw(self, **kwattr)
 
-    def draw_vertexlabels(self):
+    def draw_vertexlabels(self, **kwattr):
         artist = VolMeshArtist(self)
-        artist.draw_vertexlabels()
+        artist.draw_vertexlabels(**kwattr)
 
-    def draw_facelabels(self):
+    def draw_facelabels(self, **kwattr):
         artist = VolMeshArtist(self)
-        artist.draw_facelabels()
+        artist.draw_facelabels(**kwattr)
 
-    def draw_edgelabels(self):
+    def draw_edgelabels(self, **kwattr):
         artist = VolMeshArtist(self)
-        artist.draw_edgelabels()
+        artist.draw_edgelabels(**kwattr)
 
-    def draw_celllabels(self):
-        draw_celllabels(self)
+    def draw_celllabels(self, **kwattr):
+        draw_celllabels(**kwattr)

@@ -77,12 +77,12 @@ if __name__ == '__main__':
         nbr_vkeys = self.cell[ckey][vkey].keys()
         u = vkey
         v = nbr_vkeys[0]
-        ordered = []
+        ordered_hfkeys = []
         for i in range(len(nbr_vkeys)):
             hfkey = self.cell[ckey][u][v]
             v     = self.halfface_vertex_ancestor(hfkey, u)
-            ordered.append(hfkey)
-        return ordered
+            ordered_hfkeys.append(hfkey)
+        return ordered_hfkeys
 
     VolMesh.face_center              = face_center
     VolMesh.halfface_normal          = halfface_normal

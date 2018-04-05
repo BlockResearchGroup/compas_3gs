@@ -4,6 +4,9 @@ from compas.geometry import project_point_plane
 
 from compas.geometry.algorithms.bestfit import bestfit_plane
 
+from compas_rhino.conduits.edges import LinesConduit
+
+
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -13,6 +16,15 @@ __email__      = 'juney.lee@arch.ethz.ch'
 def volmesh_planarize_faces(volmesh,
                             count=500,
                             tolerance=0.001):
+
+    edges = []
+    for u, v in volmesh.edges():
+        u_xyz = volmesh.vertex_coordinates(u)
+        v_xyz = volmesh.vertex_coordinates(v)
+        edges.append((u_xyz, v_xyz))
+
+    conduit = LinesConduit(edges)
+    conduit.Enabled = True
 
     iteration = 0
 
@@ -41,10 +53,22 @@ def volmesh_planarize_faces(volmesh,
         if deviation < tolerance:
             break
 
+        edges = []
+        for u, v in volmesh.edges():
+            u_xyz = volmesh.vertex_coordinates(u)
+            v_xyz = volmesh.vertex_coordinates(v)
+            edges.append((u_xyz, v_xyz))
+
+        conduit.lines = edges
+
+        conduit.redraw()
         count     -= 1
         iteration += 1
+
+    conduit.Enabled = False
+    del conduit
 
     print('planarization ended at:', iteration)
     print('deviation:', deviation)
 
-    volmesh.draw()
+    volmesh.draw(layer='forcepolyhedra')

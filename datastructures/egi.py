@@ -1,19 +1,7 @@
 from __future__ import print_function
 
 from compas.geometry import angle_vectors
-from compas.geometry import is_ccw_xy
-from compas.geometry import cross_vectors
-from compas.geometry import subtract_vectors
-from compas.geometry import angle_vectors
-from compas.geometry import translate_points
-from compas.geometry import rotate_points
-from compas.geometry import area_polygon
-from compas.geometry import normalize_vector
-from compas.geometry import dot_vectors
-from compas.geometry import length_vector
-from compas.geometry import normal_polygon
-from compas.geometry import add_vectors
-from compas.geometry import scale_vector
+
 
 from compas_3gs.datastructures.mesh3gs import Mesh3gs as Mesh
 
@@ -59,15 +47,14 @@ class EGI(Mesh):
         for hfkey in halffaces:
             normal  = volmesh.halfface_normal(hfkey)
             x, y, z = add_vectors(origin, normal)
-            egi.add_vertex(vkey=hfkey, x=x, y=y, z=z)
-            egi.update_v_data(hfkey)
+            egi.add_vertex(key=hfkey, x=x, y=y, z=z)
 
         for vkey in vertices:
-            face = volmesh.cell_vertex_neighbours(ckey, vkey)
+            face = volmesh.cell_vertex_halffaces(ckey, vkey)
             egi.add_face(face, fkey=vkey)
-            egi.update_f_data(vkey)
 
         return egi
+
 
 
 # ==============================================================================
