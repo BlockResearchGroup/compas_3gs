@@ -10,6 +10,8 @@ from compas_rhino.helpers.volmesh import volmesh_from_polysurfaces
 from compas_3gs.datastructures.forcevolmesh import ForceVolMesh
 from compas_3gs.datastructures.formnetwork import FormNetwork
 from compas_3gs.datastructures.formvolmesh import FormVolMesh
+from compas_3gs.datastructures.egi import EGI
+
 
 from compas_3gs.algorithms import volmesh_dual_volmesh
 from compas_3gs.algorithms import volmesh_dual_network
@@ -41,7 +43,10 @@ def forcevolmesh_from_polysurfaces():
     rs.AddLayer(name='forcepolyhedra', color=(255, 255, 255))
     forcepolyhedra.draw(layer='forcepolyhedra')
     # forcepolyhedra.draw_vertexlabels()
+    # forcepolyhedra.draw_facelabels()
     # forcepolyhedra.draw_celllabels()
+
+    egi_from_volmesh(forcepolyhedra)
 
     return forcepolyhedra
 
@@ -83,11 +88,14 @@ def formvolmesh_from_forcevolmesh(forcepolyhedra):
 # ******************************************************************************
 # ******************************************************************************
 
+def egi_from_volmesh(volmesh):
+    for ckey in volmesh.cell:
+        egi = EGI()
+        egi = egi.from_volmesh_cell(ckey, volmesh)
+        egi.attributes['name'] = str(ckey)
+        volmesh.c_data[ckey]['egi'] = egi
 
-
-
-
-
+    return volmesh
 
 
 

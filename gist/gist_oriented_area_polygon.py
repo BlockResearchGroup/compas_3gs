@@ -166,6 +166,31 @@ def oriented_normal_polygon(points):
             all_edge_list.append((a, b))
 
 
+    normal_lines = []
+    for vkey in init_cross:
+        normal = scale_vector(init_cross[vkey], 10)
+        normal_lines.append({
+            'start': xyz[vkey],
+            'end'  : add_vectors(xyz[vkey], scale_vector(normal, 0.5)),
+            'arrow': 'end',
+            'color': (0, 255, 0)})
+    xdraw_lines(normal_lines)
+
+    # split edges --------------------------------------------------------
+    lines        = []
+    for u in split_edges:
+        for v in split_edges[u]:
+            lines.append({
+                'start': xyz[u],
+                'end'  : xyz[v],
+                'arrow': 'end',
+                'color': (0, 0, 0),
+                'name' : '{}-{}.from.{}'.format(u, v, split_edges[u][v])})
+    xdraw_lines(lines)
+
+
+
+
 
 
     # normal_lines = []
@@ -257,7 +282,7 @@ def oriented_normal_polygon(points):
     # ==========================================================================
     #   5. drawing
     # ==========================================================================
-    scale = 0.25
+    scale = 0.15
 
     # labels -------------------------------------------------------------------
     labels       = []
@@ -303,27 +328,6 @@ def oriented_normal_polygon(points):
         'color': (255, 255, 0),
         'name' : 'area:{}'.format(length_vector(normal_sum))})
     xdraw_faces(faces)
-
-    for vkey in init_cross:
-        normal = scale_vector(init_cross[vkey], 10)
-        normal_lines.append({
-            'start': xyz[vkey],
-            'end'  : add_vectors(xyz[vkey], normal),
-            'arrow': 'end',
-            'color': (0, 255, 0)})
-    xdraw_lines(normal_lines)
-
-    # split edges --------------------------------------------------------
-    lines        = []
-    for u in split_edges:
-        for v in split_edges[u]:
-            lines.append({
-                'start': xyz[u],
-                'end'  : xyz[v],
-                'arrow': 'end',
-                'color': (0, 0, 0),
-                'name' : '{}-{}.from.{}'.format(u, v, split_edges[u][v])})
-    xdraw_lines(lines)
 
     return normal_sum
 

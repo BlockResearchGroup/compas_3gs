@@ -1,9 +1,8 @@
 from __future__ import print_function
 
-from compas.geometry import angle_vectors
-
-
 from compas_3gs.datastructures.mesh3gs import Mesh3gs as Mesh
+
+from compas.geometry import add_vectors
 
 
 class EGI(Mesh):
@@ -57,6 +56,9 @@ class EGI(Mesh):
 
 
 
+
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -79,6 +81,6 @@ if __name__ == '__main__':
     volmesh_artist.draw_vertices()
     volmesh_artist.draw_edges()
 
-    for ckey in volmesh:
+    for ckey in volmesh.cell:
         egi = EGI.from_volmesh_cell(ckey, volmesh)
         egi.draw()

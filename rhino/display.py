@@ -3,15 +3,27 @@ import rhinoscriptsyntax as rs
 
 import compas_rhino
 
+from compas.geometry import add_vectors
+
 from compas.utilities import color_to_colordict
 
 
-import compas_rhino.utilities as rhino
+from compas_rhino.utilities import xdraw_lines
 
 
+def draw_volmesh_face_normals(self, hfkeys):
 
-def draw_volmesh_face_normals(volmesh):
-    pass
+    lines = []
+    for hfkey in hfkeys:
+        center = self.halfface_center(hfkey)
+        normal = self.halfface_normal(hfkey)
+        lines.append({
+            'start': center,
+            'end'  : add_vectors(center, normal),
+            'arrow': 'end',
+            'color': (0, 255, 0),
+            'name' : '{}.edge.{}'.format(self.attributes['name'], hfkey)})
+    xdraw_lines(lines)
 
 
 def draw_celllabels(volmesh, text=None, color=None):

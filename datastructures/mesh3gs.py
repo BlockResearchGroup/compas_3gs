@@ -2,6 +2,8 @@ from __future__ import print_function
 
 from compas.datastructures import Mesh
 
+from compas.datastructures.mesh.operations import mesh_split_face
+
 from compas_rhino.helpers.artists.meshartist import MeshArtist
 
 from compas_rhino.helpers.mesh import mesh_draw
@@ -21,6 +23,7 @@ from compas_rhino.helpers.mesh import mesh_select_faces
 from compas_rhino.helpers.mesh import mesh_select_face
 
 
+
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
@@ -36,6 +39,12 @@ class Mesh3gs(Mesh):
 
     def __init__(self):
         super(Mesh3gs, self).__init__()
+
+    # --------------------------------------------------------------------------
+    #   inherited
+    # --------------------------------------------------------------------------
+
+    mesh_split_face = mesh_split_face
 
     # --------------------------------------------------------------------------
     #   updaters / setters
@@ -99,7 +108,7 @@ class Mesh3gs(Mesh):
     # --------------------------------------------------------------------------
 
     def draw(self, **kwattr):
-        mesh_draw(self, **kwattr)
+        mesh_draw(self, clear_vertices=True, clear_faces=True, clear_edges=True, **kwattr)
 
     def draw_vertices(self, **kwattr):
         mesh_draw_vertices(self, **kwattr)
@@ -107,11 +116,18 @@ class Mesh3gs(Mesh):
     def draw_edges(self, **kwattr):
         mesh_draw_edges(self, **kwattr)
 
-    def draw_vertex_labels(self, **kwattr):
-        mesh_draw_vertex_labels(self, **kwattr)
+    def draw_faces(self, **kwattr):
+        artist = MeshArtist(self)
+        artist.draw_faces(**kwattr)
 
-    def draw_edge_labels(self, **kwattr):
-        mesh_draw_edge_labels(self, **kwattr)
+    def draw_vertexlabels(self, **kwattr):
+        artist = MeshArtist(self)
+        artist.draw_vertexlabels(**kwattr)
 
-    def draw_face_labels(self, **kwattr):
-        mesh_draw_face_labels(self, **kwattr)
+    def draw_edgelabels(self, **kwattr):
+        artist = MeshArtist(self)
+        artist.draw_edgelabels(**kwattr)
+
+    def draw_facelabels(self, **kwattr):
+        artist = MeshArtist(self)
+        artist.draw_facelabels(**kwattr)

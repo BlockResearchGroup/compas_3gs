@@ -281,7 +281,6 @@ def oriented_normal_polygon(points, unitized=True):
 
     subpolygons = []
 
-
     seen_edges = set()
 
     # while len(seen_edges) != len(all_edge_list):
