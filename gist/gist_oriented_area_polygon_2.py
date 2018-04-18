@@ -165,6 +165,8 @@ def oriented_normal_polygon(points):
             if a not in split_edges:  # store u us the ancestor point
                 split_edges[a] = {}
             split_edges[a][b] = u
+            if a not in init_cross:
+                init_cross[a] = init_cross[u]
             all_edge_list.append((a, b))
 
 
@@ -207,7 +209,7 @@ def oriented_normal_polygon(points):
     seen_edges = set()
     for u0 in init_vkeys:
         for v0 in split_edges[u0]:
-            if frozenset([u0, v0]) not in seen_edges:
+            if (u0, v0) not in seen_edges:
                 print('-------------------------------------------------------')
                 print('-------------------------------------------------------')
                 print('-------------------------------------------------------')
@@ -224,21 +226,56 @@ def oriented_normal_polygon(points):
                     print('U V :', u, v)
                     print('w_list', w_list)
 
-                    conv_list = {}
-                    conc_list = {}
+
                     if len(w_list) == 1:
                         subface.append(w_list[0])
+                        continue
 
-                    else:
-                        # order w's ------------------------------------------------
-                        for w in w_list:
-                            if frozenset([v, w]) not in seen_edges:
-                                if w == subface[0]:
-                                    break
-                                if (v, w) not in seen_edges:
-                                    if w not in subface:
-                                        subface.append(w)
-                                        break
+                    if subface[0] in w_list:
+                        break
+
+                    conv_list = {}
+                    conc_list = {}
+
+                    # sort w's -------------------------------------------------
+                    for w in w_list:
+                        if (v, w) not in seen_edges:
+                            a         = xyz[u]
+                            b         = xyz[v]
+                            c         = xyz[w]
+                            ancestor_cross = init_cross[u0]
+                            uvw_cross = _cross_edges((a, b), (b, c))
+                            dot       = dot_vectors(ancestor_cross, uvw_cross)
+                            # only pick w's with the same normal direction
+                            if dot > 0:
+                                conv_list[w] = length_vector(uvw_cross)
+                            if dot < 0:
+                                conc_list[w] = length_vector(uvw_cross)
+                            sorted_conv_w = sorted(conv_list, key=conv_list.get)
+                            sorted_conc_w = sorted(conc_list, key=conc_list.get)
+                            sorted_w = sorted_conv_w + sorted_conc_w
+
+                    print(sorted_w)
+
+
+
+
+                    # pick w ---------------------------------------------------
+                    for next_w in sorted_w:
+
+                        if next_w not in subface[1:]:
+                            subface.append(next_w)
+                            break
+
+                    print('subface', subface)
+
+                # add subface --------------------------------------------------
+                for i in range(-1, len(subface) - 1):
+                    seen = (subface[i], subface[i + 1])
+                    seen_edges.add(seen)
+
+
+
 
                     #     # ancestor_prev = split_edges[u][v]
                     #     # ancestor_curr = split_edges[v][w]
@@ -277,9 +314,9 @@ def oriented_normal_polygon(points):
                     #             break
 
 
-                for i in range(-1, len(subface) - 1):
-                    seen = frozenset([subface[i], subface[i + 1]])
-                    seen_edges.add(seen)
+                # for i in range(-1, len(subface) - 1):
+                #     seen = frozenset([subface[i], subface[i + 1]])
+                #     seen_edges.add(seen)
 
                 print(seen_edges)
                 print('subface', subface)
