@@ -351,7 +351,7 @@ class VolMesh3gs(VolMesh):
     def draw(self, **kwattr):
         volmesh_draw(self, **kwattr)
 
-    def clear(self,**kwattr):
+    def clear(self):
         artist = VolMeshArtist(self)
         artist.clear()
 
