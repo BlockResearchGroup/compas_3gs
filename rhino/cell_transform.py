@@ -11,9 +11,9 @@ from Rhino.Geometry import Vector3d
 from Rhino.Geometry import Line
 
 from compas.geometry import add_vectors
-from compas.geometry import area_polygon
+from compas.geometry import dot_vectors
 from compas.geometry import scale_vector
-from compas.geometry import normal_polygon
+from compas.geometry import length_vector
 from compas.geometry import center_of_mass_polygon
 from compas.geometry import intersection_line_plane
 from compas.geometry import distance_point_point
@@ -23,6 +23,10 @@ from compas.utilities import i_to_rgb
 from compas_rhino.helpers.volmesh import volmesh_select_vertex
 from compas_rhino.helpers.volmesh import volmesh_select_face
 
+from compas_3gs.helpers import normal_polygon_general
+from compas_3gs.helpers import area_polygon_general
+
+from compas_rhino.utilities import xdraw_lines
 from compas_rhino.utilities import xdraw_labels
 
 from compas_rhino.conduits.edges import LinesConduit
@@ -53,25 +57,8 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ******************************************************************************
 # ******************************************************************************
 
-def cell_split_vertex(volmesh):
 
-    vkey = volmesh_select_vertex(volmesh)
-    hfkey1 = volmesh_select_face(volmesh)
-    hfkey2 = volmesh_select_face(volmesh)
-
-    volmesh.cell_split_vertex(vkey, hfkey1, hfkey2)
-    volmesh.draw(layer='forcepolyhedra')
-    volmesh.draw_vertexlabels()
-    volmesh.draw_facelabels()
-
-    ckey = volmesh.cell.keys()[0]
-    egi = volmesh.c_data[ckey]['egi']
-    egi.draw_vertexlabels(color=(255, 150, 150))
-    egi.draw()
-    egi.draw_facelabels(color=(150, 150, 150))
-
-
-def cell_face_pull_target_area(volmesh, tol=1e-5):
+def cell_face_pull_target_area_direct(volmesh, tol=1e-6):
 
     # pick face ----------------------------------------------------------------
     hfkey = _cell_select_halfface(volmesh)
@@ -80,13 +67,18 @@ def cell_face_pull_target_area(volmesh, tol=1e-5):
     hf_normal     = volmesh.halfface_normal(hfkey)
     hf_area       = volmesh.halfface_area(hfkey)
 
+    rs.AddPoint(hf_center)
+
+
+    # display current area -----------------------------------------------------
     xdraw_labels([{
         'pos'  : hf_center,
         'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
         'color': (0, 0, 0),
         'text' : str(round(hf_area, 3))}])
 
-    # get number ---------------------------------------------------------------
+
+    # enter target area --------------------------------------------------------
     gn = Rhino.Input.Custom.GetNumber()
     gn.SetCommandPrompt('enter target area')
     if gn.Get() != Rhino.Input.GetResult.Number:
@@ -94,118 +86,278 @@ def cell_face_pull_target_area(volmesh, tol=1e-5):
     target = gn.Number()
     gn.Dispose()
 
-    sign = 1
-    if target - hf_area < 0:
+
+    # prep cell ----------------------------------------------------------------
+    _cell_split_indet_vertices(volmesh, hfkey)
+
+
+    print('hf_normal', hf_normal)
+
+    new_xyz    = add_vectors(hf_center, hf_normal)
+    trial_area = _evaluate_trial_face_area(volmesh, hfkey, new_xyz)
+
+
+
+    ratio      = trial_area - hf_area
+    print('trial_area', trial_area)
+    print('ratio', ratio)
+
+    x          = (target - hf_area) / ratio
+
+
+    # new_center = add_vectors(hf_center, scale_vector(hf_normal, x))
+    # _cell_face_pull_location(volmesh, hfkey, new_center)
+
+
+    deviation = 1
+    iteration = 0
+    while deviation > tol:
+        if iteration > 100:
+            break
+
+
+
+
+        new_center = add_vectors(hf_center, scale_vector(hf_normal, x))
+
+        current_area = _evaluate_trial_face_area(volmesh, hfkey, new_center)
+
+
+        # new_xyz = add_vectors(hf_center, hf_normal)
+
+        # trial_area = _evaluate_trial_face_area(volmesh, hfkey, new_xyz)
+        extra = (target - current_area) / ratio
+        x = x + extra
+
+        deviation = abs(target - current_area)
+
+
+        iteration +=1
+        print(iteration)
+        print(current_area)
+
+
+    y = (0, 1, 0)
+
+    center = (0, 0, new_center[2])
+
+    move = add_vectors(center, scale_vector(y, current_area))
+
+
+
+
+
+
+    xdraw_lines([{
+        'start': center,
+        'end'  : move,
+        # 'arrow': 'end',
+        'layer': 'area_lines',
+        'name' : 'area-{}'.format(current_area)}])
+
+
+
+
+
+    # print(iteration)
+    # print(volmesh.halfface_area(hfkey))
+
+    _cell_face_pull_location(volmesh, hfkey, new_center)
+    rs.EnableRedraw(True)
+
+    volmesh.draw(layer='forcepolyhedra')
+
+
+    return volmesh
+
+
+
+
+
+
+
+
+
+def cell_face_pull_target_area(volmesh, tol=1e-6):
+
+    # pick face ----------------------------------------------------------------
+    hfkey = _cell_select_halfface(volmesh)
+
+    hf_center     = volmesh.halfface_center(hfkey)
+    hf_normal     = volmesh.halfface_normal(hfkey)
+    hf_area       = volmesh.halfface_area(hfkey)
+
+    rs.AddPoint(hf_center)
+
+
+    # display current area -----------------------------------------------------
+    xdraw_labels([{
+        'pos'  : hf_center,
+        'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
+        'color': (0, 0, 0),
+        'text' : str(round(hf_area, 3))}])
+
+
+    # enter target area --------------------------------------------------------
+    gn = Rhino.Input.Custom.GetNumber()
+    gn.SetCommandPrompt('enter target area')
+    if gn.Get() != Rhino.Input.GetResult.Number:
+        return None
+    target = gn.Number()
+    gn.Dispose()
+
+
+    # prep cell ----------------------------------------------------------------
+    _cell_split_indet_vertices(volmesh, hfkey)
+
+
+    # get move direction -------------------------------------------------------
+
+    sign = 1  # if it needs to get larger...
+    if hf_area - target > 0:
+        sign = -1  # if it needs to be smaller...
+
+    if hf_area * target < 0 :  # if it needs to flip...
         sign = -1
 
-
-    # start --------------------------------------------------------------------
-    _cell_split_indet_vertices(volmesh, hfkey)
     move_dir = _get_move_direction(volmesh, hfkey) * sign
 
+
+
+
+
+
+    rs.EnableRedraw(False)
+
+
     gr = (math.sqrt(5) + 1) / 2
-    a = -10
-    b = 10
-    c = b - (b - a) / gr
-    d = a + (b - a) / gr
+    a  = 0
+    b  = abs(hf_area - target)
+    c  = b - (b - a) / gr
+    d  = a + (b - a) / gr
 
-    # --------------------------------------------------------------------------
-    # edges = []
-    # for u, v in volmesh.edges():
-    #     u_xyz = volmesh.vertex_coordinates(u)
-    #     v_xyz = volmesh.vertex_coordinates(v)
-    #     edges.append((u_xyz, v_xyz))
-    # conduit = LinesConduit(edges)
-    # conduit.Enabled = True
 
-    count = 1000
+    areas = []
+
+    iteration = 0
+    count     = 50
+
+
+    centers = []
+    labels = []
+
     while abs(c - d) > tol:
-        print(count)
+
         if count == 0:
             break
-        count -= 1
-        move_c = c * move_dir
-        move_d = d * move_dir
+
+        move_a   = a * move_dir
+        move_b   = b * move_dir
+
+        move_c   = c * move_dir
+        move_d   = d * move_dir
+
+        center_a = add_vectors(hf_center, scale_vector(hf_normal, move_a))
+        center_b = add_vectors(hf_center, scale_vector(hf_normal, move_b))
         center_c = add_vectors(hf_center, scale_vector(hf_normal, move_c))
         center_d = add_vectors(hf_center, scale_vector(hf_normal, move_d))
-        eval_c = target - _evaluate_trial_face_area(volmesh, hfkey, center_c)
-        eval_d = target - _evaluate_trial_face_area(volmesh, hfkey, center_d)
+
+
+        area_c   = _evaluate_trial_face_area(volmesh, hfkey, center_c)
+        area_d   = _evaluate_trial_face_area(volmesh, hfkey, center_d)
+        eval_c   = area_c - target
+        eval_d   = area_d - target
+
+        col_c = 255 - iteration * 6
+        col_d = iteration * 6
+        # labels.append({
+        #     'pos'  : center_c,
+        #     'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
+        #     'color': (col_c, col_c, col_c),
+        #     'text' : str(iteration)})
+        # labels.append({
+        #     'pos'  : center_d,
+        #     'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
+        #     'color': (col_d, col_d, col_d),
+        #     'text' : str(iteration)})
+
+
+        # if iteration == 0:
+        #     rs.AddPoint(center_c)
+        #     rs.AddArcPtTanPt(hf_center, (0, 1, 0), center_d)
+
+
+
+        _cell_draw_current(volmesh, hfkey, center_c, iteration, color=(0, 0, 255))
+        _cell_draw_current(volmesh, hfkey, center_d, iteration, color=(255, 0, 0))
+
+        rs.CurrentLayer('iteration-{}'.format(iteration))
+        rs.AddArcPtTanPt(center_a, (0, 1, 0), center_b)
+
+
 
         if abs(eval_c) < abs(eval_d):
+
+            # rs.AddArcPtTanPt(center_c, (0, 1, 0), center_d)
             b = d
+
+            # areas.append(area_c)
+
+
+            # xdraw_labels([{
+            #     'pos'  : center_d,
+            #     'layer': 'iteration-{}'.format(iteration),
+            #     'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
+            #     'color': (0, 0, 255),
+            #     'text' : str(area_d)}])
+
         else:
+            # rs.AddArcPtTanPt(center_c, (0, 1, 0), center_d)
             a = c
+
+            # rs.AddArcPtTanPt(center_c, (0, 1, 0), center_a)
+            # xdraw_labels([{
+            #     'pos'  : center_c,
+            #     'layer': 'iteration-{}'.format(iteration),
+            #     'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
+            #     'color': (255, 0, 0),
+            #     'text' : str(area_c)}])
+
 
         c = b - (b - a) / gr
         d = a + (b - a) / gr
 
-        # conduit --------------------------------------------------------------
-    #     edges = []
-    #     for u, v in volmesh.edges():
-    #         u_xyz = volmesh.vertex_coordinates(u)
-    #         v_xyz = volmesh.vertex_coordinates(v)
-    #         edges.append((u_xyz, v_xyz))
-    #     conduit.lines = edges
-    #     conduit.redraw()
 
-    # conduit.Enabled = False
-    # del conduit
 
-    # --------------------------------------------------------------------------
+        centers.append(center_c)
+
+
+        iteration += 1
+        count     -= 1
+
+
+    print(areas)
+    print(iteration)
 
     final = (b + a) / 2
     translation = final * move_dir
 
+
+    # for i in range(0, len(centers) - 1):
+    #     sp = centers[i]
+    #     ep = centers[i + 1]
+    #     rs.AddArcPtTanPt(sp, (0, 1, 0), ep)
+
     new_center = add_vectors(hf_center, scale_vector(hf_normal, translation))
-    print(new_center)
-    cell_face_pull_location(volmesh, hfkey, new_center)
+    _cell_face_pull_location(volmesh, hfkey, new_center)
 
-    volmesh.draw()
+    rs.EnableRedraw(True)
 
-    return volmesh
+    volmesh.draw(layer='forcepolyhedra')
 
-
-
-
-
-
-
-
-
-
-
-
-def cell_face_pull_location(volmesh, hfkey, new_center):
-
-    hf_vkeys  = volmesh.halfface_vertices(hfkey)
-    edges = {}
-    for u in hf_vkeys:
-        u_nbrs = volmesh.vertex_neighbours(u)
-        for v in u_nbrs:
-            if v not in hf_vkeys:
-                edges[u] = v
-
-    plane = (new_center, volmesh.halfface_normal(hfkey))
-    for u in edges:
-        v     = edges[u]
-        u_xyz = volmesh.vertex_coordinates(u)
-        v_xyz = volmesh.vertex_coordinates(v)
-        line  = (u_xyz, v_xyz)
-        it    = intersection_line_plane(line, plane)
-        volmesh.vertex_update_xyz(u, it, constrained=False)
+    xdraw_labels(labels)
 
     return volmesh
-
-
-
-
-
-
-
-
-
-
-
 
 
 def cell_face_pull_interactive(volmesh):
@@ -282,9 +434,9 @@ def cell_face_pull_interactive(volmesh):
         normals = {}
         for fkey in volmesh.halfface:
             face_coordinates = [xyz_dict[vkey] for vkey in volmesh.halfface[fkey]]
-            area          = area_polygon(face_coordinates)
+            area          = area_polygon_general(face_coordinates)
             areas[fkey]   = area
-            normal        = normal_polygon(face_coordinates)
+            normal        = normal_polygon_general(face_coordinates)
             normals[fkey] = normal
 
         # draw new face areas / vectors ----------------------------------------
@@ -376,6 +528,9 @@ def _cell_split_indet_vertices(volmesh, hfkey):
 
 def _evaluate_trial_face_area(volmesh, hfkey, new_xyz):
     hf_vkeys = volmesh.halfface_vertices(hfkey)
+    points   = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
+    normal   = volmesh.halfface_normal(hfkey)
+
     edges    = {}
     for u in hf_vkeys:
         u_nbrs = volmesh.vertex_neighbours(u)
@@ -391,7 +546,20 @@ def _evaluate_trial_face_area(volmesh, hfkey, new_xyz):
         line  = (u_xyz, v_xyz)
         it    = intersection_line_plane(line, new_plane)
         new_pt_list.append(it)
-    return area_polygon(new_pt_list)
+
+    new_normal = normal_polygon_general(new_pt_list, unitized=False)
+    new_area = length_vector(new_normal)
+
+    sign = 1
+    if dot_vectors(normal, new_normal) < 0:
+        sign = -1
+
+    return new_area * sign
+
+
+
+
+
 
 
 def _get_move_direction(volmesh, hfkey):
@@ -410,7 +578,96 @@ def _get_move_direction(volmesh, hfkey):
         move_dir = -1
     if new_area == area:
         raise ValueError('The face already has target area!')
+
+    print(move_dir)
+
     return move_dir
+
+
+def _cell_face_pull_location(volmesh, hfkey, new_center):
+
+    hf_vkeys = volmesh.halfface_vertices(hfkey)
+    edges    = {}
+    for u in hf_vkeys:
+        u_nbrs = volmesh.vertex_neighbours(u)
+        for v in u_nbrs:
+            if v not in hf_vkeys:
+                edges[u] = v
+
+    plane = (new_center, volmesh.halfface_normal(hfkey))
+    for u in edges:
+        v     = edges[u]
+        u_xyz = volmesh.vertex_coordinates(u)
+        v_xyz = volmesh.vertex_coordinates(v)
+        line  = (u_xyz, v_xyz)
+        it    = intersection_line_plane(line, plane)
+        volmesh.vertex_update_xyz(u, it, constrained=False)
+
+    return volmesh
+
+
+def _cell_draw_current(volmesh, hfkey, center, iteration, color):
+
+    lines = []
+
+    name = 'iteration-{}'.format(iteration)
+    rs.AddLayer('iteration-{}'.format(iteration))
+
+
+
+    hf_vkeys = volmesh.halfface_vertices(hfkey)
+    points   = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
+    normal   = normal_polygon_general(points)
+
+    edges    = {}
+    for u in hf_vkeys:
+        u_nbrs = volmesh.vertex_neighbours(u)
+        for v in u_nbrs:
+            if v not in hf_vkeys:
+                edges[u] = v
+    new_plane   = (center, volmesh.halfface_normal(hfkey))
+    new_pt_list = []
+
+
+
+    for u in hf_vkeys:
+        v     = edges[u]
+        u_xyz = volmesh.vertex_coordinates(u)
+        v_xyz = volmesh.vertex_coordinates(v)
+        line  = (u_xyz, v_xyz)
+        it    = intersection_line_plane(line, new_plane)
+        new_pt_list.append(it)
+
+
+        lines.append({
+            'start': u_xyz,
+            'end'  : it,
+            # 'arrow': 'end',
+            'color': color,
+            'layer': name,
+            'name' : 'iteration.{}'.format(iteration)})
+
+    new_normal = normal_polygon_general(new_pt_list, unitized=False)
+    new_area = length_vector(new_normal)
+
+    for i in range(-1, len(new_pt_list) - 1):
+        a = new_pt_list[i]
+        b = new_pt_list[i + 1]
+
+        lines.append({
+            'start': a,
+            'end'  : b,
+            # 'arrow': 'end',
+            'color': color,
+            'layer': name,
+            'name' : 'iteration-{}.area-{}'.format(iteration, new_area)})
+
+    new_normal = normal_polygon_general(new_pt_list, unitized=False)
+    new_area = length_vector(new_normal)
+
+    xdraw_lines(lines)
+
+
 
 
 # ******************************************************************************
@@ -443,3 +700,33 @@ def _get_target_point(constraint, OnDynamicDraw, option='None', message='Point t
     gp.Get()
     gp = gp.Point()
     return gp
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   UNUSED
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+# def cell_split_vertex(volmesh):
+
+#     vkey = volmesh_select_vertex(volmesh)
+#     hfkey1 = volmesh_select_face(volmesh)
+#     hfkey2 = volmesh_select_face(volmesh)
+
+#     volmesh.cell_split_vertex(vkey, hfkey1, hfkey2)
+#     volmesh.draw(layer='forcepolyhedra')
+#     volmesh.draw_vertexlabels()
+#     volmesh.draw_facelabels()
+
+#     ckey = volmesh.cell.keys()[0]
+#     egi = volmesh.c_data[ckey]['egi']
+#     egi.draw_vertexlabels(color=(255, 150, 150))
+#     egi.draw()
+#     egi.draw_facelabels(color=(150, 150, 150))
+#

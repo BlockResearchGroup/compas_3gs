@@ -7,7 +7,14 @@ from Rhino.Geometry import Point3d
 
 from compas.geometry import add_vectors
 
+
+
 from compas_rhino.helpers.volmesh import volmesh_select_vertices
+
+
+from compas_3gs.rhino.interface import _get_initial_point
+from compas_3gs.rhino.interface import _get_target_point
+
 
 from compas_rhino.utilities import xdraw_labels
 from compas_rhino.utilities import xdraw_lines
@@ -20,30 +27,6 @@ edge_color   = System.Drawing.Color.FromArgb(0, 0, 0)
 
 def volmesh_vertex_fixity(volmesh):
 
-    # labels = []
-    # text_dict = {}
-    # for vkey in volmesh.vertex:
-    #     r, g, b = 0, 0, 0
-    #     text = '_'
-    #     if volmesh.v_data[vkey]['x_fix']:
-    #         r = 255
-    #         text += "x"
-    #     if volmesh.v_data[vkey]['y_fix']:
-    #         g = 255
-    #         text += "y"
-    #     if volmesh.v_data[vkey]['z_fix']:
-    #         b = 255
-    #         text += "z"
-    #     text_dict[vkey] = text
-    #     labels.append({'pos'  : volmesh.vertex_coordinates(vkey),
-    #                    'name' : text,
-    #                    'color': (r, g, b),
-    #                    'text' : text})
-    #     print(text)
-    # # xdraw_labels(labels)
-    # print(text_dict)
-
-    # volmesh.draw_vertexlabels()
 
     vkeys = volmesh_select_vertices(volmesh)
 
@@ -241,34 +224,3 @@ def volmesh_vertex_align(volmesh):
 
     volmesh.draw(layer='forcepolyhedra')
 
-
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
-#   rhino helpers
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-
-
-def _get_initial_point(message='Point to move from?'):
-    ip = Rhino.Input.Custom.GetPoint()
-    ip.SetCommandPrompt(message)
-    ip.Get()
-    ip = ip.Point()
-    return ip
-
-
-def _get_target_point(constraint, OnDynamicDraw, option='None', message='Point to move to?'):
-    gp = Rhino.Input.Custom.GetPoint()
-    gp.SetCommandPrompt(message)
-    if option == 'None':
-        gp.Constrain(constraint)
-    if option != 'None':
-        gp.Constrain(constraint, option)
-    gp.DynamicDraw += OnDynamicDraw
-    gp.Get()
-    gp = gp.Point()
-    return gp

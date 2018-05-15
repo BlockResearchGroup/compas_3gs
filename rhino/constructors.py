@@ -55,7 +55,7 @@ def formnetwork_from_forcevolmesh(forcepolyhedra):
 
     rs.AddLayer(name='formnetwork', color=(0, 0, 0))
 
-    formnetwork = volmesh_dual_network(forcepolyhedra, cls=FormVolMesh)
+    formnetwork = volmesh_dual_network(forcepolyhedra)
     formnetwork.attributes['name'] = 'FormNetwork'
     formnetwork.initialize_data()
     formnetwork.draw(layer='formnetwork')

@@ -4,9 +4,12 @@ from compas.datastructures import VolMesh
 
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
+from compas.geometry import sum_vectors
+from compas.geometry import length_vector
+from compas.geometry import cross_vectors
+from compas.geometry import dot_vectors
+from compas.geometry import scale_vectors
 
-from compas.geometry import area_polygon
-from compas.geometry import normal_polygon
 from compas.geometry import center_of_mass_polygon
 
 from compas_rhino.helpers.volmesh import volmesh_draw
@@ -15,7 +18,11 @@ from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
 from compas_3gs.rhino.display import draw_volmesh_face_normals
 from compas_3gs.rhino.display import draw_celllabels
 
+from compas_3gs.helpers import normal_polygon_general
+from compas_3gs.helpers import area_polygon_general
+
 from compas_3gs.datastructures.operations.split import cell_split_vertex
+
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
@@ -194,6 +201,13 @@ class VolMesh3gs(VolMesh):
                 halffaces.apend(self.cell[ckey][v][vkey])
         return halffaces
 
+    def vertex_normal(self, vkey):
+        vectors = []
+        nbrs = self.vertex_neighbours(vkey)
+        for nbr_vkey in nbrs:
+            vectors.append(self.edge_vector(vkey, nbr_vkey, unitized=True))
+        return normalize_vector(sum_vectors(vectors))
+
     def vertex_cells(self, vkey):
         ckeys = []
         for v in self.plane[vkey].keys():
@@ -204,6 +218,7 @@ class VolMesh3gs(VolMesh):
 
     def vertex_update_xyz(self, vkey, xyz, constrained=True):
         if constrained:
+            # X
             if self.v_data[vkey]['x_fix'] is False:
                 self.vertex[vkey]['x'] = xyz[0]
             # Y
@@ -254,14 +269,19 @@ class VolMesh3gs(VolMesh):
         return center_of_mass_polygon(self.halfface_coordinates(hfkey))
 
     def halfface_area(self, hfkey):
-        hf_vkeys = self.halfface_vertices(hfkey)
-        hf_v_xyz = [self.vertex_coordinates(vkey) for vkey in hf_vkeys]
-        area     = area_polygon(hf_v_xyz)
+        vertices = self.halfface_vertices(hfkey)
+        points   = [self.vertex_coordinates(vkey) for vkey in vertices]
+        area     = area_polygon_general(points)
         return area
 
-    def halfface_normal(self, hfkey):
+    def halfface_normal(self, hfkey, unitized=True):
         vertices = self.halfface_vertices(hfkey)
-        normal   = normal_polygon([self.vertex_coordinates(vkey) for vkey in vertices])
+        points   = [self.vertex_coordinates(vkey) for vkey in vertices]
+        normal   = normal_polygon_general(points, unitized)
+        if length_vector(normal) == 0 :
+            uv = subtract_vectors(points[1], points[0])
+            vw = subtract_vectors(points[2], points[1])
+            normal = normalize_vector(cross_vectors(uv, vw))
         return normal
 
     def halfface_vertex_ancestor(self, hfkey, key):
@@ -322,8 +342,10 @@ class VolMesh3gs(VolMesh):
         return ordered_hfkeys
 
     def cell_halfface_neighbours(self, ckey, hfkey):
-        '''Includes both edge and vertex neighbours.
-        '''
+        """Includes both edge and vertex neighbours.
+
+        note to self: why... is this useful?
+        """
         hf_vkeys = self.halfface[hfkey]
         hf_nbrs = []
         for vkey in hf_vkeys:
@@ -334,10 +356,12 @@ class VolMesh3gs(VolMesh):
         return hf_nbrs
 
     def cell_pair_hfkeys(self, ckey_1, ckey_2):
+        """Given 2 ckeys, returns the interfacing halffaces, respectively.
+        """
         for hfkey in self.cell_halffaces(ckey_1):
-            u   = self.halfface[hfkey].iterkeys().next()
-            v   = self.halfface[hfkey][u]
-            w   = self.halfface[hfkey][v]
+            u   = self.halfface[hfkey][0]
+            v   = self.halfface[hfkey][1]
+            w   = self.halfface[hfkey][2]
             nbr = self.plane[w][v][u]
             if nbr == ckey_2:
                 return hfkey, self.halfface_pair(hfkey)
@@ -354,6 +378,10 @@ class VolMesh3gs(VolMesh):
     def clear(self):
         artist = VolMeshArtist(self)
         artist.clear()
+
+    def draw_edges(self, **kwattr):
+        artist = VolMeshArtist(self, **kwattr)
+        artist.draw_edges(**kwattr)
 
     def draw_faces(self, **kwattr):
         artist = VolMeshArtist(self)

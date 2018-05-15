@@ -1,5 +1,5 @@
 # from compas_3gs.datastructures.formvolmesh import FormVolMesh
-from compas_3gs.datastructures.network3gs import Network3gs as Network
+from compas_3gs.datastructures.formnetwork import FormNetwork as Network
 from compas_3gs.datastructures.volmesh3gs import VolMesh3gs as VolMesh
 from compas_3gs.datastructures.formvolmesh import FormVolMesh
 

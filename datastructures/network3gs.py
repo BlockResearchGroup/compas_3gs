@@ -30,6 +30,9 @@ class Network3gs(Network):
     def __init__(self):
         super(Network3gs, self).__init__()
 
+        self.v_data = {}
+        self.e_data = {}
+
     # --------------------------------------------------------------------------
     # iterators
     # --------------------------------------------------------------------------
@@ -66,27 +69,31 @@ class Network3gs(Network):
         attr.update(attr_dict)
         self.e_data[u, v].update(attr)
 
-    def initalize_data(self):
+    def initialize_data(self):
         for vkey in self.vertex:
             self.update_v_data(vkey)
         for u, v in self.edges():
             self.update_e_data(u, v)
-        for fkey in self.halfface:
-            self.update_f_data(fkey)
+
 
     # --------------------------------------------------------------------------
     # helpers - vertices
     # --------------------------------------------------------------------------
 
-    def vertex_update_xyz(self, vkey, xyz):
-        # X
-        if self.v_data[vkey]['x_fix'] is False:
+    def vertex_update_xyz(self, vkey, xyz, constrained=True):
+        if constrained:
+            # X
+            if self.v_data[vkey]['x_fix'] is False:
+                self.vertex[vkey]['x'] = xyz[0]
+            # Y
+            if self.v_data[vkey]['y_fix'] is False:
+                self.vertex[vkey]['y'] = xyz[1]
+            # Z
+            if self.v_data[vkey]['z_fix'] is False:
+                self.vertex[vkey]['z'] = xyz[2]
+        else:
             self.vertex[vkey]['x'] = xyz[0]
-        # Y
-        if self.v_data[vkey]['y_fix'] is False:
             self.vertex[vkey]['y'] = xyz[1]
-        # Z
-        if self.v_data[vkey]['z_fix'] is False:
             self.vertex[vkey]['z'] = xyz[2]
 
     # --------------------------------------------------------------------------

@@ -4,11 +4,32 @@ import rhinoscriptsyntax as rs
 import compas_rhino
 
 from compas.geometry import add_vectors
+from compas.geometry import scale_vector
 
 from compas.utilities import color_to_colordict
 
 
 from compas_rhino.utilities import xdraw_lines
+
+
+def draw_cell_force_vectors(volmesh):
+
+    ckey = volmesh.cell.keys()[0]
+    center = volmesh.cell_centroid(ckey)
+
+    lines = []
+    for hfkey in volmesh.halfface:
+        normal = volmesh.halfface_normal(hfkey, unitized=False)
+        # normal = scale_vector(normal, -1)
+        lines.append({
+            'start': center,
+            'end'  : add_vectors(center, normal),
+            'arrow': 'end',
+            'color': (0, 255, 0),
+            'name' : 'hfkey.{}'.format(hfkey)})
+    xdraw_lines(lines)
+
+
 
 
 def draw_volmesh_face_normals(self, hfkeys):
@@ -50,3 +71,4 @@ def draw_celllabels(volmesh, text=None, color=None):
             'text' : textdict[ckey],
         })
     return compas_rhino.xdraw_labels(labels, clear=False, redraw=False)
+
