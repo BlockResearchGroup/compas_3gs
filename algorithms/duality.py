@@ -58,7 +58,7 @@ def volmesh_dual_volmesh(volmesh, cls=None):
             halfface   = [ckey]
             for i in range(len(edge_ckeys) - 1):
                 hfkey = volmesh.cell[ckey][u][v]
-                w     = volmesh.halfface_vertex_descendant(hfkey, v)
+                w     = volmesh.halfface_vertex_descendent(hfkey, v)
                 ckey  = volmesh.plane[w][v][u]
                 halfface.append(ckey)
             cell_halffaces.append(halfface)

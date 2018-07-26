@@ -12,6 +12,11 @@ from compas.utilities import color_to_colordict
 from compas_rhino.utilities import xdraw_lines
 
 
+def draw_cell(volmesh, ckey):
+    hfkeys = volmesh.cell_halffaces(ckey)
+    volmesh.draw_faces(fkeys=hfkeys)
+
+
 def draw_cell_force_vectors(volmesh):
 
     ckey = volmesh.cell.keys()[0]
@@ -31,7 +36,6 @@ def draw_cell_force_vectors(volmesh):
 
 
 
-
 def draw_volmesh_face_normals(self, hfkeys):
 
     lines = []
@@ -47,28 +51,42 @@ def draw_volmesh_face_normals(self, hfkeys):
     xdraw_lines(lines)
 
 
-def draw_celllabels(volmesh, text=None, color=None):
+def draw_cell_labels(volmesh, text=None, color_dict=None):
 
-    if text is None:
-        textdict = {ckey: str(ckey) for ckey in volmesh.cell}
-    elif isinstance(text, dict):
-        textdict = text
-    else:
-        raise NotImplementedError
+    rs.CurrentLayer(volmesh.layer)
 
-    colordict = color_to_colordict(color,
-                                   textdict.keys(),
-                                   default=(0,0,0),
-                                   colorformat='rgb',
-                                   normalize=False)
+    # colordict = color_to_colordict(color,
+    #                                textdict.keys(),
+    #                                default=(0,0,0),
+    #                                colorformat='rgb',
+    #                                normalize=False)
 
     labels = []
-    for ckey, text in iter(textdict.items()):
+    for ckey in volmesh.cell:
+
+        color = (0, 0, 0)
+        if color_dict:
+            color = color_dict[ckey]
         labels.append({
             'pos'  : volmesh.cell_centroid(ckey),
-            'name' : textdict[ckey],
-            'color': colordict[ckey],
-            'text' : textdict[ckey],
+            'name' : '{0}.cell.label.{1}'.format(volmesh.name, ckey),
+            'color': color,
+            'layer': volmesh.layer,
+            'text' : str(ckey),
         })
     return compas_rhino.xdraw_labels(labels, clear=False, redraw=False)
+
+
+def clear_cell_labels(volmesh, keys=None):
+        if not keys:
+            name = '{}.cell.label.*'.format(volmesh.name)
+            guids = compas_rhino.get_objects(name=name)
+        else:
+            guids = []
+            for key in keys:
+                name = '*.cell.label.{}'.format(key)
+                guid = compas_rhino.get_object(name=name)
+                guids.append(guid)
+        compas_rhino.delete_objects(guids)
+
 

@@ -56,3 +56,31 @@ class reciprocation_conduit(Rhino.Display.DisplayConduit):
             e.Display.DrawPoint(Point3d(*sp), 0, 4, force_color)
             e.Display.DrawPoint(Point3d(*ep), 0, 4, force_color)
             e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), force_color, 1)
+
+
+class planarisation_conduit(Rhino.Display.DisplayConduit):
+
+    def __init__(self,
+                 volmesh):
+
+        super(planarisation_conduit, self).__init__()
+
+        self.volmesh = volmesh
+
+    def DrawForeground(self, e):
+
+        artist = VolMeshArtist(self.volmesh)
+        artist.clear()
+
+        # ----------------------------------------------------------------------
+        #   force diagram
+        # ----------------------------------------------------------------------
+        force_color = Color.FromArgb(200, 200, 200)
+        for u, v in self.volmesh.edges_iter():
+            sp  = self.volmesh.vertex_coordinates(u)
+            ep  = self.volmesh.vertex_coordinates(v)
+            e.Display.DrawPoint(Point3d(*sp), 0, 4, force_color)
+            e.Display.DrawPoint(Point3d(*ep), 0, 4, force_color)
+            e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), force_color, 1)
+
+

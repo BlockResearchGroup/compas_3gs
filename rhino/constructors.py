@@ -12,6 +12,7 @@ from compas_3gs.datastructures.formnetwork import FormNetwork
 from compas_3gs.datastructures.formvolmesh import FormVolMesh
 from compas_3gs.datastructures.egi import EGI
 
+from compas.geometry import distance_point_point
 
 from compas_3gs.algorithms import volmesh_dual_volmesh
 from compas_3gs.algorithms import volmesh_dual_network
@@ -35,16 +36,19 @@ def forcevolmesh_from_polysurfaces():
     guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
     rs.HideObjects(guids)
 
+    layer = 'forcediagram'
+
     forcepolyhedra = ForceVolMesh()
     forcepolyhedra = volmesh_from_polysurfaces(forcepolyhedra, guids)
     forcepolyhedra.attributes['name'] = 'ForceVolMesh'
+    forcepolyhedra.layer = layer
     forcepolyhedra.initialize_data()
 
-    rs.AddLayer(name='forcepolyhedra', color=(255, 255, 255))
-    forcepolyhedra.draw(layer='forcepolyhedra')
-    # forcepolyhedra.draw_vertexlabels()
-    # forcepolyhedra.draw_facelabels()
-    # forcepolyhedra.draw_celllabels()
+    rs.AddLayer(name=layer, color=(255, 255, 255))
+    forcepolyhedra.draw(layer=layer)
+    # forcepolyhedra.draw_vertex_labels()
+    # forcepolyhedra.draw_face_labels()
+    # forcepolyhedra.draw_cell_labels()
 
     egi_from_volmesh(forcepolyhedra)
 
@@ -53,11 +57,21 @@ def forcevolmesh_from_polysurfaces():
 
 def formnetwork_from_forcevolmesh(forcepolyhedra):
 
+    x = {vkey: forcepolyhedra.vertex_coordinates(vkey)[0] for vkey in forcepolyhedra.vertex}
+    sorted_x = sorted(x, key=x.get)
+    print(sorted_x)
+
+    move = abs(x[sorted_x[0]] - x[sorted_x[-1]])
+
     rs.AddLayer(name='formnetwork', color=(0, 0, 0))
 
     formnetwork = volmesh_dual_network(forcepolyhedra)
     formnetwork.attributes['name'] = 'FormNetwork'
     formnetwork.initialize_data()
+
+    for vkey in formnetwork.vertex:
+        formnetwork.vertex[vkey]['x'] += move * 2
+
     formnetwork.draw(layer='formnetwork')
 
     return formnetwork

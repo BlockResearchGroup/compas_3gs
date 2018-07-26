@@ -19,7 +19,7 @@ from compas_rhino.utilities import xdraw_labels
 from compas_rhino.utilities import xdraw_polylines
 from compas_rhino.utilities import xdraw_points
 
-from compas_3gs.algorithms.planarization import volmesh_planarize_faces
+from compas_3gs.algorithms.planarisation import volmesh_planarise_faces
 
 from compas_3gs.rhino import reciprocation_conduit
 
@@ -97,7 +97,6 @@ def volmesh_reciprocate(volmesh,
     #   loop
     # ==========================================================================
 
-
     lines = []
     polylines = []
 
@@ -126,7 +125,10 @@ def volmesh_reciprocate(volmesh,
         # ======================================================================
         #   FORCE DIAGRAM
         # ======================================================================
-        volmesh_planarize_faces(volmesh, count=1, target_normals=target_normals)
+        volmesh_planarise_faces(volmesh,
+                                count=1,
+                                target_normals=target_normals,
+                                conduit=False)
 
         # ======================================================================
         #   FORM DIAGRAM
@@ -204,10 +206,11 @@ def volmesh_reciprocate(volmesh,
     #   END
     # ==========================================================================
     conduit.Enabled = False
+    # conduit.Dispose()
     del conduit
 
-    xdraw_lines(lines)
-    xdraw_polylines(polylines)
+    # xdraw_lines(lines)
+    # xdraw_polylines(polylines)
 
     print('reciprocation ended at:', iteration)
     print('deviation:', deviation)

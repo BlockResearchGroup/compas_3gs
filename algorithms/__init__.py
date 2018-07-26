@@ -1,4 +1,4 @@
 from .arearization import *
 from .duality import *
-from .planarization import *
+from .planarisation import *
 from .reciprocation import *

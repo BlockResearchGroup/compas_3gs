@@ -30,6 +30,8 @@ def volmesh_vertex_fixity(volmesh):
 
     vkeys = volmesh_select_vertices(volmesh)
 
+    print('vertices_fixed', vkeys)
+
     go = Rhino.Input.Custom.GetOption()
     go.SetCommandPrompt('Set axes Constraints')
 
@@ -134,6 +136,8 @@ def volmesh_vertex_move(volmesh):
         volmesh.vertex_update_xyz(vkey, new_xyz, constrained=False)
 
     volmesh.draw(layer='forcepolyhedra')
+
+    return volmesh
 
 
 def volmesh_vertex_align(volmesh):
