@@ -52,6 +52,30 @@
   <div class="section" id="test-example">
 <h1>Test example</h1>
 <img alt="../_images/theblock.jpg" src="../_images/theblock.jpg" />
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/test-1.png" src="../_images/test-1.png" />
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+</pre></div>
+</div>
 </div>
 
 
