@@ -1,13 +1,22 @@
-# from compas_3gs.datastructures.formvolmesh import FormVolMesh
-from compas_3gs.datastructures.formnetwork import FormNetwork as Network
-from compas_3gs.datastructures.volmesh3gs import VolMesh3gs as VolMesh
-from compas_3gs.datastructures.formvolmesh import FormVolMesh
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import division
+
+from compas_3gs.datastructures import FormNetwork as Network
+from compas_3gs.datastructures import VolMesh3gs as VolMesh
+from compas_3gs.datastructures import FormVolMesh
 
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
+
+
+__all__ = [
+    'volmesh_dual_volmesh',
+    'volmesh_dual_network',
+]
 
 
 def volmesh_dual_volmesh(volmesh, cls=None):

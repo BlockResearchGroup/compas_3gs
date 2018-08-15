@@ -2,8 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import scriptcontext as sc
-import rhinoscriptsyntax as rs
+import compas
+import compas_rhino
 
 from compas.geometry import normalize_vector
 from compas.geometry import scale_vector
@@ -14,20 +14,26 @@ from compas.geometry import centroid_points
 from compas.geometry import project_point_plane
 from compas.geometry import distance_point_point
 
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_labels
-from compas_rhino.utilities import xdraw_polylines
-from compas_rhino.utilities import xdraw_points
-
-from compas_3gs.algorithms.planarisation import volmesh_planarise_faces
+from compas_3gs.algorithms import volmesh_planarise_faces
 
 from compas_3gs.rhino import reciprocation_conduit
+
+try:
+    import rhinoscriptsyntax as rs
+    import scriptcontext as sc
+except ImportError:
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
+
+
+__all__ = [
+    'volmesh_reciprocate',
+]
 
 
 def volmesh_reciprocate(volmesh,
@@ -60,7 +66,8 @@ def volmesh_reciprocate(volmesh,
 
     Returns
     -------
-    perpendicularized volmesh and formdiagram.
+    (ForceVolMesh, FormVolMesh or FormNetwork)
+        perpendicularized volmesh and formdiagram.
 
     """
 
@@ -209,41 +216,14 @@ def volmesh_reciprocate(volmesh,
     # conduit.Dispose()
     del conduit
 
-    # xdraw_lines(lines)
-    # xdraw_polylines(polylines)
+    # compas_rhino.xdraw_lines(lines)
+    # compas_rhino.xdraw_polylines(polylines)
 
     print('reciprocation ended at:', iteration)
     print('deviation:', deviation)
 
     volmesh.draw(layer='forcepolyhedra')
     formdiagram.draw(layer='formdiagram')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def _OLD_volmesh_reciprocate(volmesh,

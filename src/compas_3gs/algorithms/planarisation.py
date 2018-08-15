@@ -1,26 +1,35 @@
-import rhinoscriptsyntax as rs
-import scriptcontext as sc
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import division
+
+import compas
+import compas_rhino
 
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
 from compas.geometry import project_point_plane
+from compas.geometry import bestfit_plane
 
-from compas.geometry.algorithms.bestfit import bestfit_plane
-
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_labels
-from compas_rhino.utilities import xdraw_polylines
-from compas_rhino.utilities import xdraw_points
+from compas_rhino.helpers import volmesh_select_vertices
 
 from compas_3gs.rhino import planarisation_conduit
 
-from compas_rhino.helpers.volmesh import volmesh_select_vertices
+try:
+    import rhinoscriptsyntax as rs
+    import scriptcontext as sc
+except ImportError:
+    compas.raise_if_ironpython()
 
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
+
+
+__all__ = [
+    'volmesh_planarise_faces',
+]
 
 
 def volmesh_planarise_faces(volmesh,
@@ -30,22 +39,16 @@ def volmesh_planarise_faces(volmesh,
                             conduit=True,
                             tolerance=0.00001):
 
-
     omit_vkeys = volmesh_select_vertices(volmesh)
 
-    # conduit ------------------------------------------------------------------
     if conduit:
         conduit = planarisation_conduit(volmesh)
         conduit.Enabled = True
 
-
     iteration = 0
-
 
     edges = []
     polylines = []
-
-
 
     while count:
 
@@ -53,9 +56,7 @@ def volmesh_planarise_faces(volmesh,
 
         new_vertices = {}
 
-
         for hfkey in volmesh.halfface:
-
             hf_vkeys  = volmesh.halfface_vertices(hfkey)
             points    = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
             hf_normal = bestfit_plane(points)[1]
@@ -71,7 +72,6 @@ def volmesh_planarise_faces(volmesh,
 
             plane = (hf_center, hf_normal)
 
-
             projected_pts = []
             for vkey in hf_vkeys:
 
@@ -80,8 +80,8 @@ def volmesh_planarise_faces(volmesh,
                 dist    = distance_point_point(xyz, new_xyz)
 
                 # if vkey == 0:
-                    # print(hfkey, dist)
-                    # rs.AddPoint(new_xyz)
+                #     print(hfkey, dist)
+                #     rs.AddPoint(new_xyz)
 
                 if dist > deviation:
                     deviation = dist
@@ -100,7 +100,6 @@ def volmesh_planarise_faces(volmesh,
             #          'layer'  : name,
             #          'name'   : 'iteration.{}-hfkey.{}'.format(iteration, hfkey)})
 
-
         for vkey in new_vertices:
             if vkey not in omit_vkeys:
                 final_xyz = centroid_points(new_vertices[vkey])
@@ -108,15 +107,12 @@ def volmesh_planarise_faces(volmesh,
 
         # ----------------------------------------------------------------------
 
-
         if iteration > 1 and deviation < tolerance:
             break
-
 
         sc.doc.Views.Redraw()
         iteration += 1
         count -= 1
-
 
         # if (iteration % 5) == 0:
 
@@ -128,12 +124,9 @@ def volmesh_planarise_faces(volmesh,
         #     # rs.AddLayer(name)
         #     # rs.CurrentLayer(name)
 
-
-
         #     for u, v in volmesh.edges():
         #         u_xyz = volmesh.vertex_coordinates(u)
         #         v_xyz = volmesh.vertex_coordinates(v)
-
 
         #         edges.append(
         #             {'start' : u_xyz,
@@ -142,22 +135,18 @@ def volmesh_planarise_faces(volmesh,
         #              'layer' : name,
         #              'name'  : 'iteration-{}.{}-{}'.format(iteration, u, v)})
 
-
-
     if conduit:
         conduit.Enabled = False
         del conduit
 
-    # xdraw_lines(edges)
-    # xdraw_polylines(polylines)
+    # compas_rhino.xdraw_lines(edges)
+    # compas_rhino.xdraw_polylines(polylines)
 
     print('planarisation ended at:', iteration)
     print('deviation:', deviation)
 
     volmesh.clear()
     volmesh.draw(layer='forcepolyhedra')
-
-
 
 
 def _store_initial_normals(volmesh):
@@ -170,14 +159,6 @@ def _store_initial_normals(volmesh):
             attr_dict={'normal_i': normal, 'center_i': center})
 
     return volmesh
-
-
-
-
-
-
-
-
 
 
 # def volmesh_planarise_faces(volmesh,
@@ -216,14 +197,11 @@ def _store_initial_normals(volmesh):
 
 #     arrows = []
 
-
 #     while count:
 
 #         deviation = 0
 
 #         new_vertices = {}
-
-
 
 #         for hfkey in hfkeys:
 
@@ -261,8 +239,6 @@ def _store_initial_normals(volmesh):
 #                 {'points' : projected_pts + [projected_pts[0]],
 #                  'name'   : 'iteration.{}-hfkey.{}'.format(iteration, hfkey)})
 
-
-
 #         print(new_vertices)
 
 #         for vkey in new_vertices:
@@ -282,7 +258,6 @@ def _store_initial_normals(volmesh):
 #                     {'pos' : final_xyz,
 #                      'color': (0, 0, 255),
 #                      'name': 'iteration.{}-vkey.{}'.format(iteration, vkey)})
-
 
 #         # ----------------------------------------------------------------------
 
@@ -306,22 +281,19 @@ def _store_initial_normals(volmesh):
 #         conduit.Enabled = False
 #         del conduit
 
-
-
 #     name = 'others-iteration.{}'.format(iteration)
 #     rs.AddLayer(name)
 #     rs.CurrentLayer(name)
 
-#     xdraw_lines(arrows)
+#     compas_rhino.xdraw_lines(arrows)
 
-#     # xdraw_points(points)
+#     # compas_rhino.xdraw_points(points)
 
 #     name = 'polylines-iteration.{}'.format(iteration)
 #     rs.AddLayer(name)
 #     rs.CurrentLayer(name)
 
-#     xdraw_polylines(polylines)
-
+#     compas_rhino.xdraw_polylines(polylines)
 
 #     print('planarization ended at:', iteration)
 #     print('deviation:', deviation)

@@ -1,17 +1,35 @@
-from System.Drawing import Color
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import division
 
-import Rhino
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Line
+import compas
+import compas_rhino
+import compas_3gs
 
-from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
-from compas_rhino.helpers.artists import NetworkArtist
+try:
+    from System.Drawing import Color
+
+    import Rhino
+    from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Line
+
+except ImportError:
+    compas.raise_if_ironpython()
+
+from compas_rhino.artists import VolMeshArtist
+from compas_rhino.artists import NetworkArtist
 
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
+
+
+__all__ = [
+    'reciprocation_conduit',
+    'planarisation_conduit',
+]
 
 
 class reciprocation_conduit(Rhino.Display.DisplayConduit):
@@ -84,3 +102,9 @@ class planarisation_conduit(Rhino.Display.DisplayConduit):
             e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), force_color, 1)
 
 
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == "__main__":
+    pass
