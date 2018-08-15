@@ -14,6 +14,8 @@ from compas_rhino.utilities import xdraw_points
 
 from compas_3gs.rhino import planarisation_conduit
 
+from compas_rhino.helpers.volmesh import volmesh_select_vertices
+
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
@@ -24,10 +26,12 @@ __email__      = 'juney.lee@arch.ethz.ch'
 def volmesh_planarise_faces(volmesh,
                             count=100,
                             target_normals=None,
+                            target_centers=None,
                             conduit=True,
                             tolerance=0.00001):
 
-    rs.EnableRedraw(False)
+
+    omit_vkeys = volmesh_select_vertices(volmesh)
 
     # conduit ------------------------------------------------------------------
     if conduit:
@@ -42,10 +46,6 @@ def volmesh_planarise_faces(volmesh,
     polylines = []
 
 
-    hfkeys = volmesh.faces()
-    if target_normals:
-        hfkeys = target_normals.keys()
-
 
     while count:
 
@@ -54,16 +54,23 @@ def volmesh_planarise_faces(volmesh,
         new_vertices = {}
 
 
-        for hfkey in hfkeys:
+        for hfkey in volmesh.halfface:
 
-            hf_center = volmesh.halfface_center(hfkey)
             hf_vkeys  = volmesh.halfface_vertices(hfkey)
             points    = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
+            hf_normal = bestfit_plane(points)[1]
+            hf_center = volmesh.halfface_center(hfkey)
 
-            if not target_normals:
-                plane = bestfit_plane(points)
-            else:
-                plane = (hf_center, target_normals[hfkey])
+            if target_normals:
+                if hfkey in target_normals:
+                    hf_normal = target_normals[hfkey]
+
+            if target_centers:
+                if hfkey in target_centers:
+                    hf_center = target_centers[hfkey]
+
+            plane = (hf_center, hf_normal)
+
 
             projected_pts = []
             for vkey in hf_vkeys:
@@ -95,13 +102,14 @@ def volmesh_planarise_faces(volmesh,
 
 
         for vkey in new_vertices:
-            final_xyz = centroid_points(new_vertices[vkey])
-            volmesh.vertex_update_xyz(vkey, final_xyz)
+            if vkey not in omit_vkeys:
+                final_xyz = centroid_points(new_vertices[vkey])
+                volmesh.vertex_update_xyz(vkey, final_xyz)
 
         # ----------------------------------------------------------------------
 
 
-        if deviation < tolerance:
+        if iteration > 1 and deviation < tolerance:
             break
 
 

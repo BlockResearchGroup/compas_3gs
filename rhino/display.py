@@ -68,7 +68,7 @@ def draw_cell_labels(volmesh, text=None, color_dict=None):
         if color_dict:
             color = color_dict[ckey]
         labels.append({
-            'pos'  : volmesh.cell_centroid(ckey),
+            'pos'  : volmesh.cell_center(ckey),
             'name' : '{0}.cell.label.{1}'.format(volmesh.name, ckey),
             'color': color,
             'layer': volmesh.layer,

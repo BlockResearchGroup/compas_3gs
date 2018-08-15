@@ -26,12 +26,13 @@ from compas_rhino.helpers.selectors import FaceSelector
 from compas_3gs.rhino.selectors import CellSelector
 
 from compas_rhino.helpers.volmesh import volmesh_select_vertex
+from compas_rhino.helpers.volmesh import volmesh_select_vertices
 from compas_rhino.helpers.volmesh import volmesh_select_face
 
 from compas_3gs.rhino import VolmeshHalffaceInspector
 from compas_3gs.rhino import VolmeshCellInspector
 
-from compas_3gs.rhino.helpers import volmesh_select_dependent_halffaces
+from compas_3gs.algorithms.planarisation import volmesh_planarise_faces
 
 
 # from compas_rhino.conduits.edges import LinesConduit
@@ -53,6 +54,8 @@ white          = System.Drawing.Color.FromArgb(255, 255, 255)
 
 def volmesh_pull_faces(volmesh):
 
+
+
     # targets = {}
 
     # for hfkey in volmesh.faces():
@@ -65,6 +68,9 @@ def volmesh_pull_faces(volmesh):
     # print(targets)
 
     # volmesh_planarise_faces(volmesh, count=5000, target_normals=targets, conduit=False)
+
+
+
 
 
     cell_colors = {}
@@ -121,11 +127,11 @@ def volmesh_pull_faces(volmesh):
 
 
     print(hfkey)
-    dep_hfkeys = volmesh_select_dependent_halffaces(volmesh, hfkey)
+    dep_hfkeys = volmesh.volmesh_all_dependent_halffaces(hfkey)
     print('dep_fkeys', dep_hfkeys)
     volmesh.clear()
-    volmesh.draw_edges()
-    volmesh.draw_faces(fkeys=dep_hfkeys)
+    # volmesh.draw_edges()
+    # volmesh.draw_faces(fkeys=dep_hfkeys)
 
     rs.EnableRedraw(True)
 
@@ -172,49 +178,74 @@ def volmesh_pull_faces(volmesh):
 
     def OnDynamicDraw(sender, e):
         cp          = e.CurrentPoint
-        plane       = (cp, hf_normal)
-        new_pt_list = []
-        for u in hf_vkeys:
-            v     = edges[u]
-            u_xyz = volmesh.vertex_coordinates(u)
-            v_xyz = volmesh.vertex_coordinates(v)
-            line  = (u_xyz, v_xyz)
-            it    = intersection_line_plane(line, plane)
-            xyz_dict[u] = it
-            new_pt_list.append(it)
-            e.Display.DrawDottedLine(
-                Point3d(*u_xyz),
-                Point3d(*it),
-                feedback_color)
-
-        # for vkey in volmesh.vertex:
-        #     xyz = volmesh.vertex_coordinates(vkey)
-        #     e.Display.DrawPoint(Point3d(*xyz), 0, 6, black)
 
 
-        # # draw original face ---------------------------------------------------
-        # for i in range(-1, len(hf_vkeys) - 1):
-        #     vkey1 = hf_vkeys[i]
-        #     vkey2 = hf_vkeys[i + 1]
-        #     sp    = Point3d(*volmesh.vertex_coordinates(vkey1))
-        #     np    = Point3d(*volmesh.vertex_coordinates(vkey2))
-        #     e.Display.DrawDottedLine(sp, np, feedback_color)
+        # new_pt_list = []
+        # for u in hf_vkeys:
+        #     v     = edges[u]
+        #     u_xyz = volmesh.vertex_coordinates(u)
+        #     v_xyz = volmesh.vertex_coordinates(v)
+        #     line  = (u_xyz, v_xyz)
+        #     it    = intersection_line_plane(line, plane)
+        #     xyz_dict[u] = it
+        #     new_pt_list.append(it)
+        #     e.Display.DrawDottedLine(
+        #         Point3d(*u_xyz),
+        #         Point3d(*it),
+        #         feedback_color)
 
-        # # get current face info ------------------------------------------------
-        # areas = {}
-        # normals = {}
-        # for fkey in volmesh.halfface:
-        #     face_coordinates = [xyz_dict[vkey] for vkey in volmesh.halfface[fkey]]
-        #     area          = area_polygon_general(face_coordinates)
-        #     areas[fkey]   = area
-        #     normal        = normal_polygon_general(face_coordinates)
-        #     normals[fkey] = normal
+        # face_coordinates = [xyz_dict[vkey] for vkey in hf_vkeys]
+        # face_coordinates.append(face_coordinates[0])
+        # polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
+        # e.Display.DrawPolyline(polygon_xyz, black, 4)
 
 
-        face_coordinates = [xyz_dict[vkey] for vkey in hf_vkeys]
-        face_coordinates.append(face_coordinates[0])
-        polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
-        e.Display.DrawPolyline(polygon_xyz, black, 4)
+
+
+        xyz = _volmesh_compute_dependent_face_intersections(volmesh, hfkey, cp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+        seen = set()
+        for face_key in dep_hfkeys + [hfkey]:
+            hf_edges   = volmesh.halfface_edges(face_key)
+            for edge in hf_edges:
+                u = edge[0]
+                v = edge[1]
+                pair = frozenset([u, v])
+                if pair not in seen:
+                    init_u = volmesh.vertex_coordinates(u)
+                    init_u_xyz = Point3d(*init_u)
+                    u_xyz = Point3d(*xyz[u])
+                    v_xyz = Point3d(*xyz[v])
+                    e.Display.DrawLine(Line(u_xyz, v_xyz), white, 4)
+                    # e.Display.DrawDottedLine(init_u_xyz, u_xyz, feedback_color)
+                    seen.add(pair)
+
+        for u, v in volmesh.edges_iter():
+            if frozenset([u, v]) not in seen:
+                sp  = volmesh.vertex_coordinates(u)
+                ep  = volmesh.vertex_coordinates(v)
+                if u in xyz:
+                    sp = xyz[u]
+                if v in xyz:
+                    ep = xyz[v]
+                e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
+
+
+
+
+
 
     # --------------------------------------------------------------------------
     #  input point
@@ -222,6 +253,33 @@ def volmesh_pull_faces(volmesh):
     ip   = Point3d(*hf_center)
     line = Rhino.Geometry.Line(ip, ip + Vector3d(*hf_normal))
     gp   = _get_target_point(line, OnDynamicDraw)
+
+
+    new_xyz = _volmesh_compute_dependent_face_intersections(volmesh, hfkey, gp)
+
+
+    for key in new_xyz:
+        coordinates = new_xyz[key]
+        volmesh.vertex_update_xyz(key, coordinates, constrained=False)
+
+
+
+    # target_normals = _volmesh_current_halfface_normals(volmesh)
+    # target_centers = _volmesh_current_halfface_centers(volmesh)
+    # for dep_hfkey in dep_hfkeys:
+    #     del target_centers[dep_hfkey]
+    #     pair = volmesh.halfface_pair(dep_hfkey)
+    #     if pair:
+    #         del target_centers[volmesh.halfface_pair(dep_hfkey)]
+
+    # target_centers[hfkey] = gp
+    # target_centers[volmesh.halfface_pair(hfkey)] = gp
+
+    # volmesh_planarise_faces(volmesh,
+    #                         count=1000,
+    #                         target_normals=target_normals,
+    #                         target_centers=target_centers,
+    #                         conduit=True)
 
     # # --------------------------------------------------------------------------
     # #  update volmesh coordinates
@@ -235,7 +293,7 @@ def volmesh_pull_faces(volmesh):
     #     it    = intersection_line_plane(line, final_plane)
     #     volmesh.vertex_update_xyz(u, it, constrained=False)
 
-    # volmesh.draw()
+    volmesh.draw()
 
 
 
@@ -243,26 +301,107 @@ def volmesh_pull_faces(volmesh):
 
 
 
+def _cell_update_halfface(volmesh, hfkey, xyz):
+
+    new_cell_xyz = {}
+
+    ckey     = volmesh.halfface_cell(hfkey)
+    cell_vkeys = volmesh.cell_vertices(ckey)
+    hf_vkeys = volmesh.halfface_vertices(hfkey)
+    plane    = (xyz, volmesh.halfface_normal(hfkey))
+
+    edges = {key: [] for key in hf_vkeys}
+    for u in hf_vkeys:
+        nbrs = volmesh.vertex_neighbours(u)
+        for v in nbrs:
+            if v not in hf_vkeys and v in cell_vkeys:
+                edges[u].append(v)
+
+    for u in hf_vkeys:
+        v     = edges[u][0]
+        u_xyz = volmesh.vertex_coordinates(u)
+        v_xyz = volmesh.vertex_coordinates(v)
+        line  = (u_xyz, v_xyz)
+        it    = intersection_line_plane(line, plane)
+        new_cell_xyz[u] = it
+
+
+    return new_cell_xyz
 
 
 
 
 
+def _volmesh_compute_dependent_face_intersections(volmesh, hfkey, xyz):
+
+    vertex_xyz = _cell_update_halfface(volmesh, hfkey, xyz)
+
+    ckey       = volmesh.halfface_cell(hfkey)
+    hf_edges   = volmesh.halfface_edges(hfkey)
+    dep_hfkeys = volmesh.halfface_dependent_halffaces(hfkey)
+    hf_centers = {}
+    for nbr_hfkey in dep_hfkeys:
+        center_key = dep_hfkeys[nbr_hfkey]
+        center_xyz = vertex_xyz[center_key]
+        hf_centers[nbr_hfkey] = center_xyz
+
+    dependents = set(volmesh.halfface_dependent_halffaces(hfkey).keys())
+    seen = set()
+
+    i = 0
+    while True:
+        if i == 100:
+            break
+        if i != 0 and len(seen) == 0:
+            break
+
+        temp = []
+
+        for d_hfkey in dependents:
+            if d_hfkey not in seen:
+
+                # compute new cell for the d_hfkey
+                center = hf_centers[d_hfkey]
+                next_xyz = _cell_update_halfface(volmesh, d_hfkey, center)
+                for vkey in next_xyz:
+                    if vkey not in vertex_xyz:
+                        vertex_xyz[vkey] = next_xyz[vkey]
 
 
+                next_d_hfkeys = volmesh.halfface_dependent_halffaces(d_hfkey)
+                for fkey in next_d_hfkeys:
+                    if fkey not in hf_centers:
+                        center_key = next_d_hfkeys[fkey]
+                        center_xyz = vertex_xyz[center_key]
+                        hf_centers[fkey] = center_xyz
+
+                temp += next_d_hfkeys.keys()
+
+                seen.add(d_hfkey)
+
+        dependents.update(temp)
+        i += 1
+
+    if hfkey in dependents:
+        dependents.remove(hfkey)
+
+    return vertex_xyz
 
 
-
-
-
-
-def volmesh_store_initial_normals(volmesh):
+def _volmesh_current_halfface_normals(volmesh):
     normals = {}
     for hfkey in volmesh.halfface:
         normal = volmesh.halfface_normal(hfkey)
         normals[hfkey] = normal
     return normals
 
+
+def _volmesh_current_halfface_centers(volmesh):
+    centers = {}
+    for hfkey in volmesh.halfface:
+        center = volmesh.halfface_center(hfkey)
+        centers[hfkey] = center
+    return centers
 
 
 def _get_initial_point(message='Point to move from?'):

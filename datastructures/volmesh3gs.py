@@ -322,7 +322,7 @@ class VolMesh3gs(VolMesh):
         return halffaces
 
     def halfface_dependent_halffaces(self, hfkey):
-        dep_hfkeys = []
+        dep_hfkeys = {}
         ckey       = self.halfface_cell(hfkey)
         hf_edges   = self.halfface_edges(hfkey)
         for edge in hf_edges:
@@ -332,8 +332,36 @@ class VolMesh3gs(VolMesh):
             w         = self.halfface_vertex_ancestor(adj_hfkey, v)
             nbr_ckey  = self.plane[u][v][w]
             if nbr_ckey is not None:
-                dep_hfkeys.append(self.cell[nbr_ckey][v][u])
+                dep_hfkey = self.cell[nbr_ckey][v][u]
+                dep_hfkeys[dep_hfkey] = u
         return dep_hfkeys
+
+    def volmesh_all_dependent_halffaces(self, hfkey):
+        dependents = set(self.halfface_dependent_halffaces(hfkey).keys())
+        seen = set()
+        i = 0
+        while True:
+            if i == 100:
+                break
+            if i != 0 and len(seen) == 0:
+                break
+
+
+            temp = []
+            for dep_hfkey in dependents:
+                if dep_hfkey not in seen:
+                    hfkeys = self.halfface_dependent_halffaces(dep_hfkey).keys()
+                    temp += hfkeys
+                    seen.add(dep_hfkey)
+
+
+
+            dependents.update(temp)
+            i += 1
+        if hfkey in dependents:
+            dependents.remove(hfkey)
+        return list(dependents)
+
 
     # --------------------------------------------------------------------------
     #   cells
