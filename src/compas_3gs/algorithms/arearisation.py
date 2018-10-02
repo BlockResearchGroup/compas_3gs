@@ -30,26 +30,21 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['volmesh_planarise_faces']
+__all__ = ['mesh_arearisation']
 
 
-def volmesh_planarise_faces(volmesh,
-                            count=100,
-                            target_normals=None,
-                            target_centers=None,
-                            target_areas={},
-                            fix_boundary=False,
-                            fix_all=False,
-                            omit_vkeys=[],
-                            flat_tolerance=0.0001,
-                            area_tolerance=0.0001):
+def mesh_arearisation(mesh,
+                      count=100,
+                      target_normals=None,
+                      target_centers=None,
+                      target_areas={},
+                      fix_boundary=False,
+                      fix_all=False,
+                      omit_vkeys=[],
+                      flat_tolerance=0.0001,
+                      area_tolerance=0.0001):
 
-    initial_normals = _get_current_normals(volmesh)
-    boundary_hfkeys = set(volmesh.halffaces_on_boundary())
 
-    special_vkeys = set()
-    for hfkey in target_areas:
-        special_vkeys.add(vkey for vkey in volmesh.halfface_vertices(hfkey))
 
     # ..........................................................................
 
@@ -61,55 +56,49 @@ def volmesh_planarise_faces(volmesh,
         area_deviation     = 0
         new_vertices       = {}
 
-        for hfkey in volmesh.halfface:
-            hf_vkeys  = volmesh.halfface_vertices(hfkey)
-            points    = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
+        for hfkey in mesh.face:
+            hf_vkeys  = mesh.face[hfkey]
+            points    = [mesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
             hf_normal = bestfit_plane(points)[1]
-            hf_area   = volmesh.halfface_area(hfkey)
-            hf_center = volmesh.halfface_center(hfkey)
+            hf_area   = mesh.face_area(hfkey)
+            hf_center = mesh.face_center(hfkey)
 
-            # ------------------------------------------------------------------
-            # construct projection plane
-            # ------------------------------------------------------------------
+
             if target_normals:
                 if hfkey in target_normals:
                     hf_normal = target_normals[hfkey]
             if target_centers:
                 if hfkey in target_centers:
                     hf_center = target_centers[hfkey]
-            if fix_boundary:
-                if hfkey in boundary_hfkeys:
-                    hf_normal = initial_normals[hfkey]['normal']
-            if fix_all:
-                hf_normal = initial_normals[hfkey]['normal']
+
             plane = (hf_center, hf_normal)
 
-            # project ----------------------------------------------------------
+
             pt_dict = {}
             for vkey in hf_vkeys:
                 if vkey not in new_vertices:
                     new_vertices[vkey] = []
-                xyz           = volmesh.vertex_coordinates(vkey)
+                xyz           = mesh.vertex_coordinates(vkey)
                 new_xyz       = project_point_plane(xyz, plane)
                 pt_dict[vkey] = new_xyz
                 dist          = distance_point_point(xyz, new_xyz)
                 if dist > flatness_deviation:
                     flatness_deviation = dist
-            # scale ------------------------------------------------------------
+
             if hfkey in target_areas:
                 target_area = target_areas[hfkey]
-                scale       = (target_area / hf_area)**0.5
+                if target_area == 0:
+                    scale = 0.1
+                else:
+                    scale       = (target_area / hf_area)**0.5
                 pt_dict     = _scale_polygon(pt_dict, scale)
                 difference  = abs(hf_area - target_area)
                 if difference > area_tolerance:
                     area_deviation = difference
 
             for vkey in pt_dict:
-                if hfkey in target_areas:
-                    new_vertices[vkey].append(pt_dict[vkey])
-                else:
-                    if vkey not in special_vkeys:
-                        new_vertices[vkey].append(pt_dict[vkey])
+                new_vertices[vkey].append(pt_dict[vkey])
+
 
         # ----------------------------------------------------------------------
         # compute new coordinates
@@ -117,7 +106,10 @@ def volmesh_planarise_faces(volmesh,
         for vkey in new_vertices:
             if vkey not in omit_vkeys:
                 final_xyz = centroid_points(new_vertices[vkey])
-                volmesh.vertex_update_xyz(vkey, final_xyz)
+
+                mesh.vertex[vkey]['x'] = final_xyz[0]
+                mesh.vertex[vkey]['y'] = final_xyz[1]
+                mesh.vertex[vkey]['z'] = final_xyz[2]
 
         # ----------------------------------------------------------------------
         # update
@@ -152,23 +144,23 @@ def volmesh_planarise_faces(volmesh,
 # ******************************************************************************
 
 
-def _get_current_normals(volmesh):
+def _get_current_normals(mesh):
     normal_dict = {}
-    for hfkey in volmesh.halfface:
-        center = volmesh.halfface_center(hfkey)
-        normal = volmesh.halfface_normal(hfkey)
+    for hfkey in mesh.halfface:
+        center = mesh.halfface_center(hfkey)
+        normal = mesh.halfface_normal(hfkey)
         normal_dict[hfkey] = {'normal': normal, 'center': center}
     return normal_dict
 
 
-def _store_initial_normals(volmesh):
-    for hfkey in volmesh.halfface:
-        center = volmesh.halfface_center(hfkey)
-        normal = volmesh.halfface_normal(hfkey)
-        volmesh.update_f_data(
+def _store_initial_normals(mesh):
+    for hfkey in mesh.halfface:
+        center = mesh.halfface_center(hfkey)
+        normal = mesh.halfface_normal(hfkey)
+        mesh.update_f_data(
             hfkey,
             attr_dict={'normal_i': normal, 'center_i': center})
-    return volmesh
+    return mesh
 
 
 def _scale_polygon(points_dict, scale):

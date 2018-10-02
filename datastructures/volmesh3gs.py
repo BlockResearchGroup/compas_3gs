@@ -1,7 +1,5 @@
 from __future__ import print_function
 
-from compas.utilities import pairwise
-
 from compas.datastructures import VolMesh
 
 from compas.geometry import subtract_vectors
@@ -11,21 +9,20 @@ from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 from compas.geometry import dot_vectors
 from compas.geometry import scale_vectors
-from compas.geometry import centroid_points
 
 from compas.geometry import center_of_mass_polygon
 
 from compas_rhino.helpers.volmesh import volmesh_draw
 from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
 
-from compas_3gs_rhino.display import draw_cell
-from compas_3gs_rhino.display import draw_egi_arcs
-from compas_3gs_rhino.display import draw_cell_labels
-from compas_3gs_rhino.display import clear_cell_labels
-from compas_3gs_rhino.display import draw_volmesh_face_normals
+from compas_3gs.rhino.display import draw_volmesh_face_normals
+from compas_3gs.rhino.display import draw_cell_labels
+from compas_3gs.rhino.display import clear_cell_labels
+from compas_3gs.rhino.display import draw_cell
+from compas_3gs.rhino.drawing import draw_egi_arcs
 
-from compas_3gs.utilities import normal_polygon_general
-from compas_3gs.utilities import area_polygon_general
+from compas_3gs.helpers import normal_polygon_general
+from compas_3gs.helpers import area_polygon_general
 
 from compas_3gs.datastructures.operations.split import cell_split_vertex
 
@@ -108,58 +105,6 @@ class VolMesh3gs(VolMesh):
 
         # delete the vertex itself ---------------------------------------------
         del self.vertex[vkey]
-
-
-    def delete_halfface(self, hfkey):
-        vertices = self.halfface_vertices(hfkey)
-        for i in range(-2, len(vertices) - 2):
-            u = vertices[i]
-            v = vertices[i + 1]
-            w = vertices[i + 2]
-            print(u, v, w)
-            del self.plane[u][v][w]
-            if self.plane[w][v][u] is None:
-                del self.plane[w][v][u]
-        del self.halfface[hfkey]
-
-
-    def delete_cell(self, ckey):
-
-        hfkeys = self.cell_halffaces(ckey)
-
-        for hfkey in hfkeys:
-            for halfedge in self.halfface_halfedges(hfkey):
-                u, v = halfedge
-                # delete edges
-                if v in self.edge[u]:
-                    if len(self.edge_cells(u, v)) == 1:
-                        del self.edge[u][v]
-                if u in self.edge[v]:
-                    if len(self.edge_cells(v, u)) == 1:
-                        del self.edge[v][u]
-
-        # delete vertices
-        for vkey in self.cell_vertices(ckey):
-            if len(self.vertex_cells(vkey)) == 1:
-                del self.vertex[vkey]
-
-        # delete halfface and planes
-        for hfkey in hfkeys:
-            vertices = self.halfface_vertices(hfkey)
-            for i in range(-2, len(vertices) - 2):
-                u = vertices[i]
-                v = vertices[i + 1]
-                w = vertices[i + 2]
-                # delete planes
-                self.plane[u][v][w] = None
-                if self.plane[w][v][u] is None:
-                    del self.plane[u][v][w]
-                    del self.plane[w][v][u]
-            del self.halfface[hfkey]
-
-        # delete cell
-        del self.cell[ckey]
-
 
     # --------------------------------------------------------------------------
     #   updaters / setters
@@ -253,25 +198,29 @@ class VolMesh3gs(VolMesh):
     # --------------------------------------------------------------------------
 
     def vertex_halffaces(self, vkey):
+        cells = self.vertex_cells(vkey)
+        nbr_vkeys = self.plane[vkey].keys()
         halffaces = []
-        for ckey in self.vertex_cells(vkey):
-            halffaces += self.cell[ckey][vkey].values()
+        for ckey in cells:
+            for v in nbr_vkeys:
+                halffaces.apend(self.cell[ckey][vkey][v])
+                halffaces.apend(self.cell[ckey][v][vkey])
         return halffaces
 
     def vertex_normal(self, vkey):
         vectors = []
-        for hfkey in self.vertex_halffaces(vkey):
-            if self.is_face_boundary(hfkey):
-                vectors.append(self.halfface_normal(hfkey))
-        return normalize_vector(centroid_points(vectors))
+        nbrs = self.vertex_neighbours(vkey)
+        for nbr_vkey in nbrs:
+            vectors.append(self.edge_vector(vkey, nbr_vkey, unitized=True))
+        return normalize_vector(sum_vectors(vectors))
 
     def vertex_cells(self, vkey):
-        ckeys = set()
+        ckeys = []
         for v in self.plane[vkey].keys():
-            for w in self.plane[vkey][v].keys():
-                if self.plane[vkey][v][w] is not None:
-                    ckeys.add(self.plane[vkey][v][w])
-        return list(ckeys)
+            for ckey in self.plane[vkey][v].values():
+                if ckey:
+                    ckeys.append(ckey)
+        return ckeys
 
     def vertex_update_xyz(self, vkey, xyz, constrained=True):
         if constrained:
@@ -309,11 +258,7 @@ class VolMesh3gs(VolMesh):
         return hfkeys
 
     def edge_cells(self, u, v, ordered=False):
-        ckeys = set()
-        for hfkey in self.edge_halffaces(u, v):
-            u, v, w = self.halfface[hfkey][0:3]
-            ckey = self.halfface_cell(hfkey)
-            ckeys.add(ckey)
+        ckeys = set(self.halfface_cell(key) for key in self.edge_halffaces(u, v))
         return list(ckeys)
 
     # --------------------------------------------------------------------------
@@ -328,10 +273,6 @@ class VolMesh3gs(VolMesh):
 
     def halfface_center(self, hfkey):
         return center_of_mass_polygon(self.halfface_coordinates(hfkey))
-
-    def halfface_halfedges(self, hfkey):
-        vertices = self.halfface_vertices(hfkey)
-        return list(pairwise(vertices + vertices[0:1]))
 
     def halfface_area(self, hfkey):
         vertices = self.halfface_vertices(hfkey)
@@ -404,21 +345,28 @@ class VolMesh3gs(VolMesh):
                 break
             if i != 0 and len(seen) == 0:
                 break
+
+
             temp = []
             for dep_hfkey in dependents:
                 if dep_hfkey not in seen:
                     hfkeys = self.halfface_dependent_halffaces(dep_hfkey).keys()
                     temp += hfkeys
                     seen.add(dep_hfkey)
+
+
+
             dependents.update(temp)
             i += 1
         if hfkey in dependents:
             dependents.remove(hfkey)
         return list(dependents)
 
+
     # --------------------------------------------------------------------------
     #   cells
     # --------------------------------------------------------------------------
+
 
     def cell_halffaces(self, ckey):
         halffaces = set()
@@ -427,6 +375,7 @@ class VolMesh3gs(VolMesh):
                 fkey = self.cell[ckey][u][v]
                 halffaces.add(fkey)
         return list(halffaces)
+
 
     def cell_vertex_neighbours(self, ckey, vkey):
         nbr_vkeys = self.cell[ckey][vkey].keys()
@@ -477,25 +426,6 @@ class VolMesh3gs(VolMesh):
         return
 
     # --------------------------------------------------------------------------
-    # queries
-    # --------------------------------------------------------------------------
-
-    def is_vertex_boundary(self, vkey):
-        hfkeys = self.vertex_halffaces(vkey)
-        for hfkey in hfkeys:
-            if self.is_face_boundary(hfkey):
-                return True
-        return False
-
-    def is_face_boundary(self, hfkey):
-        u   = self.halfface[hfkey][0]
-        v   = self.halfface[hfkey][1]
-        w   = self.halfface[hfkey][2]
-        if self.plane[w][v][u] is None:
-            return True
-        return False
-
-    # --------------------------------------------------------------------------
     # drawing
     # --------------------------------------------------------------------------
     draw_volmesh_face_normals = draw_volmesh_face_normals
@@ -508,9 +438,8 @@ class VolMesh3gs(VolMesh):
 
     def clear(self):
         artist = VolMeshArtist(self)
-        # self.clear_cell_labels()
+        self.clear_cell_labels()
         artist.clear()
-        artist.clear_layer()
 
     def draw_cell(self, ckey):
         draw_cell(self, ckey)
@@ -529,10 +458,6 @@ class VolMesh3gs(VolMesh):
 
     def draw_facenormals(self, **kwattr):
         self.draw_volmesh_face_normals(**kwattr)
-
-    def draw_vertices(self, **kwattr):
-        artist = VolMeshArtist(self)
-        artist.draw_vertices(**kwattr)
 
     def draw_vertex_labels(self, **kwattr):
         artist = VolMeshArtist(self)

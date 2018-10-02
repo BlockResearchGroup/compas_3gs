@@ -16,7 +16,7 @@ from compas.geometry import distance_point_point
 
 from compas_3gs.algorithms import volmesh_planarise_faces
 
-from compas_3gs.rhino import reciprocation_conduit
+from compas_3gs_rhino.display import reciprocation_conduit
 
 try:
     import rhinoscriptsyntax as rs
@@ -38,11 +38,12 @@ __all__ = [
 
 def volmesh_reciprocate(volmesh,
                         formdiagram,
-                        weight=None,
-                        count=50,
-                        min_edge=5,
-                        max_edge=15,
-                        tolerance=0.001):
+                        weight=1,
+                        count=100,
+                        min_edge=1,
+                        max_edge=20,
+                        fix_vkeys=[],
+                        tolerance=0.00001):
     """Perpendicularizes the polyhedral form and force diagrams.
 
     Parameters
@@ -72,13 +73,6 @@ def volmesh_reciprocate(volmesh,
     """
 
     # ==========================================================================
-    #   set weight
-    # ==========================================================================
-    if not weight:
-        weight = rs.GetReal(
-            "Enter weight factor : 1  = form only... 0 = force only...", 1.0, 0)
-
-    # ==========================================================================
     #   compute target vectors
     # ==========================================================================
     target_normals = {}
@@ -95,12 +89,6 @@ def volmesh_reciprocate(volmesh,
     #     target_normals[hfkey] = volmesh.halfface_normal(hfkey)
 
     # ==========================================================================
-    #   conduit
-    # ==========================================================================
-    conduit = reciprocation_conduit(volmesh, formdiagram)
-    conduit.Enabled  = True
-
-    # ==========================================================================
     #   loop
     # ==========================================================================
 
@@ -111,31 +99,31 @@ def volmesh_reciprocate(volmesh,
 
     while count:
 
-        form_layer = 'formdiagram-iteration.{}'.format(iteration)
-        force_layer = 'forcediagram-iteration.{}'.format(iteration)
+        # form_layer = 'formdiagram-iteration.{}'.format(iteration)
+        # force_layer = 'forcediagram-iteration.{}'.format(iteration)
 
-        rs.AddLayer(form_layer)
-        rs.AddLayer(force_layer)
+        # rs.AddLayer(form_layer)
+        # rs.AddLayer(force_layer)
 
         deviation = 0
 
         relative_change = 0
 
 
-        for fkey in volmesh.faces():
-            hf_vkeys = volmesh.halfface_vertices(fkey)
-            points = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
-            polylines.append({'points': points + [points[0]],
-                              'layer' : force_layer})
+        # for fkey in volmesh.faces():
+        #     hf_vkeys = volmesh.halfface_vertices(fkey)
+        #     points = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
+        #     polylines.append({'points': points + [points[0]],
+        #                       'layer' : force_layer})
 
 
-        # ======================================================================
-        #   FORCE DIAGRAM
-        # ======================================================================
-        volmesh_planarise_faces(volmesh,
-                                count=1,
-                                target_normals=target_normals,
-                                conduit=False)
+        # # ======================================================================
+        # #   FORCE DIAGRAM
+        # # ======================================================================
+        # volmesh_planarise_faces(volmesh,
+        #                         count=1,
+        #                         target_normals=target_normals,
+        #                         conduit=False)
 
         # ======================================================================
         #   FORM DIAGRAM
@@ -144,8 +132,9 @@ def volmesh_reciprocate(volmesh,
 
         for hfkey in halfface_uv:
 
-            u, v          = halfface_uv[hfkey]
-            target_normal = target_normals[hfkey]
+            u, v           = halfface_uv[hfkey]
+            current_normal = volmesh.halfface_normal(hfkey)
+            target_normal  = target_normals[hfkey]
 
             #   compute lambda : checking orientations -------------------------
             edge_vector = formdiagram.edge_vector(u, v, unitized=False)
@@ -166,6 +155,10 @@ def volmesh_reciprocate(volmesh,
             if dist > max_edge:
                 dist = max_edge
 
+            # direction = _get_lambda(current_normal, edge_vector)
+            # print(direction)
+            # dist *= direction
+
             #   compute and add new xyz for v ------------------------------
             new_u_xyz = add_vectors(formdiagram.vertex_coordinates(v), scale_vector(target_normal, -1 * dist))
             new_formdiagram_xyz[u].append(new_u_xyz)
@@ -176,27 +169,24 @@ def volmesh_reciprocate(volmesh,
         #   UPDATE
         # ======================================================================
         for vkey in new_formdiagram_xyz:
-            if new_formdiagram_xyz[vkey]:
-                initial_xyz = formdiagram.vertex_coordinates(vkey)
-                final_xyz = centroid_points(new_formdiagram_xyz[vkey])
-                formdiagram.vertex_update_xyz(vkey, final_xyz)
+            if vkey not in fix_vkeys:
+                if new_formdiagram_xyz[vkey]:
+                    initial_xyz = formdiagram.vertex_coordinates(vkey)
+                    final_xyz = centroid_points(new_formdiagram_xyz[vkey])
+                    formdiagram.vertex_update_xyz(vkey, final_xyz)
 
-                iteration_change = distance_point_point(initial_xyz, final_xyz)
-                if iteration_change > relative_change:
-                    relative_change = iteration_change
+                    iteration_change = distance_point_point(initial_xyz, final_xyz)
+                    if iteration_change > relative_change:
+                        relative_change = iteration_change
 
         # ======================================================================
         #   DRAWING
         # ======================================================================
 
-
-
-
-
-        for u, v in formdiagram.edges_iter():
-            lines.append({'start' : formdiagram.vertex_coordinates(u),
-                          'end'   : formdiagram.vertex_coordinates(v),
-                          'layer' : form_layer})
+        # for u, v in formdiagram.edges_iter():
+        #     lines.append({'start' : formdiagram.vertex_coordinates(u),
+        #                   'end'   : formdiagram.vertex_coordinates(v),
+        #                   'layer' : form_layer})
 
         # ======================================================================
         #   EVALUATE
@@ -212,18 +202,20 @@ def volmesh_reciprocate(volmesh,
     # ==========================================================================
     #   END
     # ==========================================================================
-    conduit.Enabled = False
-    # conduit.Dispose()
-    del conduit
 
-    # compas_rhino.xdraw_lines(lines)
-    # compas_rhino.xdraw_polylines(polylines)
 
     print('reciprocation ended at:', iteration)
     print('deviation:', deviation)
 
-    volmesh.draw(layer='forcepolyhedra')
-    formdiagram.draw(layer='formdiagram')
+
+
+
+def _get_lambda(normal, edge):
+    dot = dot_vectors(normal, edge)
+    if dot < 0:
+        return -1
+    else:
+        return 1
 
 
 def _OLD_volmesh_reciprocate(volmesh,

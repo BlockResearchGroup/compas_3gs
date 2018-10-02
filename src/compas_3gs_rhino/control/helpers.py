@@ -11,6 +11,9 @@ import Rhino
 # ******************************************************************************
 # ******************************************************************************
 
+__all__ = ['_get_initial_point',
+           '_get_target_point']
+
 
 def _get_initial_point(message='Point to move from?'):
     ip = Rhino.Input.Custom.GetPoint()

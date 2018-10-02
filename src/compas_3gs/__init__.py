@@ -5,7 +5,6 @@ compas_3gs
 
 .. currentmodule:: compas_3gs
 
-
 .. toctree::
     :maxdepth: 1
 

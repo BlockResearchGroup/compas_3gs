@@ -89,8 +89,6 @@ def cell_pull_face(volmesh):
                 sp = v_xyz[vkey]
                 ep = nbr_xyz[nbr_vkey]
                 ip = intersection_line_plane((sp, ep), plane)
-                n
-
         # for vkey in v_xyz:
         #     for nbr_vkey in
 

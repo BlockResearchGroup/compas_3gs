@@ -9,8 +9,6 @@ from compas.geometry import subtract_vectors
 
 from compas.utilities import i_to_rgb
 
-from compas_3gs.rhino.helpers import volmesh_select_dependent_halffaces
-
 try:
     from Rhino.Geometry import Point3d
 
@@ -24,7 +22,8 @@ except ImportError:
 
 __all__ = ['VolmeshVertexInspector',
            'VolmeshHalffaceInspector',
-           'VolmeshCellInspector']
+           'VolmeshCellInspector',
+           'BiCellInspector']
 
 
 # ==============================================================================
@@ -104,8 +103,6 @@ class VolmeshHalffaceInspector(Conduit):
         self.mouse.Enabled = False
         self.Enabled = False
 
-
-
     def DrawForeground(self, e):
         p1  = self.mouse.p1
         p2  = self.mouse.p2
@@ -124,7 +121,7 @@ class VolmeshHalffaceInspector(Conduit):
             v02 = subtract_vectors(p2, p0)
             l   = length_vector(cross_vectors(v01, v02))
 
-            dep_hfkeys = volmesh_select_dependent_halffaces(self.volmesh, hfkey)
+            dep_hfkeys = self.volmesh.volmesh_all_dependent_halffaces(hfkey)
 
             if l12 == 0.0 or (l / l12) < self.tol:
 
@@ -153,19 +150,19 @@ class VolmeshCellInspector(Conduit):
     def __init__(self, volmesh, color_dict=None, tol=1, **kwargs):
         super(VolmeshCellInspector, self).__init__(**kwargs)
 
-        dotcolor       = (0, 0, 0)
-        textcolor      = (255, 255, 255)
-        edgecolor      = (0, 0, 0)
-        facecolor      = (255, 0, 0)
+        dotcolor        = (0, 0, 0)
+        textcolor       = (255, 255, 255)
+        edgecolor       = (0, 0, 0)
+        facecolor       = (255, 0, 0)
 
-        self.volmesh   = volmesh
-        self.color_dict= color_dict
-        self.tol       = tol
-        self.mouse     = Mouse()
-        self.dotcolor  = FromArgb(*dotcolor)
-        self.textcolor = FromArgb(*textcolor)
-        self.edgecolor = FromArgb(*edgecolor)
-        self.facecolor = FromArgb(*facecolor)
+        self.volmesh    = volmesh
+        self.color_dict = color_dict
+        self.tol        = tol
+        self.mouse      = Mouse()
+        self.dotcolor   = FromArgb(*dotcolor)
+        self.textcolor  = FromArgb(*textcolor)
+        self.edgecolor  = FromArgb(*edgecolor)
+        self.facecolor  = FromArgb(*facecolor)
 
     def enable(self):
         self.mouse.Enabled = True

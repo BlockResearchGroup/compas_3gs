@@ -36,19 +36,19 @@ def draw_cell_force_vectors(volmesh):
 
 
 
-def draw_volmesh_face_normals(self, hfkeys):
+# def draw_volmesh_face_normals(self, hfkeys):
 
-    lines = []
-    for hfkey in hfkeys:
-        center = self.halfface_center(hfkey)
-        normal = self.halfface_normal(hfkey)
-        lines.append({
-            'start': center,
-            'end'  : add_vectors(center, normal),
-            'arrow': 'end',
-            'color': (0, 255, 0),
-            'name' : '{}.edge.{}'.format(self.attributes['name'], hfkey)})
-    xdraw_lines(lines)
+#     lines = []
+#     for hfkey in hfkeys:
+#         center = self.halfface_center(hfkey)
+#         normal = self.halfface_normal(hfkey)
+#         lines.append({
+#             'start': center,
+#             'end'  : add_vectors(center, normal),
+#             'arrow': 'end',
+#             'color': (0, 255, 0),
+#             'name' : '{}.edge.{}'.format(self.attributes['name'], hfkey)})
+#     xdraw_lines(lines)
 
 
 def draw_cell_labels(volmesh, text=None, color_dict=None):

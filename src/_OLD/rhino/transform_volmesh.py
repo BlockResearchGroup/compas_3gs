@@ -29,8 +29,8 @@ from compas_rhino.helpers.volmesh import volmesh_select_vertex
 from compas_rhino.helpers.volmesh import volmesh_select_vertices
 from compas_rhino.helpers.volmesh import volmesh_select_face
 
-from compas_3gs.rhino import VolmeshHalffaceInspector
-from compas_3gs.rhino import VolmeshCellInspector
+from compas_3gs_rhino.control import VolmeshHalffaceInspector
+from compas_3gs_rhino.control import VolmeshCellInspector
 
 from compas_3gs.algorithms.planarisation import volmesh_planarise_faces
 
@@ -70,9 +70,6 @@ def volmesh_pull_faces(volmesh):
     # volmesh_planarise_faces(volmesh, count=5000, target_normals=targets, conduit=False)
 
 
-
-
-
     cell_colors = {}
     ckeys = volmesh.cell.keys()
     for index, ckey in enumerate(ckeys):
@@ -89,7 +86,7 @@ def volmesh_pull_faces(volmesh):
     volmesh.clear()
     volmesh.draw_edges()
     volmesh.draw_faces()
-    volmesh.draw_cell_labels(color_dict=cell_colors)
+    volmesh.draw_cell_labels(colors=True)
     rs.EnableRedraw(True)
 
     # dynamic selector
@@ -131,7 +128,7 @@ def volmesh_pull_faces(volmesh):
     print('dep_fkeys', dep_hfkeys)
     volmesh.clear()
     # volmesh.draw_edges()
-    # volmesh.draw_faces(fkeys=dep_hfkeys)
+    volmesh.draw_faces()
 
     rs.EnableRedraw(True)
 
@@ -228,7 +225,7 @@ def volmesh_pull_faces(volmesh):
                     init_u_xyz = Point3d(*init_u)
                     u_xyz = Point3d(*xyz[u])
                     v_xyz = Point3d(*xyz[v])
-                    e.Display.DrawLine(Line(u_xyz, v_xyz), white, 4)
+                    e.Display.DrawLine(Line(u_xyz, v_xyz), white, 5)
                     # e.Display.DrawDottedLine(init_u_xyz, u_xyz, feedback_color)
                     seen.add(pair)
 

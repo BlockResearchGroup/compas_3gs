@@ -117,12 +117,19 @@ class Network3gs(Network):
             edge_count += 1
         return sum_length / edge_count
 
+
+
     # --------------------------------------------------------------------------
     # drawing
     # --------------------------------------------------------------------------
 
     def draw(self, **kwattr):
         network_draw(self, **kwattr)
+
+    def clear(self, **kwattr):
+        artist = NetworkArtist(self)
+        artist.clear()
+        # artist.clear_layer()
 
     def draw_vertices(self, **kwattr):
         network_draw_vertices(self, **kwattr)

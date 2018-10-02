@@ -23,8 +23,8 @@ from compas.utilities import i_to_rgb
 from compas_rhino.helpers.volmesh import volmesh_select_vertex
 from compas_rhino.helpers.volmesh import volmesh_select_face
 
-from compas_3gs.helpers import normal_polygon_general
-from compas_3gs.helpers import area_polygon_general
+from compas_3gs.utilities import normal_polygon_general
+from compas_3gs.utilities import area_polygon_general
 
 from compas_rhino.utilities import xdraw_lines
 from compas_rhino.utilities import xdraw_labels

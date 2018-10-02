@@ -20,6 +20,17 @@ from compas_3gs.algorithms import volmesh_dual_network
 from compas_rhino.helpers.artists.meshartist import MeshArtist
 
 
+
+
+__all__ = [
+    'forcevolmesh_from_polysurfaces',
+    'formnetwork_from_forcevolmesh',
+    'formvolmesh_from_forcevolmesh',
+    'egi_from_volmesh'
+]
+
+
+
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
@@ -57,22 +68,26 @@ def forcevolmesh_from_polysurfaces():
 
 def formnetwork_from_forcevolmesh(forcepolyhedra):
 
+    layer = 'formdiagram'
+
     x = {vkey: forcepolyhedra.vertex_coordinates(vkey)[0] for vkey in forcepolyhedra.vertex}
     sorted_x = sorted(x, key=x.get)
     print(sorted_x)
 
+
     move = abs(x[sorted_x[0]] - x[sorted_x[-1]])
 
-    rs.AddLayer(name='formnetwork', color=(0, 0, 0))
+    rs.AddLayer(name=layer, color=(0, 0, 0))
 
     formnetwork = volmesh_dual_network(forcepolyhedra)
     formnetwork.attributes['name'] = 'FormNetwork'
+    formnetwork.layer = layer
     formnetwork.initialize_data()
 
     for vkey in formnetwork.vertex:
-        formnetwork.vertex[vkey]['x'] += move * 2
+        formnetwork.vertex[vkey]['x'] += move * 1.25
 
-    formnetwork.draw(layer='formnetwork')
+    formnetwork.draw(layer=layer)
 
     return formnetwork
 

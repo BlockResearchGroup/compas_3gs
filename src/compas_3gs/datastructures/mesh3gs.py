@@ -6,22 +6,23 @@ from compas.datastructures.mesh.operations import mesh_split_face
 
 from compas_rhino.helpers.artists.meshartist import MeshArtist
 
+from compas.geometry import subtract_vectors
+from compas.geometry import normalize_vector
+from compas.geometry import sum_vectors
+from compas.geometry import length_vector
+from compas.geometry import cross_vectors
+from compas.geometry import dot_vectors
+from compas.geometry import scale_vectors
+from compas.geometry import centroid_points
+
 from compas_rhino.helpers.mesh import mesh_draw
 from compas_rhino.helpers.mesh import mesh_draw_vertices
 from compas_rhino.helpers.mesh import mesh_draw_edges
-from compas_rhino.helpers.mesh import mesh_draw_faces
 
-from compas_rhino.helpers.mesh import mesh_draw_vertex_labels
-from compas_rhino.helpers.mesh import mesh_draw_edge_labels
-from compas_rhino.helpers.mesh import mesh_draw_face_labels
 
-from compas_rhino.helpers.mesh import mesh_select_vertices
-from compas_rhino.helpers.mesh import mesh_select_vertex
-from compas_rhino.helpers.mesh import mesh_select_edges
-from compas_rhino.helpers.mesh import mesh_select_edge
-from compas_rhino.helpers.mesh import mesh_select_faces
-from compas_rhino.helpers.mesh import mesh_select_face
 
+from compas_3gs.utilities import normal_polygon_general
+from compas_3gs.utilities import area_polygon_general
 
 
 __author__     = ['Juney Lee']
@@ -102,6 +103,26 @@ class Mesh3gs(Mesh):
         # Z
         if self.v_data[vkey]['z_fix'] is False:
             self.vertex[vkey]['z'] = xyz[2]
+
+    # --------------------------------------------------------------------------
+    # helpers - faces
+    # --------------------------------------------------------------------------
+
+    def face_area(self, fkey):
+        vertices = self.face[fkey]
+        points   = [self.vertex_coordinates(vkey) for vkey in vertices]
+        area     = area_polygon_general(points)
+        return area
+
+    def face_normal(self, fkey, unitized=True):
+        vertices = self.face[fkey]
+        points   = [self.vertex_coordinates(vkey) for vkey in vertices]
+        normal   = normal_polygon_general(points, unitized)
+        if length_vector(normal) == 0 :
+            uv = subtract_vectors(points[1], points[0])
+            vw = subtract_vectors(points[2], points[1])
+            normal = normalize_vector(cross_vectors(uv, vw))
+        return normal
 
     # --------------------------------------------------------------------------
     # drawing
