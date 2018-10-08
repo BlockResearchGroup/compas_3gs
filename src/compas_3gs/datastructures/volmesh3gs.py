@@ -266,6 +266,8 @@ class VolMesh3gs(VolMesh):
         halffaces = []
         for ckey in cells:
             for v in nbr_vkeys:
+                print('vkey', vkey)
+                print('cell-ckey', (self.cell[ckey]))
                 halffaces.append(self.cell[ckey][vkey][v])
                 halffaces.append(self.cell[ckey][v][vkey])
         return halffaces

@@ -518,17 +518,25 @@ def _cell_split_indet_vertices(volmesh, hfkey):
         hfkeys = hfkeys[n:] + hfkeys[:n]
         egi_face_vertices = [key for key in hfkeys if key not in egi_nbr_vkeys + [hfkey]]
         fkey    = egi_fkey
-        x, y, z = volmesh.vertex_coordinates(egi_fkey)
+        x, y, z = volmesh.vertex_coordinates(fkey)
         for vkey in egi_face_vertices:
+            print(volmesh.cell[ckey])
+            print(hfkey, vkey)
             f, g = egi.mesh_split_face(fkey, hfkey, vkey)
+            egi.draw()
+            egi.draw_vertexlabels()
+            print(f,g)
             volmesh.add_vertex(key=f, x=x, y=y, z=z)
             volmesh.add_vertex(key=g, x=x, y=y, z=z)
             for new_hfkey in hfkeys:
                 new_vkeys = egi.vertex_faces(new_hfkey, ordered=True)
                 volmesh.add_halfface(new_vkeys[::-1], fkey=new_hfkey)
+            print('volmesh_cell', volmesh.cell)
             volmesh.cell_vertex_delete(fkey)
             fkey = g
+
     print(egi.face)
+
 
     return volmesh
 
