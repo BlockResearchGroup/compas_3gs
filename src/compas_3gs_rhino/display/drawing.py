@@ -50,8 +50,8 @@ __all__ = ['draw_cell',
            'draw_directed_edges_and_faces',
            'draw_network_forces',
            'draw_volmesh_face_normals',
-           'draw_egi_arcs']
-           # 'bake_cells_as_polysurfaces']
+           'draw_egi_arcs',
+           'bake_cells_as_polysurfaces']
 
 
 # ==============================================================================
@@ -89,11 +89,16 @@ def draw_cell_labels(volmesh, text=None, colors=False):
     if colors:
         colordict = get_index_colordict(volmesh.cell)
 
+
     labels = []
     for ckey in volmesh.cell:
         color = (0, 0, 0)
         if colors:
             color = colordict[ckey]
+
+        print(ckey)
+        print(volmesh.cell[ckey])
+
         labels.append({
             'pos'  : volmesh.cell_center(ckey),
             'name' : '{0}.cell.label.{1}'.format(volmesh.name, ckey),

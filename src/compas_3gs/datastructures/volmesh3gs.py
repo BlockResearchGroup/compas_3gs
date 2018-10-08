@@ -78,6 +78,7 @@ class VolMesh3gs(VolMesh):
         nbr_vkeys = self.vertex_neighbours(vkey)
         nbr_ckeys = self.vertex_cells(vkey)
 
+
         # delete cell info -----------------------------------------------------
         for ckey in nbr_ckeys:
             del self.cell[ckey][vkey]
@@ -85,6 +86,7 @@ class VolMesh3gs(VolMesh):
                 del self.cell[ckey][nbr_vkey][vkey]
 
         # delete halffaces -----------------------------------------------------
+        print(vkey, self.halfface)
         halffaces = self.vertex_halffaces(vkey)
         for hfkey in halffaces:
             del self.halfface[hfkey]
@@ -253,10 +255,22 @@ class VolMesh3gs(VolMesh):
     # --------------------------------------------------------------------------
 
     def vertex_halffaces(self, vkey):
+        # halffaces = []
+        # for ckey in self.vertex_cells(vkey):
+        #     print(vkey, self.cell[ckey])
+        #     halffaces += self.cell[ckey][vkey].values()
+        # return halffaces
+
+        cells = self.vertex_cells(vkey)
+        nbr_vkeys = self.plane[vkey].keys()
         halffaces = []
-        for ckey in self.vertex_cells(vkey):
-            halffaces += self.cell[ckey][vkey].values()
+        for ckey in cells:
+            for v in nbr_vkeys:
+                halffaces.append(self.cell[ckey][vkey][v])
+                halffaces.append(self.cell[ckey][v][vkey])
         return halffaces
+
+
 
     def vertex_normal(self, vkey):
         vectors = []

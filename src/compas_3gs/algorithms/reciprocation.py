@@ -155,9 +155,8 @@ def volmesh_reciprocate(volmesh,
             if dist > max_edge:
                 dist = max_edge
 
-            # direction = _get_lambda(current_normal, edge_vector)
-            # print(direction)
-            # dist *= direction
+            direction = _get_lambda(current_normal, edge_vector)
+            dist *= direction
 
             #   compute and add new xyz for v ------------------------------
             new_u_xyz = add_vectors(formdiagram.vertex_coordinates(v), scale_vector(target_normal, -1 * dist))

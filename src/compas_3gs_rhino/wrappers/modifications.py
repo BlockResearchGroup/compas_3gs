@@ -7,7 +7,7 @@ from compas.geometry import add_vectors
 
 
 
-from compas_rhino.helpers.volmesh import volmesh_select_vertices
+from compas_rhino.helpers.selectors import VertexSelector
 
 
 from compas_3gs_rhino.control import _get_initial_point
@@ -44,15 +44,16 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 __all__ = ['volmesh_vertex_fixity',
            'volmesh_vertex_move',
-           'volmesh_vertex_align']
+           'volmesh_vertex_align',
+           'network_vertex_move',
+           'network_vertex_fixity']
 
 
 def volmesh_vertex_fixity(volmesh):
 
 
-    vkeys = volmesh_select_vertices(volmesh)
+    vkeys = VertexSelector.select_vertices(volmesh)
 
-    print('vertices_fixed', vkeys)
 
     go = Rhino.Input.Custom.GetOption()
     go.SetCommandPrompt('Set axes Constraints')
@@ -93,7 +94,7 @@ def volmesh_vertex_fixity(volmesh):
 
 def volmesh_vertex_move(volmesh):
 
-    vkeys = volmesh_select_vertices(volmesh)
+    vkeys = VertexSelector.select_vertices(volmesh)
 
     nbr_vkeys = {}
     edges = set()
@@ -177,7 +178,7 @@ def volmesh_vertex_align(volmesh):
     # --------------------------------------------------------------------------
     # get vkeys to align
     # --------------------------------------------------------------------------
-    vkeys = volmesh_select_vertices(volmesh)
+    vkeys = VertexSelector.select_vertices(volmesh)
     nbr_vkeys = {}
     edges = set()
     for vkey in vkeys:
@@ -190,7 +191,6 @@ def volmesh_vertex_align(volmesh):
                 nbrs.append(nbr)
         nbr_vkeys[vkey] = nbrs
 
-    print(nbr_vkeys)
 
     # --------------------------------------------------------------------------
     # get rhino point
@@ -248,3 +248,138 @@ def volmesh_vertex_align(volmesh):
 
     volmesh.draw(layer='forcepolyhedra')
 
+
+
+
+
+
+def network_vertex_fixity(network):
+
+    vkeys = VertexSelector.select_vertices(network)
+
+    go = Rhino.Input.Custom.GetOption()
+    go.SetCommandPrompt('Set axes Constraints')
+
+    boolOptionA = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
+    boolOptionX = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
+    boolOptionY = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
+    boolOptionZ = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
+
+    go.AddOptionToggle('A', boolOptionA)
+    go.AddOptionToggle('X', boolOptionX)
+    go.AddOptionToggle('Y', boolOptionY)
+    go.AddOptionToggle('Z', boolOptionZ)
+
+    while True:
+        opt = go.Get()
+        if go.CommandResult() != Rhino.Commands.Result.Success:
+            break
+        if opt == Rhino.Input.GetResult.Option:  # keep picking options
+            continue
+        break
+
+    if not vkeys:
+        return
+
+    for vkey in vkeys:
+        if boolOptionA.CurrentValue:
+            network.v_data[vkey]['x_fix'] = True
+            network.v_data[vkey]['y_fix'] = True
+            network.v_data[vkey]['z_fix'] = True
+        network.v_data[vkey]['x_fix'] = boolOptionX.CurrentValue
+        network.v_data[vkey]['y_fix'] = boolOptionY.CurrentValue
+        network.v_data[vkey]['z_fix'] = boolOptionZ.CurrentValue
+
+    network.draw(layer='formdiagram')
+    return network
+
+
+def network_vertex_move(network):
+
+    vkeys = VertexSelector.select_vertices(network)
+
+    nbr_vkeys = {}
+    edges = set()
+    for vkey in vkeys:
+        all_nbrs = network.vertex_neighbours(vkey)
+        nbrs = []
+        for nbr in all_nbrs:
+            if nbr in vkeys:
+                edges.add(frozenset([vkey, nbr]))
+            else:
+                nbrs.append(nbr)
+        nbr_vkeys[vkey] = nbrs
+
+    ip   = _get_initial_point()
+
+    def OnDynamicDraw(sender, e):
+        cp = e.CurrentPoint
+        translation = cp - ip
+        for vkey in vkeys:
+            xyz = network.vertex_coordinates(vkey)
+            sp  = Point3d(*xyz)
+            for nbr_vkey in nbr_vkeys[vkey]:
+                nbr  = network.vertex_coordinates(nbr_vkey)
+                np   = Point3d(*nbr)
+                line = Rhino.Geometry.Line(sp, sp + translation)
+                e.Display.DrawDottedLine(np, sp + translation, dotted_color)
+                e.Display.DrawArrow(line, arrow_color, 15, 0)
+
+        for pair in list(edges):
+            pair = list(pair)
+            u  = network.vertex_coordinates(pair[0])
+            v  = network.vertex_coordinates(pair[1])
+            sp = Point3d(*u) + translation
+            ep = Point3d(*v) + translation
+            e.Display.DrawLine(sp, ep, edge_color, 3)
+
+    ModelAidSettings.Ortho = True
+    gp = Rhino.Input.Custom.GetPoint()
+    gp.DynamicDraw += OnDynamicDraw
+    gp.SetCommandPrompt('Point to move to')
+    ortho_option = Rhino.Input.Custom.OptionToggle(True, 'Off', 'On')
+    gp.AddOptionToggle('ortho_snap', ortho_option)
+
+    while True:
+        ModelAidSettings.Ortho = ortho_option.CurrentValue
+        get_rc = gp.Get()
+        gp.SetBasePoint(ip, False)
+        if gp.CommandResult() != Rhino.Commands.Result.Success:
+            continue
+        if get_rc == Rhino.Input.GetResult.Option:
+            continue
+        elif get_rc == Rhino.Input.GetResult.Point:
+            target = gp.Point()
+        break
+
+    translation = target - ip
+    for vkey in vkeys:
+        new_xyz = add_vectors(network.vertex_coordinates(vkey), translation)
+        network.vertex_update_xyz(vkey, new_xyz, constrained=False)
+
+    network.draw(layer='formdiagram')
+    return network
+
+
+
+
+
+def _get_initial_point(message='Point to move from?'):
+    ip = Rhino.Input.Custom.GetPoint()
+    ip.SetCommandPrompt(message)
+    ip.Get()
+    ip = ip.Point()
+    return ip
+
+
+def _get_target_point(constraint, OnDynamicDraw, option='None', message='Point to move to?'):
+    gp = Rhino.Input.Custom.GetPoint()
+    gp.SetCommandPrompt(message)
+    if option == 'None':
+        gp.Constrain(constraint)
+    else:
+        gp.Constrain(constraint, option)
+    gp.DynamicDraw += OnDynamicDraw
+    gp.Get()
+    gp = gp.Point()
+    return gp

@@ -508,8 +508,8 @@ def _cell_select_halfface(volmesh):
 def _cell_split_indet_vertices(volmesh, hfkey):
     ckey          = volmesh.cell.keys()[0]
     egi           = volmesh.c_data[ckey]['egi']
-    egi.draw()
-    egi.draw_vertexlabels()
+    # egi.draw()
+    # egi.draw_vertexlabels()
     hf_vkeys      = volmesh.halfface_vertices(hfkey)
     egi_nbr_vkeys = egi.vertex_neighbours(hfkey)
     for egi_fkey in hf_vkeys:
@@ -519,7 +519,6 @@ def _cell_split_indet_vertices(volmesh, hfkey):
         egi_face_vertices = [key for key in hfkeys if key not in egi_nbr_vkeys + [hfkey]]
         fkey    = egi_fkey
         x, y, z = volmesh.vertex_coordinates(egi_fkey)
-        print(egi_face_vertices, fkey)
         for vkey in egi_face_vertices:
             f, g = egi.mesh_split_face(fkey, hfkey, vkey)
             volmesh.add_vertex(key=f, x=x, y=y, z=z)

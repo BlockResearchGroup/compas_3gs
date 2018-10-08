@@ -71,6 +71,8 @@ def volmesh_planarise_faces(volmesh,
             # ------------------------------------------------------------------
             # construct projection plane
             # ------------------------------------------------------------------
+            if fix_all:
+                hf_normal = initial_normals[hfkey]['normal']
             if target_normals:
                 if hfkey in target_normals:
                     hf_normal = target_normals[hfkey]
@@ -80,8 +82,6 @@ def volmesh_planarise_faces(volmesh,
             if fix_boundary:
                 if hfkey in boundary_hfkeys:
                     hf_normal = initial_normals[hfkey]['normal']
-            if fix_all:
-                hf_normal = initial_normals[hfkey]['normal']
             plane = (hf_center, hf_normal)
 
             # project ----------------------------------------------------------

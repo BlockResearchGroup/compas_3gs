@@ -136,7 +136,7 @@ def global_force_polyhedron():
 # ******************************************************************************
 # ******************************************************************************
 
-def arearise_gfp(cell, egi, conduit=True):
+def arearise_gfp(cell, egi, count=500, conduit=True):
 
     # flat = [1, 2, 3, 4, 5]
     # flat = []
@@ -173,7 +173,7 @@ def arearise_gfp(cell, egi, conduit=True):
 
 
     mesh_arearisation(cell,
-                      count=500,
+                      count=count,
                       target_normals=target_normals,
                       target_centers=None,
                       target_areas=target_areas,
@@ -255,7 +255,7 @@ def create_egi():
     draw_egi(egi_network,
              as_lines=False,
              show_faces=False,
-             show_vertices=False,
+             show_vertices=True,
              show_labels=False,
              show_edges=True,
              delete=False)
@@ -265,7 +265,7 @@ def create_egi():
 
 
 
-def egi(zero_faces=True):
+def egi(zero_faces=False):
     """Returns the EGI of an equilibrated system of forces as a Network.
 
     Note:
@@ -309,6 +309,17 @@ def egi(zero_faces=True):
     egi.attributes['name']      = 'egi'
     egi.attributes['origin']    = origin
     vertex_geokeys              = {}
+
+    load_number = 0
+    rxn_number = 0
+    for i in range(len(lines)):
+        line  = lines[i]
+        layer = rs.ObjectLayer(line)
+        if layer == 'load':
+            load_number += 1
+        if layer == 'rxn':
+            rxn_number += 1
+
     for i in range(len(lines)):
         vkey  = i
         line  = lines[i]
@@ -316,9 +327,11 @@ def egi(zero_faces=True):
         sp    = rs.CurveStartPoint(line)
         ep    = rs.CurveEndPoint(line)
         # mag   = rs.CurveLength(line)
-        mag = 1
+        mag = 4
         if layer == 'rxn':
-            mag = len(lines) - 1
+            mag = 10 / rxn_number
+        if layer == 'load':
+            mag = 10 / load_number
         normal      = normalize_vector(subtract_vectors(ep, sp))
         vertex_xyz  = add_vectors(normal, origin)
         vertex_geokeys[geometric_key(list(normal), precision='3f')] = vkey
@@ -392,52 +405,52 @@ def egi(zero_faces=True):
                                'int_vkeys'  : {}, }
 
 
-    # # ==========================================================================
-    # #   4.  Find arc intersections --> identify cross adjacencies
-    # # ==========================================================================
-    # if zero_faces:
-    #     arc_pairs_seen = set()
-    #     for arckey_1 in arcs:
-    #         for arckey_2 in arcs:
-    #             if arckey_1 != arckey_2:
-    #                 arc_pair = frozenset([arckey_1, arckey_2])
-    #                 if arc_pair not in arc_pairs_seen:
-    #                     arc_1 = arcs[arckey_1]['arc']
-    #                     arc_2 = arcs[arckey_2]['arc']
-    #                     intersection = _curve_curve_intx(arc_1, arc_2)
-    #                     if intersection:
-    #                         new_vkey   = max(int(vkey) for vkey in egi.vertex.keys()) + 1
-    #                         new_normal = subtract_vectors(intersection, origin)
-    #                         new_normal = normalize_vector(new_normal)
-    #                         new_vertex_geokey = geometric_key(new_normal, precision='3f')
+    # ==========================================================================
+    #   4.  Find arc intersections --> identify cross adjacencies
+    # ==========================================================================
+    if zero_faces:
+        arc_pairs_seen = set()
+        for arckey_1 in arcs:
+            for arckey_2 in arcs:
+                if arckey_1 != arckey_2:
+                    arc_pair = frozenset([arckey_1, arckey_2])
+                    if arc_pair not in arc_pairs_seen:
+                        arc_1 = arcs[arckey_1]['arc']
+                        arc_2 = arcs[arckey_2]['arc']
+                        intersection = _curve_curve_intx(arc_1, arc_2)
+                        if intersection:
+                            new_vkey   = max(int(vkey) for vkey in egi.vertex.keys()) + 1
+                            new_normal = subtract_vectors(intersection, origin)
+                            new_normal = normalize_vector(new_normal)
+                            new_vertex_geokey = geometric_key(new_normal, precision='3f')
 
-    #                         # if intersection is not an endpoint -------------------
-    #                         if new_vertex_geokey not in vertex_geokeys.keys():
-    #                             vertex_geokeys[new_vertex_geokey] = new_vkey
-    #                             egi.add_vertex(x=intersection[0],
-    #                                            y=intersection[1],
-    #                                            z=intersection[2],
-    #                                            key=new_vkey,
-    #                                            attr_dict={'type'      : 'zero',
-    #                                                       'normal'    : new_normal,
-    #                                                       'load'      : False,
-    #                                                       'magnitude' : 0,
-    #                                                       'nbrs'      : []})
-    #                             arcs[arckey_1]['vkeys'].append(new_vkey)
-    #                             arcs[arckey_2]['vkeys'].append(new_vkey)
-    #                             arcs[arckey_1]['int_vkeys'][new_vkey] = arckey_2
-    #                             arcs[arckey_2]['int_vkeys'][new_vkey] = arckey_1
+                            # if intersection is not an endpoint -------------------
+                            if new_vertex_geokey not in vertex_geokeys.keys():
+                                vertex_geokeys[new_vertex_geokey] = new_vkey
+                                egi.add_vertex(x=intersection[0],
+                                               y=intersection[1],
+                                               z=intersection[2],
+                                               key=new_vkey,
+                                               attr_dict={'type'      : 'zero',
+                                                          'normal'    : new_normal,
+                                                          'load'      : False,
+                                                          'magnitude' : 0,
+                                                          'nbrs'      : []})
+                                arcs[arckey_1]['vkeys'].append(new_vkey)
+                                arcs[arckey_2]['vkeys'].append(new_vkey)
+                                arcs[arckey_1]['int_vkeys'][new_vkey] = arckey_2
+                                arcs[arckey_2]['int_vkeys'][new_vkey] = arckey_1
 
-    #                         # if intersection already exists -----------------------
-    #                         elif new_vertex_geokey in vertex_geokeys.keys():
-    #                             vkey = vertex_geokeys[new_vertex_geokey]
-    #                             if vkey not in arcs[arckey_1]['vkeys']:
-    #                                 arcs[arckey_1]['vkeys'].append(vkey)
-    #                                 arcs[arckey_1]['int_vkeys'][vkey] = arckey_2
-    #                             if vkey not in arcs[arckey_2]['vkeys']:
-    #                                 arcs[arckey_2]['vkeys'].append(vkey)
-    #                                 arcs[arckey_2]['int_vkeys'][vkey] = arckey_1
-    #                         arc_pairs_seen.add(arc_pair)
+                            # if intersection already exists -----------------------
+                            elif new_vertex_geokey in vertex_geokeys.keys():
+                                vkey = vertex_geokeys[new_vertex_geokey]
+                                if vkey not in arcs[arckey_1]['vkeys']:
+                                    arcs[arckey_1]['vkeys'].append(vkey)
+                                    arcs[arckey_1]['int_vkeys'][vkey] = arckey_2
+                                if vkey not in arcs[arckey_2]['vkeys']:
+                                    arcs[arckey_2]['vkeys'].append(vkey)
+                                    arcs[arckey_2]['int_vkeys'][vkey] = arckey_1
+                            arc_pairs_seen.add(arc_pair)
 
 
     # ==========================================================================
@@ -451,23 +464,23 @@ def egi(zero_faces=True):
         # print 'int_vkeys', arcs[arckey]['int_vkeys'].keys()
         # print len(arcs[arckey]['int_vkeys'].keys())
 
-        if len(arcs[arckey]['int_vkeys'].keys()) > 1:
-            all_pt = arcs[arckey]['end_vkeys']
-            for vkey in arcs[arckey]['int_vkeys'].keys():
-                int_arckey = arcs[arckey]['int_vkeys'][vkey]
-                all_pt += arcs[int_arckey]['end_vkeys']
-            print 'all_pt', all_pt
-            if is_coplanar([egi.vertex_coordinates(vkey) for vkey in all_pt]):
-                new_arcs[arckey] = arcs[arckey]
+        # if len(arcs[arckey]['int_vkeys'].keys()) > 1:
+        #     all_pt = arcs[arckey]['end_vkeys']
+        #     for vkey in arcs[arckey]['int_vkeys'].keys():
+        #         int_arckey = arcs[arckey]['int_vkeys'][vkey]
+        #         all_pt += arcs[int_arckey]['end_vkeys']
+        #     print 'all_pt', all_pt
+        #     if is_coplanar([egi.vertex_coordinates(vkey) for vkey in all_pt]):
+        #         new_arcs[arckey] = arcs[arckey]
 
-            else:
-                for vkey in arcs[arckey]['int_vkeys'].keys():
-                    int_arckey = arcs[arckey]['int_vkeys'][vkey]
-                    arcs[int_arckey]['vkeys'].remove(vkey)
-                    del arcs[int_arckey]['int_vkeys'][vkey]
-                    del egi.vertex[vkey]
-        else:
-            new_arcs[arckey] = arcs[arckey]
+        #     else:
+        #         for vkey in arcs[arckey]['int_vkeys'].keys():
+        #             int_arckey = arcs[arckey]['int_vkeys'][vkey]
+        #             arcs[int_arckey]['vkeys'].remove(vkey)
+        #             del arcs[int_arckey]['int_vkeys'][vkey]
+        #             del egi.vertex[vkey]
+        # else:
+        #     new_arcs[arckey] = arcs[arckey]
 
         new_arcs[arckey] = arcs[arckey]
 
@@ -477,7 +490,7 @@ def egi(zero_faces=True):
     for arckey in new_arcs:
         vkeys = new_arcs[arckey]['vkeys']
         if len(vkeys) > 2:
-            pt_list = [egi.vertex_coordinates(vkey) for vkey in vkeys]
+            pt_list = [egi.vertex_coordinates(e_vkey) for e_vkey in vkeys]
             new_arcs[arckey]['vkeys'] = _reorder_pts_on_arc(pt_list,
                                                        new_arcs[arckey]['vkeys'],
                                                        new_arcs[arckey]['arc'])[1]
@@ -1060,6 +1073,7 @@ def arearize(cell,
             # ZERO FACES
             # ------------------------------------------------------------------
             elif target_area == 0:
+
                 if is_face_selfintersecting (cell, fkey):
                     new_face = _scale_polygon_by_factor(cell, fkey, 1 - factor)
                 else:

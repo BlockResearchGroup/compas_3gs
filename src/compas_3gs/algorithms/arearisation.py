@@ -86,9 +86,10 @@ def mesh_arearisation(mesh,
                     flatness_deviation = dist
 
             if hfkey in target_areas:
+                # if hf_area > 0.001:
                 target_area = target_areas[hfkey]
                 if target_area == 0:
-                    scale = 0.1
+                    scale = 0.001
                 else:
                     scale       = (target_area / hf_area)**0.5
                 pt_dict     = _scale_polygon(pt_dict, scale)

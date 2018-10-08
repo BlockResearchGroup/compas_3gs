@@ -46,6 +46,9 @@ __all__ = ['rhino_planarisation',
 
 
 def rhino_planarisation(volmesh,
+                        target_normals = {},
+                        target_areas={},
+                        fix_all=False,
                         conduit=False):
 
     vkeys = volmesh_select_vertices(volmesh)
@@ -54,18 +57,23 @@ def rhino_planarisation(volmesh,
         conduit = planarisation_conduit(volmesh)
         conduit.Enabled = True
 
-    volmesh_planarise_faces(volmesh,
+
+
+    volmesh_planarise_faces(volmesh=volmesh,
                             count=1000,
-                            target_normals=None,
+                            target_normals=target_normals,
                             target_centers=None,
-                            fix_boundary=False,
+                            target_areas=target_areas,
+                            fix_boundary=True,
+                            fix_all=fix_all,
                             omit_vkeys=vkeys)
 
     if conduit:
         conduit.Enabled = False
         del conduit
 
-    volmesh.draw()
+    volmesh.draw_faces()
+    volmesh.draw_edges()
 
 
 # ******************************************************************************

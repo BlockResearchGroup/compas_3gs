@@ -63,7 +63,7 @@ class planarisation_conduit(Rhino.Display.DisplayConduit):
         for u, v in self.volmesh.edges_iter():
             sp  = self.volmesh.vertex_coordinates(u)
             ep  = self.volmesh.vertex_coordinates(v)
-            e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
+            e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), black, 1)
 
 
 class arearisation_conduit(Rhino.Display.DisplayConduit):

@@ -82,7 +82,7 @@ class VolmeshHalffaceInspector(Conduit):
 
         dotcolor       = (0, 0, 0)
         textcolor      = (255, 255, 255)
-        edgecolor      = (255, 255, 0)
+        edgecolor      = (0, 0, 0)
         facecolor      = (255, 0, 0)
 
         self.volmesh   = volmesh
@@ -129,7 +129,7 @@ class VolmeshHalffaceInspector(Conduit):
                 face_coordinates = [self.volmesh.vertex_coordinates(vkey) for vkey in vkeys]
                 face_coordinates.append(face_coordinates[0])
                 polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
-                e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 4)
+                e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 6)
 
                 if self.dependents:
                     for key in dep_hfkeys:
@@ -137,7 +137,7 @@ class VolmeshHalffaceInspector(Conduit):
                         face_coordinates = [self.volmesh.vertex_coordinates(vkey) for vkey in vkeys]
                         face_coordinates.append(face_coordinates[0])
                         polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
-                        e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 2)
+                        e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 4)
 
                 break
 

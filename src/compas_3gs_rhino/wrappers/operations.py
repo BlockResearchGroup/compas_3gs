@@ -152,7 +152,7 @@ def rhino_vertex_lift(volmesh):
         for hfkey in boundary_hfkeys:
             for vkey in volmesh.halfface_vertices(hfkey):
                 sp = volmesh.vertex_coordinates(vkey)
-                e.Display.DrawLine(Point3d(*sp), cp, white, 2)
+                e.Display.DrawLine(Point3d(*sp), cp, black, 2)
 
 
     ip    = Point3d(*xyz)
@@ -211,7 +211,7 @@ def rhino_halfface_pinch(volmesh):
             e.Display.DrawPoint(Point3d(*ep), 0, 4, black)
             for vkey in volmesh.halfface_vertices(hfkey):
                 sp = volmesh.vertex_coordinates(vkey)
-                e.Display.DrawLine(Point3d(*sp), Point3d(*ep), white, 2)
+                e.Display.DrawLine(Point3d(*sp), Point3d(*ep), black, 2)
 
     # --------------------------------------------------------------------------
     #  input point
@@ -359,7 +359,7 @@ def volmesh_pull_faces(volmesh, uniform=False):
                     init_u_xyz = Point3d(*init_u)
                     u_xyz = Point3d(*xyz[u])
                     v_xyz = Point3d(*xyz[v])
-                    e.Display.DrawLine(Line(u_xyz, v_xyz), white, 5)
+                    e.Display.DrawLine(Line(u_xyz, v_xyz), black, 5)
                     # e.Display.DrawDottedLine(init_u_xyz, u_xyz, feedback_color)
                     seen.add(pair)
 
@@ -371,7 +371,7 @@ def volmesh_pull_faces(volmesh, uniform=False):
                     sp = xyz[u]
                 if v in xyz:
                     ep = xyz[v]
-                e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
+                e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), black, 2)
 
 
 
@@ -384,9 +384,9 @@ def volmesh_pull_faces(volmesh, uniform=False):
     gp   = _get_target_point(line, OnDynamicDraw)
 
 
-    if uniform:
-        listIndex = 3
-        gp.AddOptionList("target_ plane", ["avg", "world", "custom"], listIndex)
+    # if uniform:
+    #     listIndex = 3
+    #     gp.AddOptionList("target_ plane", ["avg", "world", "custom"], listIndex)
 
 
 
@@ -452,12 +452,14 @@ def rhino_cell_subdivide_barycentric(volmesh, formdiagram=None):
     # dynamic selector
     cell_inspector = VolmeshCellInspector(volmesh, color_dict=cell_colors)
     cell_inspector.enable()
-    ckey = CellSelector.select_cell(volmesh)
+    sel_ckeys = CellSelector.select_cells(volmesh)
     cell_inspector.disable()
     del cell_inspector
     volmesh.clear_cell_labels()
 
-    new_ckeys = cell_subdivide_barycentric(volmesh, ckey)
+
+    for ckey in sel_ckeys:
+        cell_subdivide_barycentric(volmesh, ckey)
 
 
     # if formdiagram:
