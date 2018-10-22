@@ -79,11 +79,18 @@ class VolMesh3gs(VolMesh):
         nbr_ckeys = self.vertex_cells(vkey)
 
 
+        print('vkey', vkey)
+        print('cell-ckey', (self.cell))
+
         # delete cell info -----------------------------------------------------
         for ckey in nbr_ckeys:
             del self.cell[ckey][vkey]
             for nbr_vkey in nbr_vkeys:
                 del self.cell[ckey][nbr_vkey][vkey]
+
+        print('vkey', vkey)
+        print('cell-ckey', (self.cell))
+
 
         # delete halffaces -----------------------------------------------------
         print(vkey, self.halfface)
