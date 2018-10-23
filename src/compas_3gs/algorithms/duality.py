@@ -122,7 +122,7 @@ if __name__ == '__main__':
 
     import rhinoscriptsyntax as rs
 
-    from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
+    from compas_rhino.artists import VolMeshArtist
     from compas_rhino.helpers.volmesh import volmesh_from_polysurfaces
 
     guids   = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)

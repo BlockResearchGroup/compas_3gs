@@ -29,7 +29,7 @@ from compas_3gs.utilities import area_polygon_general
 from compas_rhino.utilities import xdraw_lines
 from compas_rhino.utilities import xdraw_labels
 
-from compas_rhino.conduits.edges import LinesConduit
+from compas_rhino.conduits import LinesConduit
 
 
 find_object    = sc.doc.Objects.Find

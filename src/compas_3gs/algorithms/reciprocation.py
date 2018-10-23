@@ -11,7 +11,7 @@ from compas.geometry import add_vectors
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import centroid_points
-from compas.geometry import project_point_plane
+from compas.geometry import project_points_plane
 from compas.geometry import distance_point_point
 
 from compas_3gs.algorithms import volmesh_planarise_faces

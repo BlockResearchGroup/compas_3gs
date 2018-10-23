@@ -20,9 +20,9 @@ from compas_3gs.rhino import volmesh_vertex_move
 
 from compas.utilities import i_to_rgb
 
-from compas_rhino.helpers.selectors import VertexSelector
-from compas_rhino.helpers.selectors import EdgeSelector
-from compas_rhino.helpers.selectors import FaceSelector
+from compas_rhino.selectors import VertexSelector
+from compas_rhino.selectors import EdgeSelector
+from compas_rhino.selectors import FaceSelector
 from compas_3gs.rhino.selectors import CellSelector
 
 from compas_rhino.helpers.volmesh import volmesh_select_vertex
@@ -35,7 +35,7 @@ from compas_3gs_rhino.control import VolmeshCellInspector
 from compas_3gs.algorithms.planarisation import volmesh_planarise_faces
 
 
-# from compas_rhino.conduits.edges import LinesConduit
+# from compas_rhino.conduits import LinesConduit
 
 import Rhino
 from Rhino.Geometry import Point3d

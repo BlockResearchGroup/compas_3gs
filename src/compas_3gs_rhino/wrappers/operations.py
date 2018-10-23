@@ -36,9 +36,9 @@ from compas_3gs_rhino.control.inspectors import VolmeshVertexInspector
 from compas_3gs_rhino.control.inspectors import VolmeshHalffaceInspector
 from compas_3gs_rhino.control.inspectors import VolmeshCellInspector
 
-from compas_rhino.helpers.selectors import VertexSelector
-from compas_rhino.helpers.selectors import EdgeSelector
-from compas_rhino.helpers.selectors import FaceSelector
+from compas_rhino.selectors import VertexSelector
+from compas_rhino.selectors import EdgeSelector
+from compas_rhino.selectors import FaceSelector
 from compas_3gs_rhino.control import CellSelector
 
 from compas_rhino.helpers.volmesh import volmesh_select_vertex
@@ -60,7 +60,7 @@ from compas_3gs_rhino.control.dynamic_pickers import volmesh3gs_select_cell
 from compas_rhino.utilities import xdraw_lines
 from compas_rhino.utilities import xdraw_labels
 
-from compas_rhino.conduits.edges import LinesConduit
+from compas_rhino.conduits import LinesConduit
 
 
 try:

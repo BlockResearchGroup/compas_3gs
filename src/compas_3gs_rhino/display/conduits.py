@@ -13,8 +13,8 @@ import compas_3gs
 from compas.utilities import i_to_rgb
 from compas.utilities import i_to_red
 
-from compas_rhino.helpers import VolMeshArtist
-from compas_rhino.helpers import NetworkArtist
+from compas_rhino.artists import VolMeshArtist
+from compas_rhino.artists import NetworkArtist
 
 try:
     import Rhino

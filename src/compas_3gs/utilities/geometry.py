@@ -2,12 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import Rhino
-import rhinoscriptsyntax as rs
-
-from math import pi
-
-from compas.geometry import orient_points
 
 from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy

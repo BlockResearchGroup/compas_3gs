@@ -10,7 +10,7 @@ from compas.geometry import subtract_vectors
 from compas.geometry import scale_vector
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
-from compas.geometry import project_point_plane
+from compas.geometry import project_points_plane
 from compas.geometry import bestfit_plane
 
 from compas_rhino.helpers import volmesh_select_vertices

@@ -16,7 +16,7 @@ from compas.geometry import centroid_points
 from compas.geometry import center_of_mass_polygon
 
 from compas_rhino.helpers.volmesh import volmesh_draw
-from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
+from compas_rhino.artists import VolMeshArtist
 
 from compas_3gs_rhino.display import draw_cell
 from compas_3gs_rhino.display import draw_egi_arcs

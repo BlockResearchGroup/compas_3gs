@@ -64,7 +64,7 @@ if __name__ == '__main__':
     import rhinoscriptsyntax as rs
 
     # from compas.datastructures import VolMesh
-    from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
+    from compas_rhino.artists import VolMeshArtist
     from compas_3gs.datastructures.forcevolmesh import ForceVolMesh as VolMesh
     from compas_rhino.helpers.volmesh import volmesh_from_polysurfaces
 

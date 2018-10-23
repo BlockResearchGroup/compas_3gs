@@ -13,7 +13,7 @@ from compas.utilities import i_to_blue
 from compas.geometry import distance_point_point
 from compas.geometry import midpoint_point_point
 from compas.geometry import centroid_points
-from compas.geometry import project_point_plane
+from compas.geometry import project_points_plane
 from compas.geometry import bestfit_plane
 from compas.geometry import scale_vector
 from compas.geometry import add_vectors

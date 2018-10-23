@@ -13,7 +13,7 @@ from Rhino.Geometry import Point3d
 
 from compas.geometry import intersection_line_plane
 
-from compas_rhino.helpers.selectors import FaceSelector
+from compas_rhino.selectors import FaceSelector
 
 from compas_3gs.helpers import sort_points_ccw
 

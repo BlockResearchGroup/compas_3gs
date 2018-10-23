@@ -11,7 +11,7 @@ from compas_rhino.helpers.network import network_draw_edges
 from compas_rhino.helpers.network import network_draw_vertex_labels
 from compas_rhino.helpers.network import network_draw_edge_labels
 
-from compas_rhino.helpers.artists.networkartist import NetworkArtist
+from compas_rhino.artists import NetworkArtist
 
 
 __author__     = ['Juney Lee']

@@ -17,7 +17,7 @@ from compas.geometry import distance_point_point
 from compas_3gs.algorithms import volmesh_dual_volmesh
 from compas_3gs.algorithms import volmesh_dual_network
 
-from compas_rhino.helpers.artists.meshartist import MeshArtist
+from compas_rhino.artists import MeshArtist
 
 
 

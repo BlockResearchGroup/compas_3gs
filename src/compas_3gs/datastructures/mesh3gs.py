@@ -4,7 +4,7 @@ from compas.datastructures import Mesh
 
 from compas.datastructures.mesh.operations import mesh_split_face
 
-from compas_rhino.helpers.artists.meshartist import MeshArtist
+from compas_rhino.artists import MeshArtist
 
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
