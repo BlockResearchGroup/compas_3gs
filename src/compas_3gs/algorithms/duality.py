@@ -2,10 +2,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
-from compas_3gs.datastructures import FormNetwork as Network
+from compas_3gs.datastructures import Network3gs as Network
 from compas_3gs.datastructures import VolMesh3gs as VolMesh
-from compas_3gs.datastructures import FormVolMesh
-
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
@@ -102,7 +100,6 @@ def volmesh_dual_network(volmesh, cls=None):
         print('ckey ---------------------------- ', ckey)
         for hfkey in volmesh.cell_halffaces(ckey):
             print(hfkey, 'nbr_cell', volmesh.halfface_pair(hfkey))
-
 
         for nbr in volmesh.cell_neighbours(ckey):
             if nbr in dual_network.edge[ckey]:

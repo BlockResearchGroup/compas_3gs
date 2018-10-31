@@ -2,7 +2,9 @@ from __future__ import print_function
 
 from compas.utilities import pairwise
 
-from compas.datastructures import VolMesh
+# from compas_3gs.datastructures._OLD.volmesh_algorithms import VolMesh
+from compas_3gs.datastructures._old_volmesh import VolMesh
+# from compas.datastructures import VolMesh
 
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
@@ -46,18 +48,25 @@ class VolMesh3gs(VolMesh):
     def __init__(self):
         super(VolMesh3gs, self).__init__()
 
-        self.facedata = {}
-        self.edgedata = {}
+        self.scale = 1.0
 
-        self.v_data = {}
-        self.e_data = {}
-        self.f_data = {}
-        self.c_data = {}
+        # additional, 3gs specific attributes
+        va = {'x_fix': False,
+              'y_fix': False,
+              'z_fix': False}
 
-        self.default_v_prop = {}
-        self.default_e_prop = {}
-        self.default_f_prop = {}
-        self.default_c_prop = {}
+        ea = {'target_vector': None,
+              'target_length': None}
+
+        fa = {'target_area'  : None,
+              'target_normal': None}
+
+        ca = {'dir': None}
+
+        self.default_vertex_attributes.update(va)
+        self.default_edge_attributes.update(ea)
+        self.default_face_attributes.update(fa)
+        self.default_cell_attributes.update(ca)
 
     # --------------------------------------------------------------------------
     #   inherited
@@ -174,55 +183,55 @@ class VolMesh3gs(VolMesh):
     #   updaters / setters
     # --------------------------------------------------------------------------
 
-    def update_v_data(self, vkey, attr_dict=None, **kwattr):
-        if vkey not in self.v_data:
-            self.v_data[vkey] = {}
-        attr = self.default_v_prop.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        self.v_data[vkey].update(attr)
+    # def update_v_data(self, vkey, attr_dict=None, **kwattr):
+    #     if vkey not in self.v_data:
+    #         self.v_data[vkey] = {}
+    #     attr = self.default_v_prop.copy()
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwattr)
+    #     attr.update(attr_dict)
+    #     self.v_data[vkey].update(attr)
 
-    def update_e_data(self, u, v, attr_dict=None, **kwattr):
-        if (u, v) not in self.e_data:
-            self.e_data[u, v] = {}
-        attr = self.default_e_prop.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        self.e_data[u, v].update(attr)
+    # def update_e_data(self, u, v, attr_dict=None, **kwattr):
+    #     if (u, v) not in self.e_data:
+    #         self.e_data[u, v] = {}
+    #     attr = self.default_e_prop.copy()
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwattr)
+    #     attr.update(attr_dict)
+    #     self.e_data[u, v].update(attr)
 
-    def update_f_data(self, fkey, attr_dict=None, **kwattr):
-        if fkey not in self.f_data:
-            self.f_data[fkey] = {}
-        attr = self.default_f_prop.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        self.f_data[fkey].update(attr)
+    # def update_f_data(self, fkey, attr_dict=None, **kwattr):
+    #     if fkey not in self.f_data:
+    #         self.f_data[fkey] = {}
+    #     attr = self.default_f_prop.copy()
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwattr)
+    #     attr.update(attr_dict)
+    #     self.f_data[fkey].update(attr)
 
-    def update_c_data(self, ckey, attr_dict=None, **kwattr):
-        if ckey not in self.c_data:
-            self.c_data[ckey] = {}
-        attr = self.default_c_prop.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        self.c_data[ckey].update(attr)
+    # def update_c_data(self, ckey, attr_dict=None, **kwattr):
+    #     if ckey not in self.c_data:
+    #         self.c_data[ckey] = {}
+    #     attr = self.default_c_prop.copy()
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwattr)
+    #     attr.update(attr_dict)
+    #     self.c_data[ckey].update(attr)
 
-    def initialize_data(self):
-        for vkey in self.vertex:
-            self.update_v_data(vkey)
-        for u, v in self.edges():
-            self.update_e_data(u, v)
-        for fkey in self.halfface:
-            self.update_f_data(fkey)
-        for ckey in self.cell:
-            self.update_c_data(ckey)
+    # def initialize_data(self):
+    #     for vkey in self.vertex:
+    #         self.update_v_data(vkey)
+    #     for u, v in self.edges():
+    #         self.update_e_data(u, v)
+    #     for fkey in self.halfface:
+    #         self.update_f_data(fkey)
+    #     for ckey in self.cell:
+    #         self.update_c_data(ckey)
 
     # def update_data(self):
     #     for vkey in self.vertex:
@@ -278,7 +287,6 @@ class VolMesh3gs(VolMesh):
                 halffaces.append(self.cell[ckey][vkey][v])
                 halffaces.append(self.cell[ckey][v][vkey])
         return halffaces
-
 
 
     def vertex_normal(self, vkey):

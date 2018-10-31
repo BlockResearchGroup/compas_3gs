@@ -73,7 +73,6 @@ def select_boundary_halffaces(volmesh):
     volmesh.draw_faces(fkeys=hfkeys)
     rs.EnableRedraw(True)
 
-
     hfkey = volmesh_select_faces(volmesh)
 
     volmesh.draw()

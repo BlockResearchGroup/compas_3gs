@@ -4,6 +4,7 @@ from compas.datastructures import Network
 
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
+from compas.geometry import length_vector
 
 from compas_rhino.helpers.network import network_draw
 from compas_rhino.helpers.network import network_draw_vertices
@@ -30,51 +31,60 @@ class Network3gs(Network):
     def __init__(self):
         super(Network3gs, self).__init__()
 
-        self.v_data = {}
-        self.e_data = {}
+
+        # additional, 3gs specific attributes
+        va = {'x_fix': False,
+              'y_fix': False,
+              'z_fix': False,
+              'egi'  : None}
+
+        ea = {'target_vector': None,
+              'target_length': None}
+
+        self.default_vertex_attributes.update(va)
+        self.default_edge_attributes.update(ea)
 
     # --------------------------------------------------------------------------
     # iterators
     # --------------------------------------------------------------------------
 
-    def edges_iter(self, data=False):
-        for u in self.edge:
-            for v in self.edge[u]:
-                if data:
-                    yield u, v, self.edge[u][v]
-                else:
-                    yield u, v
+    # def edges_iter(self, data=False):
+    #     for u in self.edge:
+    #         for v in self.edge[u]:
+    #             if data:
+    #                 yield u, v, self.edge[u][v]
+    #             else:
+    #                 yield u, v
 
     # --------------------------------------------------------------------------
     #   updaters / setters
     # --------------------------------------------------------------------------
 
-    def update_v_data(self, vkey, attr_dict=None, **kwattr):
-        if vkey not in self.v_data:
-            self.v_data[vkey] = {}
-        attr = self.default_v_prop.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        self.v_data[vkey].update(attr)
+    # def update_v_data(self, vkey, attr_dict=None, **kwattr):
+    #     if vkey not in self.v_data:
+    #         self.v_data[vkey] = {}
+    #     attr = self.default_v_prop.copy()
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwattr)
+    #     attr.update(attr_dict)
+    #     self.v_data[vkey].update(attr)
 
-    def update_e_data(self, u, v, attr_dict=None, **kwattr):
-        if (u, v) not in self.e_data:
-            self.e_data[u, v] = {}
-        attr = self.default_e_prop.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        self.e_data[u, v].update(attr)
+    # def update_e_data(self, u, v, attr_dict=None, **kwattr):
+    #     if (u, v) not in self.e_data:
+    #         self.e_data[u, v] = {}
+    #     attr = self.default_e_prop.copy()
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwattr)
+    #     attr.update(attr_dict)
+    #     self.e_data[u, v].update(attr)
 
-    def initialize_data(self):
-        for vkey in self.vertex:
-            self.update_v_data(vkey)
-        for u, v in self.edges():
-            self.update_e_data(u, v)
-
+    # def initialize_data(self):
+    #     for vkey in self.vertex:
+    #         self.update_v_data(vkey)
+    #     for u, v in self.edges():
+    #         self.update_e_data(u, v)
 
     # --------------------------------------------------------------------------
     # helpers - vertices
@@ -116,7 +126,6 @@ class Network3gs(Network):
             sum_length += length_vector(edge_vector)
             edge_count += 1
         return sum_length / edge_count
-
 
 
     # --------------------------------------------------------------------------

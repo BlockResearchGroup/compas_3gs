@@ -1,137 +1,150 @@
+from __future__ import absolute_import
 from __future__ import print_function
+from __future__ import division
 
-import rhinoscriptsyntax as rs
-import Rhino
+import compas
+import compas_rhino
 
 from compas.datastructures import Mesh
 
-from compas_rhino.helpers.volmesh import volmesh_from_polysurfaces
-
-from compas_3gs.datastructures.forcevolmesh import ForceVolMesh
-from compas_3gs.datastructures.formnetwork import FormNetwork
-from compas_3gs.datastructures.formvolmesh import FormVolMesh
-from compas_3gs.datastructures.egi import EGI
-
 from compas.geometry import distance_point_point
+
+from compas_rhino.artists import MeshArtist
+from compas_rhino.helpers import volmesh_from_polysurfaces
+
+from compas_3gs.datastructures import VolMesh3gs
+from compas_3gs.datastructures import EGI
 
 from compas_3gs.algorithms import volmesh_dual_volmesh
 from compas_3gs.algorithms import volmesh_dual_network
 
-from compas_rhino.artists import MeshArtist
 
-
+try:
+    import rhinoscriptsyntax as rs
+    import scriptcontext as sc
+except ImportError:
+    compas.raise_if_ironpython()
 
 
 __all__ = [
-    'forcevolmesh_from_polysurfaces',
-    'formnetwork_from_forcevolmesh',
-    'formvolmesh_from_forcevolmesh',
-    'egi_from_volmesh'
+    'make_volmesh_from_polysurfaces',
+    'make_network_from_volmesh',
+    'make_volmesh_dual_volmesh',
+    'make_egi_from_volmesh'
 ]
 
 
-
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
-#   volmesh
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
+# ==============================================================================
+# single polyhedral cells
+# ==============================================================================
 
 
-def forcevolmesh_from_polysurfaces():
-
-    guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
-    rs.HideObjects(guids)
-
-    layer = 'forcediagram'
-
-    forcepolyhedra = ForceVolMesh()
-    forcepolyhedra = volmesh_from_polysurfaces(forcepolyhedra, guids)
-    forcepolyhedra.attributes['name'] = 'ForceVolMesh'
-    forcepolyhedra.layer = layer
-    forcepolyhedra.initialize_data()
-
-    rs.AddLayer(name=layer, color=(255, 255, 255))
-    forcepolyhedra.draw(layer=layer)
-    # forcepolyhedra.draw_vertex_labels()
-    # forcepolyhedra.draw_face_labels()
-    # forcepolyhedra.draw_cell_labels()
-
-    egi_from_volmesh(forcepolyhedra)
-
-    return forcepolyhedra
+def make_gfp_from_vectors():
+    pass
 
 
-def formnetwork_from_forcevolmesh(forcepolyhedra):
-
-    layer = 'formdiagram'
-
-    x = {vkey: forcepolyhedra.vertex_coordinates(vkey)[0] for vkey in forcepolyhedra.vertex}
-    sorted_x = sorted(x, key=x.get)
-    print(sorted_x)
+def make_egi_from_volmesh(volmesh):
+    """Construct an egi for each cell of a volmesh and store it in volmesh.celldata
 
 
-    move = abs(x[sorted_x[0]] - x[sorted_x[-1]])
+    Parameters
+    ----------
+    Volmesh
+        A volmesh object.
 
-    rs.AddLayer(name=layer, color=(0, 0, 0))
+    Returns
+    -------
+    Volmesh
+        Updated volmesh object.
 
-    formnetwork = volmesh_dual_network(forcepolyhedra)
-    formnetwork.attributes['name'] = 'FormNetwork'
-    formnetwork.layer = layer
-    formnetwork.initialize_data()
+    """
 
-    for vkey in formnetwork.vertex:
-        formnetwork.vertex[vkey]['x'] += move * 1.25
-
-    formnetwork.draw(layer=layer)
-
-    return formnetwork
-
-
-def formvolmesh_from_forcevolmesh(forcepolyhedra):
-
-    rs.AddLayer(name='formvolmesh', color=(0, 0, 0))
-
-    formvolmesh = volmesh_dual_volmesh(forcepolyhedra)
-
-    if formvolmesh:
-
-        formvolmesh.attributes['name'] = 'FormVolMesh'
-        formvolmesh.initialize_data()
-        formvolmesh.draw(layer='formvolmesh')
-
-        return formvolmesh
-
-
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
-#   egi
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-
-def egi_from_volmesh(volmesh):
     for ckey in volmesh.cell:
         egi = EGI()
         egi = egi.from_volmesh_cell(ckey, volmesh)
-        egi.attributes['name'] = str(ckey)
-        volmesh.c_data[ckey]['egi'] = egi
+        egi.attributes['name']        = str(ckey)
+        volmesh.celldata[ckey]['egi'] = egi
 
     return volmesh
 
 
+# ==============================================================================
+# multi-cell polyhedrons
+# ==============================================================================
 
 
+def make_volmesh_from_polysurfaces():
+    """Construct a volmesh from Rhino polysurfaces.
+
+    Returns
+    -------
+    Volmesh
+        a volmesh object.
+
+    """
+
+    layer = 'force_volmesh'
+
+    # 1. get rhino polysurfaces
+    guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
+    rs.HideObjects(guids)
+
+    # 2. make volmesh
+    volmesh       = VolMesh3gs()
+    volmesh       = volmesh_from_polysurfaces(volmesh, guids)
+    volmesh.layer = layer
+    volmesh.attributes['name'] = layer
+    volmesh.draw(layer=layer)
+
+    return volmesh
 
 
+def make_network_from_volmesh(volmesh):
+    """Construct a dual network from a volmesh object.
 
+    Parameters
+    ----------
+    Volmesh
+        A volmesh object.
+
+    Returns
+    -------
+    Network
+        A network object.
+
+    """
+
+    layer = 'form_network'
+
+    # 1. make dual network
+    network       = volmesh_dual_network(volmesh)
+    network.layer = layer
+    network.attributes['name'] = layer
+
+    # 2. move network
+    x = {vkey: volmesh.vertex_coordinates(vkey)[0] for vkey in volmesh.vertex}
+    sorted_x = sorted(x, key=x.get)
+    move     = abs(x[sorted_x[0]] - x[sorted_x[-1]])
+    for vkey in network.vertex:
+        network.vertex[vkey]['x'] += move * 1.25
+
+    network.draw(layer=layer)
+
+    return network
+
+
+def make_volmesh_dual_volmesh(volmesh):
+
+    layer = 'form_volMesh'
+
+    volmesh = volmesh_dual_volmesh(volmesh)
+
+    if volmesh:
+        volmesh.attributes['name'] = layer
+        volmesh.initialize_data()
+        volmesh.draw(layer=layer)
+
+        return volmesh
 
 
 # ******************************************************************************
