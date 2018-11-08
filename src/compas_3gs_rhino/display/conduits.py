@@ -10,11 +10,15 @@ import compas
 import compas_rhino
 import compas_3gs
 
+
+
 from compas.utilities import i_to_rgb
 from compas.utilities import i_to_red
 
 from compas_rhino.artists import VolMeshArtist
 from compas_rhino.artists import NetworkArtist
+
+from compas_rhino.conduits import Conduit
 
 try:
     import Rhino
@@ -29,12 +33,16 @@ from Rhino.Geometry import Line
 
 find_object    = sc.doc.Objects.Find
 feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-arrow_color    = FromArgb(255, 0, 79)
-jl_blue        = FromArgb(0, 113, 188)
-black          = FromArgb(0, 0, 0)
-gray           = FromArgb(200, 200, 200)
-green          = FromArgb(0, 255, 0)
-white          = FromArgb(255, 255, 255)
+
+arrow_color = FromArgb(255, 0, 79)
+jl_blue     = FromArgb(0, 113, 188)
+black       = FromArgb(0, 0, 0)
+gray        = FromArgb(200, 200, 200)
+green       = FromArgb(0, 255, 0)
+white       = FromArgb(255, 255, 255)
+
+form_color  = Color.FromArgb(255, 255, 255)
+force_color = Color.FromArgb(0, 0, 0)
 
 
 __author__     = ['Juney Lee']
@@ -44,34 +52,65 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = [
-    'planarisation_conduit',
-    'arearisation_conduit',
-    'mesh_arearisation_conduit',
-    'reciprocation_conduit']
+    'PlanarisationConduit',
+    'ArearisationConduit',
+    'MeshArearisationConduit',
+    'ReciprocationConduit']
 
 
-class planarisation_conduit(Rhino.Display.DisplayConduit):
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+#
+#   planarisation conduit
+#
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
 
-    def __init__(self,
-                 volmesh):
-        super(planarisation_conduit, self).__init__()
 
-        self.volmesh = volmesh
+class PlanarisationConduit(Conduit):
+
+    def __init__(self, volmesh, draw_faces=False, **kwargs):
+        super(PlanarisationConduit, self).__init__(**kwargs)
+
+        self.volmesh     = volmesh
+        self.draw_faces  = draw_faces
+        self.face_colors = {}
 
     def DrawForeground(self, e):
-        self.volmesh.clear()
-        for u, v in self.volmesh.edges_iter():
-            sp  = self.volmesh.vertex_coordinates(u)
-            ep  = self.volmesh.vertex_coordinates(v)
-            e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), black, 1)
+        _conduit_volmesh(self.volmesh, e)
+
+        if self.face_colors:
+            max_value = max(self.face_colors.values())
+            for fkey in self.volmesh.faces():
+                value     = round(self.face_colors[fkey], 3) / max_value
+                color     = FromArgb(*i_to_red(value))
+                f_vkeys = self.volmesh.halfface_vertices(fkey)
+                points   = [self.volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+                points.append(points[0])
+                points   = [Point3d(*pt) for pt in points]
+                e.Display.DrawPolygon(points, color, filled=True)
 
 
-class arearisation_conduit(Rhino.Display.DisplayConduit):
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+#
+#   arearisation conduit
+#
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+
+
+class ArearisationConduit(Conduit):
 
     def __init__(self,
                  volmesh,
-                 target_areas_dict):
-        super(arearisation_conduit, self).__init__()
+                 target_areas_dict,
+                 **kwargs):
+        super(ArearisationConduit, self).__init__(**kwargs)
 
         self.volmesh           = volmesh
         self.target_areas_dict = target_areas_dict
@@ -103,14 +142,10 @@ class arearisation_conduit(Rhino.Display.DisplayConduit):
             e.Display.DrawDot(Point3d(*center), str(round(area, 3)), color, black)
 
 
+class MeshArearisationConduit(Conduit):
 
-
-class mesh_arearisation_conduit(Rhino.Display.DisplayConduit):
-
-    def __init__(self,
-                 mesh,
-                 target_areas_dict):
-        super(mesh_arearisation_conduit, self).__init__()
+    def __init__(self, mesh, target_areas_dict, **kwargs):
+        super(MeshArearisationConduit, self).__init__(**kwargs)
 
         self.mesh              = mesh
         self.target_areas_dict = target_areas_dict
@@ -142,55 +177,64 @@ class mesh_arearisation_conduit(Rhino.Display.DisplayConduit):
             e.Display.DrawDot(Point3d(*center), str(round(area, 3)), color, black)
 
 
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+#
+#   reciprocation conduit
+#
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
 
 
-class reciprocation_conduit(Rhino.Display.DisplayConduit):
-    """ Conduit for brg_algorithms.reciprocate.polyhedra_algorithms.reicprocate_force.
-    """
+class ReciprocationConduit(Conduit):
 
-    def __init__(self,
-                 volmesh,
-                 network):
-
-        super(reciprocation_conduit, self).__init__()
-
+    def __init__(self, volmesh, network, **kwargs):
+        super(ReciprocationConduit, self).__init__(**kwargs)
         self.volmesh = volmesh
         self.network = network
 
     def DrawForeground(self, e):
+        _conduit_volmesh(self.volmesh, e)
+        _conduit_network(self.network, e)
 
-        artist = VolMeshArtist(self.volmesh)
-        artist.clear()
 
-        artist = NetworkArtist(self.network)
-        artist.clear()
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+#
+#   conduit helpers
+#
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
 
-        # ----------------------------------------------------------------------
-        #   form diagram
-        # ----------------------------------------------------------------------
-        form_color = Color.FromArgb(0, 0, 0)
-        for u, v in self.network.edges_iter():
-            sp  = self.network.vertex_coordinates(u)
-            ep  = self.network.vertex_coordinates(v)
-            e.Display.DrawPoint(Point3d(*sp), 0, 4, form_color)
-            e.Display.DrawPoint(Point3d(*ep), 0, 4, form_color)
-            e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), form_color, 1)
 
-        # ----------------------------------------------------------------------
-        #   force diagram
-        # ----------------------------------------------------------------------
-        force_color = Color.FromArgb(200, 200, 200)
-        for u, v in self.volmesh.edges_iter():
-            sp  = self.volmesh.vertex_coordinates(u)
-            ep  = self.volmesh.vertex_coordinates(v)
-            e.Display.DrawPoint(Point3d(*sp), 0, 4, force_color)
-            e.Display.DrawPoint(Point3d(*ep), 0, 4, force_color)
-            e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), force_color, 1)
+def _conduit_network(network, e):
+    form_color = Color.FromArgb(255, 255, 255)
+    for u, v in network.edges():
+        sp  = network.vertex_coordinates(u)
+        ep  = network.vertex_coordinates(v)
+        e.Display.DrawPoint(Point3d(*sp), 0, 2, form_color)
+        e.Display.DrawPoint(Point3d(*ep), 0, 2, form_color)
+        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), form_color, 1)
+
+
+def _conduit_volmesh(volmesh, e):
+    force_color = Color.FromArgb(0, 0, 0)
+    for u, v in volmesh.edges():
+        sp  = volmesh.vertex_coordinates(u)
+        ep  = volmesh.vertex_coordinates(v)
+        e.Display.DrawPoint(Point3d(*sp), 0, 2, force_color)
+        e.Display.DrawPoint(Point3d(*ep), 0, 2, force_color)
+        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), force_color, 1)
 
 
 # ==============================================================================
 # Main
 # ==============================================================================
+
 
 if __name__ == "__main__":
     pass

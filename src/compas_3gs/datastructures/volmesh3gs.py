@@ -32,10 +32,15 @@ from compas_3gs.utilities import area_polygon_general
 from compas_3gs.datastructures.operations.split import cell_split_vertex
 
 
-__author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
+__author__    = ['Juney Lee']
+__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'juney.lee@arch.ethz.ch'
+
+
+__all__       = [
+    'VolMesh3gs'
+]
 
 
 class VolMesh3gs(VolMesh):
@@ -48,25 +53,6 @@ class VolMesh3gs(VolMesh):
     def __init__(self):
         super(VolMesh3gs, self).__init__()
 
-        self.scale = 1.0
-
-        # additional, 3gs specific attributes
-        va = {'x_fix': False,
-              'y_fix': False,
-              'z_fix': False}
-
-        ea = {'target_vector': None,
-              'target_length': None}
-
-        fa = {'target_area'  : None,
-              'target_normal': None}
-
-        ca = {'dir': None}
-
-        self.default_vertex_attributes.update(va)
-        self.default_edge_attributes.update(ea)
-        self.default_face_attributes.update(fa)
-        self.default_cell_attributes.update(ca)
 
     # --------------------------------------------------------------------------
     #   inherited
@@ -282,8 +268,6 @@ class VolMesh3gs(VolMesh):
         halffaces = []
         for ckey in cells:
             for v in nbr_vkeys:
-                print('vkey', vkey)
-                print('cell-ckey', (self.cell[ckey]))
                 halffaces.append(self.cell[ckey][vkey][v])
                 halffaces.append(self.cell[ckey][v][vkey])
         return halffaces
@@ -307,13 +291,13 @@ class VolMesh3gs(VolMesh):
     def vertex_update_xyz(self, vkey, xyz, constrained=True):
         if constrained:
             # X
-            if self.v_data[vkey]['x_fix'] is False:
+            if self.vertex[vkey]['x_fix'] is False:
                 self.vertex[vkey]['x'] = xyz[0]
             # Y
-            if self.v_data[vkey]['y_fix'] is False:
+            if self.vertex[vkey]['y_fix'] is False:
                 self.vertex[vkey]['y'] = xyz[1]
             # Z
-            if self.v_data[vkey]['z_fix'] is False:
+            if self.vertex[vkey]['z_fix'] is False:
                 self.vertex[vkey]['z'] = xyz[2]
         else:
             self.vertex[vkey]['x'] = xyz[0]
@@ -333,6 +317,8 @@ class VolMesh3gs(VolMesh):
         return vector
 
     def edge_halffaces(self, u, v):
+        """All halffaces of a volmesh that has edge u-v.
+        """
         hfkeys = []
         for hfkey in self.halfface:
             if all(vkey in self.halfface[hfkey] for vkey in (u, v)):
@@ -484,7 +470,7 @@ class VolMesh3gs(VolMesh):
     def cell_halfface_neighbours(self, ckey, hfkey):
         """Includes both edge and vertex neighbours.
 
-        note to self: why... is this useful?
+        note to self: why... would this be useful?
         """
         hf_vkeys = self.halfface[hfkey]
         hf_nbrs = []
@@ -529,8 +515,8 @@ class VolMesh3gs(VolMesh):
     # --------------------------------------------------------------------------
     # drawing
     # --------------------------------------------------------------------------
-    draw_volmesh_face_normals = draw_volmesh_face_normals
 
+    draw_volmesh_face_normals = draw_volmesh_face_normals
 
     def draw(self, **kwattr):
         artist = VolMeshArtist(self)
@@ -541,7 +527,6 @@ class VolMesh3gs(VolMesh):
         artist = VolMeshArtist(self)
         # self.clear_cell_labels()
         artist.clear()
-        artist.clear_layer()
 
     def draw_cell(self, ckey):
         draw_cell(self, ckey)

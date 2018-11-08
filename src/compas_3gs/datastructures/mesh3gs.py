@@ -31,6 +31,11 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
+__all__ = [
+    'Mesh3gs'
+]
+
+
 class Mesh3gs(Mesh):
     """Inherits and extends the Mesh class, such that it is more suitable for 3DGS purposes.
 
@@ -51,43 +56,43 @@ class Mesh3gs(Mesh):
     #   updaters / setters
     # --------------------------------------------------------------------------
 
-    def update_v_data(self, vkey, attr_dict=None, **kwattr):
-        if vkey not in self.v_data:
-            self.v_data[vkey] = {}
-        attr = self.default_v_prop.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        self.v_data[vkey].update(attr)
+    # def update_v_data(self, vkey, attr_dict=None, **kwattr):
+    #     if vkey not in self.v_data:
+    #         self.v_data[vkey] = {}
+    #     attr = self.default_v_prop.copy()
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwattr)
+    #     attr.update(attr_dict)
+    #     self.v_data[vkey].update(attr)
 
-    def update_e_data(self, u, v, attr_dict=None, **kwattr):
-        if (u, v) not in self.e_data:
-            self.e_data[u, v] = {}
-        attr = self.default_e_prop.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        self.e_data[u, v].update(attr)
+    # def update_e_data(self, u, v, attr_dict=None, **kwattr):
+    #     if (u, v) not in self.e_data:
+    #         self.e_data[u, v] = {}
+    #     attr = self.default_e_prop.copy()
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwattr)
+    #     attr.update(attr_dict)
+    #     self.e_data[u, v].update(attr)
 
-    def update_f_data(self, fkey, attr_dict=None, **kwattr):
-        if fkey not in self.f_data:
-            self.f_data[fkey] = {}
-        attr = self.default_f_prop.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        self.f_data[fkey].update(attr)
+    # def update_f_data(self, fkey, attr_dict=None, **kwattr):
+    #     if fkey not in self.f_data:
+    #         self.f_data[fkey] = {}
+    #     attr = self.default_f_prop.copy()
+    #     if not attr_dict:
+    #         attr_dict = {}
+    #     attr_dict.update(kwattr)
+    #     attr.update(attr_dict)
+    #     self.f_data[fkey].update(attr)
 
-    def initalize_data(self):
-        for vkey in self.vertex:
-            self.update_v_data(vkey)
-        for u, v in self.edges():
-            self.update_e_data(u, v)
-        for fkey in self.halfface:
-            self.update_f_data(fkey)
+    # def initalize_data(self):
+    #     for vkey in self.vertex:
+    #         self.update_v_data(vkey)
+    #     for u, v in self.edges():
+    #         self.update_e_data(u, v)
+    #     for fkey in self.halfface:
+    #         self.update_f_data(fkey)
 
     # --------------------------------------------------------------------------
     # helpers - vertices

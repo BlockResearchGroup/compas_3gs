@@ -16,8 +16,6 @@ from compas.geometry import project_points_plane
 
 from compas_rhino.helpers import volmesh_select_vertices
 
-from compas_3gs_rhino.display import planarisation_conduit
-
 try:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
@@ -31,10 +29,21 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['mesh_arearisation']
+__all__ = ['mesh_arearise']
 
 
-def mesh_arearisation(mesh,
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+#
+#   arearise mesh
+#
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+
+
+def mesh_arearise(mesh,
                       count=100,
                       target_normals=None,
                       target_centers=None,
@@ -44,8 +53,6 @@ def mesh_arearisation(mesh,
                       omit_vkeys=[],
                       flat_tolerance=0.0001,
                       area_tolerance=0.0001):
-
-
 
     # ..........................................................................
 

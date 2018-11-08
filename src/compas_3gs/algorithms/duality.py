@@ -92,14 +92,10 @@ def volmesh_dual_network(volmesh, cls=None):
         cls = Network
 
     dual_network = cls()
-    dual_network.attributes['name'] = 'volmesh_dual_network'
 
     for ckey in volmesh.cell:
         x, y, z = volmesh.cell_centroid(ckey)
         dual_network.add_vertex(key=ckey, x=x, y=y, z=z)
-        print('ckey ---------------------------- ', ckey)
-        for hfkey in volmesh.cell_halffaces(ckey):
-            print(hfkey, 'nbr_cell', volmesh.halfface_pair(hfkey))
 
         for nbr in volmesh.cell_neighbours(ckey):
             if nbr in dual_network.edge[ckey]:

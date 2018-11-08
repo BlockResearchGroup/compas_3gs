@@ -1,11 +1,23 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
-from compas_3gs.datastructures.mesh3gs import Mesh3gs as Mesh
+
+from compas_3gs.datastructures import Mesh3gs
 
 from compas.geometry import add_vectors
 
 
-class EGI(Mesh):
+__author__    = ['Juney Lee']
+__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'juney.lee@arch.ethz.ch'
+
+
+__all__ = ['EGI']
+
+
+class EGI(Mesh3gs):
     """Definition of an egi.
 
     An EGI is a topological (mesh) dual of a cell of a volmesh, with all of its elements represented on a unit sphere.
@@ -15,19 +27,18 @@ class EGI(Mesh):
     def __init__(self):
         super(EGI, self).__init__()
 
-        self.v_data = {}
-        self.e_data = {}
-        self.f_data = {}
+        a  = {'origin': (0, 0, 0)}
+        va = {'x_fix' : False,
+              'y_fix' : False,
+              'z_fix' : False,
+              'weight': None}
+        ea = {}
+        fa = {}
 
-        self.default_v_prop = {
-            'x_fix' : False,
-            'y_fix' : False,
-            'z_fix' : False,
-            'weight': None}
-
-        self.default_e_prop = {}
-
-        self.default_f_prop = {}
+        self.attributes.update(a)
+        self.default_vertex_attributes.update(va)
+        self.default_edge_attributes.update(ea)
+        self.default_face_attributes.update(fa)
 
     # --------------------------------------------------------------------------
     #   constructors

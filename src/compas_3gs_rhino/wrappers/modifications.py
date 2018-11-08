@@ -1,23 +1,11 @@
-
 import System
-
-
 
 from compas.geometry import add_vectors
 
-
-
 from compas_rhino.selectors import VertexSelector
-
 
 from compas_3gs_rhino.control import _get_initial_point
 from compas_3gs_rhino.control import _get_target_point
-
-
-from compas_rhino.utilities import xdraw_labels
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_faces
-
 
 dotted_color = System.Drawing.Color.FromArgb(0, 0, 0)
 arrow_color  = System.Drawing.Color.FromArgb(255, 0, 79)
@@ -27,13 +15,12 @@ try:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
     import Rhino
+
+    from Rhino.ApplicationSettings import *
+    from Rhino.Geometry import Point3d
+
 except ImportError:
     compas.raise_if_ironpython()
-
-from Rhino.ApplicationSettings import *
-
-from Rhino.Geometry import Point3d
-
 
 
 __author__     = ['Juney Lee']
@@ -45,15 +32,19 @@ __email__      = 'juney.lee@arch.ethz.ch'
 __all__ = ['volmesh_vertex_fixity',
            'volmesh_vertex_move',
            'volmesh_vertex_align',
+
            'network_vertex_move',
            'network_vertex_fixity']
 
 
+# ==============================================================================
+#   volmesh
+# ==============================================================================
+
+
 def volmesh_vertex_fixity(volmesh):
 
-
     vkeys = VertexSelector.select_vertices(volmesh)
-
 
     go = Rhino.Input.Custom.GetOption()
     go.SetCommandPrompt('Set axes Constraints')
@@ -110,7 +101,6 @@ def volmesh_vertex_move(volmesh):
 
     ip   = _get_initial_point()
 
-
     def OnDynamicDraw(sender, e):
         cp = e.CurrentPoint
         translation = cp - ip
@@ -140,7 +130,7 @@ def volmesh_vertex_move(volmesh):
     gp.AddOptionToggle('ortho_snap', ortho_option)
 
     while True:
-        ModelAidSettings.Ortho = ortho_option.CurrentValue
+        # ModelAidSettings.Ortho = ortho_option.CurrentValue
         get_rc = gp.Get()
         gp.SetBasePoint(ip, False)
         if gp.CommandResult() != Rhino.Commands.Result.Success:
@@ -190,7 +180,6 @@ def volmesh_vertex_align(volmesh):
             else:
                 nbrs.append(nbr)
         nbr_vkeys[vkey] = nbrs
-
 
     # --------------------------------------------------------------------------
     # get rhino point
@@ -249,8 +238,9 @@ def volmesh_vertex_align(volmesh):
     volmesh.draw(layer='forcepolyhedra')
 
 
-
-
+# ==============================================================================
+#   network
+# ==============================================================================
 
 
 def network_vertex_fixity(network):
@@ -361,7 +351,9 @@ def network_vertex_move(network):
     return network
 
 
-
+# ==============================================================================
+#   helpers
+# ==============================================================================
 
 
 def _get_initial_point(message='Point to move from?'):

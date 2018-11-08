@@ -12,8 +12,9 @@ from compas.geometry import distance_point_point
 from compas_rhino.artists import MeshArtist
 from compas_rhino.helpers import volmesh_from_polysurfaces
 
-from compas_3gs.datastructures import VolMesh3gs
-from compas_3gs.datastructures import EGI
+from compas_3gs.diagrams import EGI
+from compas_3gs.diagrams import FormNetwork
+from compas_3gs.diagrams import ForceVolMesh
 
 from compas_3gs.algorithms import volmesh_dual_volmesh
 from compas_3gs.algorithms import volmesh_dual_network
@@ -27,10 +28,10 @@ except ImportError:
 
 
 __all__ = [
-    'make_volmesh_from_polysurfaces',
-    'make_network_from_volmesh',
-    'make_volmesh_dual_volmesh',
-    'make_egi_from_volmesh'
+    'rhino_volmesh_from_polysurfaces',
+    'rhino_network_from_volmesh',
+    'rhino_volmesh_dual_volmesh',
+    'rhino_egi_from_volmesh'
 ]
 
 
@@ -39,13 +40,21 @@ __all__ = [
 # ==============================================================================
 
 
-def make_gfp_from_vectors():
+def rhino_gfp_from_vectors():
+    """Construct a global force polyhedron (gfp) from a set of equilibrated force vectors.
+
+    Returns
+    -------
+    GFP
+        A global force polyhedron as a cell (mesh) object.
+
+
+    """
     pass
 
 
-def make_egi_from_volmesh(volmesh):
+def rhino_egi_from_volmesh(volmesh):
     """Construct an egi for each cell of a volmesh and store it in volmesh.celldata
-
 
     Parameters
     ----------
@@ -73,24 +82,22 @@ def make_egi_from_volmesh(volmesh):
 # ==============================================================================
 
 
-def make_volmesh_from_polysurfaces():
+def rhino_volmesh_from_polysurfaces():
     """Construct a volmesh from Rhino polysurfaces.
 
     Returns
     -------
     Volmesh
-        a volmesh object.
+        A volmesh object.
 
     """
 
     layer = 'force_volmesh'
 
-    # 1. get rhino polysurfaces
     guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
     rs.HideObjects(guids)
 
-    # 2. make volmesh
-    volmesh       = VolMesh3gs()
+    volmesh       = ForceVolMesh()
     volmesh       = volmesh_from_polysurfaces(volmesh, guids)
     volmesh.layer = layer
     volmesh.attributes['name'] = layer
@@ -99,8 +106,40 @@ def make_volmesh_from_polysurfaces():
     return volmesh
 
 
-def make_network_from_volmesh(volmesh):
+def rhino_network_from_volmesh(volmesh, offset=2):
     """Construct a dual network from a volmesh object.
+
+    Parameters
+    ----------
+    Volmesh
+        A volmesh object.
+    offset : a float
+        Amount to move the form diagram from the force diagram.
+
+    Returns
+    -------
+    Network
+        The dual network object.
+
+    """
+
+    layer = 'form_network'
+
+    network       = volmesh_dual_network(volmesh, cls=FormNetwork)
+    network.layer = layer
+    network.attributes['name'] = layer
+
+    x_move = network.bounding_box()[0] * offset
+    for vkey in network.vertex:
+        network.vertex[vkey]['x'] += x_move
+
+    network.draw(layer=layer)
+
+    return network
+
+
+def rhino_volmesh_dual_volmesh(volmesh):
+    """Construct a dual volmesh from a volmesh object.
 
     Parameters
     ----------
@@ -109,42 +148,32 @@ def make_network_from_volmesh(volmesh):
 
     Returns
     -------
-    Network
-        A network object.
+    Volmesh
+        The dual volmesh object.
 
     """
 
-    layer = 'form_network'
-
-    # 1. make dual network
-    network       = volmesh_dual_network(volmesh)
-    network.layer = layer
-    network.attributes['name'] = layer
-
-    # 2. move network
-    x = {vkey: volmesh.vertex_coordinates(vkey)[0] for vkey in volmesh.vertex}
-    sorted_x = sorted(x, key=x.get)
-    move     = abs(x[sorted_x[0]] - x[sorted_x[-1]])
-    for vkey in network.vertex:
-        network.vertex[vkey]['x'] += move * 1.25
-
-    network.draw(layer=layer)
-
-    return network
-
-
-def make_volmesh_dual_volmesh(volmesh):
-
-    layer = 'form_volMesh'
+    layer   = 'form_volmesh'
 
     volmesh = volmesh_dual_volmesh(volmesh)
 
     if volmesh:
         volmesh.attributes['name'] = layer
-        volmesh.initialize_data()
         volmesh.draw(layer=layer)
 
         return volmesh
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+
+    pass
+
+
+
 
 
 # ******************************************************************************

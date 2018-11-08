@@ -1,6 +1,12 @@
 from compas.datastructures import VolMesh
 
 
+__all__ = [
+    'cell_face_split_vertices',
+    'cell_split_vertex'
+]
+
+
 def cell_face_split_vertices(self, hfkey):
     hf_vkeys = self.halfface_vertices(hfkey)
 

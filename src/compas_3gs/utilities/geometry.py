@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-
 from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
 from compas.geometry import cross_vectors
@@ -20,11 +19,13 @@ from compas.geometry import scale_vector
 
 from compas.geometry import centroid_points
 
-from compas.geometry import distance_point_point as distance
-from compas.geometry import is_point_on_segment
+from compas.geometry import bestfit_plane
+from compas.geometry import centroid_points
+from compas.geometry import distance_point_point
 from compas.geometry import intersection_line_line
+from compas.geometry import is_point_on_segment
 from compas.geometry.intersections import intersection_segment_segment
-
+from compas.geometry.transformations.transformations import project_point_plane
 
 from compas.datastructures.network import Network
 
@@ -35,21 +36,20 @@ from compas_rhino.utilities import xdraw_lines
 from compas_rhino.utilities import xdraw_faces
 
 
-__all__ = [
-    'normal_polygon_general',
-    'area_polygon_general',
-]
+__all__  = ['normal_polygon_general',
+            'area_polygon_general',
+            'volmesh_face_flatness']
 
 
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
 #
 #   self-intersecting polygons
 #
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
 
 
 def normal_polygon_general(points, unitized=True):
@@ -105,23 +105,34 @@ def area_polygon_general(points):
     return length_vector(normal_polygon_general(points, unitized=False))
 
 
+def volmesh_face_flatness(volmesh):
+    """compas.geometry --> flatness only works for quads ...
+    """
+    flatness_dict = {fkey : 0 for fkey in volmesh.faces()}
+    for fkey in volmesh.faces():
+        deviation = 0
+        f_vkeys  = volmesh.halfface_vertices(fkey)
+        f_points = [volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+        plane    = bestfit_plane(f_points)
+        for vkey in f_vkeys:
+            xyz           = volmesh.vertex_coordinates(vkey)
+            projected_xyz = project_point_plane(xyz, plane)
+            dev           = distance_point_point(xyz, projected_xyz)
+            if dev > deviation:
+                deviation = dev
+        flatness_dict[fkey] = deviation
+    return flatness_dict
 
 
-
-
-
-
-
-
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
 #
 #   self-intersecting polygons
 #
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
 
 
 def is_polygon_self_intersecting(points):

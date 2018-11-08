@@ -21,6 +21,11 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
+__all__ = [
+    'Network3gs'
+]
+
+
 class Network3gs(Network):
     """Inhertis and extends the Network class, such that it is more suitable for 3DGS purposes.
 
@@ -32,17 +37,6 @@ class Network3gs(Network):
         super(Network3gs, self).__init__()
 
 
-        # additional, 3gs specific attributes
-        va = {'x_fix': False,
-              'y_fix': False,
-              'z_fix': False,
-              'egi'  : None}
-
-        ea = {'target_vector': None,
-              'target_length': None}
-
-        self.default_vertex_attributes.update(va)
-        self.default_edge_attributes.update(ea)
 
     # --------------------------------------------------------------------------
     # iterators
@@ -87,24 +81,44 @@ class Network3gs(Network):
     #         self.update_e_data(u, v)
 
     # --------------------------------------------------------------------------
+    # misc
+    # --------------------------------------------------------------------------
+
+    def bounding_box(self):
+
+        xyz = [self.vertex_coordinates(vkey) for vkey in self.vertex]
+
+        x_sorted = sorted(xyz, key=lambda k: k[0])
+        y_sorted = sorted(xyz, key=lambda k: k[1])
+        z_sorted = sorted(xyz, key=lambda k: k[2])
+
+        x = abs(x_sorted[0][0] - x_sorted[-1][0])
+        y = abs(y_sorted[0][1] - y_sorted[-1][1])
+        z = abs(z_sorted[0][2] - z_sorted[-1][2])
+
+        return x, y, z
+
+
+
+    # --------------------------------------------------------------------------
     # helpers - vertices
     # --------------------------------------------------------------------------
 
-    def vertex_update_xyz(self, vkey, xyz, constrained=True):
+    def vertex_update_xyz(self, vkey, new_xyz, constrained=True):
         if constrained:
             # X
-            if self.v_data[vkey]['x_fix'] is False:
-                self.vertex[vkey]['x'] = xyz[0]
+            if self.vertex[vkey]['x_fix'] is False:
+                self.vertex[vkey]['x'] = new_xyz[0]
             # Y
-            if self.v_data[vkey]['y_fix'] is False:
-                self.vertex[vkey]['y'] = xyz[1]
+            if self.vertex[vkey]['y_fix'] is False:
+                self.vertex[vkey]['y'] = new_xyz[1]
             # Z
-            if self.v_data[vkey]['z_fix'] is False:
-                self.vertex[vkey]['z'] = xyz[2]
+            if self.vertex[vkey]['z_fix'] is False:
+                self.vertex[vkey]['z'] = new_xyz[2]
         else:
-            self.vertex[vkey]['x'] = xyz[0]
-            self.vertex[vkey]['y'] = xyz[1]
-            self.vertex[vkey]['z'] = xyz[2]
+            self.vertex[vkey]['x'] = new_xyz[0]
+            self.vertex[vkey]['y'] = new_xyz[1]
+            self.vertex[vkey]['z'] = new_xyz[2]
 
     # --------------------------------------------------------------------------
     # helpers - edges

@@ -403,7 +403,6 @@ class VolMesh(FromToData,
     def from_vertices_and_cells(cls, vertices, cells):
         mesh = cls()
         for x, y, z in vertices:
-            print(x, y, z)
             mesh.add_vertex(x=x, y=y, z=z)
 
         for halffaces in cells:

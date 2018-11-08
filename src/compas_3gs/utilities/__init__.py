@@ -1,4 +1,12 @@
-from .geometry import *
-from .geometry import __all__ as a
+from __future__ import absolute_import
 
-__all__ = a
+from .geometry import *
+from .topology import *
+
+from . import geometry
+from . import topology
+
+__all__ = []
+
+__all__ += geometry.__all__
+__all__ += topology.__all__

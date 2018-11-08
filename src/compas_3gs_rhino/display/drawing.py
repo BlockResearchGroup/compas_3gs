@@ -173,6 +173,52 @@ def draw_volmesh_face_normals(volmesh, hfkeys):
     compas_rhino.xdraw_lines(lines, layer=volmesh.layer, clear=False, redraw=False)
 
 
+def draw_volmesh_boundary_forces(volmesh, network, show_value=False, scale=1.0):
+
+    volmesh.clear()
+    network.clear()
+
+    hfkeys    = volmesh.halffaces_on_boundary()
+    hf_areas  = {hfkey: volmesh.halfface_area(hfkey) for hfkey in hfkeys}
+    hf_colors = get_value_colordict(hf_areas)
+
+    lines = []
+    dots  = []
+
+    for hfkey in hfkeys:
+        ckey   = volmesh.halfface_cell(hfkey)
+        normal = volmesh.halfface_normal(hfkey)
+        vector = scale_vector(normal, scale)
+        sp     = network.vertex_coordinates(ckey)
+        ep     = add_vectors(sp, vector)
+
+        lines.append({
+            'start': ep,
+            'end'  : sp,
+            'color': hf_colors[hfkey],
+            'arrow': 'end',
+            'name' : '{}.edge.boundary_force.{}'.format(network.name, hfkey)})
+
+        if show_value:
+            dots.append({
+                'pos'  : midpoint_point_point(sp, ep),
+                'text' : str(round(hf_areas[hfkey], 3)),
+                'name' : '{}.edge.boundary.{}'.format(network.name, hfkey),
+                'color': hf_colors[hfkey]})
+
+
+
+    network.draw()
+    xdraw_lines(lines, layer=network.layer, clear=False, redraw=False)
+    xdraw_labels(dots, layer=network.layer, clear=False, redraw=False)
+
+    volmesh.draw_edges()
+    volmesh.draw_faces(color=hf_colors)
+
+    return
+
+
+
 # ==============================================================================
 #   network
 # ==============================================================================
