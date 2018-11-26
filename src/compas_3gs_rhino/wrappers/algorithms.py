@@ -5,6 +5,11 @@ from __future__ import division
 from compas_rhino.helpers.volmesh import volmesh_select_vertices
 from compas_rhino.helpers.volmesh import volmesh_select_faces
 
+from compas_rhino.selectors import VertexSelector
+from compas_rhino.selectors import EdgeSelector
+from compas_rhino.selectors import FaceSelector
+
+
 from compas_rhino.conduits import FacesConduit
 from compas_rhino.conduits import LinesConduit
 
@@ -12,10 +17,11 @@ from compas_3gs.algorithms import volmesh_dual_network
 from compas_3gs.algorithms import volmesh_reciprocate
 from compas_3gs.algorithms import volmesh_planarise
 
+import compas
+
 from compas_3gs.operations import cell_subdivide_barycentric
 
 from compas_3gs.utilities import volmesh_face_flatness
-
 
 from compas_3gs_rhino.control.dynamic_pickers import volmesh3gs_select_cell
 
@@ -43,43 +49,45 @@ __all__ = ['rhino_volmesh_planarise',
            'rhino_volmesh_reciprocate']
 
 
-# ==============================================================================
-# ==============================================================================
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 #
 #   planarisation
 #
-# ==============================================================================
-# ==============================================================================
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def rhino_volmesh_planarise(volmesh,
-                        kmax=500,
+                            kmax=500,
 
-                        target_areas={},
-                        target_normals={},
-                        target_centers={},
+                            target_areas={},
+                            target_normals={},
+                            target_centers={},
 
-                        fix_boundary_normals=False,
-                        fix_all_normals=False,
-                        flat_tolerance=0.001,
-                        area_tolerance=0.001,
+                            fix_vkeys=[],
 
-                        fix_all=False,
-                        conduit=False):
+                            fix_boundary_normals=False,
+                            fix_all_normals=False,
+                            flat_tolerance=0.001,
+                            area_tolerance=0.001,
 
-    # 1. select vertices to fix   ----------------------------------------------
-    vkeys = volmesh_select_vertices(volmesh)
+                            fix_all=False,
 
-    # 2. callback / conduit ----------------------------------------------------
-    conduit = PlanarisationConduit(volmesh, refreshrate=10)
+                            refreshrate=5):
+
+    # 1. callback / conduit ----------------------------------------------------
+    conduit = PlanarisationConduit(volmesh)
 
     def callback(volmesh, k, args):
-        conduit.face_colors = volmesh_face_flatness(volmesh)
-        conduit.redraw(k)
 
-    # 3. planarisation ---------------------------------------------------------
+        if k % refreshrate == 0:
+            conduit.face_colors = volmesh_face_flatness(volmesh)
+            conduit.redraw()
+
+    # 2. planarisation ---------------------------------------------------------
     volmesh.clear()
 
     with conduit.enabled():
@@ -89,27 +97,28 @@ def rhino_volmesh_planarise(volmesh,
                           target_normals=target_normals,
                           target_centers=target_centers,
                           omit_fkeys=[],
-                          omit_vkeys=vkeys,
+                          omit_vkeys=fix_vkeys,
                           fix_boundary_normals=fix_boundary_normals,
                           fix_all_normals=fix_all_normals,
                           flat_tolerance=flat_tolerance,
                           area_tolerance=area_tolerance,
                           callback=callback,
-                          callback_args=None)
+                          callback_args=None,
+                          print_result=True)
 
-    # 4. update / redraw -------------------------------------------------------
+    # 3. update / redraw -------------------------------------------------------
     volmesh.draw()
 
 
-# ==============================================================================
-# ==============================================================================
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 #
 #   arearisation
 #
-# ==============================================================================
-# ==============================================================================
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def rhino_volmesh_arearise(volmesh,
@@ -132,11 +141,11 @@ def rhino_volmesh_arearise(volmesh,
 
     volmesh_planarise(volmesh,
                       count=1000,
-                            target_normals=None,
-                            target_centers=None,
-                            fix_all=False,
-                            target_areas=target_areas,
-                            fix_boundary=True)
+                      target_normals=None,
+                      target_centers=None,
+                      fix_all=False,
+                      target_areas=target_areas,
+                      fix_boundary=True)
 
     if conduit:
         conduit.Enabled = False
@@ -145,36 +154,36 @@ def rhino_volmesh_arearise(volmesh,
     volmesh.draw()
 
 
-# ==============================================================================
-# ==============================================================================
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 #
 #   reciprocation
 #
-# ==============================================================================
-# ==============================================================================
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def rhino_volmesh_reciprocate(volmesh,
                               formdiagram,
-                              kmax=100,
+                              kmax=1000,
+                              weight=1,
                               edge_min=1,
                               edge_max=20,
                               fix_vkeys=[],
-                              tolerance=0.00001):
+                              tolerance=0.00001,
+                              refreshrate=5):
 
-    # 1. get weight ------------------------------------------------------------
-    weight = rs.GetReal(
-        "Enter weight factor : 1  = form only... 0 = force only...", 1.0, 0)
-
-    # 2. callback / conduit ----------------------------------------------------
-    conduit = ReciprocationConduit(volmesh, formdiagram, refreshrate=1)
+    # 1. callback / conduit ----------------------------------------------------
+    conduit = ReciprocationConduit(volmesh,
+                                   formdiagram)
 
     def callback(volmesh, formdiagram, k, args):
-        conduit.redraw(k)
+        if k % refreshrate == 0:
+            conduit.redraw()
 
-    # 3. reciprocation ---------------------------------------------------------
+    # 2. reciprocation ---------------------------------------------------------
     volmesh.clear()
     formdiagram.clear()
 
@@ -187,8 +196,9 @@ def rhino_volmesh_reciprocate(volmesh,
                             edge_min=edge_min,
                             edge_max=edge_max,
                             tolerance=tolerance,
-                            callback=callback)
+                            callback=callback,
+                            print_result=True)
 
-    # 4. update / redraw -------------------------------------------------------
+    # 3. update / redraw -------------------------------------------------------
     volmesh.draw()
     formdiagram.draw()

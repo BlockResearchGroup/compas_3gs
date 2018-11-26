@@ -13,8 +13,6 @@ from compas.geometry import centroid_points
 from compas.geometry.transformations.transformations import project_point_plane
 from compas.geometry import bestfit_plane
 
-from compas.geometry import flatness
-
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
@@ -37,7 +35,8 @@ def volmesh_planarise(volmesh,
                       flat_tolerance=0.001,
                       area_tolerance=0.001,
                       callback=None,
-                      callback_args=None):
+                      callback_args=None,
+                      print_result=False):
     """Planarisation of volmesh faces.
 
     Parameters
@@ -103,14 +102,12 @@ def volmesh_planarise(volmesh,
 
         new_xyz = {vkey: [] for vkey in volmesh.vertex}
 
-
         for fkey in volmesh.faces():
 
             fkey_pair = volmesh.halfface_pair(fkey)
 
             # 1. evaluate current face -----------------------------------------
             f_vkeys  = volmesh.halfface_vertices(fkey)
-            f_points = [volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
             f_center = volmesh.halfface_center(fkey)
             f_normal = volmesh.halfface_normal(fkey)
             f_area   = volmesh.halfface_area(fkey)
@@ -136,7 +133,7 @@ def volmesh_planarise(volmesh,
                 projected_xyz  = project_point_plane(xyz, plane)
                 new_face[vkey] = projected_xyz
                 dist           = distance_point_point(xyz, projected_xyz)
-                if dist >  flat_deviation:
+                if dist > flat_deviation:
                     flat_deviation = dist
 
             # 5. arearise ------------------------------------------------------
@@ -166,17 +163,24 @@ def volmesh_planarise(volmesh,
         if callback:
             callback(volmesh, k, callback_args)
 
-    print('-------------------------------------------------------------------')
-    print('')
-    print('Planarisation stopped after', k, 'iterations ...')
-    print('... with max_deviation of :', flat_deviation)
-    print('')
-    print('-------------------------------------------------------------------')
+    if print_result:
+        print('---------------------------------------------------------------')
+        print('')
+        print('Planarisation stopped after', k, 'iterations ...')
+        print('... with max_deviation of :', flat_deviation)
+        print('')
+        print('---------------------------------------------------------------')
 
 
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
 #   planarisation helpers
-# ==============================================================================
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def _pair_membership(item1, item2, container):
@@ -207,9 +211,15 @@ def _scale_polygon(points_dict, scale):
     return new_points_dict
 
 
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
 # Main
-# ==============================================================================
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 if __name__ == '__main__':

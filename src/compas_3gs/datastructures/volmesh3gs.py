@@ -15,7 +15,7 @@ from compas.geometry import dot_vectors
 from compas.geometry import scale_vectors
 from compas.geometry import centroid_points
 
-from compas.geometry import center_of_mass_polygon
+from compas.geometry import centroid_polygon
 
 from compas_rhino.helpers.volmesh import volmesh_draw
 from compas_rhino.artists import VolMeshArtist
@@ -338,13 +338,13 @@ class VolMesh3gs(VolMesh):
     # --------------------------------------------------------------------------
 
     def face_center(self, fkey):
-        return center_of_mass_polygon(self.halfface_coordinates(fkey))
+        return centroid_polygon(self.halfface_coordinates(fkey))
 
     def halfface_coordinates(self, hfkey):
         return [self.vertex_coordinates(key) for key in self.halfface_vertices(hfkey)]
 
     def halfface_center(self, hfkey):
-        return center_of_mass_polygon(self.halfface_coordinates(hfkey))
+        return centroid_polygon(self.halfface_coordinates(hfkey))
 
     def halfface_halfedges(self, hfkey):
         vertices = self.halfface_vertices(hfkey)

@@ -15,7 +15,7 @@ from compas.geometry import dot_vectors
 from compas.geometry import scale_vector
 from compas.geometry import length_vector
 from compas.geometry import normalize_vector
-from compas.geometry import center_of_mass_polygon
+from compas.geometry import centroid_polyhedron
 from compas.geometry import intersection_line_plane
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
@@ -26,9 +26,6 @@ from compas_3gs.operations import vertex_merge
 from compas_3gs.operations import vertex_lift
 from compas_3gs.operations import halfface_pinch
 from compas_3gs.operations import halfface_merge
-
-
-
 
 from compas.utilities import i_to_rgb
 
@@ -582,7 +579,7 @@ def rhino_cell_subdivide_barycentric(volmesh, formdiagram=None):
 #             polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
 #             e.Display.DrawPolyline(polygon_xyz, black, 2)
 #             if fkey == hfkey:
-#                 xyz = center_of_mass_polygon(face_coordinates)
+#                 xyz = centroid_polyhedron(face_coordinates)
 #                 e.Display.DrawDot(Point3d(*xyz), str(round(area, 3)), black, white)
 #                 e.Display.DrawPolyline(polygon_xyz, black, 6)
 #                 e.Display.DrawPolygon(polygon_xyz, color, filled=True)

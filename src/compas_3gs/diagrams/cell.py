@@ -2,10 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.geometry import center_of_mass_polyhedron
+from compas.geometry import centroid_polyhedron
 
 from compas_3gs.datastructures import Mesh3gs
-from compas_3gs.datastructures import EGI
+from compas_3gs.diagrams import EGI
 
 __author__    = ['Juney Lee']
 __copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
@@ -25,7 +25,7 @@ class Cell(Mesh3gs):
         super(Cell, self).__init__()
 
         self.cell = Mesh3gs()
-        self.egi  =
+        self.egi  = Mesh3gs()
 
 
         a  = {}
@@ -48,7 +48,7 @@ class Cell(Mesh3gs):
 
     def cell_center(self):
         vertices = [self.vertex_coordinates(vkey) for vkey in self.vertex]
-        return center_of_mass_polyhedron(vertices, self.face)
+        return centroid_polyhedron(vertices, self.face)
 
 
 # ==============================================================================

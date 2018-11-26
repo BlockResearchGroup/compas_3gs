@@ -35,7 +35,8 @@ def volmesh_reciprocate(volmesh,
                         edge_max=None,
                         tolerance=0.001,
                         callback=None,
-                        callback_args=None):
+                        callback_args=None,
+                        print_result=False):
     """Perpendicularizes the polyhedral form and force diagrams.
 
     Parameters
@@ -70,13 +71,13 @@ def volmesh_reciprocate(volmesh,
         if not callable(callback):
             raise Exception('Callback is not callable.')
 
-
     free_vkeys = list(set(formdiagram.vertex) - set(fix_vkeys))
 
     # --------------------------------------------------------------------------
     #   1. compute target vectors
     # --------------------------------------------------------------------------
     target_vectors = {}
+    target_normals = {}
     for u, v in formdiagram.edges():
         u_hfkey     = volmesh.cell_pair_hfkeys(u, v)[0]
         face_normal = scale_vector(volmesh.halfface_normal(u_hfkey), weight)
@@ -84,6 +85,7 @@ def volmesh_reciprocate(volmesh,
         target      = normalize_vector(add_vectors(face_normal, edge_vector))
         target_vectors[(u, v)] = {'fkey'  : u_hfkey,
                                   'target': target}
+        target_normals[u_hfkey] = target
 
     # --------------------------------------------------------------------------
     #   2. loop
@@ -91,80 +93,99 @@ def volmesh_reciprocate(volmesh,
 
     for k in range(kmax):
 
-        # FORM diagram =========================================================
+        # ----------------------------------------------------------------------
+        #   form diagram
+        # ----------------------------------------------------------------------
+        if weight != 0:
 
-        form_deviation = 0
-        new_form_xyz        = {vkey: [] for vkey in formdiagram.vertex}
+            form_deviation = 0
+            new_form_xyz   = {vkey: [] for vkey in formdiagram.vertex}
 
-        for u, v in target_vectors:
-            hfkey    = target_vectors[(u, v)]['fkey']
-            target_v = target_vectors[(u, v)]['target']
-            edge_v   = formdiagram.edge_vector(u, v, unitized=False)
+            for u, v in target_vectors:
+                hfkey    = target_vectors[(u, v)]['fkey']
+                target_v = target_vectors[(u, v)]['target']
+                face_n   = volmesh.halfface_normal(hfkey)
+                edge_v   = formdiagram.edge_vector(u, v, unitized=False)
 
-            # check edge orientation -------------------------------------------
-            direction = _get_lambda(edge_v, target_v)
+                # check edge orientation ---------------------------------------
+                direction = _get_lambda(edge_v, target_v)
 
-            # check deviation --------------------------------------------------
-            dot = dot_vectors(target_v, normalize_vector(edge_v))
-            perp_check = abs(1 - abs(dot))
-            if perp_check > form_deviation:
-                form_deviation = perp_check
+                # check deviation ----------------------------------------------
+                dot = dot_vectors(face_n, normalize_vector(edge_v))
+                perp_check = abs(1 - abs(dot))
+                if perp_check > form_deviation:
+                    form_deviation = perp_check
 
-            # target edge length -----------------------------------------------
-            l = length_vector(edge_v)
+                # target edge length -------------------------------------------
+                l = length_vector(edge_v)
 
-            # min edge
-            l_min = formdiagram.edge[u][v]['l_min']
-            if edge_min:
-                l_min = edge_min
-            if l < l_min:
-                l = l_min
+                # min edge
+                l_min = formdiagram.edge[u][v]['l_min']
+                if edge_min:
+                    l_min = edge_min
+                if l < l_min:
+                    l = l_min
 
-            # max edge
-            l_max = formdiagram.edge[u][v]['l_max']
-            if edge_max:
-                l_max = edge_max
-            if l > l_max:
-                l = l_max
+                # max edge
+                l_max = formdiagram.edge[u][v]['l_max']
+                if edge_max:
+                    l_max = edge_max
+                if l > l_max:
+                    l = l_max
 
-            l *= direction
+                l *= direction
+
+                # compute new coordinates --------------------------------------
+                if u in free_vkeys:
+                    new_u_xyz = add_vectors(formdiagram.vertex_coordinates(v), scale_vector(target_v, -1 * l))
+                    new_form_xyz[u].append(new_u_xyz)
+
+                if v in free_vkeys:
+                    new_v_xyz = add_vectors(formdiagram.vertex_coordinates(u), scale_vector(target_v, l))
+                    new_form_xyz[v].append(new_v_xyz)
 
             # compute new coordinates ------------------------------------------
-            if u in free_vkeys:
-                new_u_xyz = add_vectors(formdiagram.vertex_coordinates(v), scale_vector(target_v, -1 * l))
-                new_form_xyz[u].append(new_u_xyz)
+            for vkey in free_vkeys:
+                final_xyz = centroid_points(new_form_xyz[vkey])
+                formdiagram.vertex_update_xyz(vkey, final_xyz)
 
-            if v in free_vkeys:
-                new_v_xyz = add_vectors(formdiagram.vertex_coordinates(u), scale_vector(target_v, l))
-                new_form_xyz[v].append(new_v_xyz)
+            # Check convergence ------------------------------------------------
+            if form_deviation < tolerance:
+                break
 
-        # compute new coordinates -
-        for vkey in free_vkeys:
-            final_xyz = centroid_points(new_form_xyz[vkey])
-            formdiagram.vertex_update_xyz(vkey, final_xyz)
+        # ----------------------------------------------------------------------
+        #   form diagram
+        # ----------------------------------------------------------------------
+        if weight != 1:
+            volmesh_planarise(volmesh,
+                              kmax=1,
+                              target_normals=target_normals)
 
-        # FORCE diagram ========================================================
-        force_deviation = 0
-        new_force_xyz   = {vkey: [] for vkey in volmesh.vertex}
+        # ----------------------------------------------------------------------
+        #   callback
+        # ----------------------------------------------------------------------
 
         if callback:
             callback(volmesh, formdiagram, k, callback_args)
 
-        # Check convergence ====================================================
-        if form_deviation < tolerance:
-            break
-
-    print('-------------------------------------------------------------------')
-    print('')
-    print('Reciprocation stopped after', k, 'iterations ...')
-    print('... with max_deviation of :', form_deviation)
-    print('')
-    print('-------------------------------------------------------------------')
+    if print_result:
+        print('---------------------------------------------------------------')
+        print('')
+        print('Reciprocation stopped after', k, 'iterations ...')
+        print('... with max_deviation of :', form_deviation)
+        print('')
+        print('---------------------------------------------------------------')
 
 
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
 #   reciprocation helpers
-# ==============================================================================
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def _get_lambda(vector_1, vector_2):
@@ -175,9 +196,15 @@ def _get_lambda(vector_1, vector_2):
         return 1
 
 
-# ==============================================================================
-# Main
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   Main
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 if __name__ == '__main__':

@@ -13,7 +13,7 @@ __all__ = []
 # from compas.topology.duality import _find_first_neighbour
 
 # from compas.geometry import distance_point_point
-# from compas.geometry import center_of_mass_polygon
+# from compas.geometry import centroid_polyhedron
 # from compas.geometry import add_vectors
 # from compas.geometry import cross_vectors
 # from compas.geometry import subtract_vectors
@@ -719,7 +719,7 @@ __all__ = []
 #     for fkey in egi.face:
 #         face_vkeys = egi.face[fkey][:-1]
 #         if len(face_vkeys) > 3:
-#             face_center     = center_of_mass_polygon([egi.vertex_coordinates(key) for key in face_vkeys])
+#             face_center     = centroid_polyhedron([egi.vertex_coordinates(key) for key in face_vkeys])
 #             new_vkey        = max(int(vkey) for vkey in egi.vertex.keys()) + 1
 #             new_normal      = Vector(face_center, start=origin)
 #             new_normal.normalize()
