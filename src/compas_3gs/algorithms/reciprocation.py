@@ -169,12 +169,12 @@ def volmesh_reciprocate(volmesh,
             callback(volmesh, formdiagram, k, callback_args)
 
     if print_result:
-        print('---------------------------------------------------------------')
+        print('==============================================================')
         print('')
         print('Reciprocation stopped after', k, 'iterations ...')
         print('... with max_deviation of :', form_deviation)
         print('')
-        print('---------------------------------------------------------------')
+        print('==============================================================')
 
 
 # ******************************************************************************

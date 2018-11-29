@@ -34,6 +34,7 @@ def volmesh_planarise(volmesh,
                       fix_all_normals=False,
                       flat_tolerance=0.001,
                       area_tolerance=0.001,
+                      step_tolerance=0.001,
                       callback=None,
                       callback_args=None,
                       print_result=False):
@@ -163,13 +164,20 @@ def volmesh_planarise(volmesh,
         if callback:
             callback(volmesh, k, callback_args)
 
+    # --------------------------------------------------------------------------
+    #   3. print result
+    # --------------------------------------------------------------------------
     if print_result:
-        print('---------------------------------------------------------------')
+        text = "Planarisation"
+        if target_areas:
+            text = "Arearisation"
+        print('==============================================================')
         print('')
-        print('Planarisation stopped after', k, 'iterations ...')
-        print('... with max_deviation of :', flat_deviation)
+        print(text, 'stopped after', k, 'iterations ...')
+        print('... with flatness deviation of :', flat_deviation)
+        print('... with areaness deviation of :', area_deviation)
         print('')
-        print('---------------------------------------------------------------')
+        print('==============================================================')
 
 
 # ******************************************************************************

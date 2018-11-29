@@ -70,7 +70,6 @@ class VolmeshVertexInspector(Conduit):
                 break
 
 
-
 # ==============================================================================
 #   volmesh halfface
 # ==============================================================================
@@ -109,7 +108,7 @@ class VolmeshHalffaceInspector(Conduit):
         v12 = subtract_vectors(p2, p1)
         l12 = length_vector(v12)
 
-        hfkeys = self.volmesh.halfface.keys()
+        hfkeys = self.volmesh.faces()
         if self.hfkeys:
             hfkeys = self.hfkeys
 
@@ -121,7 +120,7 @@ class VolmeshHalffaceInspector(Conduit):
             v02 = subtract_vectors(p2, p0)
             l   = length_vector(cross_vectors(v01, v02))
 
-            dep_hfkeys = self.volmesh.volmesh_all_dependent_halffaces(hfkey)
+            # dep_hfkeys = self.volmesh.volmesh_all_dependent_halffaces(hfkey)
 
             if l12 == 0.0 or (l / l12) < self.tol:
 
@@ -131,13 +130,13 @@ class VolmeshHalffaceInspector(Conduit):
                 polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
                 e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 6)
 
-                if self.dependents:
-                    for key in dep_hfkeys:
-                        vkeys = self.volmesh.halfface_vertices(key)
-                        face_coordinates = [self.volmesh.vertex_coordinates(vkey) for vkey in vkeys]
-                        face_coordinates.append(face_coordinates[0])
-                        polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
-                        e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 4)
+                # if self.dependents:
+                #     for key in dep_hfkeys:
+                #         vkeys = self.volmesh.halfface_vertices(key)
+                #         face_coordinates = [self.volmesh.vertex_coordinates(vkey) for vkey in vkeys]
+                #         face_coordinates.append(face_coordinates[0])
+                #         polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
+                #         e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 4)
 
                 break
 
