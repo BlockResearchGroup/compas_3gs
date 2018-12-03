@@ -6,7 +6,9 @@ import compas
 
 from compas_3gs_rhino.wrappers import rhino_volmesh_from_polysurfaces
 from compas_3gs_rhino.wrappers import rhino_network_from_volmesh
-from compas_3gs_rhino.wrappers import rhino_volmesh_reciprocate
+
+from compas_3gs_rhino.display import display_mode_colors
+
 
 try:
     import rhinoscriptsyntax as rs
@@ -23,31 +25,25 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
+
 forcediagram = rhino_volmesh_from_polysurfaces()
 
 
 # ------------------------------------------------------------------------------
 # 2. make dual network (form diagram)
 # ------------------------------------------------------------------------------
-formdiagram = rhino_network_from_volmesh(forcediagram, offset=2)
+
+formdiagram = rhino_network_from_volmesh(forcediagram, offset=3)
 
 
 # ------------------------------------------------------------------------------
-# 3. get reciprocation weight factor
+# 3. various drawing functions
 # ------------------------------------------------------------------------------
-weight = rs.GetReal(
-    "Enter weight factor : 1  = form only... 0 = force only...", 1.0, 0)
 
+# draw_directed_edges_and_halffaces(forcediagram, formdiagram)
 
-# ------------------------------------------------------------------------------
-# 4. reciprocate
-# ------------------------------------------------------------------------------
-rhino_volmesh_reciprocate(forcediagram,
-                          formdiagram,
-                          kmax=2000,
-                          weight=weight,
-                          edge_min=0.5,
-                          edge_max=20,
-                          fix_vkeys=[],
-                          tolerance=0.001,
-                          refreshrate=10)
+# draw_volmesh_boundary_forces(forcediagram, formdiagram, scale=4)
+
+# draw_network_compression_tension(forcediagram, formdiagram)
+
+display_mode_colors(forcediagram, formdiagram)

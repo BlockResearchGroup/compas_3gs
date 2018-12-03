@@ -7,15 +7,19 @@ import compas_rhino
 
 from compas.geometry import add_vectors
 from compas.geometry import dot_vectors
+from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
+from compas.geometry import midpoint_point_point
 
 from compas.utilities import i_to_rgb
 
 from compas_3gs_rhino.display.helpers import get_index_colordict
 from compas_3gs_rhino.display.helpers import get_value_colordict
+from compas_3gs_rhino.display.helpers import get_force_color
 
 from compas_rhino.utilities import xdraw_lines
+from compas_rhino.utilities import xdraw_labels
 
 try:
     import rhinoscriptsyntax as rs
@@ -47,32 +51,40 @@ __all__ = ['draw_cell',
            'draw_cell_force_vectors',
            'draw_cell_labels',
            'clear_cell_labels',
-           'draw_directed_edges_and_faces',
-           'draw_network_forces',
+
+           'draw_directed_edges_and_halffaces',
+           'draw_network_compression_tension',
            'draw_volmesh_face_normals',
            'draw_egi_arcs',
+
            'bake_cells_as_polysurfaces']
 
 
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
 #   cells
-# ==============================================================================
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def draw_cell(volmesh, ckey):
+    """Draw the specified cell of a volmesh.
+    """
     hfkeys = volmesh.cell_halffaces(ckey)
     volmesh.draw_faces(fkeys=hfkeys)
 
 
-def draw_cell_force_vectors(volmesh):
-
-    ckey = volmesh.cell.keys()[0]
+def draw_cell_force_vectors(volmesh, ckey):
+    """Draw the force vectors of a single cell.
+    """
     center = volmesh.cell_centroid(ckey)
-
-    lines = []
+    lines  = []
     for hfkey in volmesh.halfface:
         normal = volmesh.halfface_normal(hfkey, unitized=False)
-        # normal = scale_vector(normal, -1)
         lines.append({
             'start': center,
             'end'  : add_vectors(center, normal),
@@ -83,22 +95,16 @@ def draw_cell_force_vectors(volmesh):
 
 
 def draw_cell_labels(volmesh, text=None, colors=False):
-
+    """Draw cell labels.
+    """
     rs.CurrentLayer(volmesh.layer)
-
     if colors:
         colordict = get_index_colordict(volmesh.cell)
-
-
     labels = []
     for ckey in volmesh.cell:
         color = (0, 0, 0)
         if colors:
             color = colordict[ckey]
-
-        print(ckey)
-        print(volmesh.cell[ckey])
-
         labels.append({
             'pos'  : volmesh.cell_center(ckey),
             'name' : '{0}.cell.label.{1}'.format(volmesh.name, ckey),
@@ -109,61 +115,36 @@ def draw_cell_labels(volmesh, text=None, colors=False):
 
 
 def clear_cell_labels(volmesh, keys=None):
-        if not keys:
-            name = '{}.cell.label.*'.format(volmesh.name)
-            guids = compas_rhino.get_objects(name=name)
-        else:
-            guids = []
-            for key in keys:
-                name = '*.cell.label.{}'.format(key)
-                guid = compas_rhino.get_object(name=name)
-                guids.append(guid)
-        compas_rhino.delete_objects(guids)
+    if not keys:
+        name = '{}.cell.label.*'.format(volmesh.name)
+        guids = compas_rhino.get_objects(name=name)
+    else:
+        guids = []
+        for key in keys:
+            name = '*.cell.label.{}'.format(key)
+            guid = compas_rhino.get_object(name=name)
+            guids.append(guid)
+    compas_rhino.delete_objects(guids)
 
 
-# ==============================================================================
-#   both diagrams
-# ==============================================================================
-
-
-def draw_directed_edges_and_faces(volmesh, network):
-    volmesh.clear()
-    network.clear()
-    edges = []
-    hfkeys = []
-    for u, v in network.edges_iter():
-        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
-        hfkeys.append(u_hfkey)
-        edges.append({
-            'start': network.vertex_coordinates(u),
-            'end'  : network.vertex_coordinates(v),
-            'arrow': 'end',
-            'color': (0, 0, 0),
-            'name' : '{}.edge.{}-{}'.format(network.name, u, v)})
-
-    draw_volmesh_face_normals(volmesh, hfkeys)
-    compas_rhino.xdraw_lines(edges, layer=network.layer, clear=False, redraw=False)
-    volmesh.draw_faces(fkeys=hfkeys)
-    volmesh.draw_edges()
-    volmesh.draw_vertices()
-
-
-def draw_network_forces(volmesh, network):
-    colors = _get_force_color(volmesh, network)
-    network.clear()
-    network.draw_edges(color=colors)
-
-
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
 #   volmesh
-# ==============================================================================
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
-def draw_volmesh_face_normals(volmesh, hfkeys):
+def draw_volmesh_face_normals(volmesh, hfkeys=None, scale=1):
     lines = []
+    if not hfkeys:
+        hfkeys = volmesh.faces()
     for hfkey in hfkeys:
         center = volmesh.halfface_center(hfkey)
-        normal = volmesh.halfface_normal(hfkey)
+        normal = scale_vector(volmesh.halfface_normal(hfkey), scale)
         lines.append({
             'start': center,
             'end'  : add_vectors(center, normal),
@@ -171,6 +152,17 @@ def draw_volmesh_face_normals(volmesh, hfkeys):
             'color': (0, 255, 0),
             'name' : '{}.edge.{}'.format(volmesh.attributes['name'], hfkey)})
     compas_rhino.xdraw_lines(lines, layer=volmesh.layer, clear=False, redraw=False)
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   both diagrams
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def draw_volmesh_boundary_forces(volmesh, network, show_value=False, scale=1.0):
@@ -206,30 +198,60 @@ def draw_volmesh_boundary_forces(volmesh, network, show_value=False, scale=1.0):
                 'name' : '{}.edge.boundary.{}'.format(network.name, hfkey),
                 'color': hf_colors[hfkey]})
 
-
-
     network.draw()
     xdraw_lines(lines, layer=network.layer, clear=False, redraw=False)
     xdraw_labels(dots, layer=network.layer, clear=False, redraw=False)
 
     volmesh.draw_edges()
-    volmesh.draw_faces(color=hf_colors)
+    volmesh.draw_faces(keys=hfkeys, color=hf_colors)
 
     return
 
 
+def draw_directed_edges_and_halffaces(volmesh, network):
 
-# ==============================================================================
-#   network
-# ==============================================================================
+    volmesh.clear()
+    network.clear()
+
+    edges  = []
+    hfkeys = []
+
+    for u, v in network.edges():
+        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
+        hfkeys.append(u_hfkey)
+        edges.append({
+            'start': network.vertex_coordinates(u),
+            'end'  : network.vertex_coordinates(v),
+            'arrow': 'end',
+            'color': (0, 0, 0),
+            'name' : '{}.edge.{}-{}'.format(network.name, u, v)})
+
+    draw_volmesh_face_normals(volmesh, hfkeys, scale=2)
+    compas_rhino.xdraw_lines(edges, layer=network.layer, clear=False, redraw=False)
+
+    text_dict = {fkey: str(fkey) for fkey in hfkeys}
+    volmesh.draw_face_labels(text=text_dict)
+
+    volmesh.draw_faces(keys=hfkeys)
+    volmesh.draw_edges()
+    volmesh.draw_vertices()
 
 
+def draw_network_compression_tension(volmesh, network):
+    colors = get_force_color(volmesh, network)
+    network.clear()
+    network.draw_edges(color=colors)
 
 
-
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
 #   other
-# ==============================================================================
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def draw_egi_arcs(egi):
@@ -278,23 +300,3 @@ def bake_cells_as_polysurfaces(volmesh):
             attr.LayerIndex = index
         attr.Name = 'cell.{0}'.format(ckey)
         obj.CommitChanges()
-
-
-# ==============================================================================
-#   helpers
-# ==============================================================================
-
-
-def _get_force_color(volmesh, network):
-    colors = {}
-    for u, v in network.edges_iter():
-        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
-        face_normal   = volmesh.halfface_normal(u_hfkey)
-        edge_vector   = network.edge_vector(u, v)
-        dot = dot_vectors(face_normal, edge_vector)
-        if dot < 0:
-            value = (0, 0, 255)
-        else:
-            value = (255, 0, 0)
-        colors[(u, v)] = value
-    return colors

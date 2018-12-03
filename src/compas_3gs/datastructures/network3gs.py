@@ -14,6 +14,8 @@ from compas_rhino.helpers.network import network_draw_edge_labels
 
 from compas_rhino.artists import NetworkArtist
 
+from compas_3gs.utilities import datastructure_centroid
+
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
@@ -36,7 +38,11 @@ class Network3gs(Network):
     def __init__(self):
         super(Network3gs, self).__init__()
 
+    # --------------------------------------------------------------------------
+    #   inherited functions
+    # --------------------------------------------------------------------------
 
+    datastructure_centroid = datastructure_centroid
 
     # --------------------------------------------------------------------------
     # iterators

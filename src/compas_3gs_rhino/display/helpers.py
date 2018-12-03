@@ -37,7 +37,8 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['get_index_colordict',
-           'get_value_colordict']
+           'get_value_colordict',
+           'get_force_color']
 
 
 def get_index_colordict(key_list):
@@ -54,9 +55,28 @@ def get_index_colordict(key_list):
 
 
 def get_value_colordict(value_dict):
+    """From value_dict to color_dict.
+    """
     color_dict = {}
     ub = max(value_dict.values())
     for key in value_dict:
         color = i_to_rgb(value_dict[key] / ub)
         color_dict[key] = color
     return color_dict
+
+
+def get_force_color(volmesh, network):
+    """Determines whether an edge of the form diagram is in compression (blue)or tension (red).
+    """
+    colors = {}
+    for u, v in network.edges():
+        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
+        face_normal   = volmesh.halfface_normal(u_hfkey)
+        edge_vector   = network.edge_vector(u, v)
+        dot = dot_vectors(face_normal, edge_vector)
+        if dot < 0:
+            value = (0, 0, 255)
+        else:
+            value = (255, 0, 0)
+        colors[(u, v)] = value
+    return colors

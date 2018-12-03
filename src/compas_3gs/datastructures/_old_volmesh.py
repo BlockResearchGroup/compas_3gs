@@ -673,9 +673,9 @@ class VolMesh(FromToData,
     # --------------------------------------------------------------------------
 
     def halfface_cell(self, fkey):
-        u = self.halfface[fkey].iterkeys().next()
-        v = self.halfface[fkey][u]
-        w = self.halfface[fkey][v]
+        u = self.halfface[fkey][0]
+        v = self.halfface[fkey][1]
+        w = self.halfface[fkey][2]
         return self.plane[u][v][w]
 
     def halfface_vertices(self, fkey):

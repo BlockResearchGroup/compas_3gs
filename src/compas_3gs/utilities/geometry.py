@@ -36,16 +36,24 @@ from compas_rhino.utilities import xdraw_lines
 from compas_rhino.utilities import xdraw_faces
 
 
-__all__  = ['normal_polygon_general',
+__all__  = ['datastructure_centroid',
+
+            'normal_polygon_general',
             'area_polygon_general',
+
             'volmesh_face_flatness']
+
+
+def datastructure_centroid(datastructure):
+    points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertex()]
+    return centroid_points(points)
 
 
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
 #
-#   self-intersecting polygons
+#   polygons
 #
 # ******************************************************************************
 # ******************************************************************************
@@ -90,7 +98,7 @@ def area_polygon_general(points):
 
     Parameters
     ----------
-    polygon : sequence
+    points : sequence
         The XYZ coordinates of the vertices/corners of the polygon.
         The vertices are assumed to be in order.
         The polygon is assumed to be closed:
@@ -105,8 +113,84 @@ def area_polygon_general(points):
     return length_vector(normal_polygon_general(points, unitized=False))
 
 
+# def is_polygon_self_intersecting(points):
+#     """Computes if as polygon is self intersecting in plane, or self overlapping in space.
+
+#     Parameters
+#     ----------
+#     polygon : sequence
+#         The XYZ coordinates of the vertices/corners of the polygon.
+#         The vertices are assumed to be in order.
+#         The polygon is assumed to be closed:
+#         the first and last vertex in the sequence should not be the same.
+
+#     Returns
+#     -------
+#     bool_1
+#         ``True`` if self overlapping.
+#         ``False`` otherwise.
+#     bool_2
+#         ``True`` if self intersecting.
+#         ``False`` otherwise.
+
+#     """
+#     edges = []
+#     for i in range(-1, len(points) - 1):
+#         edges.append((i, i + 1))
+
+#     for u1, v1 in edges:
+#         for u2, v2 in edges:
+#             if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
+#                 continue
+#             else:
+#                 a = points[u1]
+#                 b = points[v1]
+#                 c = points[u2]
+#                 d = points[v2]
+
+#                 int_1, int_2 = intersection_line_line((a, b), (c, d))
+
+#                 if int_1 or int_2:
+#                     if distance_point_point(int_1, int_2) > 0:
+#                         overlapping = True
+#                     if is_point_on_segment(int_1, (a, b)) or is_point_on_segment(int_2, (c, d)):
+#                             intersecting = True
+
+#     return overlapping, intersecting
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   volmesh
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
 def volmesh_face_flatness(volmesh):
-    """compas.geometry --> flatness only works for quads ...
+    """Compute volmesh flatness per face.
+
+    Parameters
+    ----------
+    volmesh : volmesh object
+
+    Returns
+    -------
+    dict
+        A dictionary of flatness deviation for each face.
+
+    Noes
+    ----
+    compas.geometry.mesh_flatness function currently only works for quadrilateral faces.
+    This function uses the distance between each face vertex and its projected point on the best-fit plane of the face as the flatness metric.
+
+    See Also
+    --------
+    * :func: `compas.geometry.mesh_flatness`
+
     """
     flatness_dict = {fkey : 0 for fkey in volmesh.faces()}
     for fkey in volmesh.faces():
@@ -122,62 +206,3 @@ def volmesh_face_flatness(volmesh):
                 deviation = dev
         flatness_dict[fkey] = deviation
     return flatness_dict
-
-
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
-#   self-intersecting polygons
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-
-
-def is_polygon_self_intersecting(points):
-    """Computes if as polygon is self intersecting in plane, or self overlapping in space.
-
-    Parameters
-    ----------
-    polygon : sequence
-        The XYZ coordinates of the vertices/corners of the polygon.
-        The vertices are assumed to be in order.
-        The polygon is assumed to be closed:
-        the first and last vertex in the sequence should not be the same.
-
-    Returns
-    -------
-    bool_1
-        ``True`` if self overlapping.
-        ``False`` otherwise.
-    bool_2
-        ``True`` if self intersecting.
-        ``False`` otherwise.
-
-    """
-    edges = []
-    for i in range(-1, len(points) - 1):
-        edges.append((i, i + 1))
-
-    for u1, v1 in edges:
-        for u2, v2 in edges:
-            if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
-                continue
-            else:
-                a = points[u1]
-                b = points[v1]
-                c = points[u2]
-                d = points[v2]
-
-                int_1, int_2 = intersection_line_line((a, b), (c, d))
-
-                if int_1 or int_2:
-                    if distance_point_point(int_1, int_2) > 0:
-                        overlapping = True
-                    if is_point_on_segment(int_1, (a, b)) or is_point_on_segment(int_2, (c, d)):
-                            intersecting = True
-
-    return overlapping, intersecting
-
-

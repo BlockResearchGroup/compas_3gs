@@ -72,7 +72,7 @@ def _set_target_areas(area_dict):
                             new_area_dict[key] = target_area
 
                 else:
-                    fkey_key = sortedkeys[fkey_index]
+                    fkey_key = sortedkeys[fkey_index - 1]
                     current_area = area_dict[fkey_key]
                     target_area = rs.GetReal("Enter target area value", current_area, 0, 1000.0)
                     if target_area:

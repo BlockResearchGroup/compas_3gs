@@ -33,25 +33,29 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
+# ------------------------------------------------------------------------------
 # make / set layer
-
+# ------------------------------------------------------------------------------
 layer = 'force_volmesh'
 
 
+# ------------------------------------------------------------------------------
 # select rhino polysurfaces
-
+# ------------------------------------------------------------------------------
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
 
+# ------------------------------------------------------------------------------
 # make volmesh
-
+# ------------------------------------------------------------------------------
 volmesh       = ForceVolMesh()
 volmesh       = volmesh_from_polysurfaces(volmesh, guids)
 volmesh.layer = layer
 volmesh.attributes['name'] = layer
 
 
+# ------------------------------------------------------------------------------
 # draw volmesh
-
+# ------------------------------------------------------------------------------
 volmesh.draw(layer=layer)

@@ -19,10 +19,9 @@ from compas_rhino.helpers.mesh import mesh_draw
 from compas_rhino.helpers.mesh import mesh_draw_vertices
 from compas_rhino.helpers.mesh import mesh_draw_edges
 
-
-
 from compas_3gs.utilities import normal_polygon_general
 from compas_3gs.utilities import area_polygon_general
+from compas_3gs.utilities import datastructure_centroid
 
 
 __author__     = ['Juney Lee']
@@ -50,7 +49,8 @@ class Mesh3gs(Mesh):
     #   inherited
     # --------------------------------------------------------------------------
 
-    mesh_split_face = mesh_split_face
+    mesh_split_face        = mesh_split_face
+    datastructure_centroid = datastructure_centroid
 
     # --------------------------------------------------------------------------
     #   updaters / setters
@@ -98,15 +98,20 @@ class Mesh3gs(Mesh):
     # helpers - vertices
     # --------------------------------------------------------------------------
 
-    def vertex_update_xyz(self, vkey, xyz):
-        # X
-        if self.v_data[vkey]['x_fix'] is False:
+    def vertex_update_xyz(self, vkey, xyz, constrained=True):
+        if constrained:
+            # X
+            if self.vertex[vkey]['x_fix'] is False:
+                self.vertex[vkey]['x'] = xyz[0]
+            # Y
+            if self.vertex[vkey]['y_fix'] is False:
+                self.vertex[vkey]['y'] = xyz[1]
+            # Z
+            if self.vertex[vkey]['z_fix'] is False:
+                self.vertex[vkey]['z'] = xyz[2]
+        else:
             self.vertex[vkey]['x'] = xyz[0]
-        # Y
-        if self.v_data[vkey]['y_fix'] is False:
             self.vertex[vkey]['y'] = xyz[1]
-        # Z
-        if self.v_data[vkey]['z_fix'] is False:
             self.vertex[vkey]['z'] = xyz[2]
 
     # --------------------------------------------------------------------------

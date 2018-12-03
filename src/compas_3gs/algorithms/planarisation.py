@@ -141,7 +141,7 @@ def volmesh_planarise(volmesh,
             if fkey in target_areas:
                 target_area = target_areas[fkey]
                 scale       = (target_area / f_area) ** 0.5
-                new_face     = _scale_polygon(new_face, scale)
+                new_face    = _scale_polygon(new_face, scale)
 
                 areaness  = abs(f_area - target_area)
                 if areaness > area_deviation:

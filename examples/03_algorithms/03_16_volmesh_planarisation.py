@@ -13,20 +13,22 @@ __copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
-
+# ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
-
+# ------------------------------------------------------------------------------
 forcediagram = rhino_volmesh_from_polysurfaces()
 
 
+# ------------------------------------------------------------------------------
 # 2. pick vertices to fix
-
+# ------------------------------------------------------------------------------
 vkeys = VertexSelector.select_vertices(forcediagram,
                                        message='Select vertices to fix:')
 
 
+# ------------------------------------------------------------------------------
 # 3. planarise
-
+# ------------------------------------------------------------------------------
 rhino_volmesh_planarise(forcediagram,
                         kmax=500,
 

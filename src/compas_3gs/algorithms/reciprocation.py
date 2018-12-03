@@ -164,7 +164,6 @@ def volmesh_reciprocate(volmesh,
         # ----------------------------------------------------------------------
         #   callback
         # ----------------------------------------------------------------------
-
         if callback:
             callback(volmesh, formdiagram, k, callback_args)
 

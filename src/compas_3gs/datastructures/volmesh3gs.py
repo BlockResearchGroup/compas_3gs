@@ -28,6 +28,7 @@ from compas_3gs_rhino.display import draw_volmesh_face_normals
 
 from compas_3gs.utilities import normal_polygon_general
 from compas_3gs.utilities import area_polygon_general
+from compas_3gs.utilities import datastructure_centroid
 
 from compas_3gs.datastructures.operations.split import cell_split_vertex
 
@@ -53,39 +54,31 @@ class VolMesh3gs(VolMesh):
     def __init__(self):
         super(VolMesh3gs, self).__init__()
 
-
     # --------------------------------------------------------------------------
-    #   inherited
+    #   inherited functions
     # --------------------------------------------------------------------------
 
-    cell_split_vertex = cell_split_vertex
+    cell_split_vertex      = cell_split_vertex
+    datastructure_centroid = datastructure_centroid
 
     # --------------------------------------------------------------------------
     #   deleting
     # --------------------------------------------------------------------------
+
     def cell_vertex_delete(self, vkey):
         '''This removes the vertex, and everything that is attached to the vertex EXCEPT the cell itself.
         '''
 
         if len(self.cell) > 1:
             raise ValueError('This is a multi-cell volmesh.')
-
         nbr_vkeys = self.vertex_neighbours(vkey)
         nbr_ckeys = self.vertex_cells(vkey)
-
-
-        print('vkey', vkey)
-        print('cell-ckey', (self.cell))
 
         # delete cell info -----------------------------------------------------
         for ckey in nbr_ckeys:
             del self.cell[ckey][vkey]
             for nbr_vkey in nbr_vkeys:
                 del self.cell[ckey][nbr_vkey][vkey]
-
-        print('vkey', vkey)
-        print('cell-ckey', (self.cell))
-
 
         # delete halffaces -----------------------------------------------------
         print(vkey, self.halfface)
@@ -113,7 +106,6 @@ class VolMesh3gs(VolMesh):
         # delete the vertex itself ---------------------------------------------
         del self.vertex[vkey]
 
-
     def delete_halfface(self, hfkey):
         vertices = self.halfface_vertices(hfkey)
         for i in range(-2, len(vertices) - 2):
@@ -125,7 +117,6 @@ class VolMesh3gs(VolMesh):
             if self.plane[w][v][u] is None:
                 del self.plane[w][v][u]
         del self.halfface[hfkey]
-
 
     def delete_cell(self, ckey):
 
@@ -163,7 +154,6 @@ class VolMesh3gs(VolMesh):
 
         # delete cell
         del self.cell[ckey]
-
 
     # --------------------------------------------------------------------------
     #   updaters / setters
@@ -271,7 +261,6 @@ class VolMesh3gs(VolMesh):
                 halffaces.append(self.cell[ckey][vkey][v])
                 halffaces.append(self.cell[ckey][v][vkey])
         return halffaces
-
 
     def vertex_normal(self, vkey):
         vectors = []
