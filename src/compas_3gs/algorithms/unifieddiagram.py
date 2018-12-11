@@ -53,7 +53,7 @@ def volmesh_ud(volmesh,
     #   1. if scale == 0, the unified diagram IS the polyhedral force diagram.
     # --------------------------------------------------------------------------
     if scale == 0:
-        return hf_xyz
+        return halffaces
 
     volmesh_center = volmesh.datastructure_centroid()
     network_center = network.datastructure_centroid()
@@ -76,9 +76,8 @@ def volmesh_ud(volmesh,
             hf_vertices = {}
             for vkey in volmesh.halfface_vertices(hfkey):
                 xyz = volmesh.vertex_coordinates(vkey)
-                arm = subtract_vectors(xyz, base_xyz[vkey])
-                arm = scale_vector(arm, scale)
-                hf_vertices[vkey] = add_vectors(base_xyz, arm)
+                arm = scale_vector(subtract_vectors(xyz, base_xyz[ckey]), scale)
+                hf_vertices[vkey] = add_vectors(base_xyz[ckey], arm)
             halffaces[hfkey] = hf_vertices
 
     # --------------------------------------------------------------------------
@@ -87,32 +86,38 @@ def volmesh_ud(volmesh,
     prism_faces = {}
 
     for u, v in network.edges():
-
         u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
         u_pts   = halffaces[u_hfkey].values()
         v_pts   = halffaces[v_hfkey].values()
-
         pt_list = u_pts + v_pts
-
         prism   = convex_hull(u_pts + v_pts)  # face as indices of pt_list
-
         face_list = []
-
         for face in prism:
-            # face is a list ...
             face_xyz = [pt_list[i] for i in face]  # get face xyz in order
             face_list.append(face_xyz)
+        prism_faces[(u, v)] = face_list
 
-        prism_faces[(u,v)] = face_list
-
+    # --------------------------------------------------------------------------
 
     return halffaces, prism_faces
 
 
 def cellnetwork_ud(cellnetwork):
+    raise NotImplementedError
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   Main
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+if __name__ == '__main__':
     pass
-
-
-
 
 

@@ -8,6 +8,17 @@ from compas_3gs_rhino.wrappers import rhino_volmesh_from_polysurfaces
 from compas_3gs_rhino.wrappers import rhino_network_from_volmesh
 from compas_3gs_rhino.wrappers import rhino_volmesh_reciprocate
 
+
+from compas_3gs_rhino.display import display_mode_colors
+from compas_3gs_rhino.display import display_mode_ct
+from compas_3gs_rhino.display import display_mode_pipes
+from compas_3gs_rhino.display import display_mode_vectors
+
+from compas_3gs_rhino.display import draw_network_loads
+from compas_3gs_rhino.display import draw_volmesh_face_normals
+
+
+
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
@@ -35,8 +46,9 @@ formdiagram = rhino_network_from_volmesh(forcediagram, offset=2)
 # ------------------------------------------------------------------------------
 # 3. get reciprocation weight factor
 # ------------------------------------------------------------------------------
-weight = rs.GetReal(
-    "Enter weight factor : 1  = form only... 0 = force only...", 1.0, 0)
+# weight = rs.GetReal(
+#     "Enter weight factor : 1  = form only... 0 = force only...", 1.0, 0)
+weight = 1
 
 
 # ------------------------------------------------------------------------------
@@ -50,4 +62,24 @@ rhino_volmesh_reciprocate(forcediagram,
                           edge_max=20,
                           fix_vkeys=[],
                           tolerance=0.001,
-                          refreshrate=10)
+                          refreshrate=100)
+
+
+
+
+
+# ------------------------------------------------------------------------------
+# 3. various drawing functions
+# ------------------------------------------------------------------------------
+
+scale = 0.05
+
+display_mode_colors(forcediagram, formdiagram, label=True)
+
+# display_mode_ct(forcediagram, formdiagram, gradient=True)
+
+# display_mode_pipes(forcediagram, formdiagram, gradient=True, scale=0.01)
+
+# display_mode_vectors(forcediagram, formdiagram, gradient=False, scale=scale)
+
+# draw_network_loads(forcediagram, formdiagram, gradient=False, scale=scale)

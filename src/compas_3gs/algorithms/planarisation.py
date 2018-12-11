@@ -2,16 +2,12 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
-import compas
-import compas_rhino
-
 from compas.geometry import add_vectors
 from compas.geometry import subtract_vectors
 from compas.geometry import scale_vector
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
 from compas.geometry.transformations.transformations import project_point_plane
-from compas.geometry import bestfit_plane
 
 
 __author__     = ['Juney Lee']
@@ -34,7 +30,6 @@ def volmesh_planarise(volmesh,
                       fix_all_normals=False,
                       flat_tolerance=0.001,
                       area_tolerance=0.001,
-                      step_tolerance=0.001,
                       callback=None,
                       callback_args=None,
                       print_result=False):

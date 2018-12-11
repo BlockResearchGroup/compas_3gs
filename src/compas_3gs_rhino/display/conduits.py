@@ -50,7 +50,7 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 __all__ = [
     'PlanarisationConduit',
-    'ArearisationConduit',
+    # 'ArearisationConduit',
     'MeshArearisationConduit',
     'ReciprocationConduit']
 
@@ -80,7 +80,7 @@ class PlanarisationConduit(Conduit):
 
         if self.face_colors:
             max_value = max(self.face_colors.values())
-            for fkey in self.volmesh.faces():
+            for fkey in self.face_colors:
                 value     = round(self.face_colors[fkey], 3) / max_value
                 color     = FromArgb(*i_to_rgb(value))
                 f_vkeys = self.volmesh.halfface_vertices(fkey)
@@ -101,42 +101,42 @@ class PlanarisationConduit(Conduit):
 # ******************************************************************************
 
 
-class ArearisationConduit(Conduit):
+# class ArearisationConduit(Conduit):
 
-    def __init__(self,
-                 volmesh,
-                 target_areas_dict,
-                 **kwargs):
-        super(ArearisationConduit, self).__init__(**kwargs)
+#     def __init__(self,
+#                  volmesh,
+#                  target_areas_dict,
+#                  **kwargs):
+#         super(ArearisationConduit, self).__init__(**kwargs)
 
-        self.volmesh           = volmesh
-        self.target_areas_dict = target_areas_dict
+#         self.volmesh           = volmesh
+#         self.target_areas_dict = target_areas_dict
 
-    def DrawForeground(self, e):
+#     def DrawForeground(self, e):
 
-        deviations = {}
-        for hfkey in self.target_areas_dict:
-            current_area      = self.volmesh.halfface_area(hfkey)
-            target_area       = self.target_areas_dict[hfkey]
-            deviations[hfkey] = abs(current_area - target_area)
-        max_deviation = max(deviations.values())
+#         deviations = {}
+#         for hfkey in self.target_areas_dict:
+#             current_area      = self.volmesh.halfface_area(hfkey)
+#             target_area       = self.target_areas_dict[hfkey]
+#             deviations[hfkey] = abs(current_area - target_area)
+#         max_deviation = max(deviations.values())
 
-        for u, v in self.volmesh.edges_iter():
-            sp  = self.volmesh.vertex_coordinates(u)
-            ep  = self.volmesh.vertex_coordinates(v)
-            e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
+#         for u, v in self.volmesh.edges_iter():
+#             sp  = self.volmesh.vertex_coordinates(u)
+#             ep  = self.volmesh.vertex_coordinates(v)
+#             e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
 
-        for hfkey in self.target_areas_dict:
-            value    = round(deviations[hfkey], 2) / max_deviation
-            color    = FromArgb(*i_to_red(value))
-            area     = self.volmesh.halfface_area(hfkey)
-            center   = self.volmesh.halfface_center(hfkey)
-            hf_vkeys = self.volmesh.halfface_vertices(hfkey)
-            points   = [self.volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
-            points.append(points[0])
-            points   = [Point3d(*pt) for pt in points]
-            e.Display.DrawPolygon(points, color, filled=True)
-            e.Display.DrawDot(Point3d(*center), str(round(area, 3)), color, black)
+#         for hfkey in self.target_areas_dict:
+#             value    = round(deviations[hfkey], 2) / max_deviation
+#             color    = FromArgb(*i_to_red(value))
+#             area     = self.volmesh.halfface_area(hfkey)
+#             center   = self.volmesh.halfface_center(hfkey)
+#             hf_vkeys = self.volmesh.halfface_vertices(hfkey)
+#             points   = [self.volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
+#             points.append(points[0])
+#             points   = [Point3d(*pt) for pt in points]
+#             e.Display.DrawPolygon(points, color, filled=True)
+#             e.Display.DrawDot(Point3d(*center), str(round(area, 3)), color, black)
 
 
 class MeshArearisationConduit(Conduit):

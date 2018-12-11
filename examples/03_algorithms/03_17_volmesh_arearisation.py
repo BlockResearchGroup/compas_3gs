@@ -49,7 +49,7 @@ def _set_target_areas(area_dict):
     fkey_index  = 0
     key_list    = go.AddOptionList("pick_face", ["All"] + key_strings, fkey_index)
 
-    # assigne new target areas -------------------------------------------------
+    # assign new target areas --------------------------------------------------
     new_area_dict = deepcopy(area_dict)
 
     while True:

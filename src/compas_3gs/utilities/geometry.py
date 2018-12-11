@@ -41,7 +41,8 @@ __all__  = ['datastructure_centroid',
             'normal_polygon_general',
             'area_polygon_general',
 
-            'volmesh_face_flatness']
+            'volmesh_face_flatness',
+            'volmesh_face_areaness']
 
 
 def datastructure_centroid(datastructure):
@@ -195,14 +196,24 @@ def volmesh_face_flatness(volmesh):
     flatness_dict = {fkey : 0 for fkey in volmesh.faces()}
     for fkey in volmesh.faces():
         deviation = 0
-        f_vkeys  = volmesh.halfface_vertices(fkey)
-        f_points = [volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
-        plane    = bestfit_plane(f_points)
+        f_vkeys   = volmesh.halfface_vertices(fkey)
+        f_points  = [volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+        plane     = bestfit_plane(f_points)
         for vkey in f_vkeys:
-            xyz           = volmesh.vertex_coordinates(vkey)
-            projected_xyz = project_point_plane(xyz, plane)
-            dev           = distance_point_point(xyz, projected_xyz)
+            xyz   = volmesh.vertex_coordinates(vkey)
+            p_xyz = project_point_plane(xyz, plane)
+            dev   = distance_point_point(xyz, p_xyz)
             if dev > deviation:
                 deviation = dev
         flatness_dict[fkey] = deviation
     return flatness_dict
+
+
+def volmesh_face_areaness(volmesh, target_areas):
+    """Compute volmesh areaness of faces with given target areas.
+    """
+    areaness_dict = {}
+    for hfkey in target_areas:
+        area = volmesh.halfface_area(hfkey)
+        areaness_dict[hfkey] = abs(target_areas[hfkey] - area)
+    return areaness_dict

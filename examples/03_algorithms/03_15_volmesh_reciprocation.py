@@ -8,11 +8,6 @@ from compas_3gs_rhino.wrappers import rhino_volmesh_from_polysurfaces
 from compas_3gs_rhino.wrappers import rhino_network_from_volmesh
 from compas_3gs_rhino.wrappers import rhino_volmesh_reciprocate
 
-from compas_3gs.algorithms import volmesh_ud
-
-from compas_3gs_rhino.display import draw_volmesh_UD
-
-
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
@@ -41,7 +36,7 @@ formdiagram = rhino_network_from_volmesh(forcediagram, offset=2)
 # 3. get reciprocation weight factor
 # ------------------------------------------------------------------------------
 weight = rs.GetReal(
-    "Enter weight factor : 1 = form only... 0 = force only...", 1.0, 0)
+    "Enter weight factor : 1  = form only... 0 = force only...", 1.0, 0)
 
 
 # ------------------------------------------------------------------------------
@@ -49,21 +44,10 @@ weight = rs.GetReal(
 # ------------------------------------------------------------------------------
 rhino_volmesh_reciprocate(forcediagram,
                           formdiagram,
-                          kmax=2000,
+                          kmax=1000,
                           weight=weight,
                           edge_min=0.5,
                           edge_max=20,
                           fix_vkeys=[],
                           tolerance=0.001,
                           refreshrate=10)
-
-
-# ------------------------------------------------------------------------------
-# 5. unified diagram
-# ------------------------------------------------------------------------------
-
-ud_scale = rs.GetReal(
-    "Enter unified diagram scale: 1 = form diagram ...", 1.0, 0)
-
-forcediagram.clear()
-draw_volmesh_UD(forcediagram, formdiagram, scale=ud_scale)

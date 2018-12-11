@@ -22,13 +22,13 @@ import compas
 from compas_3gs.operations import cell_subdivide_barycentric
 
 from compas_3gs.utilities import volmesh_face_flatness
+from compas_3gs.utilities import volmesh_face_areaness
+
 
 from compas_3gs_rhino.control.dynamic_pickers import volmesh3gs_select_cell
 
 from compas_3gs_rhino.display import PlanarisationConduit
-from compas_3gs_rhino.display import ArearisationConduit
 from compas_3gs_rhino.display import ReciprocationConduit
-
 
 try:
     import rhinoscriptsyntax as rs
@@ -45,7 +45,6 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['rhino_volmesh_planarise',
-           'rhino_volmesh_arearise',
            'rhino_volmesh_reciprocate']
 
 
@@ -85,6 +84,9 @@ def rhino_volmesh_planarise(volmesh,
 
         if k % refreshrate == 0:
             conduit.face_colors = volmesh_face_flatness(volmesh)
+            if target_areas:
+                conduit.face_colors = volmesh_face_areaness(volmesh, target_areas)
+
             conduit.redraw()
 
     # 2. planarisation ---------------------------------------------------------
@@ -121,37 +123,37 @@ def rhino_volmesh_planarise(volmesh,
 # ******************************************************************************
 
 
-def rhino_volmesh_arearise(volmesh,
-                           conduit=False):
+# def rhino_volmesh_arearise(volmesh,
+#                            conduit=False):
 
-    volmesh.clear()
-    volmesh.draw_edges()
-    volmesh.draw_faces()
+#     volmesh.clear()
+#     volmesh.draw_edges()
+#     volmesh.draw_faces()
 
-    rs.EnableRedraw(True)
+#     rs.EnableRedraw(True)
 
-    hfkeys = volmesh_select_faces(volmesh)
-    area = rs.GetReal("Enter target area", 1000, 0)
+#     hfkeys = volmesh_select_faces(volmesh)
+#     area = rs.GetReal("Enter target area", 1000, 0)
 
-    target_areas = {hfkey: area for hfkey in hfkeys}
+#     target_areas = {hfkey: area for hfkey in hfkeys}
 
-    if conduit:
-        conduit = ArearisationConduit(volmesh, target_areas)
-        conduit.Enabled = True
+#     if conduit:
+#         conduit = ArearisationConduit(volmesh, target_areas)
+#         conduit.Enabled = True
 
-    volmesh_planarise(volmesh,
-                      count=1000,
-                      target_normals=None,
-                      target_centers=None,
-                      fix_all=False,
-                      target_areas=target_areas,
-                      fix_boundary=True)
+#     volmesh_planarise(volmesh,
+#                       count=1000,
+#                       target_normals=None,
+#                       target_centers=None,
+#                       fix_all=False,
+#                       target_areas=target_areas,
+#                       fix_boundary=True)
 
-    if conduit:
-        conduit.Enabled = False
-        del conduit
+#     if conduit:
+#         conduit.Enabled = False
+#         del conduit
 
-    volmesh.draw()
+#     volmesh.draw()
 
 
 # ******************************************************************************
