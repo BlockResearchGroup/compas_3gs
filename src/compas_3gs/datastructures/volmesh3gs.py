@@ -20,11 +20,11 @@ from compas.geometry import centroid_polygon
 from compas_rhino.helpers.volmesh import volmesh_draw
 from compas_rhino.artists import VolMeshArtist
 
-from compas_3gs_rhino.display import draw_cell
-from compas_3gs_rhino.display import draw_egi_arcs
-from compas_3gs_rhino.display import draw_cell_labels
-from compas_3gs_rhino.display import clear_cell_labels
-from compas_3gs_rhino.display import draw_volmesh_face_normals
+# from compas_3gs_rhino.display import draw_cell
+# from compas_3gs_rhino.display import draw_egi_arcs
+# from compas_3gs_rhino.display import draw_cell_labels
+# from compas_3gs_rhino.display import clear_cell_labels
+# from compas_3gs_rhino.display import draw_volmesh_face_normals
 
 from compas_3gs.utilities import normal_polygon_general
 from compas_3gs.utilities import area_polygon_general
@@ -39,9 +39,7 @@ __license__   = 'MIT License'
 __email__     = 'juney.lee@arch.ethz.ch'
 
 
-__all__       = [
-    'VolMesh3gs'
-]
+__all__ = ['VolMesh3gs']
 
 
 class VolMesh3gs(VolMesh):
@@ -366,9 +364,9 @@ class VolMesh3gs(VolMesh):
         return self.halfface[hfkey][i + 1]
 
     def halfface_pair(self, hfkey):
-        u   = self.halfface[hfkey][0]
-        v   = self.halfface[hfkey][1]
-        w   = self.halfface[hfkey][2]
+        u = self.halfface[hfkey][0]
+        v = self.halfface[hfkey][1]
+        w = self.halfface[hfkey][2]
         nbr_ckey = self.plane[w][v][u]
         if not nbr_ckey:
             return None
@@ -379,9 +377,9 @@ class VolMesh3gs(VolMesh):
         for ckey in self.cell:
             hfkeys = self.cell_halffaces(ckey)
             for hfkey in hfkeys:
-                u   = self.halfface[hfkey][0]
-                v   = self.halfface[hfkey][1]
-                w   = self.halfface[hfkey][2]
+                u = self.halfface[hfkey][0]
+                v = self.halfface[hfkey][1]
+                w = self.halfface[hfkey][2]
                 if self.plane[w][v][u] is None:
                     halffaces.append(hfkey)
         return halffaces
@@ -505,8 +503,6 @@ class VolMesh3gs(VolMesh):
     # drawing
     # --------------------------------------------------------------------------
 
-    draw_volmesh_face_normals = draw_volmesh_face_normals
-
     def draw(self, **kwattr):
         artist = VolMeshArtist(self)
         artist.clear()
@@ -516,9 +512,6 @@ class VolMesh3gs(VolMesh):
         artist = VolMeshArtist(self)
         # self.clear_cell_labels()
         artist.clear()
-
-    def draw_cell(self, ckey):
-        draw_cell(self, ckey)
 
     def draw_edges(self, **kwattr):
         artist = VolMeshArtist(self, **kwattr)
@@ -532,9 +525,6 @@ class VolMesh3gs(VolMesh):
         artist = VolMeshArtist(self)
         artist.draw_facelabels(**kwattr)
 
-    def draw_facenormals(self, **kwattr):
-        self.draw_volmesh_face_normals(**kwattr)
-
     def draw_vertices(self, **kwattr):
         artist = VolMeshArtist(self)
         artist.draw_vertices(**kwattr)
@@ -547,16 +537,23 @@ class VolMesh3gs(VolMesh):
         artist = VolMeshArtist(self)
         artist.draw_edgelabels(**kwattr)
 
-    def draw_cell_labels(self, **kwattr):
-        draw_cell_labels(self, **kwattr)
 
-    def clear_cell_labels(self):
-        clear_cell_labels(self)
+    # def draw_face_normals(self, **kwattr):
+    #     draw_volmesh_face_normals(self, **kwattr)
 
-    def draw_egi(self, draw_arcs=False, **kwattr):
-        for ckey in self.cell:
-            egi = self.c_data[ckey]['egi']
-            draw_egi_arcs(egi)
-            egi.draw_edges()
-            egi.draw_facelabels(color=(150, 150, 150))
-            egi.draw_vertexlabels(color=(255, 150, 150))
+    # def draw_cell(self, ckeys):
+    #     draw_cell(self, ckeys)
+
+    # def draw_cell_labels(self, **kwattr):
+    #     draw_cell_labels(self, **kwattr)
+
+    # def clear_cell_labels(self):
+    #     clear_cell_labels(self)
+
+    # def draw_egi(self, draw_arcs=False, **kwattr):
+    #     for ckey in self.cell:
+    #         egi = self.c_data[ckey]['egi']
+    #         draw_egi_arcs(egi)
+    #         egi.draw_edges()
+    #         egi.draw_facelabels(color=(150, 150, 150))
+    #         egi.draw_vertexlabels(color=(255, 150, 150))

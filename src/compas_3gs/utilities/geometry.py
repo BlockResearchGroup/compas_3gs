@@ -45,7 +45,7 @@ __all__  = ['datastructure_centroid',
 
 
 def datastructure_centroid(datastructure):
-    points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertex()]
+    points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertex]
     return centroid_points(points)
 
 

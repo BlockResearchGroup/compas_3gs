@@ -7,9 +7,8 @@ import compas
 from compas_3gs_rhino.wrappers import rhino_volmesh_from_polysurfaces
 from compas_3gs_rhino.wrappers import rhino_network_from_volmesh
 
-from compas_3gs_rhino.display import draw_directed_edges_and_halffaces
-from compas_3gs_rhino.display import draw_volmesh_boundary_forces
-from compas_3gs_rhino.display import draw_network_compression_tension
+from compas_3gs_rhino.display import draw_directed_uv_and_hf
+from compas_3gs_rhino.display import draw_network_loads
 from compas_3gs_rhino.display import draw_volmesh_face_normals
 
 
@@ -43,9 +42,9 @@ formdiagram = rhino_network_from_volmesh(forcediagram, offset=3)
 # 3. various drawing functions
 # ------------------------------------------------------------------------------
 
-# draw_directed_edges_and_halffaces(forcediagram, formdiagram)
+# draw_directed_uv_and_hf(forcediagram, formdiagram)
 
-# draw_volmesh_boundary_forces(forcediagram, formdiagram, scale=4)
+# draw_network_loads(forcediagram, formdiagram, scale=4)
 
 # draw_network_compression_tension(forcediagram, formdiagram)
 
