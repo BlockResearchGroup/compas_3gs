@@ -28,7 +28,7 @@ from compas_3gs.datastructures.operations.split import cell_split_vertex
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
@@ -309,7 +309,7 @@ class VolMesh3gs(VolMesh):
             return None
         return self.cell[nbr_ckey][v][u]
 
-    def halffaces_on_boundary(self):
+    def halffaces_boundary(self):
         halffaces = []
         for ckey in self.cell:
             hfkeys = self.cell_halffaces(ckey)

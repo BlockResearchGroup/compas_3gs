@@ -1,19 +1,17 @@
+from __future__ import absolute_import
 from __future__ import print_function
+from __future__ import division
 
 from compas.datastructures import Mesh
 
 from compas.datastructures.mesh.operations import mesh_split_face
 
-from compas_rhino.artists import MeshArtist
-
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
-from compas.geometry import sum_vectors
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
-from compas.geometry import dot_vectors
-from compas.geometry import scale_vectors
-from compas.geometry import centroid_points
+
+from compas_rhino.artists import MeshArtist
 
 from compas_rhino.helpers.mesh import mesh_draw
 from compas_rhino.helpers.mesh import mesh_draw_vertices
@@ -25,7 +23,7 @@ from compas_3gs.utilities import datastructure_centroid
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 

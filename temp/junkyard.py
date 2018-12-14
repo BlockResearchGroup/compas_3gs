@@ -46,3 +46,32 @@ print(e)
 
 
 print (5.2 % 2)
+
+
+# g = 1.5
+
+# assert 1 < g, "value is not between 0 and 1"
+
+# if g > 1:
+#     print("test")
+#     raise
+
+
+
+test = {
+    (1, 2): 5,
+    (2, 1): 3,
+    (2, 2): 1,
+}
+
+selection = test[(3, 2)] or test[(2, 1)]
+
+print(selection)
+
+
+
+
+
+
+
+

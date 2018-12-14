@@ -87,28 +87,31 @@ white          = System.Drawing.Color.FromArgb(255, 255, 255)
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['rhino_vertex_merge',
-           'rhino_vertex_lift',
-           'rhino_halfface_pinch',
-           'rhino_halfface_merge',
-           'rhino_cell_subdivide_barycentric',
-           'volmesh_pull_faces']
+__all__ = [
+    'rhino_vertex_merge',
+    'rhino_vertex_lift',
+    'rhino_halfface_pinch',
+    'rhino_halfface_merge',
+    'rhino_cell_subdivide_barycentric',
+    'volmesh_pull_faces'
+]
 
 
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
 #
-#   vertices
+#   vertex operations
 #
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
+
 
 def rhino_vertex_merge(volmesh):
 
@@ -137,10 +140,7 @@ def rhino_vertex_lift(volmesh):
     xyz    = volmesh.vertex_coordinates(vkey)
     normal = volmesh.vertex_normal(vkey)
 
-
-
     rs.EnableRedraw(True)
-
 
     def OnDynamicDraw(sender, e):
 
@@ -167,7 +167,7 @@ def rhino_vertex_lift(volmesh):
 # ******************************************************************************
 # ******************************************************************************
 #
-#   faces
+#   face operations
 #
 # ******************************************************************************
 # ******************************************************************************
@@ -244,10 +244,6 @@ def rhino_halfface_merge(volmesh):
     halfface_merge(volmesh, hfkeys)
     volmesh.draw()
     return volmesh
-
-
-
-
 
 
 # ******************************************************************************
@@ -413,8 +409,6 @@ def volmesh_pull_faces(volmesh, uniform=False):
     volmesh.clear()
     volmesh.clear_cell_labels()
     volmesh.draw()
-
-
 
 
 # ******************************************************************************

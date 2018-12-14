@@ -4,15 +4,25 @@ from __future__ import division
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = [
+    'directed_hfs',
+
     'pair_hf_to_uv',
     'pair_uv_to_hf'
 ]
+
+
+def directed_hfs(volmesh, network):
+    hfkeys = []
+    for u, v in network.edges():
+        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
+        hfkeys.append(u_hfkey)
+    return hfkeys
 
 
 def pair_hf_to_uv(volmesh, network):
@@ -35,13 +45,14 @@ def pair_hf_to_uv(volmesh, network):
     u_hfkey is an interior halfface of the volmesh that belongs to volmesh.cell[u], which points to volmesh.cell[v]. In another words, its pair (or opposite) halfface belongs to volmesh.cell[v].
 
     """
-    pair_dict = {}
+    hf_uv_dict = {}
 
     for u, v in network.edges():
         u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
-        pair_dict[u_hfkey] = (u, v)
+        hf_uv_dict[u_hfkey] = (u, v)
+        hf_uv_dict[v_hfkey] = (v, u)
 
-    return pair_dict
+    return hf_uv_dict
 
 
 def pair_uv_to_hf(volmesh, network):
@@ -60,8 +71,14 @@ def pair_uv_to_hf(volmesh, network):
         A dictionary of (u, v)-u_hfkey pairs.
 
     """
+    uv_hf_dict = {}
 
-    hf_uv_dict = pair_hf_to_uv(volmesh, network)
-    uv_hf_dict = dict((uv, hfkey) for hfkey, uv in hf_uv_dict.items())
+    for u, v in network.edges():
+        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
+        uv_hf_dict[(u, v)] = u_hfkey
 
     return uv_hf_dict
+
+
+
+

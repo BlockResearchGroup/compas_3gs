@@ -2,32 +2,28 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
-import compas
-import compas_rhino
-
 from compas.geometry import convex_hull
-
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 
-from compas_3gs.utilities import pair_uv_to_hf
-
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['volmesh_ud',
-           'cellnetwork_ud']
+__all__ = [
+    'volmesh_ud',
+    'cellnetwork_ud'
+]
 
 
 def volmesh_ud(volmesh,
                network,
                scale=0.5):
-    """Computes temporary vertex coordinates for every halfface, for the visualisation of the unified diagram.
+    """Computes temporary vertex coordinates for every halfface of a volmesh, for the visualisation of the unified diagram.
 
     Parameters
     ----------
@@ -35,6 +31,8 @@ def volmesh_ud(volmesh,
         A volmesh object representing a polyhedral force diagram.
     network : Network
         A network object representing a polyhedral form diagram.
+    scale : float
+        Unified diagram scale factor,
 
     Returns
     -------
@@ -43,18 +41,34 @@ def volmesh_ud(volmesh,
 
     Notes
     -----
+    The prisms are implemented as convex hull of two halffaces for simplicity and to resolve any small geometric errors.
 
+    Unified diagram with a scale of 0 is equivalent to the polyhedral force diagram, while a scale of 1 is equivalent to the polyhedral form diagram.
+
+    References
+    ----------
+    .. [1] Zanni G and Pennock G. *A unified graphical approach...*.
+           Available at: https://www.researchgate.net/publication/223711661_A_unified_graphical_approach_to_the_static_analysis_of_axially_loaded_structures.
+    .. [2] McRobie A. *Maxwell and Rankine reciprocal diagrams via Minkowski
+           sums for two-dimensional and three-dimensional trusses under load*.
+           Available at: https://journals.sagepub.com/doi/full/10.1177/0266351116660800
 
     """
 
-    halffaces = {}
-
     # --------------------------------------------------------------------------
-    #   1. if scale == 0, the unified diagram IS the polyhedral force diagram.
+    #   0. evaluate unified diagram scale
     # --------------------------------------------------------------------------
     if scale == 0:
-        return halffaces
+        raise Exception("A unified diagram with a scale of 0 is equivalent to the polyhedral force diagram.")
 
+    if scale == 1:
+        raise Exception("A unified diagram with a scale of 1 is equivalent to the polyhedral form diagram.")
+
+    assert 0 < scale and scale < 1, "Scale needs to be between 0 and 1."
+
+    # --------------------------------------------------------------------------
+    #   1. current positions of diagrams
+    # --------------------------------------------------------------------------
     volmesh_center = volmesh.datastructure_centroid()
     network_center = network.datastructure_centroid()
     translation    = subtract_vectors(volmesh_center, network_center)
@@ -63,6 +77,7 @@ def volmesh_ud(volmesh,
     #   2. get base points
     # --------------------------------------------------------------------------
     base_xyz = {}
+
     for vkey in network.vertex:
         init_xyz       = network.vertex_coordinates(vkey)
         base_xyz[vkey] = add_vectors(init_xyz, translation)
@@ -70,6 +85,8 @@ def volmesh_ud(volmesh,
     # --------------------------------------------------------------------------
     #   3. compute scaled halffaces
     # --------------------------------------------------------------------------
+    halffaces = {}
+
     for ckey in volmesh.cell:
         cell_hfs = volmesh.cell_halffaces(ckey)
         for hfkey in cell_hfs:
@@ -119,5 +136,3 @@ def cellnetwork_ud(cellnetwork):
 
 if __name__ == '__main__':
     pass
-
-

@@ -24,27 +24,38 @@ except ImportError:
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['volmesh_vertex_fixity',
-           'volmesh_vertex_move',
-           'volmesh_vertex_align',
+__all__ = [
+    'vertex_modify_fixity',
+    'vertex_move',
+    'volmesh_vertex_align',
 
-           'network_vertex_move',
-           'network_vertex_fixity']
-
-
-# ==============================================================================
-#   volmesh
-# ==============================================================================
+    'network_vertex_move',
+    'network_vertex_fixity'
+]
 
 
-def volmesh_vertex_fixity(volmesh):
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   volmesh or network
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
-    vkeys = VertexSelector.select_vertices(volmesh)
+
+def vertex_modify_fixity(diagram):
+    """Modifies the fixity attribute(s) of selected vertices.
+
+    """
+
+    vkeys = VertexSelector.select_vertices(diagram)
 
     go = Rhino.Input.Custom.GetOption()
     go.SetCommandPrompt('Set axes Constraints')
@@ -72,25 +83,28 @@ def volmesh_vertex_fixity(volmesh):
 
     for vkey in vkeys:
         if boolOptionA.CurrentValue:
-            volmesh.v_data[vkey]['x_fix'] = True
-            volmesh.v_data[vkey]['y_fix'] = True
-            volmesh.v_data[vkey]['z_fix'] = True
-        volmesh.v_data[vkey]['x_fix'] = boolOptionX.CurrentValue
-        volmesh.v_data[vkey]['y_fix'] = boolOptionY.CurrentValue
-        volmesh.v_data[vkey]['z_fix'] = boolOptionZ.CurrentValue
+            diagram.vertex[vkey]['x_fix'] = True
+            diagram.vertex[vkey]['y_fix'] = True
+            diagram.vertex[vkey]['z_fix'] = True
+        else:
+            diagram.vertex[vkey]['x_fix'] = boolOptionX.CurrentValue
+            diagram.vertex[vkey]['y_fix'] = boolOptionY.CurrentValue
+            diagram.vertex[vkey]['z_fix'] = boolOptionZ.CurrentValue
 
-    volmesh.draw(layer='forcepolyhedra')
-    return volmesh
+    diagram.draw(layer=diagram.layer)
 
 
-def volmesh_vertex_move(volmesh):
+def vertex_move(diagram):
+    """Moves the selected vertices.
 
-    vkeys = VertexSelector.select_vertices(volmesh)
+    """
+
+    vkeys = VertexSelector.select_vertices(diagram)
 
     nbr_vkeys = {}
     edges = set()
     for vkey in vkeys:
-        all_nbrs = volmesh.plane[vkey].keys()
+        all_nbrs = diagram.vertex_neighbors(vkey)
         nbrs = []
         for nbr in all_nbrs:
             if nbr in vkeys:
@@ -99,16 +113,16 @@ def volmesh_vertex_move(volmesh):
                 nbrs.append(nbr)
         nbr_vkeys[vkey] = nbrs
 
-    ip   = _get_initial_point()
+    ip = _get_initial_point()
 
     def OnDynamicDraw(sender, e):
         cp = e.CurrentPoint
         translation = cp - ip
         for vkey in vkeys:
-            xyz = volmesh.vertex_coordinates(vkey)
+            xyz = diagram.vertex_coordinates(vkey)
             sp  = Point3d(*xyz)
             for nbr_vkey in nbr_vkeys[vkey]:
-                nbr  = volmesh.vertex_coordinates(nbr_vkey)
+                nbr  = diagram.vertex_coordinates(nbr_vkey)
                 np   = Point3d(*nbr)
                 line = Rhino.Geometry.Line(sp, sp + translation)
                 e.Display.DrawDottedLine(np, sp + translation, dotted_color)
@@ -116,8 +130,8 @@ def volmesh_vertex_move(volmesh):
 
         for pair in list(edges):
             pair = list(pair)
-            u  = volmesh.vertex_coordinates(pair[0])
-            v  = volmesh.vertex_coordinates(pair[1])
+            u  = diagram.vertex_coordinates(pair[0])
+            v  = diagram.vertex_coordinates(pair[1])
             sp = Point3d(*u) + translation
             ep = Point3d(*v) + translation
             e.Display.DrawLine(sp, ep, edge_color, 3)
@@ -143,12 +157,27 @@ def volmesh_vertex_move(volmesh):
 
     translation = target - ip
     for vkey in vkeys:
-        new_xyz = add_vectors(volmesh.vertex_coordinates(vkey), translation)
-        volmesh.vertex_update_xyz(vkey, new_xyz, constrained=False)
+        new_xyz = add_vectors(diagram.vertex_coordinates(vkey), translation)
+        diagram.vertex_update_xyz(vkey, new_xyz, constrained=False)
 
-    volmesh.draw(layer='forcepolyhedra')
+    diagram.draw()
 
-    return volmesh
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def volmesh_vertex_align(volmesh):
@@ -235,12 +264,44 @@ def volmesh_vertex_align(volmesh):
         xyz = update_point(volmesh.vertex_coordinates(vkey), target)
         volmesh.vertex_update_xyz(vkey, xyz, constrained=False)
 
-    volmesh.draw(layer='forcepolyhedra')
+    volmesh.draw()
 
 
-# ==============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
 #   network
-# ==============================================================================
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def network_vertex_fixity(network):
@@ -280,7 +341,8 @@ def network_vertex_fixity(network):
         network.v_data[vkey]['y_fix'] = boolOptionY.CurrentValue
         network.v_data[vkey]['z_fix'] = boolOptionZ.CurrentValue
 
-    network.draw(layer='formdiagram')
+    network.draw()
+
     return network
 
 
@@ -347,13 +409,18 @@ def network_vertex_move(network):
         new_xyz = add_vectors(network.vertex_coordinates(vkey), translation)
         network.vertex_update_xyz(vkey, new_xyz, constrained=False)
 
-    network.draw(layer='formdiagram')
-    return network
+    network.draw()
 
 
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
 #   helpers
-# ==============================================================================
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def _get_initial_point(message='Point to move from?'):

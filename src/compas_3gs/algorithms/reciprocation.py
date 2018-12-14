@@ -2,57 +2,50 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-import compas_rhino
-
 from compas.geometry import normalize_vector
 from compas.geometry import scale_vector
 from compas.geometry import add_vectors
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import centroid_points
-from compas.geometry import project_points_plane
-from compas.geometry import distance_point_point
 
 from compas_3gs.algorithms import volmesh_planarise
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['volmesh_reciprocate']
+__all__ = [
+    'volmesh_reciprocate'
+]
 
 
 def volmesh_reciprocate(volmesh,
                         formdiagram,
                         kmax=100,
-                        weight=1,
+                        weight=1.0,
                         fix_vkeys=[],
                         edge_min=None,
                         edge_max=None,
                         tolerance=0.001,
                         callback=None,
-                        callback_args=None,
-                        print_result=False):
-    """Perpendicularizes the polyhedral form and force diagrams.
+                        callback_args=None):
+    """Perpendicularizes the faces of the polyhedral force diagram to the corresponding dual edges in the polyhedral form diagram.
 
     Parameters
     ----------
     volmesh : VolMesh
-        A volmesh object.
+        A volmesh object representing a polyhedral force diagram.
     formdiagram : VolMesh or Network
-        The dual network or volmesh object.
+        A network object representing a polyhedral form diagram.
     kmax : int, optional [100]
         Maximum number of iterations.
-    weight : float, optional [1]
-        A float, between 0 and 1.
-        Determines how much each diagram changes.
-        weight = 1 means only the form diagram is updated.
-        wegith = 0.5 means both diagrams are updated.
-        weight = 0 means only the force diagram is updated.
+    weight : float, optional [1.0]
+        A float, between 0 and 1, which determines how much each diagram changes.
+        Default is ``1.0``.
     tolerance: float, optional [0.001]
         Sets the convergence tolerance.
     callback : callable, optional [None]
@@ -64,6 +57,22 @@ def volmesh_reciprocate(volmesh,
     ------
     Exception
         If a callback is provided, but it is not callable.
+
+    Notes
+    -----
+    Reciprocation weight of ...
+    ... 1 means only the form diagram is updated.
+    ... 0.5 means both diagrams are updated.
+    ... 0 means only the force diagram is updated.
+
+    References
+    ----------
+    .. [1] Rippmann M, Lachauer L and Block P. *Interactive Vault Design*.
+           Available at: https://journals.sagepub.com/doi/abs/10.1260/0266-3511.27.4.219.
+
+    See Also
+    --------
+    * :func: `compas.geometry.network_parallelise_edges`
 
     """
 
@@ -90,6 +99,8 @@ def volmesh_reciprocate(volmesh,
     # --------------------------------------------------------------------------
     #   2. loop
     # --------------------------------------------------------------------------
+    delta = 0
+
     for k in range(kmax):
 
         # ----------------------------------------------------------------------
@@ -100,9 +111,7 @@ def volmesh_reciprocate(volmesh,
             new_form_xyz   = {vkey: [] for vkey in formdiagram.vertex}
 
             for u, v in target_vectors:
-                hfkey    = target_vectors[(u, v)]['fkey']
                 target_v = target_vectors[(u, v)]['target']
-                face_n   = volmesh.halfface_normal(hfkey)
                 edge_v   = formdiagram.edge_vector(u, v, unitized=False)
 
                 # target edge length -------------------------------------------
@@ -153,17 +162,21 @@ def volmesh_reciprocate(volmesh,
         #   check convergence
         # ----------------------------------------------------------------------
         deviation = _check_deviation(volmesh, formdiagram)
-        if  deviation < tolerance:
+
+        if deviation < tolerance:
+            _print_reciprocation_result(k, deviation, delta)
             break
 
-        # ----------------------------------------------------------------------
-        #   callback
-        # ----------------------------------------------------------------------
+        step_d = abs(delta - deviation)
+        if step_d < tolerance / 1000:
+            _print_reciprocation_result(k, deviation, step_d, converged=False)
+            break
+
+        delta = deviation
+
+        # callback / conduit ---------------------------------------------------
         if callback:
             callback(volmesh, formdiagram, k, callback_args)
-
-    if print_result:
-        _print_reciprocation_result(k, deviation)
 
 
 def cellnetwork_reciprocate(cellnetwork):
@@ -202,11 +215,21 @@ def _check_deviation(volmesh, network):
     return deviation
 
 
-def _print_reciprocation_result(k, deviation):
+def _print_reciprocation_result(k, deviation, delta, converged=True):
+
     print('===================================================================')
     print('')
-    print('Reciprocation stopped after', k, 'iterations ...')
-    print('... with max_deviation of :', deviation)
+
+    if converged:
+        print('Reciprocation COMPLETED.')
+
+    else:
+        print('Reciprocation appears to be stuck! Reciprocation ABORTED.')
+
+    print('')
+    print('Iterations :', k)
+    print('Max deviation :', deviation)
+    print('Delta :', delta)
     print('')
     print('===================================================================')
 

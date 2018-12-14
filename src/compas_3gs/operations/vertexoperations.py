@@ -4,13 +4,15 @@ from compas.utilities.maps import geometric_key
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['vertex_merge',
-           'vertex_lift']
+__all__ = [
+    'vertex_merge',
+    'vertex_lift'
+]
 
 
 def vertex_merge(volmesh, vkeys, target_xyz):
@@ -24,6 +26,7 @@ def vertex_merge(volmesh, vkeys, target_xyz):
             if ckey not in cell_vkeys:
                 cell_vkeys[ckey] = []
             cell_vkeys[ckey].append(vkey)
+
     # construct new halffaces --------------------------------------------------
     cells = {}
     for ckey in cell_vkeys:
@@ -44,10 +47,12 @@ def vertex_merge(volmesh, vkeys, target_xyz):
                 if c_vkey not in vkeys:
                     vertices[c_vkey] = volmesh.vertex_coordinates(c_vkey)
         volmesh.delete_cell(ckey)
+
     # add vertices -------------------------------------------------------------
     for vkey in vertices:
         x, y, z = vertices[vkey]
         volmesh.add_vertex(vkey=vkey, x=x, y=y, z=z)
+
     # add halffaces and cells --------------------------------------------------
     for ckey in cells:
         volmesh.cell[ckey] = {}
@@ -63,23 +68,28 @@ def vertex_merge(volmesh, vkeys, target_xyz):
                     volmesh.cell[ckey][u] = {}
                 volmesh.cell[ckey][u][v] = hfkey
                 volmesh.plane[u][v][w] = ckey
+
     # --------------------------------------------------------------------------
-    volmesh.initialize_data()
+
     return volmesh
 
 
 def vertex_lift(volmesh, vkey, hfkeys, xyz):
+
     x, y, z = xyz
     w       = volmesh.add_vertex(x=x, y=y, z=z)
+
     # check --------------------------------------------------------------------
     if not volmesh.is_vertex_boundary(vkey):
         raise ValueError('This vertex is interior.')
+
     # --------------------------------------------------------------------------
     for hfkey in hfkeys:
         halffaces = [volmesh.halfface_vertices(hfkey)[::-1]]
         for u, v in volmesh.halfface_halfedges(hfkey):
             halffaces.append([u, v, w])
         volmesh.add_cell(halffaces)
+
     return volmesh
 
 

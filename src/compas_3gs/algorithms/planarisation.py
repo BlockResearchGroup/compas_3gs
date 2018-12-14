@@ -11,12 +11,14 @@ from compas.geometry.transformations.transformations import project_point_plane
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['volmesh_planarise']
+__all__ = [
+    'volmesh_planarise'
+]
 
 
 def volmesh_planarise(volmesh,
@@ -35,6 +37,13 @@ def volmesh_planarise(volmesh,
                       print_result=False):
     """Planarisation of volmesh faces.
 
+    Planarisation is implemented as a two-stp iterative procedure. At every iteration, faces are first individually projected to their best-fit plane,
+    and then the vertices are projected to the centroid of the disconnected
+    corners of the faces.
+
+    Specific target_areas
+
+
     Parameters
     ----------
     volmesh : VolMesh
@@ -42,27 +51,22 @@ def volmesh_planarise(volmesh,
     kmax : int, optional [100]
         Maximum number of iterations.
         Default is ``1``.
-
     target_face_areas : dictionary, optional [{}]
         A dictionary of fkeys and target areas.
     target_face_normals : dictionary, optional [{}]
         A dictionary of fkeys and target face normals.
     target_face_centers : dictionary, optional [{}]
         A dictionary of fkeys and target face centers.
-
     omit_fkeys : list, optional [[]]
         List of fkeys to omit from planarising.
-
     fix_boundary_face_normals : boolean, optional [False]
         Whether to keep the initial normals of the bondary faces.
     fix_all_face_normals : boolean, optional [False]
         Whether to keep the initial normals of all faces.
-
     flat_tolerance: float, optional
         Convergence tolerance for face flatness.
     area_tolerance: float, optional
         Convergence tolerance for face areas.
-
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
         Default is ``None``.
@@ -70,10 +74,9 @@ def volmesh_planarise(volmesh,
         Additional parameters to be passed to the callback.
         Default is ``None``.
 
-    Raises
-    ------
-    Exception
-        If a callback is provided, but it is not callable.
+    See Also
+    --------
+    * :func:`compas.geometry.mesh_planarize_faces`
 
     """
 
@@ -86,7 +89,7 @@ def volmesh_planarise(volmesh,
     # --------------------------------------------------------------------------
     free_vkeys      = list(set(volmesh.vertex) - set(omit_vkeys))
     initial_normals = _get_current_normals(volmesh)
-    boundary_fkeys  = set(volmesh.halffaces_on_boundary())
+    boundary_fkeys  = set(volmesh.halffaces_boundary())
 
     # --------------------------------------------------------------------------
     #   2. loop

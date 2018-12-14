@@ -5,7 +5,7 @@ def volmesh_dual_volmesh(volmesh):
     dual_volmesh = VolMesh()
 
     ext_vkeys = []
-    boundary_hfkeys = volmesh.halffaces_on_boundary()
+    boundary_hfkeys = volmesh.halffaces_boundary()
     for hfkey in boundary_hfkeys:
         for vkey in volmesh.halfface[hfkey]:
             ext_vkeys.append(vkey)

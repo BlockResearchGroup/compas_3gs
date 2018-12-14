@@ -34,7 +34,7 @@ from compas_3gs.datastructures.operations.split import cell_split_vertex
 
 
 __author__    = ['Juney Lee']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__ = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'juney.lee@arch.ethz.ch'
 
@@ -372,7 +372,7 @@ class VolMesh3gs(VolMesh):
             return None
         return self.cell[nbr_ckey][v][u]
 
-    def halffaces_on_boundary(self):
+    def halffaces_boundary(self):
         halffaces = []
         for ckey in self.cell:
             hfkeys = self.cell_halffaces(ckey)
@@ -383,6 +383,11 @@ class VolMesh3gs(VolMesh):
                 if self.plane[w][v][u] is None:
                     halffaces.append(hfkey)
         return halffaces
+
+    def halffaces_interior(self):
+        halffaces = set(self.halfface.keys())
+        hf_boundary = set(self.halffaces_boundary())
+        return halffaces - hf_boundary
 
     def halfface_dependent_halffaces(self, hfkey):
         dep_hfkeys = {}
@@ -517,9 +522,17 @@ class VolMesh3gs(VolMesh):
         artist = VolMeshArtist(self, **kwattr)
         artist.draw_edges(**kwattr)
 
+    def clear_edges(self, **kwattr):
+        artist = VolMeshArtist(self, **kwattr)
+        artist.clear_edges(**kwattr)
+
     def draw_faces(self, **kwattr):
         artist = VolMeshArtist(self)
         artist.draw_faces(**kwattr)
+
+    def clear_faces(self, **kwattr):
+        artist = VolMeshArtist(self)
+        artist.clear_faces(**kwattr)
 
     def draw_face_labels(self, **kwattr):
         artist = VolMeshArtist(self)

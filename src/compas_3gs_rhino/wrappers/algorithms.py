@@ -39,7 +39,7 @@ except ImportError:
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
@@ -198,8 +198,7 @@ def rhino_volmesh_reciprocate(volmesh,
                             edge_min=edge_min,
                             edge_max=edge_max,
                             tolerance=tolerance,
-                            callback=callback,
-                            print_result=True)
+                            callback=callback)
 
     # 3. update / redraw -------------------------------------------------------
     volmesh.draw()

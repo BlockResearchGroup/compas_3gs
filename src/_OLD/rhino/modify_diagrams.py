@@ -67,7 +67,7 @@ def volmesh_vertex_fixity(volmesh):
     return volmesh
 
 
-def volmesh_vertex_move(volmesh):
+def vertex_move(volmesh):
 
     vkeys = volmesh_select_vertices(volmesh)
 

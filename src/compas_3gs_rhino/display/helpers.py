@@ -25,7 +25,7 @@ from compas_rhino.utilities import xdraw_labels
 from compas_rhino.utilities import xdraw_faces
 
 from compas_3gs.utilities import pair_hf_to_uv
-
+from compas_3gs.utilities import pair_uv_to_hf
 
 try:
     import rhinoscriptsyntax as rs
@@ -35,7 +35,7 @@ except ImportError:
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
@@ -97,20 +97,24 @@ def get_force_mags(volmesh, network):
     """Returns a dictionary of (u,v)-magnitude pairs.
     Negative magnitude means compression, while positive magnitude means tension.
     """
+    uv_hf_dict = pair_uv_to_hf(volmesh, network)
+
     mags = {}
+
     for u, v in network.edges():
-        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
-        edge_vector      = network.edge_vector(u, v)
-        face_normal      = volmesh.halfface_normal(u_hfkey)
-        face_area        = volmesh.halfface_area(u_hfkey)
-        dot              = dot_vectors(face_normal, edge_vector)
+        hfkey       = uv_hf_dict[(u, v)]
+        edge_vector = network.edge_vector(u, v)
+        face_normal = volmesh.halfface_normal(hfkey)
+        face_area   = volmesh.halfface_area(hfkey)
+        dot         = dot_vectors(face_normal, edge_vector)
         if dot < 0:
             factor = -1
         if dot > 0:
             factor = 1
         force = face_area * factor
+
         mags[(u, v)] = force
-        mags[(v, u)] = force
+
     return mags
 
 
@@ -126,6 +130,7 @@ def get_force_colors_uv(volmesh,
     f_range = sorted(f_dict.values())
     max_c   = abs(f_range[0])  # max comrpession
     max_t   = f_range[-1]  # max tension
+
     for edge in f_dict:
         force = f_dict[edge]
         if force < 0:  # if compression
@@ -138,7 +143,9 @@ def get_force_colors_uv(volmesh,
                 color = i_to_red(force / max_t)
         if force == 0 or force < tol:  # if close to zero
             color = (255, 255, 255)
+
         c_dict[edge] = color
+
     return c_dict
 
 
@@ -146,22 +153,34 @@ def get_force_colors_hf(volmesh,
                         network,
                         uv_c_dict=None,
                         gradient=False,
+                        boundary=False,
                         tol=0.001):
     """Returns a dictionary of hfkey-color pairs.
     """
+    uv_hf_dict = pair_uv_to_hf(volmesh, network)
+
+    uv_c_dict = uv_c_dict or get_force_colors_uv(volmesh,
+                                                 network,
+                                                 gradient=gradient)
+
+    # interior halffaces -------------------------------------------------------
     hf_c_dict = {}
-    if not uv_c_dict:
-        uv_c_dict = get_force_colors_uv(volmesh,
-                                        network,
-                                        gradient=False,
-                                        tol=0.001)
-    hf_uv_dict = pair_hf_to_uv(volmesh, network)
-    for hfkey in hf_uv_dict:
-        uv = hf_uv_dict[hfkey]
-        hf_c_dict[hfkey] = uv_c_dict[uv]
+    for uv in uv_c_dict:
+        u_hfkey = uv_hf_dict[uv]
+        v_hfkey = volmesh.halfface_pair(u_hfkey)
+        hf_c_dict[u_hfkey] = uv_c_dict[uv]
+        hf_c_dict[v_hfkey] = uv_c_dict[uv]
+
+    # boundary halffaces -------------------------------------------------------
+    if boundary:
+        b_hfkeys = volmesh.halffaces_boundary()
+        b_hf_areas = {hfkey: volmesh.halfface_area(hfkey) for hfkey in b_hfkeys}
+        b_hf_c_dict = valuedict_to_colordict(b_hf_areas,
+                                             color_scheme=i_to_green)
+        for hfkey in b_hfkeys:
+            hf_color = (0, 255, 0)
+            if gradient:
+                hf_color = b_hf_c_dict[hfkey]
+            hf_c_dict[hfkey] = hf_color
+
     return hf_c_dict
-
-
-
-
-

@@ -21,7 +21,7 @@ except ImportError:
 
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
@@ -66,7 +66,7 @@ class CellSelector(object):
 
 def select_boundary_halffaces(volmesh):
 
-    hfkeys = volmesh.halffaces_on_boundary()
+    hfkeys = volmesh.halffaces_boundary()
 
     volmesh.clear()
     volmesh.draw_edges()

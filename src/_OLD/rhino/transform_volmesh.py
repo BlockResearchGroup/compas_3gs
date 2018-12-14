@@ -16,7 +16,7 @@ from compas.geometry import centroid_polyhedron
 from compas.geometry import intersection_line_plane
 from compas.geometry import distance_point_point
 
-from compas_3gs.rhino import volmesh_vertex_move
+from compas_3gs.rhino import vertex_move
 
 from compas.utilities import i_to_rgb
 
@@ -62,7 +62,7 @@ def volmesh_pull_faces(volmesh):
     #     normal = volmesh.halfface_normal(hfkey)
     #     targets[hfkey] = normal
 
-    # volmesh_vertex_move(volmesh)
+    # vertex_move(volmesh)
 
     # print('test')
     # print(targets)

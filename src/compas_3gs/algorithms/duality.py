@@ -6,7 +6,7 @@ from compas_3gs.datastructures import Network3gs as Network
 from compas_3gs.datastructures import VolMesh3gs as VolMesh
 
 __author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
@@ -18,7 +18,7 @@ __all__ = [
 
 
 def volmesh_dual_volmesh(volmesh, cls=None):
-    """Constructs the volmesh dual of a volmesh.
+    """Constructs the dual volmesh of a volmesh.
 
     Parameters
     ----------
@@ -46,7 +46,7 @@ def volmesh_dual_volmesh(volmesh, cls=None):
 
     # 3. find interior vertices ------------------------------------------------
     ext_vkeys = []
-    boundary_hfkeys = volmesh.halffaces_on_boundary()
+    boundary_hfkeys = volmesh.halffaces_boundary()
     for hfkey in boundary_hfkeys:
         for vkey in volmesh.halfface[hfkey]:
             ext_vkeys.append(vkey)
@@ -75,7 +75,7 @@ def volmesh_dual_volmesh(volmesh, cls=None):
 
 
 def volmesh_dual_network(volmesh, cls=None):
-    """Constructs the network dual of a volmesh.
+    """Computes the dual network dual of a volmesh.
 
     Parameters
     ----------
@@ -107,9 +107,16 @@ def volmesh_dual_network(volmesh, cls=None):
     return dual_network
 
 
-# ==============================================================================
-# Main
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   Main
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
 
 if __name__ == '__main__':
 
