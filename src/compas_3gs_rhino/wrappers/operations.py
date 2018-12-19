@@ -76,6 +76,7 @@ from Rhino.Geometry import Plane
 from Rhino.Geometry import Brep
 from Rhino.Geometry import Line
 
+
 find_object    = sc.doc.Objects.Find
 feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
 arrow_color    = System.Drawing.Color.FromArgb(255, 0, 79)
@@ -93,10 +94,14 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = [
-    'rhino_vertex_merge',
     'rhino_vertex_lift',
+    'rhino_vertex_merge',
+    'rhino_vertex_truncate',
+    'rhino_vertex_volumise',
+
     'rhino_halfface_pinch',
     'rhino_halfface_merge',
+
     'rhino_cell_subdivide_barycentric',
     'volmesh_pull_faces'
 ]
@@ -113,54 +118,67 @@ __all__ = [
 # ******************************************************************************
 
 
-def rhino_vertex_merge(volmesh):
-
-    volmesh.draw()
-
-    keys = volmesh_select_vertices(volmesh)
-    xyz   = centroid_points([volmesh.vertex_coordinates(key) for key in keys])
-
-    vertex_merge(volmesh, keys, xyz)
-    volmesh.draw()
-
-
 def rhino_vertex_lift(volmesh):
+    """Rhino wrapper for the vertex lift operation.
+    """
 
     volmesh.draw()
 
-    vkey   = volmesh_select_vertex(volmesh)
+    vkey = volmesh_select_vertex(volmesh)
 
-    print(volmesh.vertex_halffaces(vkey))
-
-    boundary_hfkeys = []
+    vertex_hfkeys = []
     for hfkey in volmesh.vertex_halffaces(vkey):
         if volmesh.is_face_boundary(hfkey):
-            boundary_hfkeys.append(hfkey)
+            vertex_hfkeys.append(hfkey)
 
     xyz    = volmesh.vertex_coordinates(vkey)
     normal = volmesh.vertex_normal(vkey)
 
-    rs.EnableRedraw(True)
-
     def OnDynamicDraw(sender, e):
-
-        cp     = e.CurrentPoint
-
-        for hfkey in boundary_hfkeys:
+        cp = e.CurrentPoint
+        for hfkey in vertex_hfkeys:
             for vkey in volmesh.halfface_vertices(hfkey):
                 sp = volmesh.vertex_coordinates(vkey)
-                e.Display.DrawLine(Point3d(*sp), cp, black, 2)
+                e.Display.DrawLine(Point3d(*sp), cp, white, 2)
 
+    ip   = Point3d(*xyz)
+    axis = Rhino.Geometry.Line(ip, ip + Vector3d(*normal))
+    gp   = _get_target_point(axis, OnDynamicDraw)
 
-    ip    = Point3d(*xyz)
-    axis  = Rhino.Geometry.Line(ip, ip + Vector3d(*normal))
-    gp    = _get_target_point(axis, OnDynamicDraw)
-
-    vertex_lift(volmesh, vkey, boundary_hfkeys, gp)
+    vertex_lift(volmesh, vkey, gp, vertex_hfkeys)
 
     volmesh.draw()
 
-    return volmesh
+
+# ******************************************************************************
+
+
+def rhino_vertex_merge(volmesh):
+    """Rhino wrapper for the vertex merge operation.
+    """
+
+    volmesh.draw()
+
+    keys = volmesh_select_vertices(volmesh)
+    xyz  = centroid_points([volmesh.vertex_coordinates(key) for key in keys])
+
+    vertex_merge(volmesh, keys, xyz)
+
+    volmesh.draw()
+
+
+# ******************************************************************************
+
+
+def rhino_vertex_truncate(volmesh):
+    pass
+
+
+# ******************************************************************************
+
+
+def rhino_vertex_volumise(volmesh):
+    pass
 
 
 # ******************************************************************************
@@ -245,6 +263,69 @@ def rhino_halfface_merge(volmesh):
     volmesh.draw()
     return volmesh
 
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   cell operations
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+def rhino_cell_subdivide_barycentric(volmesh, formdiagram=None):
+
+
+    cell_colors = {}
+    ckeys = volmesh.cell.keys()
+    for index, ckey in enumerate(ckeys):
+        color = (0, 0, 0)
+        if len(ckeys) != 1:
+            value  = float(index) / (len(ckeys) - 1)
+            color  = i_to_rgb(value)
+        cell_colors[ckey] = color
+
+    volmesh.clear()
+    volmesh.draw_edges()
+    volmesh.draw_faces()
+    volmesh.draw_cell_labels(colors=True)
+    rs.EnableRedraw(True)
+
+    # dynamic selector
+    cell_inspector = VolmeshCellInspector(volmesh, color_dict=cell_colors)
+    cell_inspector.enable()
+    sel_ckeys = CellSelector.select_cells(volmesh)
+    cell_inspector.disable()
+    del cell_inspector
+    volmesh.clear_cell_labels()
+
+
+    for ckey in sel_ckeys:
+        cell_subdivide_barycentric(volmesh, ckey)
+
+
+    # if formdiagram:
+    #     xyz = {vkey: formdiagram.vertex_coordinates(vkey) for vkey in formdiagram.vertex}
+
+    #     dual = volmesh_dual_network(volmesh)
+    #     for vkey in xyz:
+    #         dual.vertex_update_xyz(vkey, xyz[vkey], constrained=False)
+
+    #     volmesh_reciprocate(volmesh,
+    #                         formdiagram,
+    #                         weight=1,
+    #                         min_edge=5,
+    #                         max_edge=15,
+    #                         fix_vkeys=xyz.keys(),)
+
+    # dual.draw()
+
+    volmesh.clear()
+    volmesh.draw()
+
+    return volmesh
 
 # ******************************************************************************
 # ******************************************************************************
@@ -422,57 +503,43 @@ def volmesh_pull_faces(volmesh, uniform=False):
 # ******************************************************************************
 
 
-def rhino_cell_subdivide_barycentric(volmesh, formdiagram=None):
 
 
-    cell_colors = {}
-    ckeys = volmesh.cell.keys()
-    for index, ckey in enumerate(ckeys):
-        color = (0, 0, 0)
-        if len(ckeys) != 1:
-            value  = float(index) / (len(ckeys) - 1)
-            color  = i_to_rgb(value)
-        cell_colors[ckey] = color
-
-    volmesh.clear()
-    volmesh.draw_edges()
-    volmesh.draw_faces()
-    volmesh.draw_cell_labels(colors=True)
-    rs.EnableRedraw(True)
-
-    # dynamic selector
-    cell_inspector = VolmeshCellInspector(volmesh, color_dict=cell_colors)
-    cell_inspector.enable()
-    sel_ckeys = CellSelector.select_cells(volmesh)
-    cell_inspector.disable()
-    del cell_inspector
-    volmesh.clear_cell_labels()
 
 
-    for ckey in sel_ckeys:
-        cell_subdivide_barycentric(volmesh, ckey)
+# def rhino_cell_subdivide_barycentric(volmesh, formdiagram=None):
+
+#     ckey = volmesh3gs_select_cell(volmesh)
+
+#     new_ckeys = cell_subdivide_barycentric(volmesh, ckey)
 
 
-    # if formdiagram:
-    #     xyz = {vkey: formdiagram.vertex_coordinates(vkey) for vkey in formdiagram.vertex}
+#     if formdiagram:
+#         xyz = {vkey: formdiagram.vertex_coordinates(vkey) for vkey in formdiagram.vertex}
 
-    #     dual = volmesh_dual_network(volmesh)
-    #     for vkey in xyz:
-    #         dual.vertex_update_xyz(vkey, xyz[vkey], constrained=False)
+#         dual = volmesh_dual_network(volmesh)
+#         for vkey in xyz:
+#             dual.vertex_update_xyz(vkey, xyz[vkey], constrained=False)
 
-    #     volmesh_reciprocate(volmesh,
-    #                         formdiagram,
-    #                         weight=1,
-    #                         min_edge=5,
-    #                         max_edge=15,
-    #                         fix_vkeys=xyz.keys(),)
+#         volmesh_reciprocate(volmesh,
+#                             formdiagram,
+#                             weight=1,
+#                             min_edge=5,
+#                             max_edge=15,
+#                             fix_vkeys=xyz.keys(),)
 
-    # dual.draw()
 
-    volmesh.clear()
-    volmesh.draw()
+#     dual.draw()
 
-    return volmesh
+#     volmesh.draw()
+
+#     return volmesh
+
+
+
+
+
+
 
 
 

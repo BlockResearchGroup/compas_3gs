@@ -1,3 +1,6 @@
+from itertools import tee
+
+
 p = [-2, 0, -2, 3, 7, 1]
 
 
@@ -26,9 +29,15 @@ b = [0, 3]
 d = [a[i] for i in b]
 
 
+def pairwise(iterable):
+    """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
+    a, b = tee(iterable)
+    next(b, None)
+    return zip(a, b)
 
-
-
+m = pairwise(a)
+for pair in m:
+    print(pair)
 
 
 f = {
@@ -42,20 +51,10 @@ f = {
 
 e = [f[i] for i in b]
 
+
 print(e)
 
-
 print (5.2 % 2)
-
-
-# g = 1.5
-
-# assert 1 < g, "value is not between 0 and 1"
-
-# if g > 1:
-#     print("test")
-#     raise
-
 
 
 test = {
@@ -64,9 +63,19 @@ test = {
     (2, 2): 1,
 }
 
-selection = test[(3, 2)] or test[(2, 1)]
 
-print(selection)
+q = set([(1, 2), (3, 4), (5, 6)])
+
+
+if (1, 2) in q:
+    print('yes')
+
+
+for number in a:
+    if number % 2 == 0:
+        continue
+    print(number)
+    print('no')
 
 
 

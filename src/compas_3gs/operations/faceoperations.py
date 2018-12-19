@@ -13,11 +13,19 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['halfface_pinch',
-           'halfface_merge']
+__all__ = [
+    'halfface_pinch',
+    'halfface_extrude',
+    'halfface_divide',
+    'halfface_merge'
+]
 
 
 def halfface_pinch(volmesh, hfkey, xyz):
+    """
+
+    """
+
     x, y, z        = xyz
     w              = volmesh.add_vertex(x=x, y=y, z=z)
     hf_vkeys       = volmesh.halfface_vertices(hfkey)
@@ -27,6 +35,14 @@ def halfface_pinch(volmesh, hfkey, xyz):
         cell_halffaces.append([u, v, w])
     volmesh.add_cell(cell_halffaces)
     return volmesh
+
+
+def halfface_extrude(volmesh, hfkey):
+    pass
+
+
+def halfface_divide(volmesh, hfkey):
+    pass
 
 
 def halfface_merge(volmesh, hfkeys):
@@ -77,15 +93,15 @@ def halfface_merge(volmesh, hfkeys):
     return volmesh
 
 
-def halfface_extrude(volmesh, hfkeys):
-
-    pass
-
-
-
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
 #   helpers
-# ==============================================================================
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def _are_halffaces_chained(volmesh, hfkeys):

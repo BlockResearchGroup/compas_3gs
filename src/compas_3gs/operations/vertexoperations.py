@@ -1,6 +1,8 @@
-from itertools import groupby
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import division
 
-from compas.utilities.maps import geometric_key
+from itertools import groupby
 
 
 __author__     = ['Juney Lee']
@@ -10,13 +12,116 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = [
+    'vertex_lift',
     'vertex_merge',
-    'vertex_lift'
+    'vertex_truncate',
+    'vertex_volumise'
 ]
 
 
-def vertex_merge(volmesh, vkeys, target_xyz):
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
+
+def vertex_lift(volmesh, vkey, target_xyz, hfkeys):
+    """Duplicates and lifts a vertex, then creates cells using the vertex halffaces and the duplicated vertex.
+
+    Parameters
+    ----------
+    volmesh : VolMesh
+        A volmesh object representing a polyhedral force diagram.
+    vkey : int
+        The key of the vertex to lift.
+    hfkeys : list
+        List of halfface keys to create new cells from.
+    xyz : tuple
+        Target xyz coordinates of the lifted vertex.
+
+    Notes
+    -----
+    The lifting vertex must be on the boundary of the volmesh.
+
+    See Also
+    --------
+    * :func:`compas_3gs.operations.face_pinch`
+
+    """
+
+    # check if vertex is interior ----------------------------------------------
+    if not volmesh.is_vertex_boundary(vkey):
+        raise Exception('This vertex is interior.')
+
+    # add new, lifted vertex ---------------------------------------------------
+    x, y, z = target_xyz
+    w       = volmesh.add_vertex(x=x, y=y, z=z)
+
+    # add cells ----------------------------------------------------------------
+    for hfkey in hfkeys:
+        halffaces = [volmesh.halfface_vertices(hfkey)[::-1]]
+        for u, v in volmesh.halfface_halfedges(hfkey):
+            halffaces.append([u, v, w])
+        volmesh.add_cell(halffaces)
+
+    # --------------------------------------------------------------------------
+    return volmesh
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+def vertex_merge(volmesh, vkeys, target_xyz):
+    """Merges specified vertices to a single vertex.
+
+    Parameters
+    ----------
+    volmesh : VolMesh
+        A volmesh object representing a polyhedral force diagram.
+    vkeys : list
+        List of vertices to merge.
+    target_xyz : tuple
+        Target xyz coordinates of the vertices to be merged.
+
+    Notes
+    -----
+    As implemented, the merging vertices (in any combination) must be a continuous chain of halfedges of a halfface.
+    For example, vertices 1 and 3 cannot be merged.
+
+    0 ------ 1
+    |        |
+    |        |
+    |        |
+    3 ------ 2
+
+    """
+
+    # inspect vertices ---------------------------------------------------------
+    hf_vkeys = {}
+    for vkey in vkeys:
+        for hfkey in volmesh.vertex_halffaces(vkey):
+            if hfkey not in hf_vkeys:
+                hf_vkeys[hfkey] = []
+            hf_vkeys[hfkey].append(vkey)
+
+    for hfkey in hf_vkeys:
+        all_vkeys = volmesh.halfface[hfkey]
+        test_vkeys = set(hf_vkeys[hfkey])
+
+        if len(test_vkeys) == 1:
+            continue
+
+        if len(all_vkeys) - len(test_vkeys) <= 1:
+            raise Exception("Illegal merge!")
+
+        for vkey in test_vkeys:
+            anc = volmesh.halfface_vertex_ancestor(hfkey, vkey)
+            des = volmesh.halfface_vertex_descendent(hfkey, vkey)
+            if anc not in test_vkeys and des not in test_vkeys:
+                raise Exception("Illegal merge!")
+
+    # get vertex cells ---------------------------------------------------------
     new_vkey = volmesh._get_vertex_key(None)
     vertices = {new_vkey: target_xyz}
 
@@ -27,13 +132,14 @@ def vertex_merge(volmesh, vkeys, target_xyz):
                 cell_vkeys[ckey] = []
             cell_vkeys[ckey].append(vkey)
 
-    # construct new halffaces --------------------------------------------------
+    # construct new cell halffaces ---------------------------------------------
     cells = {}
     for ckey in cell_vkeys:
         cell_halffaces = {}
         vkeys = cell_vkeys[ckey]
+
         for hfkey in volmesh.cell_halffaces(ckey):
-            halfface = [key for key in volmesh.halfface[hfkey]]
+            halfface = [vkey for vkey in volmesh.halfface[hfkey]]
             for index, item in enumerate(halfface):
                 if item in vkeys:
                     halfface[index] = new_vkey
@@ -70,36 +176,36 @@ def vertex_merge(volmesh, vkeys, target_xyz):
                 volmesh.plane[u][v][w] = ckey
 
     # --------------------------------------------------------------------------
-
     return volmesh
 
 
-def vertex_lift(volmesh, vkey, hfkeys, xyz):
-
-    x, y, z = xyz
-    w       = volmesh.add_vertex(x=x, y=y, z=z)
-
-    # check --------------------------------------------------------------------
-    if not volmesh.is_vertex_boundary(vkey):
-        raise ValueError('This vertex is interior.')
-
-    # --------------------------------------------------------------------------
-    for hfkey in hfkeys:
-        halffaces = [volmesh.halfface_vertices(hfkey)[::-1]]
-        for u, v in volmesh.halfface_halfedges(hfkey):
-            halffaces.append([u, v, w])
-        volmesh.add_cell(halffaces)
-
-    return volmesh
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def vertex_truncate(volmesh, vkey):
     pass
 
 
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+def vertex_volumise(volmesh, vkey):
+    pass
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
 #   helpers
-# ==============================================================================
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
 
 def _volmesh_cull_duplicate_edges(volmesh):

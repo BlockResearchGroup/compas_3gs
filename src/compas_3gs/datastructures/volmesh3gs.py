@@ -252,12 +252,15 @@ class VolMesh3gs(VolMesh):
         # return halffaces
 
         cells = self.vertex_cells(vkey)
+
         nbr_vkeys = self.plane[vkey].keys()
+
         halffaces = []
         for ckey in cells:
             for v in nbr_vkeys:
-                halffaces.append(self.cell[ckey][vkey][v])
-                halffaces.append(self.cell[ckey][v][vkey])
+                if v in self.cell[ckey][vkey]:
+                    halffaces.append(self.cell[ckey][vkey][v])
+                    halffaces.append(self.cell[ckey][v][vkey])
         return halffaces
 
     def vertex_normal(self, vkey):

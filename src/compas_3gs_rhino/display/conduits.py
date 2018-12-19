@@ -50,7 +50,6 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 __all__ = [
     'PlanarisationConduit',
-    # 'ArearisationConduit',
     'MeshArearisationConduit',
     'ReciprocationConduit']
 
