@@ -34,20 +34,15 @@ Reciprocation
 """
 
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from .arearisation import *
 from .duality import *
 from .egi import *
 from .planarisation import *
 from .reciprocation import *
+from .relaxation import *
 from .unifieddiagram import *
 
-
-__all__ = []
-
-__all__ += arearisation.__all__
-__all__ += duality.__all__
-__all__ += egi.__all__
-__all__ += planarisation.__all__
-__all__ += reciprocation.__all__
-__all__ += unifieddiagram.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

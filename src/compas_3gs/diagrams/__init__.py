@@ -1,18 +1,19 @@
+"""
+********************************************************************************
+compas_3gs.diagrams
+********************************************************************************
+
+.. currentmodule:: compas_3gs.diagrams
+
+
+"""
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from .egi import *
 from .cell import *
 from .polyhedral import *
 from .disjointed import *
 
-from . import egi
-from . import cell
-from . import polyhedral
-from . import disjointed
-
-__all__ = []
-
-__all__ += egi.__all__
-__all__ += cell.__all__
-__all__ += polyhedral.__all__
-__all__ += disjointed.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

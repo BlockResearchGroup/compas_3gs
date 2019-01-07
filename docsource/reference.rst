@@ -2,9 +2,7 @@
 Reference
 ********************************************************************************
 
-blah
-
 .. toctree::
     :maxdepth: 1
 
-    reference/compas_3gs.algorithms
+    reference/compas_3gs

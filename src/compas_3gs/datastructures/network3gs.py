@@ -23,9 +23,7 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = [
-    'Network3gs'
-]
+__all__ = ['Network3gs']
 
 
 class Network3gs(Network):

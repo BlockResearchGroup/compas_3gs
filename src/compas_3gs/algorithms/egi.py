@@ -13,7 +13,7 @@ from compas.geometry import subtract_vectors
 
 from compas.topology.duality import _find_first_neighbor
 
-from compas.utilities.maps import geometric_key
+from compas.utilities import geometric_key
 
 from compas_3gs.diagrams import EGI
 from compas_3gs.diagrams import Cell

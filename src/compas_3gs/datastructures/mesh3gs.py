@@ -30,9 +30,7 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = [
-    'Mesh3gs'
-]
+__all__ = ['Mesh3gs']
 
 
 class Mesh3gs(Mesh):

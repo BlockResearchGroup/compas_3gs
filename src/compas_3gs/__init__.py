@@ -10,6 +10,10 @@ compas_3gs
 
     compas_3gs.algorithms
     compas_3gs.datastructures
+    compas_3gs.diagrams
+    compas_3gs.operations
+    compas_3gs.rhino
+    compas_3gs.utilities
 
 """
 

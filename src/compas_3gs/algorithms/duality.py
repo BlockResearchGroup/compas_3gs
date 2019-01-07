@@ -5,6 +5,7 @@ from __future__ import division
 from compas_3gs.datastructures import Network3gs as Network
 from compas_3gs.datastructures import VolMesh3gs as VolMesh
 
+
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'

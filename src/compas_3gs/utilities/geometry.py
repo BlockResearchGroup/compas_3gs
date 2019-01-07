@@ -17,18 +17,16 @@ from compas.geometry import normal_polygon
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 from compas.geometry import weighted_centroid_points
-
 from compas.geometry import centroid_points
-
 from compas.geometry import bestfit_plane
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import intersection_line_line
 from compas.geometry import is_point_on_segment
-from compas.geometry.intersections import intersection_segment_segment
-from compas.geometry.transformations.transformations import project_point_plane
+from compas.geometry import intersection_segment_segment
+from compas.geometry import project_point_plane
 
-from compas.datastructures.network import Network
+from compas.datastructures import Network
 
 from compas.utilities import geometric_key
 

@@ -1,10 +1,8 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 from .split import *
 from .transform import *
 
-from . import split
-from . import transform
-
-__all__ = []
-
-__all__ += split.__all__
-__all__ += transform.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]
