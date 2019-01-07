@@ -4,6 +4,5 @@ Reference
 
 .. toctree::
     :maxdepth: 1
-    :glob:
 
-    reference/*
+    reference/compas_3gs
