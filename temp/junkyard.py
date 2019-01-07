@@ -29,6 +29,16 @@ b = [0, 3]
 d = [a[i] for i in b]
 
 
+for index, value in enumerate(a):
+    print(index, value)
+
+
+
+
+
+
+
+
 def pairwise(iterable):
     """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
     a, b = tee(iterable)
@@ -74,13 +84,15 @@ if (1, 2) in q:
 for number in a:
     if number % 2 == 0:
         continue
+
     print(number)
     print('no')
 
 
 
+fs = frozenset((1, 2))
 
+x, y = list(fs)
 
-
-
+print(x, y)
 

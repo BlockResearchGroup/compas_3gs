@@ -4,8 +4,8 @@ from compas.geometry import add_vectors
 
 from compas_rhino.selectors import VertexSelector
 
-from compas_3gs_rhino.control import _get_initial_point
-from compas_3gs_rhino.control import _get_target_point
+from compas_3gs_rhino.control import get_initial_point
+from compas_3gs_rhino.control import get_target_point
 
 dotted_color = System.Drawing.Color.FromArgb(0, 0, 0)
 arrow_color  = System.Drawing.Color.FromArgb(255, 0, 79)

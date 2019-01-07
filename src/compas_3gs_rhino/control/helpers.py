@@ -11,11 +11,11 @@ import Rhino
 # ******************************************************************************
 # ******************************************************************************
 
-__all__ = ['_get_initial_point',
-           '_get_target_point']
+__all__ = ['get_initial_point',
+           'get_target_point']
 
 
-def _get_initial_point(message='Point to move from?'):
+def get_initial_point(message='Point to move from?'):
     ip = Rhino.Input.Custom.GetPoint()
     ip.SetCommandPrompt(message)
     ip.Get()
@@ -23,7 +23,7 @@ def _get_initial_point(message='Point to move from?'):
     return ip
 
 
-def _get_target_point(constraint, OnDynamicDraw, option='None', message='Point to move to?'):
+def get_target_point(constraint, OnDynamicDraw, option='None', message='Point to move to?'):
     gp = Rhino.Input.Custom.GetPoint()
     gp.SetCommandPrompt(message)
     if option == 'None':

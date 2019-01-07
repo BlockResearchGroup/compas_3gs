@@ -40,6 +40,7 @@ from .duality import *
 from .egi import *
 from .planarisation import *
 from .reciprocation import *
+from .relaxation import *
 from .unifieddiagram import *
 
 from . import arearisation
@@ -47,6 +48,7 @@ from . import duality
 from . import egi
 from . import planarisation
 from . import reciprocation
+from . import relaxation
 from . import unifieddiagram
 
 __all__ = []

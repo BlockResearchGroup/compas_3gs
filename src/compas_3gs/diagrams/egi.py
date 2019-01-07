@@ -31,7 +31,9 @@ class EGI(Mesh3gs):
         va = {'x_fix' : False,
               'y_fix' : False,
               'z_fix' : False,
-              'weight': None}
+              'type'  : None,
+              'normal': None,
+              'target_area': None}
         ea = {}
         fa = {}
 

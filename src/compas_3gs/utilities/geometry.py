@@ -16,6 +16,7 @@ from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
+from compas.geometry import weighted_centroid_points
 
 from compas.geometry import centroid_points
 
@@ -36,7 +37,8 @@ from compas_rhino.utilities import xdraw_lines
 from compas_rhino.utilities import xdraw_faces
 
 
-__all__  = ['datastructure_centroid',
+__all__  = ['resultant_vector',
+            'datastructure_centroid',
 
             'normal_polygon_general',
             'area_polygon_general',
@@ -45,9 +47,31 @@ __all__  = ['datastructure_centroid',
             'volmesh_face_areaness']
 
 
-def datastructure_centroid(datastructure):
-    points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertex]
-    return centroid_points(points)
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   vectors
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+def resultant_vector(vectors, locations):
+
+    points  = []
+    weights = []
+
+    for vkey in vectors:
+        points.append(vectors[vkey])
+        weights.append(length_vector(vectors[vkey]))
+
+    resultant_xyz = weighted_centroid_points(points, weights)
+    x, y, z = zip(*vectors.values())
+    resultant_vector = [sum(x), sum(y), sum(z)]
+
+    return resultant_xyz, resultant_vector
 
 
 # ******************************************************************************
@@ -114,52 +138,6 @@ def area_polygon_general(points):
     return length_vector(normal_polygon_general(points, unitized=False))
 
 
-# def is_polygon_self_intersecting(points):
-#     """Computes if as polygon is self intersecting in plane, or self overlapping in space.
-
-#     Parameters
-#     ----------
-#     polygon : sequence
-#         The XYZ coordinates of the vertices/corners of the polygon.
-#         The vertices are assumed to be in order.
-#         The polygon is assumed to be closed:
-#         the first and last vertex in the sequence should not be the same.
-
-#     Returns
-#     -------
-#     bool_1
-#         ``True`` if self overlapping.
-#         ``False`` otherwise.
-#     bool_2
-#         ``True`` if self intersecting.
-#         ``False`` otherwise.
-
-#     """
-#     edges = []
-#     for i in range(-1, len(points) - 1):
-#         edges.append((i, i + 1))
-
-#     for u1, v1 in edges:
-#         for u2, v2 in edges:
-#             if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
-#                 continue
-#             else:
-#                 a = points[u1]
-#                 b = points[v1]
-#                 c = points[u2]
-#                 d = points[v2]
-
-#                 int_1, int_2 = intersection_line_line((a, b), (c, d))
-
-#                 if int_1 or int_2:
-#                     if distance_point_point(int_1, int_2) > 0:
-#                         overlapping = True
-#                     if is_point_on_segment(int_1, (a, b)) or is_point_on_segment(int_2, (c, d)):
-#                             intersecting = True
-
-#     return overlapping, intersecting
-
-
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
@@ -217,3 +195,66 @@ def volmesh_face_areaness(volmesh, target_areas):
         area = volmesh.halfface_area(hfkey)
         areaness_dict[hfkey] = abs(target_areas[hfkey] - area)
     return areaness_dict
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   datastructures
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+def datastructure_centroid(datastructure):
+    points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertex]
+    return centroid_points(points)
+
+
+
+# def is_polygon_self_intersecting(points):
+#     """Computes if as polygon is self intersecting in plane, or self overlapping in space.
+
+#     Parameters
+#     ----------
+#     polygon : sequence
+#         The XYZ coordinates of the vertices/corners of the polygon.
+#         The vertices are assumed to be in order.
+#         The polygon is assumed to be closed:
+#         the first and last vertex in the sequence should not be the same.
+
+#     Returns
+#     -------
+#     bool_1
+#         ``True`` if self overlapping.
+#         ``False`` otherwise.
+#     bool_2
+#         ``True`` if self intersecting.
+#         ``False`` otherwise.
+
+#     """
+#     edges = []
+#     for i in range(-1, len(points) - 1):
+#         edges.append((i, i + 1))
+
+#     for u1, v1 in edges:
+#         for u2, v2 in edges:
+#             if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
+#                 continue
+#             else:
+#                 a = points[u1]
+#                 b = points[v1]
+#                 c = points[u2]
+#                 d = points[v2]
+
+#                 int_1, int_2 = intersection_line_line((a, b), (c, d))
+
+#                 if int_1 or int_2:
+#                     if distance_point_point(int_1, int_2) > 0:
+#                         overlapping = True
+#                     if is_point_on_segment(int_1, (a, b)) or is_point_on_segment(int_2, (c, d)):
+#                             intersecting = True
+
+#     return overlapping, intersecting

@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
+from copy import deepcopy
+
 from compas.datastructures import Mesh
 
 from compas.datastructures.mesh.operations import mesh_split_face
@@ -91,6 +93,30 @@ class Mesh3gs(Mesh):
     #         self.update_e_data(u, v)
     #     for fkey in self.halfface:
     #         self.update_f_data(fkey)
+
+    def add_edge(self, u, v, attr_dict=None, **kwattr):
+
+        attr = deepcopy(self.default_edge_attributes)
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        attr.update(attr_dict)
+
+        if u not in self.vertex:
+            u = self.add_vertex(u)
+        if v not in self.vertex:
+            v = self.add_vertex(v)
+
+        data = self.edge[u].get(v, {})
+        data.update(attr)
+
+        self.edge[u][v] = data
+        if v not in self.halfedge[u]:
+            self.halfedge[u][v] = None
+        if u not in self.halfedge[v]:
+            self.halfedge[v][u] = None
+
+        return u, v
 
     # --------------------------------------------------------------------------
     # helpers - vertices

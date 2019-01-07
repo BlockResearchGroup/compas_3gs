@@ -2,5 +2,9 @@
 __all__ = []
 
 
-def mesh_face_subdivide_barycentric(mesh):
+def mesh_face_subdivide_barycentric(mesh, fkey):
+
+
     pass
+
+
