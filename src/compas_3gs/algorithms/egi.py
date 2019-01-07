@@ -2,8 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
-import compas
-
 from compas.datastructures import Network
 
 from compas.geometry import add_vectors
@@ -57,7 +55,7 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
 
     """
 
-    egi = EGI()
+    egi = Network()
 
     # --------------------------------------------------------------------------
     #   1. add vertices from vectors
@@ -207,9 +205,7 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
             vkey_2 = arcs[arckey]['vkeys'][i + 1]
             egi.vertex[vkey_1]['nbrs'] += [vkey_2]
             egi.vertex[vkey_2]['nbrs'] += [vkey_1]
-
-
-            # egi.add_edge(vkey_1, vkey_2)
+            egi.add_edge(vkey_1, vkey_2)
             # egi.edge[vkey_1][vkey_2] = {'type' : edge_type}
 
     # --------------------------------------------------------------------------
@@ -220,9 +216,13 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
     # --------------------------------------------------------------------------
     #   7.  Add EGI Network faces
     # --------------------------------------------------------------------------
-    _egi_find_faces(egi)
+    egi_mesh = EGI()
+    for vkey in egi.vertex:
+        egi_mesh.vertex[vkey] = egi.vertex[vkey]
 
-    return egi
+    _egi_find_faces(egi, egi_mesh)
+
+    return egi_mesh
 
 
 def unit_polyhedron(egi):
@@ -237,19 +237,11 @@ def unit_polyhedron(egi):
     for vkey in egi.vertex:
         cell_face = egi.vertex_faces(vkey, ordered=True)
         cell.add_face(cell_face, fkey=vkey)
-        cell.face_type[vkey] = egi.vertex[vkey]['type']
-    cell.add_edges_from_faces()
+
+        cell.facedata[vkey]['type'] = egi.vertex[vkey]['type']
+    # cell.add_edges_from_faces()
 
     return cell
-
-
-
-
-
-
-
-
-
 
 
 # ******************************************************************************
@@ -300,7 +292,7 @@ def _egi_sort_v_nbrs(egi):
     """ By default, the sorting should be ccw, since the circle is typically drawn
     ccw around the local plane's z-axis...
     """
-    xyz = dict((key, [attr[_] for _ in 'xyz']) for key, attr in egi.vertices(data=True))
+    xyz = dict((key, [attr[_] for _ in 'xyz']) for key, attr in egi.vertices(True))
     for vkey in egi.vertex:
         nbrs    = egi.vertex[vkey]['nbrs']
         plane   = Plane(Point3d(*xyz[vkey]),
@@ -326,31 +318,32 @@ def _egi_find_edge_face(u, v, egi):
         if v == cycle[0]:
             cycle.append(v)
             break
-    face = egi.add_face(cycle)
-    return face
+    return cycle
 
 
-def _egi_find_faces(egi):
+def _egi_find_faces(egi, egi_mesh):
     """ Modified, and simplified version of duality.algorithms.find_network_faces...
     since there are no leaves or open faces in a egi network.
     """
-    egi.face = {}
-    egi.halfedge = {key: {} for key in egi.vertices()}
+    egi_mesh.halfedge = {key: {} for key in egi.vertices()}
     for u, v in egi.edges():
-        egi.halfedge[u][v] = None
-        egi.halfedge[v][u] = None
-    u = sorted(egi.vertices_iter(data=True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+        egi_mesh.halfedge[u][v] = None
+        egi_mesh.halfedge[v][u] = None
+    u = sorted(egi.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
     v = _find_first_neighbor(u, egi)
 
-    _egi_find_edge_face(u, v, egi)
+    egi_mesh.add_face(_egi_find_edge_face(u, v, egi))
 
-    for u, v in egi.edges_iter():
-        if egi.halfedge[u][v] is None:
-            _egi_find_edge_face(u, v, egi)
-        if egi.halfedge[v][u] is None:
-            _egi_find_edge_face(v, u, egi)
+    for u, v in egi.edges():
 
-    return egi.face
+
+        if egi_mesh.halfedge[u][v] is None:
+
+            egi_mesh.add_face(_egi_find_edge_face(u, v, egi))
+        if egi_mesh.halfedge[v][u] is None:
+            egi_mesh.add_face(_egi_find_edge_face(v, u, egi))
+
+    return egi_mesh
 
 
 # ******************************************************************************

@@ -145,16 +145,22 @@ def rhino_gfp_from_vectors():
     line = Rhino.Geometry.Line(ip, ip + Vector3d(*resultant_force))
     gp   = get_target_point(line, OnDynamicDraw)
 
+
     rxn_vectors = {}
+    rxn_key = max(int(x) for x in load_vectors.keys()) + 1
     for sp in rxn_pts:
         vector = subtract_vectors(gp, sp)
-        rxn_vectors[max(int(x) for x in load_vectors.keys()) + 1] = vector
+        rxn_vectors[rxn_key] = vector
+        rxn_key = max(int(x) for x in rxn_vectors.keys()) + 1
+
 
     # --------------------------------------------------------------------------
     #   construct egi
     # --------------------------------------------------------------------------
     force_vectors = load_vectors.copy()
     force_vectors.update(rxn_vectors)
+
+    print(force_vectors)
 
     egi = egi_from_vectors(force_vectors, gp)
 
@@ -175,6 +181,7 @@ def rhino_gfp_from_vectors():
 
 
     egi.draw()
+    egi.draw_vertexlabels()
     cell.draw()
 
     return egi
