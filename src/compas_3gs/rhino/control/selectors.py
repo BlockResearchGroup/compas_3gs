@@ -3,15 +3,16 @@ from __future__ import absolute_import
 from __future__ import division
 
 import ast
+import compas
 
-from compas_3gs_rhino.control.inspectors import VolmeshVertexInspector
-from compas_3gs_rhino.control.inspectors import VolmeshHalffaceInspector
-from compas_3gs_rhino.control.inspectors import VolmeshCellInspector
+from compas_rhino.helpers import volmesh_select_vertex
+from compas_rhino.helpers import volmesh_select_vertices
+from compas_rhino.helpers import volmesh_select_face
+from compas_rhino.helpers import volmesh_select_faces
 
-from compas_rhino.helpers.volmesh import volmesh_select_vertex
-from compas_rhino.helpers.volmesh import volmesh_select_vertices
-from compas_rhino.helpers.volmesh import volmesh_select_face
-from compas_rhino.helpers.volmesh import volmesh_select_faces
+from compas_3gs.rhino.control.inspectors import VolmeshVertexInspector
+from compas_3gs.rhino.control.inspectors import VolmeshHalffaceInspector
+from compas_3gs.rhino.control.inspectors import VolmeshCellInspector
 
 try:
     import rhinoscriptsyntax as rs

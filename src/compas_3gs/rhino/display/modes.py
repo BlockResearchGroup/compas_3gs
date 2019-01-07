@@ -27,11 +27,11 @@ from compas_rhino.utilities import xdraw_cylinders
 from compas_3gs.utilities import pair_hf_to_uv
 from compas_3gs.utilities import pair_uv_to_hf
 
-from compas_3gs_rhino.display.helpers import get_index_colordict
-from compas_3gs_rhino.display.helpers import valuedict_to_colordict
-from compas_3gs_rhino.display.helpers import get_force_mags
-from compas_3gs_rhino.display.helpers import get_force_colors_uv
-from compas_3gs_rhino.display.helpers import get_force_colors_hf
+from compas_3gs.rhino.display.helpers import get_index_colordict
+from compas_3gs.rhino.display.helpers import valuedict_to_colordict
+from compas_3gs.rhino.display.helpers import get_force_mags
+from compas_3gs.rhino.display.helpers import get_force_colors_uv
+from compas_3gs.rhino.display.helpers import get_force_colors_hf
 
 
 try:

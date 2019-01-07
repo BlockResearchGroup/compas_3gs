@@ -1,7 +1,8 @@
-import System.Drawing.Color
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
-from compas_rhino.conduits import Conduit
-from compas_rhino.ui.mouse import Mouse
+import compas
 
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
@@ -9,15 +10,15 @@ from compas.geometry import subtract_vectors
 
 from compas.utilities import i_to_rgb
 
+from compas_rhino.conduits import Conduit
+from compas_rhino.ui import Mouse
+
 try:
     from Rhino.Geometry import Point3d
-
     from System.Drawing.Color import FromArgb
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
+    compas.raise_if_ironpython()
 
 
 __all__ = ['VolmeshVertexInspector',

@@ -1,23 +1,30 @@
-import System
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import division
+
+import compas
 
 from compas.geometry import add_vectors
 
 from compas_rhino.selectors import VertexSelector
 
-from compas_3gs_rhino.control import get_initial_point
-from compas_3gs_rhino.control import get_target_point
-
-dotted_color = System.Drawing.Color.FromArgb(0, 0, 0)
-arrow_color  = System.Drawing.Color.FromArgb(255, 0, 79)
-edge_color   = System.Drawing.Color.FromArgb(0, 0, 0)
+from compas_3gs.rhino.control import get_initial_point
+from compas_3gs.rhino.control import get_target_point
 
 try:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
     import Rhino
+    import System
 
     from Rhino.ApplicationSettings import *
     from Rhino.Geometry import Point3d
+
+    from System.Drawing.Color import FromArgb
+
+    dotted_color = FromArgb(0, 0, 0)
+    arrow_color  = FromArgb(255, 0, 79)
+    edge_color   = FromArgb(0, 0, 0)
 
 except ImportError:
     compas.raise_if_ironpython()

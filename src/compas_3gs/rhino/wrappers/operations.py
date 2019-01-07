@@ -2,12 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
-import System.Drawing.Color
-from System.Drawing.Color import FromArgb
-
 import ast
+
+import compas
 
 from compas.geometry import add_vectors
 from compas.geometry import subtract_vectors
@@ -19,72 +16,63 @@ from compas.geometry import centroid_polyhedron
 from compas.geometry import intersection_line_plane
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
+from compas.utilities import i_to_rgb
 
-from compas_rhino.helpers.volmesh import volmesh_select_vertices
+from compas_rhino.selectors import VertexSelector
+from compas_rhino.selectors import EdgeSelector
+from compas_rhino.selectors import FaceSelector
+from compas_rhino.helpers import volmesh_select_vertex
+from compas_rhino.helpers import volmesh_select_vertices
+from compas_rhino.helpers import volmesh_select_face
+from compas_rhino.helpers import volmesh_select_vertices
+from compas_rhino.utilities import xdraw_lines
+from compas_rhino.utilities import xdraw_labels
+from compas_rhino.conduits import LinesConduit
 
 from compas_3gs.operations import vertex_merge
 from compas_3gs.operations import vertex_lift
 from compas_3gs.operations import halfface_pinch
 from compas_3gs.operations import halfface_merge
-
-from compas.utilities import i_to_rgb
-
-from compas_3gs_rhino.control.inspectors import VolmeshVertexInspector
-from compas_3gs_rhino.control.inspectors import VolmeshHalffaceInspector
-from compas_3gs_rhino.control.inspectors import VolmeshCellInspector
-
-from compas_rhino.selectors import VertexSelector
-from compas_rhino.selectors import EdgeSelector
-from compas_rhino.selectors import FaceSelector
-from compas_3gs_rhino.control import CellSelector
-
-from compas_rhino.helpers.volmesh import volmesh_select_vertex
-from compas_rhino.helpers.volmesh import volmesh_select_vertices
-from compas_rhino.helpers.volmesh import volmesh_select_face
-
-from compas_3gs_rhino.control.selectors import select_boundary_halffaces
-
+from compas_3gs.operations import cell_subdivide_barycentric
 from compas_3gs.algorithms import volmesh_dual_network
 from compas_3gs.algorithms import volmesh_reciprocate
-
 from compas_3gs.utilities import normal_polygon_general
 from compas_3gs.utilities import area_polygon_general
 
-from compas_3gs.operations import cell_subdivide_barycentric
-
-from compas_3gs_rhino.control.dynamic_pickers import volmesh3gs_select_cell
-
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_labels
-
-from compas_rhino.conduits import LinesConduit
-
+from compas_3gs.rhino.control import select_boundary_halffaces
+from compas_3gs.rhino.control import CellSelector
+from compas_3gs.rhino.control import volmesh3gs_select_cell
+from compas_3gs.rhino.control import VolmeshVertexInspector
+from compas_3gs.rhino.control import VolmeshHalffaceInspector
+from compas_3gs.rhino.control import VolmeshCellInspector
 
 try:
     import Rhino
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
+
+    from System.Drawing.Color import FromArgb
+
+    from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Arc
+    from Rhino.Geometry import ArcCurve
+    from Rhino.Geometry import Sphere
+    from Rhino.Geometry import Vector3d
+    from Rhino.Geometry import Plane
+    from Rhino.Geometry import Brep
+    from Rhino.Geometry import Line
+
+    find_object    = sc.doc.Objects.Find
+    feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+    arrow_color    = FromArgb(255, 0, 79)
+    jl_blue        = FromArgb(0, 113, 188)
+    black          = FromArgb(0, 0, 0)
+    gray           = FromArgb(200, 200, 200)
+    green          = FromArgb(0, 255, 0)
+    white          = FromArgb(255, 255, 255)
+
 except ImportError:
     compas.raise_if_ironpython()
-
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Arc
-from Rhino.Geometry import ArcCurve
-from Rhino.Geometry import Sphere
-from Rhino.Geometry import Vector3d
-from Rhino.Geometry import Plane
-from Rhino.Geometry import Brep
-from Rhino.Geometry import Line
-
-
-find_object    = sc.doc.Objects.Find
-feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-arrow_color    = System.Drawing.Color.FromArgb(255, 0, 79)
-jl_blue        = System.Drawing.Color.FromArgb(0, 113, 188)
-black          = System.Drawing.Color.FromArgb(0, 0, 0)
-gray           = System.Drawing.Color.FromArgb(200, 200, 200)
-green          = System.Drawing.Color.FromArgb(0, 255, 0)
-white          = System.Drawing.Color.FromArgb(255, 255, 255)
 
 
 __author__     = ['Juney Lee']

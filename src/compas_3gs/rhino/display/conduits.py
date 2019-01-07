@@ -2,9 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
-from System.Drawing import Color
-from System.Drawing.Color import FromArgb
-
 import compas
 import compas_rhino
 import compas_3gs
@@ -21,25 +18,26 @@ try:
     import Rhino
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
+
+    from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Line
+
+    from System.Drawing.Color import FromArgb
+
+    find_object    = sc.doc.Objects.Find
+    feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+
+    arrow_color = FromArgb(255, 0, 79)
+    jl_blue     = FromArgb(0, 113, 188)
+    black       = FromArgb(0, 0, 0)
+    gray        = FromArgb(200, 200, 200)
+    green       = FromArgb(0, 255, 0)
+    white       = FromArgb(255, 255, 255)
+    form_color  = FromArgb(255, 255, 255)
+    force_color = FromArgb(0, 0, 0)
+
 except ImportError:
     compas.raise_if_ironpython()
-
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Line
-
-
-find_object    = sc.doc.Objects.Find
-feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-
-arrow_color = FromArgb(255, 0, 79)
-jl_blue     = FromArgb(0, 113, 188)
-black       = FromArgb(0, 0, 0)
-gray        = FromArgb(200, 200, 200)
-green       = FromArgb(0, 255, 0)
-white       = FromArgb(255, 255, 255)
-
-form_color  = Color.FromArgb(255, 255, 255)
-force_color = Color.FromArgb(0, 0, 0)
 
 
 __author__     = ['Juney Lee']

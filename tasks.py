@@ -108,11 +108,11 @@ def docs(ctx, doctest=False, rebuild=True, check_links=False):
         clean(ctx)
 
     if doctest:
-        ctx.run('sphinx-build -b doctest docs dist/docs')
+        ctx.run('sphinx-build -b doctest docsource dist/docs')
 
-    ctx.run('sphinx-build -b html docs dist/docs')
+    ctx.run('sphinx-build -b html docsource dist/docs')
     if check_links:
-        ctx.run('sphinx-build -b linkcheck docs dist/docs')
+        ctx.run('sphinx-build -b linkcheck docsource dist/docs')
 
 
 @task()

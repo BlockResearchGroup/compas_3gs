@@ -1,14 +1,9 @@
-import System.Drawing.Color
-from System.Drawing.Color import FromArgb
-import scriptcontext as sc
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import math
-
-import Rhino
-import rhinoscriptsyntax as rs
-
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Vector3d
-from Rhino.Geometry import Line
+import compas
 
 from compas.geometry import add_vectors
 from compas.geometry import dot_vectors
@@ -20,26 +15,39 @@ from compas.geometry import distance_point_point
 
 from compas.utilities import i_to_rgb
 
-from compas_rhino.helpers.volmesh import volmesh_select_vertex
-from compas_rhino.helpers.volmesh import volmesh_select_face
+from compas_rhino.utilities import xdraw_lines
+from compas_rhino.utilities import xdraw_labels
+
+from compas_rhino.helpers import volmesh_select_vertex
+from compas_rhino.helpers import volmesh_select_face
+
+from compas_rhino.conduits import LinesConduit
 
 from compas_3gs.utilities import normal_polygon_general
 from compas_3gs.utilities import area_polygon_general
 
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_labels
+try:
+    import Rhino
+    import rhinoscriptsyntax as rs
 
-from compas_rhino.conduits import LinesConduit
+    from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Vector3d
+    from Rhino.Geometry import Line
 
+    from System.Drawing.Color import FromArgb
 
-find_object    = sc.doc.Objects.Find
-feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-arrow_color    = System.Drawing.Color.FromArgb(255, 0, 79)
-jl_blue        = System.Drawing.Color.FromArgb(0, 113, 188)
-black          = System.Drawing.Color.FromArgb(0, 0, 0)
-gray           = System.Drawing.Color.FromArgb(200, 200, 200)
-green          = System.Drawing.Color.FromArgb(0, 255, 0)
-white          = System.Drawing.Color.FromArgb(255, 255, 255)
+    find_object    = sc.doc.Objects.Find
+    feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+    arrow_color    = FromArgb(255, 0, 79)
+    jl_blue        = FromArgb(0, 113, 188)
+    black          = FromArgb(0, 0, 0)
+    gray           = FromArgb(200, 200, 200)
+    green          = FromArgb(0, 255, 0)
+    white          = FromArgb(255, 255, 255)
+
+except ImportError:
+    compas.raise_if_ironpython()
+
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'

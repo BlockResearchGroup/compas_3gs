@@ -2,9 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
-import System.Drawing.Color
-from System.Drawing.Color import FromArgb
-
 import compas
 import compas_rhino
 
@@ -15,9 +12,6 @@ from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 
-
-
-
 from compas_rhino.artists import MeshArtist
 from compas_rhino.helpers import volmesh_from_polysurfaces
 
@@ -27,43 +21,39 @@ from compas_3gs.diagrams import ForceVolMesh
 
 from compas_3gs.algorithms import egi_from_vectors
 from compas_3gs.algorithms import unit_polyhedron
-
 from compas_3gs.algorithms import volmesh_dual_volmesh
 from compas_3gs.algorithms import volmesh_dual_network
 
-
-
 from compas_3gs.utilities import resultant_vector
 
-
-from compas_3gs_rhino.control import get_target_point
-
+from compas_3gs.rhino.control import get_target_point
 
 try:
     import Rhino
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
+
+    from System.Drawing.Color import FromArgb
+
+    from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Arc
+    from Rhino.Geometry import ArcCurve
+    from Rhino.Geometry import Sphere
+    from Rhino.Geometry import Vector3d
+    from Rhino.Geometry import Plane
+    from Rhino.Geometry import Brep
+    from Rhino.Geometry import Line
+
+    feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+    arrow_color    = FromArgb(255, 0, 79)
+    jl_blue        = FromArgb(0, 113, 188)
+    black          = FromArgb(0, 0, 0)
+    gray           = FromArgb(200, 200, 200)
+    green          = FromArgb(0, 255, 0)
+    white          = FromArgb(255, 255, 255)
+
 except ImportError:
     compas.raise_if_ironpython()
-
-
-from Rhino.Geometry import Point3d
-from Rhino.Geometry import Arc
-from Rhino.Geometry import ArcCurve
-from Rhino.Geometry import Sphere
-from Rhino.Geometry import Vector3d
-from Rhino.Geometry import Plane
-from Rhino.Geometry import Brep
-from Rhino.Geometry import Line
-
-
-feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-arrow_color    = System.Drawing.Color.FromArgb(255, 0, 79)
-jl_blue        = System.Drawing.Color.FromArgb(0, 113, 188)
-black          = System.Drawing.Color.FromArgb(0, 0, 0)
-gray           = System.Drawing.Color.FromArgb(200, 200, 200)
-green          = System.Drawing.Color.FromArgb(0, 255, 0)
-white          = System.Drawing.Color.FromArgb(255, 255, 255)
 
 
 __all__ = [

@@ -2,13 +2,14 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
-from compas_rhino.helpers.volmesh import volmesh_select_vertices
-from compas_rhino.helpers.volmesh import volmesh_select_faces
+import compas
+
+from compas_rhino.helpers import volmesh_select_vertices
+from compas_rhino.helpers import volmesh_select_faces
 
 from compas_rhino.selectors import VertexSelector
 from compas_rhino.selectors import EdgeSelector
 from compas_rhino.selectors import FaceSelector
-
 
 from compas_rhino.conduits import FacesConduit
 from compas_rhino.conduits import LinesConduit
@@ -17,18 +18,14 @@ from compas_3gs.algorithms import volmesh_dual_network
 from compas_3gs.algorithms import volmesh_reciprocate
 from compas_3gs.algorithms import volmesh_planarise
 
-import compas
-
 from compas_3gs.operations import cell_subdivide_barycentric
 
 from compas_3gs.utilities import volmesh_face_flatness
 from compas_3gs.utilities import volmesh_face_areaness
 
-
-from compas_3gs_rhino.control.dynamic_pickers import volmesh3gs_select_cell
-
-from compas_3gs_rhino.display import PlanarisationConduit
-from compas_3gs_rhino.display import ReciprocationConduit
+from compas_3gs.rhino.control import volmesh3gs_select_cell
+from compas_3gs.rhino.display import PlanarisationConduit
+from compas_3gs.rhino.display import ReciprocationConduit
 
 try:
     import rhinoscriptsyntax as rs

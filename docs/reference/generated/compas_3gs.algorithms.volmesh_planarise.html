@@ -18,11 +18,11 @@
         <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="compas_3gs.datastructures" href="../compas_3gs.datastructures.html" />
+            <link rel="next" title="compas_3gs.algorithms.volmesh_reciprocate" href="compas_3gs.algorithms.volmesh_reciprocate.html" />
         
         
         
-            <link rel="prev" title="compas_3gs.algorithms.volmesh_planarise" href="compas_3gs.algorithms.volmesh_planarise.html" />
+            <link rel="prev" title="compas_3gs.algorithms.volmesh_dual_network" href="compas_3gs.algorithms.volmesh_dual_network.html" />
         
 
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -57,50 +57,41 @@
 
                         
 
-                        <div class="section" id="compas-3gs-algorithms-volmesh-reciprocate">
-<h1>compas_3gs.algorithms.volmesh_reciprocate</h1>
+                        <div class="section" id="compas-3gs-algorithms-volmesh-planarise">
+<h1>compas_3gs.algorithms.volmesh_planarise</h1>
 <dl class="function">
-<dt id="compas_3gs.algorithms.volmesh_reciprocate">
-<code class="descclassname">compas_3gs.algorithms.</code><code class="descname">volmesh_reciprocate</code><span class="sig-paren">(</span><em>volmesh</em>, <em>formdiagram</em>, <em>kmax=100</em>, <em>weight=1.0</em>, <em>fix_vkeys=[]</em>, <em>edge_min=None</em>, <em>edge_max=None</em>, <em>tolerance=0.001</em>, <em>callback=None</em>, <em>callback_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/reciprocation.html#volmesh_reciprocate"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Perpendicularizes the faces of the polyhedral force diagram to the corresponding dual edges in the polyhedral form diagram.</p>
+<dt id="compas_3gs.algorithms.volmesh_planarise">
+<code class="descclassname">compas_3gs.algorithms.</code><code class="descname">volmesh_planarise</code><span class="sig-paren">(</span><em>volmesh</em>, <em>kmax=100</em>, <em>target_areas={}</em>, <em>target_normals={}</em>, <em>target_centers={}</em>, <em>omit_fkeys=[]</em>, <em>omit_vkeys=[]</em>, <em>fix_boundary_normals=False</em>, <em>fix_all_normals=False</em>, <em>flat_tolerance=0.001</em>, <em>area_tolerance=0.001</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>print_result=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/planarisation.html#volmesh_planarise"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Planarisation of volmesh faces.</p>
+<p>Planarisation is implemented as a two-stp iterative procedure. At every iteration, faces are first individually projected to their best-fit plane,
+and then the vertices are projected to the centroid of the disconnected
+corners of the faces.</p>
+<p>Specific target_areas</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>volmesh</strong> (<em>VolMesh</em>) – A volmesh object representing a polyhedral force diagram.</p></li>
-<li><p><strong>formdiagram</strong> (<em>VolMesh or Network</em>) – A network object representing a polyhedral form diagram.</p></li>
-<li><p><strong>kmax</strong> (<em>int, optional [100]</em>) – Maximum number of iterations.</p></li>
-<li><p><strong>weight</strong> (<em>float, optional [1.0]</em>) – A float, between 0 and 1, which determines how much each diagram changes.
-Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
-<li><p><strong>tolerance</strong> (<em>float, optional [0.001]</em>) – Sets the convergence tolerance.</p></li>
-<li><p><strong>callback</strong> (<em>callable, optional [None]</em>) – A user-defined callback function to be executed after every iteration.</p></li>
-<li><p><strong>callback_args</strong> (<em>tuple, optional [None]</em>) – Additional parameters to be passed to the callback.</p></li>
+<li><p><strong>volmesh</strong> (<em>VolMesh</em>) – A volmesh object.</p></li>
+<li><p><strong>kmax</strong> (<em>int, optional [100]</em>) – Maximum number of iterations.
+Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>target_face_areas</strong> (<em>dictionary, optional [{}]</em>) – A dictionary of fkeys and target areas.</p></li>
+<li><p><strong>target_face_normals</strong> (<em>dictionary, optional [{}]</em>) – A dictionary of fkeys and target face normals.</p></li>
+<li><p><strong>target_face_centers</strong> (<em>dictionary, optional [{}]</em>) – A dictionary of fkeys and target face centers.</p></li>
+<li><p><strong>omit_fkeys</strong> (<em>list, optional [[]]</em>) – List of fkeys to omit from planarising.</p></li>
+<li><p><strong>fix_boundary_face_normals</strong> (<em>boolean, optional [False]</em>) – Whether to keep the initial normals of the bondary faces.</p></li>
+<li><p><strong>fix_all_face_normals</strong> (<em>boolean, optional [False]</em>) – Whether to keep the initial normals of all faces.</p></li>
+<li><p><strong>flat_tolerance</strong> (<em>float, optional</em>) – Convergence tolerance for face flatness.</p></li>
+<li><p><strong>area_tolerance</strong> (<em>float, optional</em>) – Convergence tolerance for face areas.</p></li>
+<li><p><strong>callback</strong> (<em>callable, optional</em>) – A user-defined callback function to be executed after every iteration.
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>callback_args</strong> (<em>tuple, optional</em>) – Additional parameters to be passed to the callback.
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a> – If a callback is provided, but it is not callable.</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>Reciprocation weight of …
-… 1 means only the form diagram is updated.
-… 0.5 means both diagrams are updated.
-… 0 means only the force diagram is updated.</p>
-<p class="rubric">References</p>
-<dl class="footnote brackets">
-<dt class="label" id="id1"><span class="brackets">1</span></dt>
-<dd><p>Rippmann M, Lachauer L and Block P. <em>Interactive Vault Design</em>.
-Available at: <a class="reference external" href="https://journals.sagepub.com/doi/abs/10.1260/0266-3511.27.4.219">https://journals.sagepub.com/doi/abs/10.1260/0266-3511.27.4.219</a>.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><dl class="field-list simple">
-<dt class="field-odd">func</dt>
-<dd class="field-odd"><p><cite>compas.geometry.network_parallelise_edges</cite></p>
-</dd>
-</dl>
-</li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.geometry.mesh_planarize_faces()</span></code></p></li>
 </ul>
 </div>
 </dd></dl>
@@ -168,7 +159,7 @@ Available at: <a class="reference external" href="https://journals.sagepub.com/d
                     
 
                     <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas_3gs.algorithms.volmesh_reciprocate</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas_3gs.algorithms.volmesh_planarise</a></li>
 </ul>
 
 
