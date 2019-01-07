@@ -1,0 +1,2 @@
+- Juney Lee <<juney.lee@arch.ethz.ch>> [@juney-lee](https://github.com/juney-lee)
+- Tom Van Mele <<van.mele@arch.ethz.ch>> [@brgcode](https://github.com/brgcode), [@tomvanmele](https://github.com/tomvanmele)
