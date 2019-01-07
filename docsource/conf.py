@@ -7,6 +7,8 @@
 import sys
 import os
 
+import sphinx_compas_theme
+
 # -- General configuration ------------------------------------------------
 
 project          = 'compas_3gs'
@@ -18,7 +20,7 @@ version          = '.'.join(release.split('.')[0:2])
 master_doc       = 'index'
 source_suffix    = ['.rst', ]
 templates_path   = ['_templates', ]
-exclude_patterns = ['reference/*', ]
+exclude_patterns = []
 
 pygments_style   = 'sphinx'
 show_authors     = True
@@ -89,8 +91,8 @@ intersphinx_mapping = {'python': ('https://docs.python.org/', None)}
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = 'classic'
-html_theme_path = []
+html_theme = 'compaspkg'
+html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {}
 html_context = {}
 html_static_path = []

@@ -15,18 +15,24 @@ The main library of COMPAS
 Installation
 ============
 
-The recommended way to install the main library of **COMPAS** is to use  `Anaconda/conda <https://conda.io/docs/>`_:::
+The recommended way to install the main library of **COMPAS** is to use  `Anaconda/conda <https://conda.io/docs/>`_:
+
+.. code-block:: bash
 
     $ conda config --add channels conda-forge
     $ conda install COMPAS
 
 
-But it can also be installed using ``pip``:::
+But it can also be installed using ``pip``:
+
+.. code-block:: bash
 
     $ pip install COMPAS
 
 
-After the installation, start Python from the command line and verify your setup:::
+After the installation, start Python from the command line and verify your setup:
+
+.. code-block:: bash
 
     >>> import compas
     >>> import compas_rhino
