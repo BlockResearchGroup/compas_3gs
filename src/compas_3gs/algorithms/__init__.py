@@ -6,6 +6,14 @@ compas_3gs.algorithms
 .. currentmodule:: compas_3gs.algorithms
 
 
+Arearisation
+============
+
+.. autosummary::
+    :toctree: generated/
+
+    mesh_arearise
+
 Duality
 =======
 
@@ -30,6 +38,15 @@ Reciprocation
     :toctree: generated/
 
     volmesh_reciprocate
+
+Unified Diagram
+===============
+
+.. autosummary::
+    :toctree: generated/
+
+    volmesh_ud
+    cellnetwork_ud
 
 """
 

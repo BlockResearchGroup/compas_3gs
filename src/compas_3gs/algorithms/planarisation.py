@@ -7,7 +7,9 @@ from compas.geometry import subtract_vectors
 from compas.geometry import scale_vector
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
-from compas.geometry import project_point_plane
+from compas.geometry.transformations.transformations import project_point_plane
+
+from compas_3gs.utilities import scale_polygon
 
 
 __author__     = ['Juney Lee']
@@ -139,7 +141,7 @@ def volmesh_planarise(volmesh,
             if fkey in target_areas:
                 target_area = target_areas[fkey]
                 scale       = (target_area / f_area) ** 0.5
-                new_face    = _scale_polygon(new_face, scale)
+                new_face    = scale_polygon(new_face, scale)
 
                 areaness  = abs(f_area - target_area)
                 if areaness > area_deviation:
@@ -205,16 +207,6 @@ def _get_current_normals(volmesh):
     return normal_dict
 
 
-def _scale_polygon(points_dict, scale):
-    points = points_dict.values()
-    center = centroid_points(points)
-    new_points_dict = {}
-    for key in points_dict:
-        point = points_dict[key]
-        vector = subtract_vectors(point, center)
-        new_point = add_vectors(center, scale_vector(vector, scale))
-        new_points_dict[key] = new_point
-    return new_points_dict
 
 
 # ******************************************************************************

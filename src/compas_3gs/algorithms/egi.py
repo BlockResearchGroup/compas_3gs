@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
+import compas
+
 from compas.datastructures import Network
 
 from compas.geometry import add_vectors
@@ -44,6 +46,8 @@ __all__ = [
 
 def egi_from_vectors(vectordict, origin, tol=0.001):
     """
+
+    testing
 
     warnings:
         dependent on rhino arc function...
@@ -335,7 +339,6 @@ def _egi_find_faces(egi, egi_mesh):
     egi_mesh.add_face(_egi_find_edge_face(u, v, egi))
 
     for u, v in egi.edges():
-
 
         if egi_mesh.halfedge[u][v] is None:
 

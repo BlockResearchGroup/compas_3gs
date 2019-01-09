@@ -24,7 +24,7 @@ from compas.geometry import distance_point_point
 from compas.geometry import intersection_line_line
 from compas.geometry import is_point_on_segment
 from compas.geometry import intersection_segment_segment
-from compas.geometry import project_point_plane
+from compas.geometry.transformations.transformations import project_point_plane
 
 from compas.datastructures import Network
 
@@ -40,6 +40,7 @@ __all__  = ['resultant_vector',
 
             'normal_polygon_general',
             'area_polygon_general',
+            'scale_polygon',
 
             'volmesh_face_flatness',
             'volmesh_face_areaness']
@@ -136,6 +137,19 @@ def area_polygon_general(points):
     return length_vector(normal_polygon_general(points, unitized=False))
 
 
+def scale_polygon(points_dict, scale):
+    points = points_dict.values()
+    center = centroid_points(points)
+    new_points_dict = {}
+    for key in points_dict:
+        point = points_dict[key]
+        vector = subtract_vectors(point, center)
+        new_point = add_vectors(center, scale_vector(vector, scale))
+        new_points_dict[key] = new_point
+    return new_points_dict
+
+
+
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
@@ -209,6 +223,14 @@ def volmesh_face_areaness(volmesh, target_areas):
 def datastructure_centroid(datastructure):
     points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertex]
     return centroid_points(points)
+
+
+
+
+
+
+
+
 
 
 

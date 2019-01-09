@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>compas_3gs</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="" />
+        <meta name="description" content="" />
+
+        <link rel="shortcut icon" href="../../../_static/images/compas.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+
+        <link rel="stylesheet" type="text/css" href="../../../_static/css/prism.css" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand compas-navbar justify-content-between">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../../../index.html">
+                    compas_3gs 0.1.0
+                </a>
+            </div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://compas-dev.github.io">
+                        <img src="../../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
+                    </a>
+                </li>
+            </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <!-- main content -->
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+
+                        <h1>Source code for compas_3gs.algorithms.unifieddiagram</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">convex_hull</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">scale_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Juney Lee&#39;</span><span class="p">]</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2019, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;juney.lee@arch.ethz.ch&#39;</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;volmesh_ud&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;cellnetwork_ud&#39;</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="volmesh_ud"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.algorithms.volmesh_ud.html#compas_3gs.algorithms.volmesh_ud">[docs]</a><span class="k">def</span> <span class="nf">volmesh_ud</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span>
+               <span class="n">network</span><span class="p">,</span>
+               <span class="n">scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes temporary vertex coordinates for every halfface of a volmesh, for the visualisation of the unified diagram.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    volmesh : VolMesh</span>
+<span class="sd">        A volmesh object representing a polyhedral force diagram.</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object representing a polyhedral form diagram.</span>
+<span class="sd">    scale : float</span>
+<span class="sd">        Unified diagram scale factor,</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dictionary of dictionaries</span>
+<span class="sd">        A dictionary of dictionaries: hfkey-{vkey: (x, y, z)}.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The prisms are implemented as convex hull of two halffaces for simplicity and to resolve any small geometric errors.</span>
+
+<span class="sd">    Unified diagram with a scale of 0 is equivalent to the polyhedral force diagram, while a scale of 1 is equivalent to the polyhedral form diagram.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Zanni G and Pennock G. *A unified graphical approach...*.</span>
+<span class="sd">           Available at: https://www.researchgate.net/publication/223711661_A_unified_graphical_approach_to_the_static_analysis_of_axially_loaded_structures.</span>
+<span class="sd">    .. [2] McRobie A. *Maxwell and Rankine reciprocal diagrams via Minkowski</span>
+<span class="sd">           sums for two-dimensional and three-dimensional trusses under load*.</span>
+<span class="sd">           Available at: https://journals.sagepub.com/doi/full/10.1177/0266351116660800</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   0. evaluate unified diagram scale</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;A unified diagram with a scale of 0 is equivalent to the polyhedral force diagram.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;A unified diagram with a scale of 1 is equivalent to the polyhedral form diagram.&quot;</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">scale</span> <span class="ow">and</span> <span class="n">scale</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Scale needs to be between 0 and 1.&quot;</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   1. current positions of diagrams</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">volmesh_center</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">datastructure_centroid</span><span class="p">()</span>
+    <span class="n">network_center</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">datastructure_centroid</span><span class="p">()</span>
+    <span class="n">translation</span>    <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">volmesh_center</span><span class="p">,</span> <span class="n">network_center</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   2. get base points</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">base_xyz</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
+        <span class="n">init_xyz</span>       <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span>
+        <span class="n">base_xyz</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">init_xyz</span><span class="p">,</span> <span class="n">translation</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   3. compute scaled halffaces</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">halffaces</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">ckey</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">cell</span><span class="p">:</span>
+        <span class="n">cell_hfs</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">cell_halffaces</span><span class="p">(</span><span class="n">ckey</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">hfkey</span> <span class="ow">in</span> <span class="n">cell_hfs</span><span class="p">:</span>
+            <span class="n">hf_vertices</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">hfkey</span><span class="p">):</span>
+                <span class="n">xyz</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span>
+                <span class="n">arm</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">base_xyz</span><span class="p">[</span><span class="n">ckey</span><span class="p">]),</span> <span class="n">scale</span><span class="p">)</span>
+                <span class="n">hf_vertices</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">base_xyz</span><span class="p">[</span><span class="n">ckey</span><span class="p">],</span> <span class="n">arm</span><span class="p">)</span>
+            <span class="n">halffaces</span><span class="p">[</span><span class="n">hfkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">hf_vertices</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   4. compute prism faces</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">prism_faces</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+        <span class="n">u_hfkey</span><span class="p">,</span> <span class="n">v_hfkey</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">cell_pair_hfkeys</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">u_pts</span>   <span class="o">=</span> <span class="n">halffaces</span><span class="p">[</span><span class="n">u_hfkey</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="n">v_pts</span>   <span class="o">=</span> <span class="n">halffaces</span><span class="p">[</span><span class="n">v_hfkey</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="n">pt_list</span> <span class="o">=</span> <span class="n">u_pts</span> <span class="o">+</span> <span class="n">v_pts</span>
+        <span class="n">prism</span>   <span class="o">=</span> <span class="n">convex_hull</span><span class="p">(</span><span class="n">u_pts</span> <span class="o">+</span> <span class="n">v_pts</span><span class="p">)</span>  <span class="c1"># face as indices of pt_list</span>
+        <span class="n">face_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">prism</span><span class="p">:</span>
+            <span class="n">face_xyz</span> <span class="o">=</span> <span class="p">[</span><span class="n">pt_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span>  <span class="c1"># get face xyz in order</span>
+            <span class="n">face_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face_xyz</span><span class="p">)</span>
+        <span class="n">prism_faces</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span> <span class="o">=</span> <span class="n">face_list</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="k">return</span> <span class="n">halffaces</span><span class="p">,</span> <span class="n">prism_faces</span></div>
+
+
+<div class="viewcode-block" id="cellnetwork_ud"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.algorithms.cellnetwork_ud.html#compas_3gs.algorithms.cellnetwork_ud">[docs]</a><span class="k">def</span> <span class="nf">cellnetwork_ud</span><span class="p">(</span><span class="n">cellnetwork</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1">#</span>
+<span class="c1">#   Main</span>
+<span class="c1">#</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div>
+                        
+                    
+
+                </main>
+
+                <!-- site navigation sidebar -->
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
+</ul>
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+
+                <!-- table of contents of main content -->
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="compas-footer">
+            
+                Last updated on Jan 08, 2019.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
+            
+        </footer>
+
+        
+
+            <script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.1.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+};
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+            <script src="../../../_static/underscore.js"></script>
+            <script src="../../../_static/doctools.js"></script>
+            <script src="../../../_static/js/searchtools_.js"></script>
+            <script src="../../../_static/js/prism.js"></script>
+
+            <script>
+$(document).ready(function() {
+
+    // $(".language-default pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-bash pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-python pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-c pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-cpp pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-fortran pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-markdown pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-rest pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    anchors.add();
+});
+            </script>
+
+        
+    </body>
+</html>

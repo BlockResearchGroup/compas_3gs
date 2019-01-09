@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="compas_3gs.algorithms.volmesh_dual_volmesh" href="generated/compas_3gs.algorithms.volmesh_dual_volmesh.html" />
+            <link rel="next" title="compas_3gs.algorithms.mesh_arearise" href="generated/compas_3gs.algorithms.mesh_arearise.html" />
         
         
         
@@ -59,6 +59,20 @@
 
                         <span class="target" id="module-compas_3gs.algorithms"></span><div class="section" id="compas-3gs-algorithms">
 <h1>compas_3gs.algorithms</h1>
+<div class="section" id="arearisation">
+<h2>Arearisation</h2>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_3gs.algorithms.mesh_arearise.html#compas_3gs.algorithms.mesh_arearise" title="compas_3gs.algorithms.mesh_arearise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_arearise</span></code></a>(mesh[, kmax, target_areas, …])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="duality">
 <h2>Duality</h2>
 <table class="longtable docutils">
@@ -100,6 +114,23 @@
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_3gs.algorithms.volmesh_reciprocate.html#compas_3gs.algorithms.volmesh_reciprocate" title="compas_3gs.algorithms.volmesh_reciprocate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volmesh_reciprocate</span></code></a>(volmesh, formdiagram[, …])</p></td>
 <td><p>Perpendicularizes the faces of the polyhedral force diagram to the corresponding dual edges in the polyhedral form diagram.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="unified-diagram">
+<h2>Unified Diagram</h2>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_3gs.algorithms.volmesh_ud.html#compas_3gs.algorithms.volmesh_ud" title="compas_3gs.algorithms.volmesh_ud"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volmesh_ud</span></code></a>(volmesh, network[, scale])</p></td>
+<td><p>Computes temporary vertex coordinates for every halfface of a volmesh, for the visualisation of the unified diagram.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_3gs.algorithms.cellnetwork_ud.html#compas_3gs.algorithms.cellnetwork_ud" title="compas_3gs.algorithms.cellnetwork_ud"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cellnetwork_ud</span></code></a>(cellnetwork)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -168,9 +199,11 @@
 
                     <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">compas_3gs.algorithms</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#arearisation">Arearisation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#duality">Duality</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#planarisation">Planarisation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#reciprocation">Reciprocation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#unified-diagram">Unified Diagram</a></li>
 </ul>
 </li>
 </ul>
@@ -183,11 +216,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 07, 2019.
+                Last updated on Jan 08, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
             
         </footer>
 

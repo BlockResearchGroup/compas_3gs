@@ -1,10 +1,12 @@
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import division
 
+import compas
 
-# try:
-#     import rhinoscriptsyntax as rs
-#     import scriptcontext as sc
-# except ImportError:
-#     compas.raise_if_ironpython()
+from compas.geometry import centroid_points
+from compas.geometry import distance_point_point
+from compas.geometry import midpoint_point_point
 
 
 __author__     = ['Juney Lee']
@@ -15,10 +17,12 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 __all__ = [
     'cell_subdivide_barycentric',
+    'cell_collapse_short_edges'
 ]
 
 
 def cell_subdivide_barycentric(volmesh, ckey):
+
     new_ckeys = []
     x, y, z   = volmesh.cell_center(ckey)
     w         = volmesh.add_vertex(x=x, y=y, z=z)
@@ -42,18 +46,40 @@ def cell_subdivide_barycentric(volmesh, ckey):
     return new_ckeys
 
 
-def halfface_pinch(volmesh, hfkey, xyz):
-    x, y, z = xyz
-    w       = volmesh.add_vertex(x=x, y=y, z=z)
+def cell_collapse_short_edges(mesh, min_length=0.1):
 
-    cell_halffaces = [volmesh.halfface_vertices(hfkey).reverse()]
+    new_xyz = {vkey: [] for vkey in mesh.vertex}
 
-    halfedges = volmesh.halfface_halfedges(hfkey)
-    for u, v in halfedges:
-            cell_halffaces.append([w, v, u])
+    for u, v in mesh.edges():
+        sp   = mesh.vertex_coordinates(u)
+        ep   = mesh.vertex_coordinates(v)
+        dist = distance_point_point(sp, ep)
+        if dist < min_length:
+            print('midpoint', u, v)
+            mp = midpoint_point_point(sp, ep)
+            new_xyz[u].append(mp)
+            new_xyz[v].append(mp)
+
+    for vkey in new_xyz:
+        if new_xyz[vkey]:
+            final_xyz = centroid_points(new_xyz[vkey])
+            mesh.vertex_update_xyz(vkey, final_xyz)
+
+    return mesh
 
 
 
+
+
+# def halfface_pinch(volmesh, hfkey, xyz):
+#     x, y, z = xyz
+#     w       = volmesh.add_vertex(x=x, y=y, z=z)
+
+#     cell_halffaces = [volmesh.halfface_vertices(hfkey).reverse()]
+
+#     halfedges = volmesh.halfface_halfedges(hfkey)
+#     for u, v in halfedges:
+#             cell_halffaces.append([w, v, u])
 
 # ******************************************************************************
 # ******************************************************************************

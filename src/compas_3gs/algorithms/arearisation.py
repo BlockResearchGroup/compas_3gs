@@ -3,7 +3,7 @@ from __future__ import print_function
 from __future__ import division
 
 import compas
-import compas_rhino
+import compas_rhino as rhino
 
 from compas.geometry import add_vectors
 from compas.geometry import subtract_vectors
@@ -11,19 +11,16 @@ from compas.geometry import scale_vector
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
 from compas.geometry import bestfit_plane
-from compas.geometry import project_points_plane
+from compas.geometry.transformations.transformations import project_point_plane
 
 from compas_rhino.helpers import volmesh_select_vertices
 
 from compas_3gs.utilities import normal_polygon_general
 from compas_3gs.utilities import area_polygon_general
 
-try:
-    import rhinoscriptsyntax as rs
-    import scriptcontext as sc
-except ImportError:
-    compas.raise_if_ironpython()
+from compas_3gs.utilities import scale_polygon
 
+from compas_3gs.operations import cell_collapse_short_edges
 
 __author__     = ['Juney Lee']
 __copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
@@ -41,55 +38,103 @@ def mesh_arearise(mesh,
                   avg_fkeys=[],
                   area_tolerance=0.001,
                   callback=None,
-                  calback_args=None):
+                  callback_args=None):
 
     if callback:
         if not callable(callback):
             raise Exception('Callback is not callable.')
 
-
+    loops = []
 
     # --------------------------------------------------------------------------
     #   2. loop
     # --------------------------------------------------------------------------
     for k in range(kmax):
 
+        area_deviation = 0
+
+        new_xyz = {vkey: [] for vkey in mesh.vertex}
+
+
         for fkey in mesh.face:
 
-            f_vkeys  = mesh.face_vertices(fkey)
+            f_vkeys  = mesh.face[fkey]
             f_center = mesh.face_center(fkey)
-            f_normal = mesh.face_normal(fkey)
             f_area   = mesh.face_area(fkey)
+            f_normal = mesh.face_normal(fkey)
 
-            target_area = target_areas[fkey]
-            target_plane = (f_center, target_normals[fkey])
-
-            # ------------------------------------------------------------------
-            #   non-zero faces
-            # ------------------------------------------------------------------
-            if target_area != 0:
-                pass
+            target_area  = target_areas[fkey]
 
             # ------------------------------------------------------------------
-            #   zero faces
+            #   scale and project
             # ------------------------------------------------------------------
+            new_face = {vkey: mesh.vertex_coordinates(vkey) for vkey in f_vkeys}
+
+            if fkey in target_normals:
+                target_plane = (f_center, target_normals[fkey])
+
+                for vkey in f_vkeys:
+                    xyz            = mesh.vertex_coordinates(vkey)
+                    projected_xyz  = project_point_plane(xyz, target_plane)
+                    new_face[vkey] = projected_xyz
+
+
+            # for non-zero faces
+            scale = (target_area / f_area) ** 0.5
+
+            # scale = 0.9
+
+            # for zero faces
+            if target_area == 0:
+
+                if f_area < 0.1:
+                    scale = 1
+                else:
+                    scale = 0.1
+
+            new_face = scale_polygon(new_face, scale)
+
+            polyline = []
+            for vkey in f_vkeys:
+                polyline.append(new_face[vkey])
+
+            loops.append({'points': polyline + [polyline[0]],
+                          'name'  : 'iteration-{0}.face-{1}'.format(fkey, k)})
 
 
 
+            areaness  = abs(f_area - target_area)
+            if areaness > area_deviation:
+                area_deviation = areaness
+
+            # 6. collect new coordinates ---------------------------------------
+            for vkey in new_face:
+                new_xyz[vkey].append(new_face[vkey])
 
 
+        # 7. compute new coordinates
+        for vkey in mesh.vertex:
+            final_xyz = centroid_points(new_xyz[vkey])
+            mesh.vertex_update_xyz(vkey, final_xyz)
 
 
+        # 8. check convergence -------------------------------------------------
+        cell_collapse_short_edges(mesh)
 
 
+        # 8. check convergence -------------------------------------------------
+        if area_deviation < area_tolerance:
+            break
 
-def _scale_face(polygon, current_area, target_area):
-    factor = (target_area / current_area) ** 0.5
+        # callback / conduit ---------------------------------------------------
+        if callback:
+            callback(mesh, k, callback_args)
 
+    # mesh.draw()
 
+    rhino.xdraw_polylines(loops)
 
-
-
+    print(k)
 
 
 

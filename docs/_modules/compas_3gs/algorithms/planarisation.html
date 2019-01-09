@@ -63,7 +63,9 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">scale_vector</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">distance_point_point</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">centroid_points</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">project_point_plane</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.transformations.transformations</span> <span class="k">import</span> <span class="n">project_point_plane</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">scale_polygon</span>
 
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Juney Lee&#39;</span><span class="p">]</span>
@@ -195,7 +197,7 @@
             <span class="k">if</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">target_areas</span><span class="p">:</span>
                 <span class="n">target_area</span> <span class="o">=</span> <span class="n">target_areas</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
                 <span class="n">scale</span>       <span class="o">=</span> <span class="p">(</span><span class="n">target_area</span> <span class="o">/</span> <span class="n">f_area</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-                <span class="n">new_face</span>    <span class="o">=</span> <span class="n">_scale_polygon</span><span class="p">(</span><span class="n">new_face</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+                <span class="n">new_face</span>    <span class="o">=</span> <span class="n">scale_polygon</span><span class="p">(</span><span class="n">new_face</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 
                 <span class="n">areaness</span>  <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f_area</span> <span class="o">-</span> <span class="n">target_area</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">areaness</span> <span class="o">&gt;</span> <span class="n">area_deviation</span><span class="p">:</span>
@@ -261,16 +263,6 @@
     <span class="k">return</span> <span class="n">normal_dict</span>
 
 
-<span class="k">def</span> <span class="nf">_scale_polygon</span><span class="p">(</span><span class="n">points_dict</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="n">points_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-    <span class="n">center</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-    <span class="n">new_points_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">points_dict</span><span class="p">:</span>
-        <span class="n">point</span> <span class="o">=</span> <span class="n">points_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="n">vector</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">center</span><span class="p">)</span>
-        <span class="n">new_point</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">scale</span><span class="p">))</span>
-        <span class="n">new_points_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_point</span>
-    <span class="k">return</span> <span class="n">new_points_dict</span>
 
 
 <span class="c1"># ******************************************************************************</span>
@@ -345,11 +337,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 07, 2019.
+                Last updated on Jan 08, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
             
         </footer>
 
