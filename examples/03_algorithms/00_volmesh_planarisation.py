@@ -4,8 +4,8 @@ from __future__ import division
 
 from compas_rhino.selectors import VertexSelector
 
-from compas_3gs_rhino.wrappers import rhino_volmesh_from_polysurfaces
-from compas_3gs_rhino.wrappers import rhino_volmesh_planarise
+from compas_3gs.rhino import rhino_volmesh_from_polysurfaces
+from compas_3gs.rhino import rhino_volmesh_planarise
 
 
 __author__     = ['Juney Lee']

@@ -10,6 +10,9 @@ from compas_3gs.algorithms import egi_from_vectors
 from compas_3gs.algorithms import unit_polyhedron
 from compas_3gs.algorithms import mesh_arearise
 
+from compas_3gs.rhino.display import MeshConduit
+
+
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
@@ -51,19 +54,37 @@ egi.draw()
 # ------------------------------------------------------------------------------
 cell = unit_polyhedron(egi)
 
-for fkey in cell.face:
-    if fkey not in target_areas:
-        target_areas[fkey] = 0
+
+
+# ------------------------------------------------------------------------------
+#   3. arearise
+# ------------------------------------------------------------------------------
+conduit = MeshConduit(cell)
+
+def callback(cell, k, args):
+    # if k % 2 == 0:
+    conduit.redraw()
 
 
 # ------------------------------------------------------------------------------
 #   3. arearise
 # ------------------------------------------------------------------------------
 
+for fkey in cell.face:
+    if fkey not in target_areas:
+        target_areas[fkey] = 0
+
+# target_normals = {}
+# for fkey in cell.face:
+#     target_normals[fkey] = egi.vertex[fkey]['normal']
+
+
+
 mesh_arearise(cell,
               kmax=5,
               target_areas=target_areas,
-              target_normals=vectors)
+              target_normals=target_normals,
+              callback=callback)
 
 
 cell.draw()

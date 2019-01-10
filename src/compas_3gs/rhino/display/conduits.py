@@ -48,7 +48,10 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 __all__ = [
     'PlanarisationConduit',
+
+    'MeshConduit',
     'MeshArearisationConduit',
+
     'ReciprocationConduit']
 
 
@@ -136,6 +139,18 @@ class PlanarisationConduit(Conduit):
 #             e.Display.DrawDot(Point3d(*center), str(round(area, 3)), color, black)
 
 
+
+class MeshConduit(Conduit):
+
+    def __init__(self, mesh, **kwargs):
+        super(MeshConduit, self).__init__(**kwargs)
+
+        self.mesh = mesh
+
+    def DrawForeground(self, e):
+            _conduit_mesh(self.mesh, e)
+
+
 class MeshArearisationConduit(Conduit):
 
     def __init__(self, mesh, target_areas_dict, **kwargs):
@@ -208,18 +223,29 @@ class ReciprocationConduit(Conduit):
 def _conduit_network(network, e):
     form_color = Color.FromArgb(255, 255, 255)
     for u, v in network.edges():
-        sp  = network.vertex_coordinates(u)
-        ep  = network.vertex_coordinates(v)
+        sp = network.vertex_coordinates(u)
+        ep = network.vertex_coordinates(v)
         e.Display.DrawPoint(Point3d(*sp), 0, 2, form_color)
         e.Display.DrawPoint(Point3d(*ep), 0, 2, form_color)
         e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), form_color, 1)
 
 
+
+def _conduit_mesh(mesh, e):
+    force_color = Color.FromArgb(0, 0, 0)
+    for u, v in mesh.edges():
+        sp = mesh.vertex_coordinates(u)
+        ep = mesh.vertex_coordinates(v)
+        e.Display.DrawPoint(Point3d(*sp), 0, 2, white)
+        e.Display.DrawPoint(Point3d(*ep), 0, 2, white)
+        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
+
+
 def _conduit_volmesh(volmesh, e):
     force_color = Color.FromArgb(0, 0, 0)
     for u, v in volmesh.edges():
-        sp  = volmesh.vertex_coordinates(u)
-        ep  = volmesh.vertex_coordinates(v)
+        sp = volmesh.vertex_coordinates(u)
+        ep = volmesh.vertex_coordinates(v)
         e.Display.DrawPoint(Point3d(*sp), 0, 2, force_color)
         e.Display.DrawPoint(Point3d(*ep), 0, 2, force_color)
         e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), force_color, 1)

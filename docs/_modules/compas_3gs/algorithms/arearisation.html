@@ -61,13 +61,12 @@
 <span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">import</span> <span class="nn">compas_rhino</span> <span class="k">as</span> <span class="nn">rhino</span>
 
-
-
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">add_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">scale_vector</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">distance_point_point</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">midpoint_point_point</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">bestfit_plane</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.transformations.transformations</span> <span class="k">import</span> <span class="n">project_point_plane</span>
 
@@ -78,13 +77,7 @@
 
 <span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">scale_polygon</span>
 
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
-    <span class="kn">import</span> <span class="nn">scriptcontext</span> <span class="k">as</span> <span class="nn">sc</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
-
+<span class="kn">from</span> <span class="nn">compas_3gs.operations</span> <span class="k">import</span> <span class="n">cell_collapse_short_edges</span>
 
 <span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Juney Lee&#39;</span><span class="p">]</span>
 <span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2019, BLOCK Research Group - ETH Zurich&#39;</span>
@@ -108,6 +101,8 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Callback is not callable.&#39;</span><span class="p">)</span>
 
+    <span class="n">loops</span> <span class="o">=</span> <span class="p">[]</span>
+
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1">#   2. loop</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -121,9 +116,15 @@
         <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face</span><span class="p">:</span>
 
             <span class="n">f_vkeys</span>  <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
-            <span class="n">f_center</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_center</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+            <span class="n">f_v_xyz</span>  <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">f_vkeys</span><span class="p">]</span>
+            <span class="n">f_center</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">f_v_xyz</span><span class="p">)</span>
             <span class="n">f_area</span>   <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
             <span class="n">f_normal</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+
+
+
+
+
 
             <span class="n">target_area</span>  <span class="o">=</span> <span class="n">target_areas</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
 
@@ -149,20 +150,17 @@
             <span class="c1"># for zero faces</span>
             <span class="k">if</span> <span class="n">target_area</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
-                <span class="k">if</span> <span class="n">f_area</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">:</span>
-                    <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">scale</span> <span class="o">=</span> <span class="mf">0.1</span>
+                <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">target_area</span> <span class="o">-</span> <span class="n">f_area</span><span class="p">)</span>
 
             <span class="n">new_face</span> <span class="o">=</span> <span class="n">scale_polygon</span><span class="p">(</span><span class="n">new_face</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 
-            <span class="c1"># polyline = []</span>
-            <span class="c1"># for vkey in f_vkeys:</span>
-            <span class="c1">#     polyline.append(new_face[vkey])</span>
+            <span class="n">polyline</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">f_vkeys</span><span class="p">:</span>
+                <span class="n">polyline</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_face</span><span class="p">[</span><span class="n">vkey</span><span class="p">])</span>
 
-            <span class="c1"># loop = [{&#39;points&#39;: polyline + [polyline[0]],</span>
-            <span class="c1">#          &#39;name&#39;  : &#39;iteration-{0}.face-{1}&#39;.format(fkey, k)}]</span>
-            <span class="c1"># rhino.xdraw_polylines(loop)</span>
+            <span class="n">loops</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="n">polyline</span> <span class="o">+</span> <span class="p">[</span><span class="n">polyline</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                          <span class="s1">&#39;name&#39;</span>  <span class="p">:</span> <span class="s1">&#39;iteration-</span><span class="si">{0}</span><span class="s1">.face-</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">fkey</span><span class="p">)})</span>
+
 
             <span class="n">areaness</span>  <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f_area</span> <span class="o">-</span> <span class="n">target_area</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">areaness</span> <span class="o">&gt;</span> <span class="n">area_deviation</span><span class="p">:</span>
@@ -173,10 +171,27 @@
                 <span class="n">new_xyz</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_face</span><span class="p">[</span><span class="n">vkey</span><span class="p">])</span>
 
 
+
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+            <span class="n">sp</span>   <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">ep</span>   <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">ep</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">:</span>
+                <span class="n">mp</span> <span class="o">=</span> <span class="n">midpoint_point_point</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">ep</span><span class="p">)</span>
+                <span class="n">new_xyz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mp</span><span class="p">)</span>
+                <span class="n">new_xyz</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mp</span><span class="p">)</span>
+
+
+
         <span class="c1"># 7. compute new coordinates</span>
         <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
             <span class="n">final_xyz</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">new_xyz</span><span class="p">[</span><span class="n">vkey</span><span class="p">])</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_update_xyz</span><span class="p">(</span><span class="n">vkey</span><span class="p">,</span> <span class="n">final_xyz</span><span class="p">)</span>
+
+
+        <span class="c1"># # 8. check convergence -------------------------------------------------</span>
+        <span class="c1"># cell_collapse_short_edges(mesh)</span>
+
 
         <span class="c1"># 8. check convergence -------------------------------------------------</span>
         <span class="k">if</span> <span class="n">area_deviation</span> <span class="o">&lt;</span> <span class="n">area_tolerance</span><span class="p">:</span>
@@ -187,6 +202,8 @@
             <span class="n">callback</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span>
 
     <span class="c1"># mesh.draw()</span>
+
+    <span class="c1"># rhino.xdraw_polylines(loops)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></div>
 
@@ -380,9 +397,11 @@
                                 <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
                                 <ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../theory.html">Basics</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
 </ul>
@@ -411,7 +430,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 08, 2019.
+                Last updated on Jan 10, 2019.
             
 
             

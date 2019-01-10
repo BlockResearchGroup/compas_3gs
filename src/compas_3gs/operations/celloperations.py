@@ -48,7 +48,23 @@ def cell_subdivide_barycentric(volmesh, ckey):
 
 def cell_collapse_short_edges(mesh, min_length=0.1):
 
-    new_xyz = {vkey: [] for vkey in mesh.vertex}
+    # new_xyz = {vkey: [] for vkey in mesh.vertex}
+
+    # for u, v in mesh.edges():
+    #     sp   = mesh.vertex_coordinates(u)
+    #     ep   = mesh.vertex_coordinates(v)
+    #     dist = distance_point_point(sp, ep)
+    #     if dist < min_length:
+    #         print('midpoint', u, v)
+    #         mp = midpoint_point_point(sp, ep)
+    #         new_xyz[u].append(mp)
+    #         new_xyz[v].append(mp)
+
+    # for vkey in new_xyz:
+    #     if new_xyz[vkey]:
+    #         final_xyz = centroid_points(new_xyz[vkey])
+    #         mesh.vertex_update_xyz(vkey, final_xyz)
+
 
     for u, v in mesh.edges():
         sp   = mesh.vertex_coordinates(u)
@@ -57,13 +73,9 @@ def cell_collapse_short_edges(mesh, min_length=0.1):
         if dist < min_length:
             print('midpoint', u, v)
             mp = midpoint_point_point(sp, ep)
-            new_xyz[u].append(mp)
-            new_xyz[v].append(mp)
+            mesh.vertex_update_xyz(u, mp)
+            mesh.vertex_update_xyz(v, mp)
 
-    for vkey in new_xyz:
-        if new_xyz[vkey]:
-            final_xyz = centroid_points(new_xyz[vkey])
-            mesh.vertex_update_xyz(vkey, final_xyz)
 
     return mesh
 

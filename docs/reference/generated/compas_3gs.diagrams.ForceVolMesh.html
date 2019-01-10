@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>compas_3gs</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="" />
+        <meta name="description" content="" />
+
+        <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+
+        <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
+        
+            <link rel="next" title="compas_3gs.diagrams.CellNetwork" href="compas_3gs.diagrams.CellNetwork.html" />
+        
+        
+        
+            <link rel="prev" title="compas_3gs.diagrams.FormVolMesh" href="compas_3gs.diagrams.FormVolMesh.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand compas-navbar justify-content-between">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../../index.html">
+                    compas_3gs 0.1.0
+                </a>
+            </div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://compas-dev.github.io">
+                        <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
+                    </a>
+                </li>
+            </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <!-- main content -->
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+
+                        <div class="section" id="compas-3gs-diagrams-forcevolmesh">
+<h1>compas_3gs.diagrams.ForceVolMesh</h1>
+<dl class="class">
+<dt id="compas_3gs.diagrams.ForceVolMesh">
+<em class="property">class </em><code class="descclassname">compas_3gs.diagrams.</code><code class="descname">ForceVolMesh</code><a class="reference internal" href="../../_modules/compas_3gs/diagrams/polyhedral.html#ForceVolMesh"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_3gs.datastructures.volmesh3gs.VolMesh3gs</span></code></p>
+<p>A polyhedral force diagram, represented as a volmesh object.</p>
+<dl class="method">
+<dt id="compas_3gs.diagrams.ForceVolMesh.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/diagrams/polyhedral.html#ForceVolMesh.__init__"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#compas_3gs.diagrams.ForceVolMesh.__init__" title="compas_3gs.diagrams.ForceVolMesh.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_cell</span></code>(halffaces[, ckey, attr_dict])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_halfface</span></code>(vertices[, fkey])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_vertex</span></code>([vkey, attr_dict])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_adjacency</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_center</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_centroid</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_edges</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_halfface_neighbours</span></code>(ckey, hfkey)</p></td>
+<td><p>Includes both edge and vertex neighbours.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_halffaces</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_mesh</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_neighbours</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_pair_hfkeys</span></code>(ckey_1, ckey_2)</p></td>
+<td><p>Given 2 ckeys, returns the interfacing halffaces, respectively.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_split_vertex</span></code>(vkey, hfkey1, hfkey2)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_tree</span></code>(root)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertex_delete</span></code>(vkey)</p></td>
+<td><p>This removes the vertex, and everything that is attached to the vertex EXCEPT the cell itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertex_halffaces</span></code>(ckey, vkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertex_neighbors</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertex_neighbours</span></code>(ckey, vkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertices</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertices_and_halffaces</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cells</span></code>([data])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code>(**kwattr)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code>(**kwattr)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">datastructure_centroid</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_cell</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_halfface</span></code>(hfkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code>(**kwattr)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edge_labels</span></code>(**kwattr)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code>(**kwattr)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_face_labels</span></code>(**kwattr)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code>(**kwattr)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertex_labels</span></code>(**kwattr)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code>(**kwattr)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_cells</span></code>(u, v[, ordered])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_coordinates</span></code>(u, v[, axes])</p></td>
+<td><p>Return the coordinates of the start and end point of an edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_direction</span></code>(u, v)</p></td>
+<td><p>Return the direction vector of an edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_halffaces</span></code>(u, v)</p></td>
+<td><p>All halffaces of a volmesh that has edge u-v.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_label_name</span></code>(u, v)</p></td>
+<td><p>Get the name of an edge label.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_length</span></code>(u, v)</p></td>
+<td><p>Return the length of an edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_midpoint</span></code>(u, v)</p></td>
+<td><p>Return the location of the midpoint of an edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_name</span></code>(u, v)</p></td>
+<td><p>Get the name of an edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_point</span></code>(u, v[, t])</p></td>
+<td><p>Return the location of a point along an edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_vector</span></code>(u, v[, unitized])</p></td>
+<td><p>Return the vector of an edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code>([data])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges_iter</span></code>([data])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_center</span></code>(fkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_coordinates</span></code>(fkey[, axes])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_label_name</span></code>(fkey)</p></td>
+<td><p>Get the name of a face label.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_name</span></code>(fkey)</p></td>
+<td><p>Get the name of a face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code>(data)</p></td>
+<td><p>Construct a datastructure from structured data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code>(filepath)</p></td>
+<td><p>Construct a datastructure from structured data contained in a json file.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code>(filepath)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_cells</span></code>(vertices, cells)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_edges</span></code>(vertices, edges)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_edge</span></code>()</p></td>
+<td><p>Get the identifier of a random edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face</span></code>()</p></td>
+<td><p>Get the identifier of a random face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face_vertex</span></code>(fkey)</p></td>
+<td><p>Get the identifier of a random vertex of a specific face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertex</span></code>()</p></td>
+<td><p>Get the identifier of a random vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertices</span></code>(n[, exclude_leaves])</p></td>
+<td><p>Get a list of identifiers of a random set of n vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_attribute</span></code>(key, name[, value])</p></td>
+<td><p>Get the value of a named attribute of one edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_attributes</span></code>(key, names[, values])</p></td>
+<td><p>Get the value of a named attribute of one edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_attribute</span></code>(name[, value, keys])</p></td>
+<td><p>Get the value of a named attribute of multiple edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_attributes</span></code>(names[, values, keys])</p></td>
+<td><p>Get the values of multiple named attribute of multiple edges.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_attribute</span></code>(key, name[, value])</p></td>
+<td><p>Get the value of a named attribute of one face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_attributes</span></code>(key, names[, values])</p></td>
+<td><p>Get the value of a named attribute of one face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_attribute</span></code>(keys, name[, value])</p></td>
+<td><p>Get the value of a named attribute of multiple faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_attributes</span></code>(keys, names[, values])</p></td>
+<td><p>Get the values of multiple named attribute of multiple faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_attribute</span></code>(key, name[, value])</p></td>
+<td><p>Get the value of a named attribute of one vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_attributes</span></code>(key, names[, values])</p></td>
+<td><p>Get the value of a named attribute of one vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_attribute</span></code>(name[, value, keys])</p></td>
+<td><p>Get the value of a named attribute of multiple vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_attributes</span></code>(names[, values, keys])</p></td>
+<td><p>Get the values of multiple named attribute of multiple vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_adjacency</span></code>(ckey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_area</span></code>(hfkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_cell</span></code>(fkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_center</span></code>(hfkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_coordinates</span></code>(hfkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_dependent_halffaces</span></code>(hfkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_edges</span></code>(fkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_halfedges</span></code>(hfkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_iter</span></code>([data])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_normal</span></code>(hfkey[, unitized])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_pair</span></code>(hfkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_ancestor</span></code>(hfkey, key)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_descendent</span></code>(hfkey, key)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertices</span></code>(fkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces_boundary</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces_interior</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_boundary</span></code>(hfkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_boundary</span></code>(vkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_cells</span></code>()</p></td>
+<td><p>Count the number of faces in the mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code>()</p></td>
+<td><p>Count the number of edges in the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code>()</p></td>
+<td><p>Count the number of faces in the mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code>()</p></td>
+<td><p>Count the number of vertices in the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">planes</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code>([factor])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_edge_attribute</span></code>(key, name, value)</p></td>
+<td><p>Set one attribute of one edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_edge_attributes</span></code>(key, names, values)</p></td>
+<td><p>Set multiple attributes of one edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_edges_attribute</span></code>(name, value[, keys])</p></td>
+<td><p>Set one attribute of multiple edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_edges_attributes</span></code>(names, values[, keys])</p></td>
+<td><p>Set multiple attributes of multiple edges.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_face_attribute</span></code>(key, name, value)</p></td>
+<td><p>Set one attribute of one face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_face_attributes</span></code>(key, names, values)</p></td>
+<td><p>Set multiple attributes of one face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_faces_attribute</span></code>(keys, name, value)</p></td>
+<td><p>Set one attribute of multiple faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_faces_attributes</span></code>(keys, names, values)</p></td>
+<td><p>Set multiple attributes of multiple faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertex_attribute</span></code>(key, name, value)</p></td>
+<td><p>Set one attribute of one vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertex_attributes</span></code>(key, names, values)</p></td>
+<td><p>Set multiple attributes of one vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertices_attribute</span></code>(name, value[, keys])</p></td>
+<td><p>Set one attribute of multiple vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertices_attributes</span></code>(names, values[, keys])</p></td>
+<td><p>Set multiple attributes of multiple vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code>()</p></td>
+<td><p>Returns a dictionary of structured data representing the data structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code>(filepath)</p></td>
+<td><p>Serialise the structured data representing the data structure to json.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code>(filepath)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code>([attr_dict])</p></td>
+<td><p>Update the default edge attributes (this also affects already existing edges).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_face_attributes</span></code>([attr_dict])</p></td>
+<td><p>Update the default face attributes (this also affects already existing faces).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code>([attr_dict])</p></td>
+<td><p>Update the default vertex attributes (this also affects already existing vertices).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_cells</span></code>(vkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_coordinates</span></code>(vkey[, axes])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_halffaces</span></code>(vkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_label_name</span></code>(key)</p></td>
+<td><p>Get the name of a vertex label.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_name</span></code>(key)</p></td>
+<td><p>Get the name of a vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code>(vkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_normal</span></code>(vkey)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_update_xyz</span></code>(vkey, xyz[, constrained])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code>([data])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where</span></code>(conditions[, data])</p></td>
+<td><p>Get vertices for which a certain condition or set of conditions is true.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">volmesh_all_dependent_halffaces</span></code>(hfkey)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p><em>dict</em> – A data dict representing the volmesh data structure for serialisation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p><em>str</em> – The name of the volmesh data structure.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p><em>list</em> – The X coordinates of the vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xy</span></code></p></td>
+<td><p><em>list</em> – The XY coordinates of the vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xyz</span></code></p></td>
+<td><p><em>list</em> – The XYZ coordinates of the vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p><em>list</em> – The Y coordinates of the vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">z</span></code></p></td>
+<td><p><em>list</em> – The Z coordinates of the vertices.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+                        
+                    
+
+                </main>
+
+                <!-- site navigation sidebar -->
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../theory.html">Basics</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">API Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.html">compas_3gs</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.algorithms.html">compas_3gs.algorithms</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.datastructures.html">compas_3gs.datastructures</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.diagrams.html">compas_3gs.diagrams</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.operations.html">compas_3gs.operations</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.rhino.html">compas_3gs.rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.utilities.html">compas_3gs.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
+</ul>
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+
+                <!-- table of contents of main content -->
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas_3gs.diagrams.ForceVolMesh</a></li>
+</ul>
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="compas-footer">
+            
+                Last updated on Jan 10, 2019.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
+            
+        </footer>
+
+        
+
+            <script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.1.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+};
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+            <script src="../../_static/underscore.js"></script>
+            <script src="../../_static/doctools.js"></script>
+            <script src="../../_static/js/searchtools_.js"></script>
+            <script src="../../_static/js/prism.js"></script>
+
+            <script>
+$(document).ready(function() {
+
+    // $(".language-default pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-bash pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-python pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-c pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-cpp pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-fortran pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-markdown pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-rest pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    anchors.add();
+});
+            </script>
+
+        
+    </body>
+</html>

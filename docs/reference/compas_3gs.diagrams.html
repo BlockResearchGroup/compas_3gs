@@ -18,11 +18,11 @@
         <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="compas_3gs.operations" href="compas_3gs.operations.html" />
+            <link rel="next" title="compas_3gs.diagrams.EGI" href="generated/compas_3gs.diagrams.EGI.html" />
         
         
         
-            <link rel="prev" title="compas_3gs.datastructures" href="compas_3gs.datastructures.html" />
+            <link rel="prev" title="compas_3gs.datastructures.VolMesh3gs" href="generated/compas_3gs.datastructures.VolMesh3gs.html" />
         
 
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -59,6 +59,57 @@
 
                         <span class="target" id="module-compas_3gs.diagrams"></span><div class="section" id="compas-3gs-diagrams">
 <h1>compas_3gs.diagrams</h1>
+<div class="section" id="polyhedral-cell">
+<h2>Polyhedral Cell</h2>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_3gs.diagrams.EGI.html#compas_3gs.diagrams.EGI" title="compas_3gs.diagrams.EGI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EGI</span></code></a>()</p></td>
+<td><p>Definition of an egi.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_3gs.diagrams.Cell.html#compas_3gs.diagrams.Cell" title="compas_3gs.diagrams.Cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cell</span></code></a>()</p></td>
+<td><p>A single polyhedral cell, represented as a mesh object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="multi-cell-polyhedron">
+<h2>Multi-cell Polyhedron</h2>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_3gs.diagrams.FormNetwork.html#compas_3gs.diagrams.FormNetwork" title="compas_3gs.diagrams.FormNetwork"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FormNetwork</span></code></a>()</p></td>
+<td><p>A polyhedral form diagram, represented as a network object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_3gs.diagrams.FormVolMesh.html#compas_3gs.diagrams.FormVolMesh" title="compas_3gs.diagrams.FormVolMesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FormVolMesh</span></code></a>()</p></td>
+<td><p>A polyhedral form diagram, represented as a volmesh object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_3gs.diagrams.ForceVolMesh.html#compas_3gs.diagrams.ForceVolMesh" title="compas_3gs.diagrams.ForceVolMesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ForceVolMesh</span></code></a>()</p></td>
+<td><p>A polyhedral force diagram, represented as a volmesh object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="cell-network">
+<h2>Cell Network</h2>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_3gs.diagrams.CellNetwork.html#compas_3gs.diagrams.CellNetwork" title="compas_3gs.diagrams.CellNetwork"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CellNetwork</span></code></a>()</p></td>
+<td><p>A disjointed, non-polyhedral form and force diagram.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
                         
@@ -88,9 +139,11 @@
                                 <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
                                 <ul class="nav flex-column active">
-<li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../theory.html">Basics</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../examples.html">Examples</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../reference.html">Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../reference.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="compas_3gs.html">compas_3gs</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="compas_3gs.algorithms.html">compas_3gs.algorithms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_3gs.datastructures.html">compas_3gs.datastructures</a></li>
@@ -122,7 +175,12 @@
                     
 
                     <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas_3gs.diagrams</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas_3gs.diagrams</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#polyhedral-cell">Polyhedral Cell</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#multi-cell-polyhedron">Multi-cell Polyhedron</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#cell-network">Cell Network</a></li>
+</ul>
+</li>
 </ul>
 
 
@@ -133,7 +191,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 08, 2019.
+                Last updated on Jan 10, 2019.
             
 
             

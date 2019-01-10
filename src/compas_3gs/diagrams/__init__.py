@@ -6,6 +6,36 @@ compas_3gs.diagrams
 .. currentmodule:: compas_3gs.diagrams
 
 
+Polyhedral Cell
+===============
+
+.. autosummary::
+    :toctree: generated/
+
+    EGI
+    Cell
+
+
+Multi-cell Polyhedron
+=====================
+
+.. autosummary::
+    :toctree: generated/
+
+    FormNetwork
+    FormVolMesh
+    ForceVolMesh
+
+
+Cell Network
+============
+
+.. autosummary::
+    :toctree: generated/
+
+    CellNetwork
+
+
 """
 from __future__ import absolute_import
 from __future__ import division

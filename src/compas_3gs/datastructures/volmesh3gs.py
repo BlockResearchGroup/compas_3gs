@@ -20,11 +20,11 @@ from compas.geometry import centroid_polygon
 from compas_rhino.helpers.volmesh import volmesh_draw
 from compas_rhino.artists import VolMeshArtist
 
-# from compas_3gs_rhino.display import draw_cell
-# from compas_3gs_rhino.display import draw_egi_arcs
-# from compas_3gs_rhino.display import draw_cell_labels
-# from compas_3gs_rhino.display import clear_cell_labels
-# from compas_3gs_rhino.display import draw_volmesh_face_normals
+# from compas_3gs.rhino.display import draw_cell
+# from compas_3gs.rhino.display import draw_egi_arcs
+# from compas_3gs.rhino.display import draw_cell_labels
+# from compas_3gs.rhino.display import clear_cell_labels
+# from compas_3gs.rhino.display import draw_volmesh_face_normals
 
 from compas_3gs.utilities import normal_polygon_general
 from compas_3gs.utilities import area_polygon_general

@@ -10,6 +10,7 @@ from compas.geometry import subtract_vectors
 from compas.geometry import scale_vector
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
+from compas.geometry import midpoint_point_point
 from compas.geometry import bestfit_plane
 from compas.geometry.transformations.transformations import project_point_plane
 
@@ -59,9 +60,15 @@ def mesh_arearise(mesh,
         for fkey in mesh.face:
 
             f_vkeys  = mesh.face[fkey]
-            f_center = mesh.face_center(fkey)
+            f_v_xyz  = [mesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+            f_center = centroid_points(f_v_xyz)
             f_area   = mesh.face_area(fkey)
             f_normal = mesh.face_normal(fkey)
+
+
+
+
+
 
             target_area  = target_areas[fkey]
 
@@ -87,10 +94,7 @@ def mesh_arearise(mesh,
             # for zero faces
             if target_area == 0:
 
-                if f_area < 0.1:
-                    scale = 1
-                else:
-                    scale = 0.1
+                scale = 1 - abs(target_area - f_area)
 
             new_face = scale_polygon(new_face, scale)
 
@@ -99,8 +103,7 @@ def mesh_arearise(mesh,
                 polyline.append(new_face[vkey])
 
             loops.append({'points': polyline + [polyline[0]],
-                          'name'  : 'iteration-{0}.face-{1}'.format(fkey, k)})
-
+                          'name'  : 'iteration-{0}.face-{1}'.format(k, fkey)})
 
 
             areaness  = abs(f_area - target_area)
@@ -112,14 +115,26 @@ def mesh_arearise(mesh,
                 new_xyz[vkey].append(new_face[vkey])
 
 
+
+        for u, v in mesh.edges():
+            sp   = mesh.vertex_coordinates(u)
+            ep   = mesh.vertex_coordinates(v)
+            dist = distance_point_point(sp, ep)
+            if dist < 0.1:
+                mp = midpoint_point_point(sp, ep)
+                new_xyz[u].append(mp)
+                new_xyz[v].append(mp)
+
+
+
         # 7. compute new coordinates
         for vkey in mesh.vertex:
             final_xyz = centroid_points(new_xyz[vkey])
             mesh.vertex_update_xyz(vkey, final_xyz)
 
 
-        # 8. check convergence -------------------------------------------------
-        cell_collapse_short_edges(mesh)
+        # # 8. check convergence -------------------------------------------------
+        # cell_collapse_short_edges(mesh)
 
 
         # 8. check convergence -------------------------------------------------
@@ -132,7 +147,7 @@ def mesh_arearise(mesh,
 
     # mesh.draw()
 
-    rhino.xdraw_polylines(loops)
+    # rhino.xdraw_polylines(loops)
 
     print(k)
 

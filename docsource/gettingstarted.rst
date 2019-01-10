@@ -1,5 +1,5 @@
 ********************************************************************************
-Getting started
+Setting Up
 ********************************************************************************
 
 .. _Anaconda: https://www.continuum.io/
@@ -10,8 +10,6 @@ Requirements
 ============
 
 The main library of COMPAS
-
-test test test
 
 
 Installation

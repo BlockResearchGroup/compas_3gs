@@ -28,6 +28,7 @@ from compas_3gs.utilities import area_polygon_general
 
 try:
     import Rhino
+    import scriptcontext as sc
     import rhinoscriptsyntax as rs
 
     from Rhino.Geometry import Point3d

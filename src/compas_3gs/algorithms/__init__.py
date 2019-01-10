@@ -14,6 +14,7 @@ Arearisation
 
     mesh_arearise
 
+
 Duality
 =======
 
@@ -23,6 +24,16 @@ Duality
     volmesh_dual_volmesh
     volmesh_dual_network
 
+
+EGI
+===
+
+.. autosummary::
+    :toctree: generated/
+
+    egi_from_vectors
+
+
 Planarisation
 =============
 
@@ -31,6 +42,14 @@ Planarisation
 
     volmesh_planarise
 
+
+Relaxation
+==========
+
+.. autosummary::
+    :toctree: generated/
+
+
 Reciprocation
 =============
 
@@ -38,6 +57,7 @@ Reciprocation
     :toctree: generated/
 
     volmesh_reciprocate
+
 
 Unified Diagram
 ===============

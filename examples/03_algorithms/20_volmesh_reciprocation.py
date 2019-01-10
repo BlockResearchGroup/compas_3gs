@@ -4,9 +4,9 @@ from __future__ import division
 
 import compas
 
-from compas_3gs_rhino.wrappers import rhino_volmesh_from_polysurfaces
-from compas_3gs_rhino.wrappers import rhino_network_from_volmesh
-from compas_3gs_rhino.wrappers import rhino_volmesh_reciprocate
+from compas_3gs.rhino.wrappers import rhino_volmesh_from_polysurfaces
+from compas_3gs.rhino.wrappers import rhino_network_from_volmesh
+from compas_3gs.rhino.wrappers import rhino_volmesh_reciprocate
 
 try:
     import rhinoscriptsyntax as rs

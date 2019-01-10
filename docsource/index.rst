@@ -6,8 +6,10 @@ compas_3gs
     :maxdepth: 3
     :titlesonly:
 
+    introduction
     gettingstarted
+    theory
     examples
     reference
     license
-    citing       
+    citing
