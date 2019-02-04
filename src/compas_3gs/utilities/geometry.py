@@ -150,6 +150,46 @@ def scale_polygon(points_dict, scale):
 
 
 
+def untangle_polygon(points):
+
+    def _cross_edges(edge1, edge2):
+        a, b      = edge1
+        c, d      = edge2
+        edge1_vec = normalize_vector(subtract_vectors(b, a))
+        edge2_vec = normalize_vector(subtract_vectors(d, c))
+        cross     = cross_vectors(edge1_vec, edge2_vec)
+        return cross
+
+    xyz        = {i: points[i] for i in range(len(points))}
+    vkeys      = range(len(points))
+
+    count = 20
+    while count:
+        count -= 1
+        moved = []
+        for i in range(-1, len(points) - 1):
+            t       = xyz[vkeys[i - 2]]
+            u       = xyz[vkeys[i - 1]]
+            v       = xyz[vkeys[i]]
+            w       = xyz[vkeys[i + 1]]
+            u_cross = _cross_edges((t, u), (u, v))
+            v_cross = _cross_edges((u, v), (v, w))
+            dot = dot_vectors(u_cross, v_cross)
+            if dot < 0:
+                midpt = midpoint_point_point(u, w)
+                vec = scale_vector(subtract_vectors(midpt, v), 1.5)
+
+
+                xyz[vkeys[i]] = add_vectors(v, vec)
+                moved.append([vkeys[i]])
+        if len(moved) == 0 :
+            break
+
+    return [xyz[i] for i in vkeys]
+
+
+
+
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************

@@ -30,7 +30,7 @@ vkeys = VertexSelector.select_vertices(forcediagram,
 # 3. planarise
 # ------------------------------------------------------------------------------
 rhino_volmesh_planarise(forcediagram,
-                        kmax=2000,
+                        kmax=200,
                         target_normals={},
                         target_centers={},
                         fix_vkeys=vkeys,

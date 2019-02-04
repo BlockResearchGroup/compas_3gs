@@ -46,14 +46,13 @@ for index, line in enumerate(lines):
 # ------------------------------------------------------------------------------
 egi = egi_from_vectors(vectors, origin)
 
-egi.draw()
+# egi.draw()
 
 
 # ------------------------------------------------------------------------------
 #   3. unit polyhedron
 # ------------------------------------------------------------------------------
 cell = unit_polyhedron(egi)
-
 
 
 # ------------------------------------------------------------------------------
@@ -74,17 +73,33 @@ for fkey in cell.face:
     if fkey not in target_areas:
         target_areas[fkey] = 0
 
-# target_normals = {}
-# for fkey in cell.face:
-#     target_normals[fkey] = egi.vertex[fkey]['normal']
-
-
+target_normals = {}
+for fkey in cell.face:
+    target_normals[fkey] = egi.vertex[fkey]['normal']
 
 mesh_arearise(cell,
-              kmax=5,
+              kmax=200,
               target_areas=target_areas,
               target_normals=target_normals,
               callback=callback)
 
 
-cell.draw()
+# ------------------------------------------------------------------------------
+#   draw
+# ------------------------------------------------------------------------------
+faces_to_draw = []
+face_colordict = {}
+for fkey in cell.face:
+    color = (0, 0, 0)
+    if cell.facedata[fkey]['type'] == 'zero':
+        color = (0, 255, 0)
+    else:
+        faces_to_draw.append(fkey)
+    face_colordict[fkey] = color
+
+# cell.draw_faces(keys=faces_to_draw, color=face_colordict)
+cell.draw_edges()
+
+
+
+

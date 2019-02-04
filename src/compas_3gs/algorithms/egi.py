@@ -49,6 +49,7 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
 
     testing
 
+
     warnings:
         dependent on rhino arc function...
 
@@ -231,8 +232,8 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
 
 def unit_polyhedron(egi):
 
-    cell        = Cell()
-    cell.name   = 'cell'
+    cell      = Cell()
+    cell.name = 'cell'
 
     for fkey in egi.face:
         x, y, z = egi.face_center(fkey)

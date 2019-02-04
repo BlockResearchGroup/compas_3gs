@@ -71,11 +71,9 @@ def cell_collapse_short_edges(mesh, min_length=0.1):
         ep   = mesh.vertex_coordinates(v)
         dist = distance_point_point(sp, ep)
         if dist < min_length:
-            print('midpoint', u, v)
             mp = midpoint_point_point(sp, ep)
             mesh.vertex_update_xyz(u, mp)
             mesh.vertex_update_xyz(v, mp)
-
 
     return mesh
 
