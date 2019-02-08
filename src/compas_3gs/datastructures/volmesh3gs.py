@@ -513,7 +513,7 @@ class VolMesh3gs(VolMesh):
 
     def draw(self, **kwattr):
         artist = VolMeshArtist(self)
-        artist.clear()
+        # artist.clear()
         volmesh_draw(self, layer=self.layer)
 
     def clear(self):

@@ -77,11 +77,12 @@ target_normals = {}
 for fkey in cell.face:
     target_normals[fkey] = egi.vertex[fkey]['normal']
 
-mesh_arearise(cell,
-              kmax=200,
-              target_areas=target_areas,
-              target_normals=target_normals,
-              callback=callback)
+with conduit.enabled():
+    mesh_arearise(cell,
+                  kmax=200,
+                  target_areas=target_areas,
+                  target_normals=target_normals,
+                  callback=callback)
 
 
 # ------------------------------------------------------------------------------

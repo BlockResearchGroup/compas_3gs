@@ -13,7 +13,7 @@ from compas.geometry import cross_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import subtract_vectors
 
-from compas.topology.duality import _find_first_neighbor
+from compas.datastructures.network.duality import _find_first_neighbor
 
 from compas.utilities import geometric_key
 

@@ -14,6 +14,8 @@ from compas_rhino.artists import NetworkArtist
 
 from compas_rhino.conduits import Conduit
 
+
+
 try:
     import Rhino
     import rhinoscriptsyntax as rs
@@ -22,6 +24,7 @@ try:
     from Rhino.Geometry import Point3d
     from Rhino.Geometry import Line
 
+    from System.Drawing import Color
     from System.Drawing.Color import FromArgb
 
     find_object    = sc.doc.Objects.Find
@@ -139,7 +142,6 @@ class PlanarisationConduit(Conduit):
 #             e.Display.DrawDot(Point3d(*center), str(round(area, 3)), color, black)
 
 
-
 class MeshConduit(Conduit):
 
     def __init__(self, mesh, **kwargs):
@@ -230,15 +232,14 @@ def _conduit_network(network, e):
         e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), form_color, 1)
 
 
-
 def _conduit_mesh(mesh, e):
     force_color = Color.FromArgb(0, 0, 0)
     for u, v in mesh.edges():
         sp = mesh.vertex_coordinates(u)
         ep = mesh.vertex_coordinates(v)
-        e.Display.DrawPoint(Point3d(*sp), 0, 2, white)
-        e.Display.DrawPoint(Point3d(*ep), 0, 2, white)
-        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
+        e.Display.DrawPoint(Point3d(*sp), 0, 2, force_color)
+        e.Display.DrawPoint(Point3d(*ep), 0, 2, force_color)
+        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), force_color, 1)
 
 
 def _conduit_volmesh(volmesh, e):

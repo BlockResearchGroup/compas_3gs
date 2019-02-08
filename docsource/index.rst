@@ -8,8 +8,8 @@ compas_3gs
 
     introduction
     gettingstarted
-    theory
-    examples
+    overview
+    user_manual
     reference
     license
     citing

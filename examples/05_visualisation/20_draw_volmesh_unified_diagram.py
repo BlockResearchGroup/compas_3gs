@@ -4,11 +4,11 @@ from __future__ import division
 
 import compas
 
-from compas_3gs_rhino.wrappers import rhino_volmesh_from_polysurfaces
-from compas_3gs_rhino.wrappers import rhino_network_from_volmesh
-from compas_3gs_rhino.wrappers import rhino_volmesh_reciprocate
+from compas_3gs.rhino import rhino_volmesh_from_polysurfaces
+from compas_3gs.rhino import rhino_network_from_volmesh
+from compas_3gs.rhino import rhino_volmesh_reciprocate
 
-from compas_3gs_rhino.display import draw_volmesh_UD
+from compas_3gs.rhino import draw_volmesh_UD
 
 try:
     import rhinoscriptsyntax as rs
