@@ -113,8 +113,8 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexdict</span></code>()</p></td>
 <td><p>Clear only the vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">collapse_edge</span></code>(u, v[, t, allow_boundary, fixed])</p></td>
-<td><p>Collapse an edge to its first or second vertex, or to an intermediate point.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cell.collapse_edge</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cell.collapse_edge_tri</span></code></p></td>
 <td><p></p></td>
@@ -264,7 +264,7 @@
 <td><p>Find the faces on the boundary.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_where</span></code>(conditions[, data])</p></td>
-<td><p></p></td>
+<td><p>Get faces for which a certain condition or set of conditions is true.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code>(data)</p></td>
 <td><p>Construct a datastructure from structured data.</p></td>
@@ -476,14 +476,14 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertices_attributes</span></code>(names, values[, keys])</p></td>
 <td><p>Set multiple attributes of multiple vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge</span></code>(u, v[, t, allow_boundary])</p></td>
-<td><p>Split and edge by inserting a vertex along its length.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cell.split_edge</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cell.split_edge_tri</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_face</span></code>(fkey, u, v)</p></td>
-<td><p>Split a face by inserting an edge between two specified vertices.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cell.split_face</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code>()</p></td>
 <td><p>Print a summary of the mesh.</p></td>
@@ -506,8 +506,8 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code>()</p></td>
 <td><p>Return the vertices and faces of a mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unweld_vertices</span></code>(fkey[, where])</p></td>
-<td><p>Unweld a face of the mesh.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cell.unweld_vertices</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code>([attr_dict])</p></td>
 <td><p>Update the default edge attributes (this also affects already existing edges).</p></td>
