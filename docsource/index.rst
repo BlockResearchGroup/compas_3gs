@@ -13,3 +13,4 @@ compas_3gs
     reference
     license
     citing
+    contribution

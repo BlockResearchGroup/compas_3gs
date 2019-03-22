@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="Polyhedral form and force diagrams" href="02_1_constructor.html" />
+            <link rel="next" title="Constructor" href="02_1_constructor.html" />
         
         
         
@@ -57,8 +57,23 @@
 
                         
 
-                        <div class="section" id="datastructures">
-<h1>Datastructures</h1>
+                        <div class="section" id="datastructure">
+<h1>Datastructure</h1>
+<p>A multi-cell polyhedron <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> and its corresponding polyhedral form diagram <span class="math notranslate nohighlight">\(\Gamma\)</span> are modelled as <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> and <code class="docutils literal notranslate"><span class="pre">network</span></code>, respectively.
+Because <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> and <span class="math notranslate nohighlight">\(\Gamma\)</span> are topologically dual to each other, <span class="math notranslate nohighlight">\(\Gamma\)</span> can also be modelled as a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code>.
+However, because the topological information of <span class="math notranslate nohighlight">\(\Gamma\)</span> is embedded in <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span>, some information do not need to be duplicated.
+For example, the face and cell information of <span class="math notranslate nohighlight">\(\Gamma\)</span> can be computed from the topology of <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span>.
+The polyhedral form diagram <span class="math notranslate nohighlight">\(\Gamma\)</span> as a <code class="docutils literal notranslate"><span class="pre">network</span></code> is essentially a visualisation of the cell connectivity information of <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span>, where each edge of <span class="math notranslate nohighlight">\(\Gamma\)</span> is perpendicular to its corresponding face of <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span>.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/04_datastructures_02_mcp.jpg"><img alt="../../_images/04_datastructures_02_mcp.jpg" src="../../_images/04_datastructures_02_mcp.jpg" style="width: 100%;" /></a>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<hr class="docutils" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="figure">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_datastructure_volmesh.jpg"><img alt="../../_images/compas_3gs_datastructure_volmesh.jpg" src="../../_images/compas_3gs_datastructure_volmesh.jpg" style="width: 100%;" /></a>
 </div>
@@ -97,13 +112,14 @@
 <li class="nav-item active"><a class="nav-link reference internal" href="../../user_manual.html">User manual</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="../01_0_polyhedral_cell.html">Polyhedral cell</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../02_0_multi-cell_polyhedron.html">Multi-cell polyhedron</a><ul class="nav active">
-<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Datastructures</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="02_1_constructor.html">Polyhedral form and force diagrams</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Datastructure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="02_1_constructor.html">Constructor</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="02_2_reciprocation.html">Reciprocation</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="02_3_arearisation.html">Arearisation</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="02_4_transformation.html">Transformations</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="02_5_visualisation.html">Visualisation</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="02_6_unified_diagram.html">Unified diagram</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="02_4_arearisation.html">Arearisation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="02_5_transformation.html">Transformations</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="02_6_visualisation.html">Visualisation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="02_7_unified_diagram.html">Unified diagram</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="02_8_example.html">Example</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../03_0_cell_network.html">Cell network</a></li>
@@ -113,6 +129,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../contribution.html">How to contribute</a></li>
 </ul>
 
 
@@ -131,7 +148,7 @@
                     
 
                     <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Datastructures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Datastructure</a></li>
 </ul>
 
 
@@ -142,7 +159,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Feb 08, 2019.
+                Last updated on Mar 22, 2019.
             
 
             

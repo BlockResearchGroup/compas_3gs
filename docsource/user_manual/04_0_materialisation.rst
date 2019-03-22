@@ -4,6 +4,9 @@ Materialisation
 
 
 
+.. toctree::
+    :maxdepth: 1
+    :glob:
 
-.. image:: ../_images/08_mycotree_node_sequence_overlayed.jpg
-    :width: 100%
+    04_materialisation/04_0_background.rst
+    04_materialisation/04_1_example.rst

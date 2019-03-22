@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="Extended Gaussian Image" href="01_1_egi_examples.html" />
+            <link rel="next" title="Constructor" href="01_2_constructor.html" />
         
         
         
@@ -57,8 +57,24 @@
 
                         
 
-                        <div class="section" id="datastructures">
-<h1>Datastructures</h1>
+                        <div class="section" id="datastructure">
+<h1>Datastructure</h1>
+<p>A polyhedral cell which is typically used for the representation of a global
+force polyhedron <span class="math notranslate nohighlight">\(\Lambda^{\perp}\)</span>, is modelled as a <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.
+The initial form diagram <span class="math notranslate nohighlight">\(\Lambda\)</span>, which contains the information of the magnitudes and locations of the external forces, are typically a disconnected set of vectors or “lines” in space.
+These vectors can be moved to one location such that the heads of the
+vectors are coincident.
+The consolidated vectors then can be modelled as a <code class="docutils literal notranslate"><span class="pre">network</span></code>, where each external force is represented with an edge.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/04_datastructures_01_cell.jpg"><img alt="../../_images/04_datastructures_01_cell.jpg" src="../../_images/04_datastructures_01_cell.jpg" style="width: 100%;" /></a>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<hr class="docutils" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="figure">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_datastructure_mesh.jpg"><img alt="../../_images/compas_3gs_datastructure_mesh.jpg" src="../../_images/compas_3gs_datastructure_mesh.jpg" style="width: 100%;" /></a>
 </div>
@@ -96,9 +112,9 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../user_manual.html">User manual</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../01_0_polyhedral_cell.html">Polyhedral cell</a><ul class="nav active">
-<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Datastructures</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="01_1_egi_examples.html">Extended Gaussian Image</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="01_2_gfp.html">Global force polyhedron</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Datastructure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_2_constructor.html">Constructor</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_3_example.html">Example</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../02_0_multi-cell_polyhedron.html">Multi-cell polyhedron</a></li>
@@ -109,6 +125,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../contribution.html">How to contribute</a></li>
 </ul>
 
 
@@ -127,7 +144,7 @@
                     
 
                     <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Datastructures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Datastructure</a></li>
 </ul>
 
 
@@ -138,7 +155,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Feb 08, 2019.
+                Last updated on Mar 22, 2019.
             
 
             

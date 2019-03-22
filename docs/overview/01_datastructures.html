@@ -59,24 +59,37 @@
 
                         <div class="section" id="datastructures">
 <h1>Datastructures</h1>
+<p>Various form and force diagrams used in <code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> are represented using one or combinations of the three main datastructures of the <strong>COMPAS</strong> framework.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">network</span></code> is a directed graph, made up of a finite set of vertices, which are connected by a finite set of edges.
+In mathematics, graphs are abstract topological datastructures used to model and depict relationships between pairs of objects.
+In <code class="docutils literal notranslate"><span class="pre">compas</span></code>, the geometry of a network is defined by adding xyz coordinate information to each of the vertices.
+A <code class="docutils literal notranslate"><span class="pre">network</span></code> can be 2D on a plane, or 3D in space.
+By default, a <code class="docutils literal notranslate"><span class="pre">network</span></code> does not carry any face information.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">mesh</span></code> is a network of faces, which has a halfedge datastructure.
+A <code class="docutils literal notranslate"><span class="pre">mesh</span></code> can be open with boundary edges (polyhedral mesh or surface), or closed without any boundary edges.
+As implemented in <code class="docutils literal notranslate"><span class="pre">compas</span></code>, a <code class="docutils literal notranslate"><span class="pre">mesh</span></code> is strictly a 2-manifold; an edge is shared by no more than two faces.
+In essence, a <code class="docutils literal notranslate"><span class="pre">mesh</span></code> is a <code class="docutils literal notranslate"><span class="pre">network</span></code> with vertices and edges, with the addition of face information.
+The edges of a mesh are directed, although the directions of the edges are arbitrary and not used for querying or traversing the datastructure.
+A face of a <code class="docutils literal notranslate"><span class="pre">mesh</span></code> is defined by an ordered list of vertices, and need not necessarily be planar (flat) in its geometry.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> is a 3-manifold volumetric mesh; an edge of a volmesh can
+be shared by more than two faces.
+Embedded within this volumetric mesh is a network of cells, where the cell-to-cell relationships are defined by a combination of halffaces and planes.
+Similar to a <code class="docutils literal notranslate"><span class="pre">network</span></code> or <code class="docutils literal notranslate"><span class="pre">mesh</span></code>, a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> has a finite set of vertices and edges.
+The edges of a volmesh are directed, although the directions of the edges are arbitrary and not used for querying or traversing the datastructure.
+Whereas every edge of a <code class="docutils literal notranslate"><span class="pre">mesh</span></code> is split into two halfedges, every face of a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> is split into two halffaces.
+Because the edge directions are arbitrary, a face of a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> does not have a winding direction.
+Locally, each cell of a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> is structured like a <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.</p>
+<p>For a more detailed documentation of these datastructures, please visit the of <a class="reference external" href="https://compas-dev.github.io/">online documentation</a> of the <strong>COMPAS</strong> framework.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<hr class="docutils" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="figure" id="id1">
 <a class="reference internal image-reference" href="../_images/compas_3gs_datastructure_definitions.jpg"><img alt="../_images/compas_3gs_datastructure_definitions.jpg" src="../_images/compas_3gs_datastructure_definitions.jpg" style="width: 100%;" /></a>
-<p>explain the basic datastructures…</p>
-<a class="reference internal image-reference" href="../_images/compas_3gs_datastructure_types.jpg"><img alt="../_images/compas_3gs_datastructure_types.jpg" src="../_images/compas_3gs_datastructure_types.jpg" style="width: 100%;" /></a>
-<p>how the compas datastructures are used…</p>
-<hr class="docutils" />
-<div class="section" id="network">
-<h2>Network</h2>
-<p>A <code class="docutils literal notranslate"><span class="pre">network</span></code> is…</p>
-</div>
-<hr class="docutils" />
-<div class="section" id="mesh">
-<h2>Mesh</h2>
-<p>A <code class="docutils literal notranslate"><span class="pre">mesh</span></code> is…</p>
-</div>
-<hr class="docutils" />
-<div class="section" id="volmesh">
-<h2>Volmesh</h2>
-<p>A <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> is…</p>
+<p class="caption"><span class="caption-text">The three main datastructure of <code class="docutils literal notranslate"><span class="pre">compas</span></code>: a) <code class="docutils literal notranslate"><span class="pre">network</span></code>: 2D on a plane (top) and 3D in space (shown with thickened arrows and spheres for clarity only); b) <code class="docutils literal notranslate"><span class="pre">mesh</span></code>: an open, polyhedral surface with boundary edges (top), and a closed, polyhedral cell with no border edges (bottom); and c) a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code>.</span></p>
 </div>
 </div>
 
@@ -140,12 +153,7 @@
                     
 
                     <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Datastructures</a><ul class="nav">
-<li class="nav-item"><a class="nav-link reference internal" href="#network">Network</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#mesh">Mesh</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#volmesh">Volmesh</a></li>
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Datastructures</a></li>
 </ul>
 
 
@@ -156,7 +164,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Feb 08, 2019.
+                Last updated on Mar 21, 2019.
             
 
             
