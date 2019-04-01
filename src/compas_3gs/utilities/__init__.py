@@ -6,6 +6,28 @@ compas_3gs.utilities
 .. currentmodule:: compas_3gs.utilities
 
 
+Geometry
+================================================================================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    resultant_vector
+    datastructure_centroid
+
+
+Topology
+================================================================================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    pair_hf_to_uv
+    pair_uv_to_hf
+
+
 """
 from __future__ import absolute_import
 from __future__ import division

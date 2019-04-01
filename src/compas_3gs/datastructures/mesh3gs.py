@@ -19,8 +19,8 @@ from compas_rhino.helpers.mesh import mesh_draw
 from compas_rhino.helpers.mesh import mesh_draw_vertices
 from compas_rhino.helpers.mesh import mesh_draw_edges
 
-from compas_3gs.utilities import normal_polygon_general
-from compas_3gs.utilities import area_polygon_general
+from compas_3gs.utilities import polygon_normal_oriented
+from compas_3gs.utilities import polygon_area_oriented
 from compas_3gs.utilities import datastructure_centroid
 
 
@@ -34,7 +34,7 @@ __all__ = ['Mesh3gs']
 
 
 class Mesh3gs(Mesh):
-    """Inherits and extends the Mesh class, such that it is more suitable for 3DGS purposes.
+    """Inherits and extends the compas Mesh class, such that it is more suitable for 3D graphic statics applications.
 
     Primarily used for the EGI.
 
@@ -143,13 +143,13 @@ class Mesh3gs(Mesh):
     def face_area(self, fkey):
         vertices = self.face[fkey]
         points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-        area     = area_polygon_general(points)
+        area     = polygon_area_oriented(points)
         return area
 
     def face_normal(self, fkey, unitized=True):
         vertices = self.face[fkey]
         points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-        normal   = normal_polygon_general(points, unitized)
+        normal   = polygon_normal_oriented(points, unitized)
         if length_vector(normal) == 0 :
             uv = subtract_vectors(points[1], points[0])
             vw = subtract_vectors(points[2], points[1])

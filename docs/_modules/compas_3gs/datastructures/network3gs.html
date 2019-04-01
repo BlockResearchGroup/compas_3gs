@@ -83,7 +83,7 @@
 
 
 <div class="viewcode-block" id="Network3gs"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.datastructures.Network3gs.html#compas_3gs.datastructures.Network3gs">[docs]</a><span class="k">class</span> <span class="nc">Network3gs</span><span class="p">(</span><span class="n">Network</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Inhertis and extends the Network class, such that it is more suitable for 3DGS purposes.</span>
+    <span class="sd">&quot;&quot;&quot;Inherits and extends the compas Network class, such that it is more suitable for 3D graphic statics applications.</span>
 
 <span class="sd">    Primarily used for polyhedral (and possibly non-polyhedral) form diagrams.</span>
 
@@ -220,6 +220,11 @@
     <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
         <span class="n">network_draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">clear_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+        <span class="n">artist</span> <span class="o">=</span> <span class="n">NetworkArtist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">)</span>
+        <span class="n">artist</span><span class="o">.</span><span class="n">clear_edges</span><span class="p">(</span><span class="o">**</span><span class="n">kwattr</span><span class="p">)</span>
+
+
     <span class="k">def</span> <span class="nf">draw_vertex_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
         <span class="n">network_draw_vertex_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">)</span>
 
@@ -287,7 +292,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Mar 22, 2019.
+                Last updated on Mar 28, 2019.
             
 
             

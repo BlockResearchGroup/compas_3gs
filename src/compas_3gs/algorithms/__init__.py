@@ -6,13 +6,17 @@ compas_3gs.algorithms
 .. currentmodule:: compas_3gs.algorithms
 
 
-Arearisation
-============
+EGI
+===
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
-    mesh_arearise
+    egi_from_vectors
+
+
+____
 
 
 Duality
@@ -20,34 +24,13 @@ Duality
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     volmesh_dual_volmesh
     volmesh_dual_network
 
 
-EGI
-===
-
-.. autosummary::
-    :toctree: generated/
-
-    egi_from_vectors
-
-
-Planarisation
-=============
-
-.. autosummary::
-    :toctree: generated/
-
-    volmesh_planarise
-
-
-Relaxation
-==========
-
-.. autosummary::
-    :toctree: generated/
+____
 
 
 Reciprocation
@@ -55,8 +38,48 @@ Reciprocation
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     volmesh_reciprocate
+
+
+____
+
+
+Planarisation
+=============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    volmesh_planarise
+
+
+____
+
+
+Arearisation
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    mesh_arearise
+
+
+____
+
+
+Relaxation
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+____
 
 
 Unified Diagram
@@ -64,6 +87,7 @@ Unified Diagram
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     volmesh_ud
     cellnetwork_ud

@@ -60,7 +60,7 @@ def volmesh_dual_volmesh(volmesh, cls=None):
     # 4. for each interior vertex, find neighbors ------------------------------
     for u in int_vkeys:
         cell_halffaces = []
-        for v in volmesh.vertex_neighbours(u):
+        for v in volmesh.vertex_neighbors(u):
             edge_ckeys = volmesh.plane[u][v].values()
             ckey       = edge_ckeys[0]
             halfface   = [ckey]

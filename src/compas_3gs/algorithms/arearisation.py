@@ -27,8 +27,8 @@ from compas.utilities import i_to_blue
 
 from compas_3gs.operations import cell_collapse_short_edges
 
-from compas_3gs.utilities import normal_polygon_general
-from compas_3gs.utilities import area_polygon_general
+from compas_3gs.utilities import polygon_normal_oriented
+from compas_3gs.utilities import polygon_area_oriented
 
 from compas_3gs.utilities import scale_polygon
 

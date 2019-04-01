@@ -112,7 +112,7 @@ def rhino_gfp_from_vectors():
         load_vectors[index]   = subtract_vectors(ep, sp)
         load_locations[index] = ep
 
-    resultant_xyz, resultant_force = resultant_vector(load_vectors, load_locations)
+    resultant_force, resultant_xyz = resultant_vector(load_vectors, load_locations)
 
     # --------------------------------------------------------------------------
     #   pick point  >>>  reaction force vectors

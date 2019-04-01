@@ -12,15 +12,7 @@ from compas.geometry.transformations.transformations import project_point_plane
 from compas_3gs.utilities import scale_polygon
 
 
-__author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
-__all__ = [
-    'volmesh_planarise'
-]
+__all__ = ['volmesh_planarise']
 
 
 def volmesh_planarise(volmesh,
@@ -37,22 +29,16 @@ def volmesh_planarise(volmesh,
                       callback=None,
                       callback_args=None,
                       print_result=False):
-    """Planarisation of volmesh faces.
+    """Planarises the faces of a volmesh.
 
-    Planarisation is implemented as a two-stp iterative procedure. At every iteration, faces are first individually projected to their best-fit plane,
-    and then the vertices are projected to the centroid of the disconnected
-    corners of the faces.
-
-    Specific target_areas
-
+    Planarisation is implemented as a two-step iterative procedure. At every iteration, each face is first individually projected to its best-fit plane (unless a target normal is given), and then the new vertex coordinates are computed by taking the centroid of the disconnected corners of the faces.
 
     Parameters
     ----------
     volmesh : VolMesh
         A volmesh object.
     kmax : int, optional [100]
-        Maximum number of iterations.
-        Default is ``1``.
+        Number of iterations.
     target_face_areas : dictionary, optional [{}]
         A dictionary of fkeys and target areas.
     target_face_normals : dictionary, optional [{}]
@@ -76,9 +62,8 @@ def volmesh_planarise(volmesh,
         Additional parameters to be passed to the callback.
         Default is ``None``.
 
-    See Also
-    --------
-    * :func:`compas.geometry.mesh_planarize_faces`
+    .. seealso ::
+        `compas.geometry.mesh_planarize_faces`
 
     """
 

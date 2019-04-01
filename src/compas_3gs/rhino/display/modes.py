@@ -41,18 +41,10 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
-__all__ = [
-    'display_mode_colors',
-    'display_mode_ct',
-    'display_mode_pipes',
-    'display_mode_vectors'
-]
+__all__ = ['display_mode_colors',
+           'display_mode_ct',
+           'display_mode_pipes',
+           'display_mode_vectors']
 
 
 # ******************************************************************************
@@ -123,7 +115,7 @@ def display_mode_pipes(volmesh, network, colors=True, gradient=False, scale=1):
 
     uv_c_dict  = get_force_colors_uv(volmesh, network, gradient=gradient)
     hf_c_dict  = get_force_colors_hf(volmesh, network, uv_c_dict=uv_c_dict)
-    uv_hf_dict = pair_uv_to_hf(volmesh, network)
+    uv_hf_dict = pair_uv_to_hf(network, volmesh)
     cylinders  = []
     for uv in network.edges():
         color = uv_c_dict[uv]

@@ -11,9 +11,14 @@ Polyhedral Cell
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     EGI
     Cell
+
+|
+
+____
 
 
 Multi-cell Polyhedron
@@ -21,10 +26,15 @@ Multi-cell Polyhedron
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
+    ForceVolMesh
     FormNetwork
     FormVolMesh
-    ForceVolMesh
+
+|
+
+____
 
 
 Cell Network
@@ -32,6 +42,7 @@ Cell Network
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     CellNetwork
 

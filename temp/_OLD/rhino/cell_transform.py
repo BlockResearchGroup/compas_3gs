@@ -23,8 +23,8 @@ from compas.utilities import i_to_rgb
 from compas_rhino.helpers.volmesh import volmesh_select_vertex
 from compas_rhino.helpers.volmesh import volmesh_select_face
 
-from compas_3gs.utilities import normal_polygon_general
-from compas_3gs.utilities import area_polygon_general
+from compas_3gs.utilities import polygon_normal_oriented
+from compas_3gs.utilities import polygon_area_oriented
 
 from compas_rhino.utilities import xdraw_lines
 from compas_rhino.utilities import xdraw_labels
@@ -434,9 +434,9 @@ def cell_face_pull_interactive(volmesh):
         normals = {}
         for fkey in volmesh.halfface:
             face_coordinates = [xyz_dict[vkey] for vkey in volmesh.halfface[fkey]]
-            area          = area_polygon_general(face_coordinates)
+            area          = polygon_area_oriented(face_coordinates)
             areas[fkey]   = area
-            normal        = normal_polygon_general(face_coordinates)
+            normal        = polygon_normal_oriented(face_coordinates)
             normals[fkey] = normal
 
         # draw new face areas / vectors ----------------------------------------
@@ -547,7 +547,7 @@ def _evaluate_trial_face_area(volmesh, hfkey, new_xyz):
         it    = intersection_line_plane(line, new_plane)
         new_pt_list.append(it)
 
-    new_normal = normal_polygon_general(new_pt_list, unitized=False)
+    new_normal = polygon_normal_oriented(new_pt_list, unitized=False)
     new_area = length_vector(new_normal)
 
     sign = 1
@@ -617,7 +617,7 @@ def _cell_draw_current(volmesh, hfkey, center, iteration, color):
 
     hf_vkeys = volmesh.halfface_vertices(hfkey)
     points   = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
-    normal   = normal_polygon_general(points)
+    normal   = polygon_normal_oriented(points)
 
     edges    = {}
     for u in hf_vkeys:
@@ -647,7 +647,7 @@ def _cell_draw_current(volmesh, hfkey, center, iteration, color):
             'layer': name,
             'name' : 'iteration.{}'.format(iteration)})
 
-    new_normal = normal_polygon_general(new_pt_list, unitized=False)
+    new_normal = polygon_normal_oriented(new_pt_list, unitized=False)
     new_area = length_vector(new_normal)
 
     for i in range(-1, len(new_pt_list) - 1):
@@ -662,7 +662,7 @@ def _cell_draw_current(volmesh, hfkey, center, iteration, color):
             'layer': name,
             'name' : 'iteration-{}.area-{}'.format(iteration, new_area)})
 
-    new_normal = normal_polygon_general(new_pt_list, unitized=False)
+    new_normal = polygon_normal_oriented(new_pt_list, unitized=False)
     new_area = length_vector(new_normal)
 
     xdraw_lines(lines)

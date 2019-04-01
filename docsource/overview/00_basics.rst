@@ -33,12 +33,12 @@ These interactive implementations of graphic statics allow users to directly con
 3D graphic statics
 ==================
 
-In 2D gaphic statics, the geometry of a structure and the static equilibrium of its internal forces are represented by a reciprocal form and force diagrams.
+In 2D graphic statics, the geometry of a structure and the static equilibrium of its internal forces are represented by a reciprocal form and force diagrams.
 Reciprocal form and force diagrams consist of an equal number of lines, such that the corresponding lines in the two diagrams are parallel (or perpendicular, or at any constant angle), and the corresponding lines which converge to a point in one diagram form a closed polygon in the other.
 The length of an edge in the force diagram represents the magnitude of internal axial force in the corresponding edge in the form diagram.
 
 More recently, graphic statics has been extended into the third dimension (3D) ([5]_, [6]_) where the equilibrium of external forces or a node of a structure is represented by a closed polyhedron or a polyhedral cell.
-The edge of a polyhedral form diagrm is perpendicular in orientation relative to the corresponding face in the polyhedral force diagram.
+The edge of a polyhedral form diagram is perpendicular in orientation relative to the corresponding face in the polyhedral force diagram.
 For each polyhedral cell, the normal and the area of a face represent the direction and magnitude of the internal axial force in the corresponding member of the polyhedral form diagram, respectively.
 
 
@@ -51,7 +51,7 @@ For each polyhedral cell, the normal and the area of a face represent the direct
 One of the the most unique properties of computational graphic statics is that the form of the structure can be modified or controlled through the geometry of the force diagrams.
 Whereas most conventional structural design or analysis software are dependent on predefined forms, computational graphic statics provides drastically different ways of approaching structural design problems by using the geometry of the force diagrams as the catalyst for design, analysis and optimisation.
 Exploration of structural forms by constraining, optimising, manipulating and designing the geometry of the force diagrams has the potential to significantly broaden the design space.
-Computational implementations of graphic statics ([8]_) through interactive platforms enable uninhibited exploration of these new force-driven design spaces, and discovery of unforeseen structural possibilities freed from any institutionalised biases or prejudices.
+Computational implementations of graphic statics ([7]_) through interactive platforms enable uninhibited exploration of these new force-driven design spaces, and discovery of unforeseen structural possibilities freed from any institutionalised biases or prejudices.
 
 
 .. figure:: ../_images/08_mycotree_diagram.jpg
@@ -74,10 +74,8 @@ References
 
 .. [4] Allen E. and Zalewski W. (2009). *Form and Forces: Designing Efficient and Expressive Structures.* New York: Wiley.
 
-.. [5] Rankine W. (1864). *Principle of the equilibrium of polyhedral frames*. Philosophical Magazine Series 4 27 (180), 92.
+.. [5] Rankine W. (1864). Principle of the equilibrium of polyhedral frames. *Philosophical Magazine Series 4 27 (180)*, 92.
 
-.. [6] Akbarzadeh M., Van Mele T. and Block P. *On the equilibrium of funicular polyhedral frames and convex polyhedral force diagrams*. Computer-Aided Design 63, 118–128.
+.. [6] Akbarzadeh M., Van Mele T. and Block P. On the equilibrium of funicular polyhedral frames and convex polyhedral force diagrams. *Computer-Aided Design 63*, 118–128.
 
-.. [7] McRobie A. (2017). *The geometry of structural equilibrium*. Royal Society Open Science 4 (3).
-
-.. [8] Lee J. (2018). *Computational Design Framework for 3D Graphic Statics*. PhD thesis, ETH Zurich, Zurich, Switzerland.
+.. [7] Lee J. (2018). *Computational Design Framework for 3D Graphic Statics*. PhD thesis, ETH Zurich, Zurich, Switzerland.

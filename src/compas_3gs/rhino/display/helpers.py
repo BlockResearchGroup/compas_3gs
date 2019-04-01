@@ -97,7 +97,7 @@ def get_force_mags(volmesh, network):
     """Returns a dictionary of (u,v)-magnitude pairs.
     Negative magnitude means compression, while positive magnitude means tension.
     """
-    uv_hf_dict = pair_uv_to_hf(volmesh, network)
+    uv_hf_dict = pair_uv_to_hf(network, volmesh)
 
     mags = {}
 
@@ -157,7 +157,7 @@ def get_force_colors_hf(volmesh,
                         tol=0.001):
     """Returns a dictionary of hfkey-color pairs.
     """
-    uv_hf_dict = pair_uv_to_hf(volmesh, network)
+    uv_hf_dict = pair_uv_to_hf(network, volmesh)
 
     uv_c_dict = uv_c_dict or get_force_colors_uv(volmesh,
                                                  network,

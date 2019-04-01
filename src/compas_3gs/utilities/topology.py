@@ -3,26 +3,17 @@ from __future__ import print_function
 from __future__ import division
 
 
-__author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
+__all__ = ['pair_hf_to_uv',
+           'pair_uv_to_hf']
 
 
-__all__ = [
-    'directed_hfs',
+# def directed_hfs(volmesh, datastructure):
 
-    'pair_hf_to_uv',
-    'pair_uv_to_hf'
-]
-
-
-def directed_hfs(volmesh, network):
-    hfkeys = []
-    for u, v in network.edges():
-        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
-        hfkeys.append(u_hfkey)
-    return hfkeys
+#     hfkeys = []
+#     for u, v in datastructure.edges():
+#         u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
+#         hfkeys.append(u_hfkey)
+#     return hfkeys
 
 
 def pair_hf_to_uv(volmesh, network):
@@ -55,7 +46,7 @@ def pair_hf_to_uv(volmesh, network):
     return hf_uv_dict
 
 
-def pair_uv_to_hf(volmesh, network):
+def pair_uv_to_hf(network, volmesh):
     """Pairs the directed edges (u, v) of a network to the corresponding halffaces of the dual volmesh.
 
     Parameters
@@ -78,7 +69,3 @@ def pair_uv_to_hf(volmesh, network):
         uv_hf_dict[(u, v)] = u_hfkey
 
     return uv_hf_dict
-
-
-
-

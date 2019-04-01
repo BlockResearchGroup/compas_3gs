@@ -44,10 +44,15 @@ def volmesh_reciprocate(volmesh,
     kmax : int, optional [100]
         Maximum number of iterations.
     weight : float, optional [1.0]
-        A float, between 0 and 1, which determines how much each diagram changes.
-        Default is ``1.0``.
+        A float, between 0 and 1, which determines how much each diagram changes. 1 changes the form diagram only, while 0 changes the force diagram only. Default is ``1.0``.
+    fix_vkeys : list, optional []
+        List of vkeys to fix.
+    edge_min : float, optional [None]
+        Value for minimum edge length to be imposed.
+    edge_max : float, optional [None]
+        Value for maximum edge length allowed.
     tolerance: float, optional [0.001]
-        Sets the convergence tolerance.
+        Value for convergence tolerance. Deviation is measured by the the dot product of the input and target vectors.
     callback : callable, optional [None]
         A user-defined callback function to be executed after every iteration.
     callback_args : tuple, optional [None]
@@ -60,19 +65,10 @@ def volmesh_reciprocate(volmesh,
 
     Notes
     -----
-    Reciprocation weight of ...
-    ... 1 means only the form diagram is updated.
-    ... 0.5 means both diagrams are updated.
-    ... 0 means only the force diagram is updated.
+        The orientations of the boundary faces of the polyhedral force diagram are always fixed by default.
 
-    References
-    ----------
-    .. [1] Rippmann M, Lachauer L and Block P. *Interactive Vault Design*.
-           Available at: https://journals.sagepub.com/doi/abs/10.1260/0266-3511.27.4.219.
-
-    See Also
-    --------
-    * :func: `compas.geometry.network_parallelise_edges`
+    .. seealso ::
+        compas.geometry.network_parallelise_edges
 
     """
 
@@ -108,7 +104,7 @@ def volmesh_reciprocate(volmesh,
         # ----------------------------------------------------------------------
         if weight != 0:
 
-            new_form_xyz   = {vkey: [] for vkey in formdiagram.vertex}
+            new_form_xyz = {vkey: [] for vkey in formdiagram.vertex}
 
             for u, v in target_vectors:
                 target_v = target_vectors[(u, v)]['target']

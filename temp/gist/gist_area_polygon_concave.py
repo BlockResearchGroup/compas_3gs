@@ -12,7 +12,7 @@ from compas.geometry.basic import add_vectors
 from compas.geometry.average import centroid_points
 
 
-def area_polygon_general(polygon):
+def polygon_area_oriented(polygon):
     """Compute the area of a polygon (can be convex or concave).
 
     Parameters
@@ -60,4 +60,4 @@ if __name__ == '__main__':
     points        = [[pt.X, pt.Y, pt.Z] for pt in rs.PolylineVertices(guid)]
     points        = points[:-1]
 
-    print(area_polygon_general(points))
+    print(polygon_area_oriented(points))

@@ -75,8 +75,8 @@
 <span class="kn">from</span> <span class="nn">compas_rhino.helpers.mesh</span> <span class="k">import</span> <span class="n">mesh_draw_vertices</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.helpers.mesh</span> <span class="k">import</span> <span class="n">mesh_draw_edges</span>
 
-<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">normal_polygon_general</span>
-<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">area_polygon_general</span>
+<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">polygon_normal_oriented</span>
+<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">polygon_area_oriented</span>
 <span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">datastructure_centroid</span>
 
 
@@ -90,14 +90,14 @@
 
 
 <div class="viewcode-block" id="Mesh3gs"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.datastructures.Mesh3gs.html#compas_3gs.datastructures.Mesh3gs">[docs]</a><span class="k">class</span> <span class="nc">Mesh3gs</span><span class="p">(</span><span class="n">Mesh</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Inherits and extends the Mesh class, such that it is more suitable for 3DGS purposes.</span>
+    <span class="sd">&quot;&quot;&quot;Inherits and extends the compas Mesh class, such that it is more suitable for 3D graphic statics applications.</span>
 
 <span class="sd">    Primarily used for the EGI.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Mesh3gs.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.datastructures.Mesh3gs.html#compas_3gs.datastructures.Mesh3gs.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Mesh3gs</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Mesh3gs</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1">#   inherited</span>
@@ -199,13 +199,13 @@
     <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
         <span class="n">points</span>   <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
-        <span class="n">area</span>     <span class="o">=</span> <span class="n">area_polygon_general</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">area</span>     <span class="o">=</span> <span class="n">polygon_area_oriented</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">area</span>
 
     <span class="k">def</span> <span class="nf">face_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
         <span class="n">points</span>   <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
-        <span class="n">normal</span>   <span class="o">=</span> <span class="n">normal_polygon_general</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">unitized</span><span class="p">)</span>
+        <span class="n">normal</span>   <span class="o">=</span> <span class="n">polygon_normal_oriented</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">unitized</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
             <span class="n">uv</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">vw</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -302,7 +302,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Mar 22, 2019.
+                Last updated on Mar 28, 2019.
             
 
             

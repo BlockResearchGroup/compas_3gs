@@ -36,8 +36,8 @@ from compas_3gs.operations import halfface_merge
 from compas_3gs.operations import cell_subdivide_barycentric
 from compas_3gs.algorithms import volmesh_dual_network
 from compas_3gs.algorithms import volmesh_reciprocate
-from compas_3gs.utilities import normal_polygon_general
-from compas_3gs.utilities import area_polygon_general
+from compas_3gs.utilities import polygon_normal_oriented
+from compas_3gs.utilities import polygon_area_oriented
 
 from compas_3gs.rhino.control import select_boundary_halffaces
 from compas_3gs.rhino.control import CellSelector
@@ -606,9 +606,9 @@ def volmesh_pull_faces(volmesh, uniform=False):
 #         normals = {}
 #         for fkey in volmesh.halfface:
 #             face_coordinates = [xyz_dict[vkey] for vkey in volmesh.halfface[fkey]]
-#             area          = area_polygon_general(face_coordinates)
+#             area          = polygon_area_oriented(face_coordinates)
 #             areas[fkey]   = area
-#             normal        = normal_polygon_general(face_coordinates)
+#             normal        = polygon_normal_oriented(face_coordinates)
 #             normals[fkey] = normal
 
 #         # draw new face areas / vectors ----------------------------------------

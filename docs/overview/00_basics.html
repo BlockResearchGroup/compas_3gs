@@ -63,14 +63,14 @@
 <h2>Graphic statics</h2>
 <p>Graphic statics is a design and analysis method for two-dimensional (2D) discrete structures, that relies on geometrical rather than analytical or numerical representations of the relation between a structure’s geometry and the equilibrium of its internal forces (<a class="footnote-reference brackets" href="#id10" id="id2">1</a>, <a class="footnote-reference brackets" href="#id11" id="id3">2</a>, <a class="footnote-reference brackets" href="#id12" id="id4">3</a>)
 Graphical representation of equilibrium using reciprocal form and force diagrams provides invaluable insight for designers and improves intuitive understanding of a structure’s behaviour through a visual medium that is easier to understand and more transparent than conventional, arithmetic or numerical methods (<a class="footnote-reference brackets" href="#id13" id="id5">4</a>).</p>
-<div class="figure" id="id18">
+<div class="figure" id="id17">
 <a class="reference internal image-reference" href="../_images/cremona_gs.jpg"><img alt="../_images/cremona_gs.jpg" src="../_images/cremona_gs.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">Pages from Cremona’s <em>Le figure reciproche nella statica grafica</em> (<a class="footnote-reference brackets" href="#id13" id="id6">4</a>).</span></p>
 </div>
 <p>Graphic statics gradually disappeared from structural engineering practice over the 20th century due to the advancement of computers and powerful numerical software.
 However, there has been a recent revival of graphic statics through computational implementations, which have enabled dynamic interaction between form and force diagrams with real-time, visual feedback.
 These interactive implementations of graphic statics allow users to directly control the geometry of forces, which enable force-driven design approaches with high formal freedom to create structurally informed geometries during early stages of design.</p>
-<div class="figure" id="id19">
+<div class="figure" id="id18">
 <a class="reference internal image-reference" href="../_images/compas_3gs_interactive_gs.gif"><img alt="../_images/compas_3gs_interactive_gs.gif" src="../_images/compas_3gs_interactive_gs.gif" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">An interactive graphic statics drawing of a constant-force truss using <a class="reference external" href="https://www.geogebra.org">GeoGebra</a> (available on <a class="reference external" href="http://block.arch.ethz.ch/eq/">eQuilibrium</a>, an online graphic-statics-based teaching platform developed by the <a class="reference external" href="http://block.arch.ethz.ch/brg/">Block Research Group</a>).</span></p>
 </div>
@@ -78,23 +78,23 @@ These interactive implementations of graphic statics allow users to directly con
 <hr class="docutils" />
 <div class="section" id="d-graphic-statics">
 <h2>3D graphic statics</h2>
-<p>In 2D gaphic statics, the geometry of a structure and the static equilibrium of its internal forces are represented by a reciprocal form and force diagrams.
+<p>In 2D graphic statics, the geometry of a structure and the static equilibrium of its internal forces are represented by a reciprocal form and force diagrams.
 Reciprocal form and force diagrams consist of an equal number of lines, such that the corresponding lines in the two diagrams are parallel (or perpendicular, or at any constant angle), and the corresponding lines which converge to a point in one diagram form a closed polygon in the other.
 The length of an edge in the force diagram represents the magnitude of internal axial force in the corresponding edge in the form diagram.</p>
 <p>More recently, graphic statics has been extended into the third dimension (3D) (<a class="footnote-reference brackets" href="#id14" id="id7">5</a>, <a class="footnote-reference brackets" href="#id15" id="id8">6</a>) where the equilibrium of external forces or a node of a structure is represented by a closed polyhedron or a polyhedral cell.
-The edge of a polyhedral form diagrm is perpendicular in orientation relative to the corresponding face in the polyhedral force diagram.
+The edge of a polyhedral form diagram is perpendicular in orientation relative to the corresponding face in the polyhedral force diagram.
 For each polyhedral cell, the normal and the area of a face represent the direction and magnitude of the internal axial force in the corresponding member of the polyhedral form diagram, respectively.</p>
-<div class="figure" id="id20">
+<div class="figure" id="id19">
 <a class="reference internal image-reference" href="../_images/compas_3gs_diagram_definition.jpg"><img alt="../_images/compas_3gs_diagram_definition.jpg" src="../_images/compas_3gs_diagram_definition.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">Reciprocal polygonal diagrams of 2D graphic statics (left), and reciprocal polyhedral diagrams of 3D graphic statics (right).</span></p>
 </div>
 <p>One of the the most unique properties of computational graphic statics is that the form of the structure can be modified or controlled through the geometry of the force diagrams.
 Whereas most conventional structural design or analysis software are dependent on predefined forms, computational graphic statics provides drastically different ways of approaching structural design problems by using the geometry of the force diagrams as the catalyst for design, analysis and optimisation.
 Exploration of structural forms by constraining, optimising, manipulating and designing the geometry of the force diagrams has the potential to significantly broaden the design space.
-Computational implementations of graphic statics (<a class="footnote-reference brackets" href="#id17" id="id9">8</a>) through interactive platforms enable uninhibited exploration of these new force-driven design spaces, and discovery of unforeseen structural possibilities freed from any institutionalised biases or prejudices.</p>
-<div class="figure" id="id21">
+Computational implementations of graphic statics (<a class="footnote-reference brackets" href="#id16" id="id9">7</a>) through interactive platforms enable uninhibited exploration of these new force-driven design spaces, and discovery of unforeseen structural possibilities freed from any institutionalised biases or prejudices.</p>
+<div class="figure" id="id20">
 <a class="reference internal image-reference" href="../_images/08_mycotree_diagram.jpg"><img alt="../_images/08_mycotree_diagram.jpg" src="../_images/08_mycotree_diagram.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../user_manual/02_multi-cell_polyhedron/02_7_unified_diagram.html#unified-diagram"><span class="std std-ref">Unified diagram</span></a> of a compression-only, spatially branching structure.</span></p>
+<p class="caption"><span class="caption-text"><span class="xref std std-ref">Unified diagram</span> of a compression-only, spatially branching structure.</span></p>
 </div>
 </div>
 <hr class="docutils" />
@@ -114,15 +114,12 @@ Computational implementations of graphic statics (<a class="footnote-reference b
 <dd><p>Allen E. and Zalewski W. (2009). <em>Form and Forces: Designing Efficient and Expressive Structures.</em> New York: Wiley.</p>
 </dd>
 <dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id7">5</a></span></dt>
-<dd><p>Rankine W. (1864). <em>Principle of the equilibrium of polyhedral frames</em>. Philosophical Magazine Series 4 27 (180), 92.</p>
+<dd><p>Rankine W. (1864). Principle of the equilibrium of polyhedral frames. <em>Philosophical Magazine Series 4 27 (180)</em>, 92.</p>
 </dd>
 <dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id8">6</a></span></dt>
-<dd><p>Akbarzadeh M., Van Mele T. and Block P. <em>On the equilibrium of funicular polyhedral frames and convex polyhedral force diagrams</em>. Computer-Aided Design 63, 118–128.</p>
+<dd><p>Akbarzadeh M., Van Mele T. and Block P. On the equilibrium of funicular polyhedral frames and convex polyhedral force diagrams. <em>Computer-Aided Design 63</em>, 118–128.</p>
 </dd>
-<dt class="label" id="id16"><span class="brackets">7</span></dt>
-<dd><p>McRobie A. (2017). <em>The geometry of structural equilibrium</em>. Royal Society Open Science 4 (3).</p>
-</dd>
-<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id9">8</a></span></dt>
+<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id9">7</a></span></dt>
 <dd><p>Lee J. (2018). <em>Computational Design Framework for 3D Graphic Statics</em>. PhD thesis, ETH Zurich, Zurich, Switzerland.</p>
 </dd>
 </dl>
@@ -161,10 +158,9 @@ Computational implementations of graphic statics (<a class="footnote-reference b
 <li class="nav-item active"><a class="nav-link reference internal" href="../overview.html">Overview</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Graphic Statics</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_motivation.html">Motivation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="02_approach.html">compas_3gs</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="03_design_workflow.html">Design workflow</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="06_datastructures.html">Datastructures</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="08_implementation.html">Implementation</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="10_conventions.html">Conventions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="20_nomenclature.html">Nomenclature</a></li>
 </ul>
 </li>
@@ -207,7 +203,7 @@ Computational implementations of graphic statics (<a class="footnote-reference b
 
         <footer class="compas-footer">
             
-                Last updated on Mar 22, 2019.
+                Last updated on Mar 28, 2019.
             
 
             

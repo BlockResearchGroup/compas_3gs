@@ -116,7 +116,7 @@
     <span class="c1"># 4. for each interior vertex, find neighbors ------------------------------</span>
     <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">int_vkeys</span><span class="p">:</span>
         <span class="n">cell_halffaces</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_neighbours</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
             <span class="n">edge_ckeys</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
             <span class="n">ckey</span>       <span class="o">=</span> <span class="n">edge_ckeys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">halfface</span>   <span class="o">=</span> <span class="p">[</span><span class="n">ckey</span><span class="p">]</span>
@@ -257,7 +257,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Mar 22, 2019.
+                Last updated on Mar 28, 2019.
             
 
             

@@ -45,13 +45,6 @@ def volmesh_ud(volmesh,
 
     Unified diagram with a scale of 0 is equivalent to the polyhedral force diagram, while a scale of 1 is equivalent to the polyhedral form diagram.
 
-    References
-    ----------
-    .. [1] Zanni G and Pennock G. *A unified graphical approach...*.
-           Available at: https://www.researchgate.net/publication/223711661_A_unified_graphical_approach_to_the_static_analysis_of_axially_loaded_structures.
-    .. [2] McRobie A. *Maxwell and Rankine reciprocal diagrams via Minkowski
-           sums for two-dimensional and three-dimensional trusses under load*.
-           Available at: https://journals.sagepub.com/doi/full/10.1177/0266351116660800
 
     """
 

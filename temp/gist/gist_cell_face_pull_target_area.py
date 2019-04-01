@@ -22,8 +22,8 @@ from compas.utilities import i_to_rgb
 from compas_rhino.helpers.volmesh import volmesh_select_vertex
 from compas_rhino.helpers.volmesh import volmesh_select_face
 
-from compas_3gs.helpers import normal_polygon_general
-from compas_3gs.helpers import area_polygon_general
+from compas_3gs.helpers import polygon_normal_oriented
+from compas_3gs.helpers import polygon_area_oriented
 
 
 from compas_rhino.utilities import xdraw_labels
@@ -265,7 +265,7 @@ def _evaluate_trial_face_area(volmesh, hfkey, new_xyz):
         line  = (u_xyz, v_xyz)
         it    = intersection_line_plane(line, new_plane)
         new_pt_list.append(it)
-    return area_polygon_general(new_pt_list)
+    return polygon_area_oriented(new_pt_list)
 
 
 def _get_move_direction(volmesh, hfkey):

@@ -27,7 +27,7 @@ __all__ = ['Network3gs']
 
 
 class Network3gs(Network):
-    """Inhertis and extends the Network class, such that it is more suitable for 3DGS purposes.
+    """Inherits and extends the compas Network class, such that it is more suitable for 3D graphic statics applications.
 
     Primarily used for polyhedral (and possibly non-polyhedral) form diagrams.
 
@@ -163,6 +163,11 @@ class Network3gs(Network):
 
     def draw_edges(self, **kwattr):
         network_draw_edges(self, **kwattr)
+
+    def clear_edges(self, **kwattr):
+        artist = NetworkArtist(self, **kwattr)
+        artist.clear_edges(**kwattr)
+
 
     def draw_vertex_labels(self, **kwattr):
         network_draw_vertex_labels(self, **kwattr)

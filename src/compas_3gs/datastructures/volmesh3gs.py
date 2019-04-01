@@ -26,8 +26,8 @@ from compas_rhino.artists import VolMeshArtist
 # from compas_3gs.rhino.display import clear_cell_labels
 # from compas_3gs.rhino.display import draw_volmesh_face_normals
 
-from compas_3gs.utilities import normal_polygon_general
-from compas_3gs.utilities import area_polygon_general
+from compas_3gs.utilities import polygon_normal_oriented
+from compas_3gs.utilities import polygon_area_oriented
 from compas_3gs.utilities import datastructure_centroid
 
 from compas_3gs.datastructures.operations.split import cell_split_vertex
@@ -43,7 +43,7 @@ __all__ = ['VolMesh3gs']
 
 
 class VolMesh3gs(VolMesh):
-    """Inherits and extends the VolMesh class, such that it is more suitable for 3DGS purposes.
+    """Inherits and extends the compas VolMesh class, such that it is more suitable for 3D graphic statics applications.
 
     Primarily used for polyhedral form and force diagrams.
 
@@ -58,6 +58,24 @@ class VolMesh3gs(VolMesh):
 
     cell_split_vertex      = cell_split_vertex
     datastructure_centroid = datastructure_centroid
+
+    # --------------------------------------------------------------------------
+    # misc
+    # --------------------------------------------------------------------------
+
+    def bounding_box(self):
+
+        xyz = [self.vertex_coordinates(vkey) for vkey in self.vertex]
+
+        x_sorted = sorted(xyz, key=lambda k: k[0])
+        y_sorted = sorted(xyz, key=lambda k: k[1])
+        z_sorted = sorted(xyz, key=lambda k: k[2])
+
+        x = abs(x_sorted[0][0] - x_sorted[-1][0])
+        y = abs(y_sorted[0][1] - y_sorted[-1][1])
+        z = abs(z_sorted[0][2] - z_sorted[-1][2])
+
+        return x, y, z
 
     # --------------------------------------------------------------------------
     #   deleting
@@ -343,13 +361,13 @@ class VolMesh3gs(VolMesh):
     def halfface_area(self, hfkey):
         vertices = self.halfface_vertices(hfkey)
         points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-        area     = area_polygon_general(points)
+        area     = polygon_area_oriented(points)
         return area
 
     def halfface_normal(self, hfkey, unitized=True):
         vertices = self.halfface_vertices(hfkey)
         points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-        normal   = normal_polygon_general(points, unitized)
+        normal   = polygon_normal_oriented(points, unitized)
         if length_vector(normal) == 0 :
             uv = subtract_vectors(points[1], points[0])
             vw = subtract_vectors(points[2], points[1])

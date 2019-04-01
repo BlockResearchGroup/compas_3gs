@@ -38,8 +38,8 @@ from compas_rhino.utilities import xdraw_faces
 __all__  = ['resultant_vector',
             'datastructure_centroid',
 
-            'normal_polygon_general',
-            'area_polygon_general',
+            'polygon_normal_oriented',
+            'polygon_area_oriented',
             'scale_polygon',
 
             'volmesh_face_flatness',
@@ -58,7 +58,36 @@ __all__  = ['resultant_vector',
 
 
 def resultant_vector(vectors, locations):
+    """Computes the resultant vector of a group of vectors.
 
+    Parameters
+    ----------
+    vectors: dictionary
+        vector_key-XYZ (vector components) pairs
+
+    locations: dictionary
+        vector_key-XYZ (vector locations) pairs
+
+    Returns
+    -------
+    vector: tuple
+        XYZ components of the resultant vector
+
+    point: tuple
+        XYZ coordinates of the location of the resultant vector
+
+    Examples
+    --------
+    >>> resultant_vector({0 : [ 0.97 , 0.83 , 0.83 ],
+                          1 : [ 0.65 , 0.89 , 0.34 ],
+                          2 : [ 0.68 , 0.63 , 0.97 ]},
+                         {0 : [ 0.97 , 0.83 , 0.83 ],
+                          1 : [ 0.65 , 0.89 , 0.34 ],
+                          2 : [ 0.68 , 0.63 , 0.97 ]})
+    [2.3000000000000003, 2.35, 2.1399999999999997]
+    [0.78129727344020572, 0.78043477156745522, 0.7360930822393742],
+
+    """
     points  = []
     weights = []
 
@@ -70,7 +99,7 @@ def resultant_vector(vectors, locations):
     x, y, z = zip(*vectors.values())
     resultant_vector = [sum(x), sum(y), sum(z)]
 
-    return resultant_xyz, resultant_vector
+    return resultant_vector, resultant_xyz
 
 
 # ******************************************************************************
@@ -84,7 +113,7 @@ def resultant_vector(vectors, locations):
 # ******************************************************************************
 
 
-def normal_polygon_general(points, unitized=True):
+def polygon_normal_oriented(points, unitized=True):
     """Compute the oriented normal of any closed polygon (can be convex, concave or complex).
 
     Parameters
@@ -117,7 +146,7 @@ def normal_polygon_general(points, unitized=True):
     return normalize_vector(normal_sum)
 
 
-def area_polygon_general(points):
+def polygon_area_oriented(points):
     """Compute the area of a polygon (can be convex or concave).
 
     Parameters
@@ -134,7 +163,7 @@ def area_polygon_general(points):
         The area of the polygon.
 
     """
-    return length_vector(normal_polygon_general(points, unitized=False))
+    return length_vector(polygon_normal_oriented(points, unitized=False))
 
 
 def scale_polygon(points_dict, scale):

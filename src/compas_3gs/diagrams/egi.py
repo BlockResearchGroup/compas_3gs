@@ -18,7 +18,7 @@ __all__ = ['EGI']
 
 
 class EGI(Mesh3gs):
-    """Definition of an egi.
+    """An EGI, represented as a mesh object.
 
     An EGI is a topological (mesh) dual of a cell of a volmesh, with all of its elements represented on a unit sphere.
 
