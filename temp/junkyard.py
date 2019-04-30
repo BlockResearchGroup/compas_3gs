@@ -96,3 +96,38 @@ x, y = list(fs)
 
 print(x, y)
 
+
+
+text = 'hello'
+
+print(str(text))
+
+
+def test_func():
+    print('a')
+
+
+test_func_dup = test_func
+
+
+test_func_dup()
+
+
+class Foo():
+    a = 5
+
+
+testclass = Foo()
+
+print(isinstance(testclass, Foo))
+
+
+
+
+
+
+
+
+
+
+

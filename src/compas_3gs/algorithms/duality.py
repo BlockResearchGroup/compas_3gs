@@ -6,16 +6,8 @@ from compas_3gs.datastructures import Network3gs as Network
 from compas_3gs.datastructures import VolMesh3gs as VolMesh
 
 
-__author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
-__all__ = [
-    'volmesh_dual_volmesh',
-    'volmesh_dual_network',
-]
+__all__ = ['volmesh_dual_volmesh',
+           'volmesh_dual_network']
 
 
 def volmesh_dual_volmesh(volmesh, cls=None):

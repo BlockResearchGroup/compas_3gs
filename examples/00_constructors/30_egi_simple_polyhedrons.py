@@ -8,7 +8,7 @@ from compas.geometry import subtract_vectors
 
 from compas_3gs.algorithms import egi_from_vectors
 from compas_3gs.algorithms import unit_polyhedron
-from compas_3gs.algorithms import mesh_arearise
+from compas_3gs.algorithms import mesh_planarise
 
 from compas_3gs.rhino.display import MeshConduit
 
@@ -78,11 +78,11 @@ for fkey in cell.face:
     target_normals[fkey] = egi.vertex[fkey]['normal']
 
 with conduit.enabled():
-    mesh_arearise(cell,
-                  kmax=200,
-                  target_areas=target_areas,
-                  target_normals=target_normals,
-                  callback=callback)
+    mesh_planarise(cell,
+                   kmax=200,
+                   target_areas=target_areas,
+                   target_normals=target_normals,
+                   callback=callback)
 
 
 # ------------------------------------------------------------------------------
@@ -100,7 +100,3 @@ for fkey in cell.face:
 
 # cell.draw_faces(keys=faces_to_draw, color=face_colordict)
 cell.draw_edges()
-
-
-
-

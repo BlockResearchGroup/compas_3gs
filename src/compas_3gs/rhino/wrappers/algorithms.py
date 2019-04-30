@@ -14,18 +14,23 @@ from compas_rhino.selectors import FaceSelector
 from compas_rhino.conduits import FacesConduit
 from compas_rhino.conduits import LinesConduit
 
+from compas_3gs.algorithms import mesh_planarise
+from compas_3gs.algorithms import volmesh_planarise
 from compas_3gs.algorithms import volmesh_dual_network
 from compas_3gs.algorithms import volmesh_reciprocate
-from compas_3gs.algorithms import volmesh_planarise
 
 from compas_3gs.operations import cell_subdivide_barycentric
 
+from compas_3gs.utilities import mesh_face_flatness
+from compas_3gs.utilities import mesh_face_areaness
 from compas_3gs.utilities import volmesh_face_flatness
 from compas_3gs.utilities import volmesh_face_areaness
 
 from compas_3gs.rhino.control import volmesh3gs_select_cell
-from compas_3gs.rhino.display import PlanarisationConduit
 from compas_3gs.rhino.display import ReciprocationConduit
+from compas_3gs.rhino.display import VolmeshPlanarisationConduit
+from compas_3gs.rhino.display import MeshPlanarisationConduit
+
 
 try:
     import rhinoscriptsyntax as rs
@@ -41,7 +46,9 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['rhino_volmesh_planarise',
+__all__ = ['rhino_mesh_planarise',
+           'rhino_volmesh_planarise',
+
            'rhino_volmesh_reciprocate']
 
 
@@ -56,34 +63,86 @@ __all__ = ['rhino_volmesh_planarise',
 # ******************************************************************************
 
 
+def rhino_mesh_planarise(mesh,
+                         kmax=500,
+
+                         target_centers={},
+                         target_normals={},
+                         target_areas={},
+
+                         omit_vkeys=[],
+
+                         avg_fkeys=[],
+
+                         tolerance_flat=0.001,
+                         tolerance_area=0.001,
+
+                         callback=None,
+                         callback_args=None,
+
+                         refreshrate=5):
+
+    # 1. callback / conduit ----------------------------------------------------
+    conduit = MeshPlanarisationConduit(mesh)
+
+    def callback(mesh, k, args):
+        if k % refreshrate == 0:
+            conduit.face_colors = mesh_face_flatness(mesh)
+            if target_areas:
+                conduit.face_colors = mesh_face_areaness(mesh, target_areas)
+            conduit.redraw()
+
+    # 2. planarisation ---------------------------------------------------------
+    # mesh.clear()
+
+    with conduit.enabled():
+        mesh_planarise(mesh,
+                       kmax=kmax,
+
+                       target_centers=target_centers,
+                       target_normals=target_normals,
+                       target_areas=target_areas,
+
+                       omit_vkeys=omit_vkeys,
+
+                       avg_fkeys=avg_fkeys,
+
+                       tolerance_flat=tolerance_flat,
+                       tolerance_area=tolerance_area,
+
+                       callback=callback,
+                       callback_args=callback_args)
+
+    # 3. update / redraw -------------------------------------------------------
+    mesh.draw()
+
+
 def rhino_volmesh_planarise(volmesh,
                             kmax=500,
 
-                            target_areas={},
-                            target_normals={},
                             target_centers={},
+                            target_normals={},
+                            target_areas={},
 
                             fix_vkeys=[],
 
                             fix_boundary_normals=False,
                             fix_all_normals=False,
-                            flat_tolerance=0.001,
-                            area_tolerance=0.001,
+                            tolerance_flat=0.001,
+                            tolerance_area=0.001,
 
                             fix_all=False,
 
                             refreshrate=5):
 
     # 1. callback / conduit ----------------------------------------------------
-    conduit = PlanarisationConduit(volmesh)
+    conduit = VolmeshPlanarisationConduit(volmesh)
 
     def callback(volmesh, k, args):
-
         if k % refreshrate == 0:
             conduit.face_colors = volmesh_face_flatness(volmesh)
             if target_areas:
                 conduit.face_colors = volmesh_face_areaness(volmesh, target_areas)
-
             conduit.redraw()
 
     # 2. planarisation ---------------------------------------------------------
@@ -92,18 +151,16 @@ def rhino_volmesh_planarise(volmesh,
     with conduit.enabled():
         volmesh_planarise(volmesh,
                           kmax=kmax,
-                          target_areas=target_areas,
-                          target_normals=target_normals,
                           target_centers=target_centers,
-                          omit_fkeys=[],
+                          target_normals=target_normals,
+                          target_areas=target_areas,
                           omit_vkeys=fix_vkeys,
                           fix_boundary_normals=fix_boundary_normals,
                           fix_all_normals=fix_all_normals,
-                          flat_tolerance=flat_tolerance,
-                          area_tolerance=area_tolerance,
+                          tolerance_flat=tolerance_flat,
+                          tolerance_area=tolerance_area,
                           callback=callback,
-                          callback_args=None,
-                          print_result=True)
+                          callback_args=None)
 
     # 3. update / redraw -------------------------------------------------------
     volmesh.draw()

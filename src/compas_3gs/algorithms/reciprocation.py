@@ -11,16 +11,10 @@ from compas.geometry import centroid_points
 
 from compas_3gs.algorithms import volmesh_planarise
 
-
-__author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
+from compas_3gs.algorithms.helpers import print_result
 
 
-__all__ = [
-    'volmesh_reciprocate'
-]
+__all__ = ['volmesh_reciprocate']
 
 
 def volmesh_reciprocate(volmesh,
@@ -95,12 +89,10 @@ def volmesh_reciprocate(volmesh,
     # --------------------------------------------------------------------------
     #   2. loop
     # --------------------------------------------------------------------------
-    delta = 0
-
     for k in range(kmax):
 
         # ----------------------------------------------------------------------
-        #   form diagram
+        #   3. update form diagram
         # ----------------------------------------------------------------------
         if weight != 0:
 
@@ -131,7 +123,7 @@ def volmesh_reciprocate(volmesh,
                 direction = _get_lambda(edge_v, target_v)
                 l *= direction
 
-                # compute new coordinates --------------------------------------
+                # collect new coordinates --------------------------------------
                 if u in free_vkeys:
                     new_u_xyz = add_vectors(formdiagram.vertex_coordinates(v), scale_vector(target_v, -1 * l))
                     new_form_xyz[u].append(new_u_xyz)
@@ -140,13 +132,13 @@ def volmesh_reciprocate(volmesh,
                     new_v_xyz = add_vectors(formdiagram.vertex_coordinates(u), scale_vector(target_v, l))
                     new_form_xyz[v].append(new_v_xyz)
 
-            # compute new coordinates ------------------------------------------
+            # compute new vertex coordinates -----------------------------------
             for vkey in free_vkeys:
                 final_xyz = centroid_points(new_form_xyz[vkey])
                 formdiagram.vertex_update_xyz(vkey, final_xyz)
 
         # ----------------------------------------------------------------------
-        #   force diagram
+        #   4. update force diagram
         # ----------------------------------------------------------------------
         if weight != 1:
             volmesh_planarise(volmesh,
@@ -155,20 +147,13 @@ def volmesh_reciprocate(volmesh,
                               fix_boundary_normals=True)
 
         # ----------------------------------------------------------------------
-        #   check convergence
+        #   5. check convergence
         # ----------------------------------------------------------------------
         deviation = _check_deviation(volmesh, formdiagram)
 
         if deviation < tolerance:
-            _print_reciprocation_result(k, deviation, delta)
+            print_result('Reciprocation', k, deviation)
             break
-
-        step_d = abs(delta - deviation)
-        if step_d < tolerance / 1000:
-            _print_reciprocation_result(k, deviation, step_d, converged=False)
-            break
-
-        delta = deviation
 
         # callback / conduit ---------------------------------------------------
         if callback:
@@ -209,25 +194,6 @@ def _check_deviation(volmesh, network):
         if perp_check > deviation:
             deviation = perp_check
     return deviation
-
-
-def _print_reciprocation_result(k, deviation, delta, converged=True):
-
-    print('===================================================================')
-    print('')
-
-    if converged:
-        print('Reciprocation COMPLETED.')
-
-    else:
-        print('Reciprocation appears to be stuck! Reciprocation ABORTED.')
-
-    print('')
-    print('Iterations :', k)
-    print('Max deviation :', deviation)
-    print('Delta :', delta)
-    print('')
-    print('===================================================================')
 
 
 # ******************************************************************************

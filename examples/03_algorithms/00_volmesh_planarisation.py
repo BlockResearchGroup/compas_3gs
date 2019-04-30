@@ -36,5 +36,5 @@ rhino_volmesh_planarise(forcediagram,
                         fix_vkeys=vkeys,
                         fix_boundary_normals=False,
                         fix_all_normals=False,
-                        flat_tolerance=0.001,
+                        tolerance_flat=0.001,
                         refreshrate=10)

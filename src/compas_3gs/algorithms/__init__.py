@@ -59,19 +59,6 @@ Planarisation
 ____
 
 
-Arearisation
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    mesh_arearise
-
-
-____
-
-
 Relaxation
 ==========
 
@@ -98,12 +85,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .arearisation import *
 from .duality import *
 from .egi import *
 from .planarisation import *
 from .reciprocation import *
 from .relaxation import *
 from .unifieddiagram import *
+from .helpers import *
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

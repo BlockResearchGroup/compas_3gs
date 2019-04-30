@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="compas_3gs.algorithms.mesh_arearise" href="compas_3gs.algorithms.mesh_arearise.html" />
+            <link rel="next" title="compas_3gs.algorithms.volmesh_ud" href="compas_3gs.algorithms.volmesh_ud.html" />
         
         
         
@@ -61,39 +61,33 @@
 <h1>compas_3gs.algorithms.volmesh_planarise</h1>
 <dl class="function">
 <dt id="compas_3gs.algorithms.volmesh_planarise">
-<code class="descclassname">compas_3gs.algorithms.</code><code class="descname">volmesh_planarise</code><span class="sig-paren">(</span><em>volmesh</em>, <em>kmax=100</em>, <em>target_areas={}</em>, <em>target_normals={}</em>, <em>target_centers={}</em>, <em>omit_fkeys=[]</em>, <em>omit_vkeys=[]</em>, <em>fix_boundary_normals=False</em>, <em>fix_all_normals=False</em>, <em>flat_tolerance=0.001</em>, <em>area_tolerance=0.001</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>print_result=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/planarisation.html#volmesh_planarise"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Planarisation of volmesh faces.</p>
-<p>Planarisation is implemented as a two-stp iterative procedure. At every iteration, faces are first individually projected to their best-fit plane,
-and then the vertices are projected to the centroid of the disconnected
-corners of the faces.</p>
-<p>Specific target_areas</p>
+<code class="descclassname">compas_3gs.algorithms.</code><code class="descname">volmesh_planarise</code><span class="sig-paren">(</span><em>volmesh</em>, <em>kmax=100</em>, <em>target_centers={}</em>, <em>target_normals={}</em>, <em>target_areas={}</em>, <em>omit_vkeys=[]</em>, <em>fix_boundary_normals=False</em>, <em>fix_all_normals=False</em>, <em>tolerance_flat=0.001</em>, <em>tolerance_area=0.001</em>, <em>callback=None</em>, <em>callback_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/planarisation.html#volmesh_planarise"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Planarises the halffaces of a volmesh.</p>
+<p>Planarisation of a volmesh is implemented as a three-step iterative procedure.
+At every iteration, each halfface is first individually projected to its best-fit plane (unless a target normal is given).
+Then, each halfface is re-sized to its target area (if given).
+Finally, the new vertex coordinates are computed by taking the centroid of the disconnected corners of the halffaces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>volmesh</strong> (<em>VolMesh</em>) – A volmesh object.</p></li>
-<li><p><strong>kmax</strong> (<em>int, optional [100]</em>) – Maximum number of iterations.
-Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>kmax</strong> (<em>int, optional [100]</em>) – Number of iterations.</p></li>
 <li><p><strong>target_face_areas</strong> (<em>dictionary, optional [{}]</em>) – A dictionary of fkeys and target areas.</p></li>
 <li><p><strong>target_face_normals</strong> (<em>dictionary, optional [{}]</em>) – A dictionary of fkeys and target face normals.</p></li>
 <li><p><strong>target_face_centers</strong> (<em>dictionary, optional [{}]</em>) – A dictionary of fkeys and target face centers.</p></li>
-<li><p><strong>omit_fkeys</strong> (<em>list, optional [[]]</em>) – List of fkeys to omit from planarising.</p></li>
+<li><p><strong>omit_vkeys</strong> (<em>list, optional [[]]</em>) – List of vkeys to omit from arearisation.</p></li>
 <li><p><strong>fix_boundary_face_normals</strong> (<em>boolean, optional [False]</em>) – Whether to keep the initial normals of the bondary faces.</p></li>
 <li><p><strong>fix_all_face_normals</strong> (<em>boolean, optional [False]</em>) – Whether to keep the initial normals of all faces.</p></li>
-<li><p><strong>flat_tolerance</strong> (<em>float, optional</em>) – Convergence tolerance for face flatness.</p></li>
-<li><p><strong>area_tolerance</strong> (<em>float, optional</em>) – Convergence tolerance for face areas.</p></li>
+<li><p><strong>tolerance_flat</strong> (<em>float, optional</em>) – Convergence tolerance for face flatness.</p></li>
+<li><p><strong>tolerance_area</strong> (<em>float, optional</em>) – Convergence tolerance for face areas.</p></li>
 <li><p><strong>callback</strong> (<em>callable, optional</em>) – A user-defined callback function to be executed after every iteration.
 Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>callback_args</strong> (<em>tuple, optional</em>) – Additional parameters to be passed to the callback.
 Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>.. seealso ::</strong> – <cite>compas.geometry.mesh_planarize_faces</cite></p></li>
 </ul>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.geometry.mesh_planarize_faces()</span></code></p></li>
-</ul>
-</div>
 </dd></dl>
 
 </div>
@@ -173,7 +167,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 
         <footer class="compas-footer">
             
-                Last updated on Mar 28, 2019.
+                Last updated on Apr 05, 2019.
             
 
             

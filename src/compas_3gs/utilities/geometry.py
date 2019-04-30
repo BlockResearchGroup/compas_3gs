@@ -42,6 +42,9 @@ __all__  = ['resultant_vector',
             'polygon_area_oriented',
             'scale_polygon',
 
+            'mesh_face_flatness',
+            'mesh_face_areaness',
+
             'volmesh_face_flatness',
             'volmesh_face_areaness']
 
@@ -178,11 +181,6 @@ def scale_polygon(points_dict, scale):
     return new_points_dict
 
 
-
-
-
-
-
 def untangle_polygon(points):
 
     def _cross_edges(edge1, edge2):
@@ -221,6 +219,93 @@ def untangle_polygon(points):
     return [xyz[i] for i in vkeys]
 
 
+def polygon_flatness(pts):
+    """Comput the flatness of a polygon.
+
+    Parameters
+    ----------
+    pts: list of point coordinates
+
+    Returns
+    -------
+    float: flatness deviation of a face
+
+    Note
+    ----
+    compas.geometry.mesh_flatness function currently only works for quadrilateral faces.
+    This function uses the distance between each face vertex and its projected point on the best-fit plane of the face as the flatness metric.
+
+    """
+    deviation = 0
+
+    plane     = bestfit_plane(pts)
+
+    for pt in pts:
+        pt_proj = project_point_plane(pt, plane)
+        dev     = distance_point_point(pt, pt_proj)
+        if dev > deviation:
+            deviation = dev
+
+    return deviation
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   mesh
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+def mesh_face_flatness(mesh):
+    """Compute the flatness of every face of a mesh.
+
+    Parameters
+    ----------
+    volmesh : volmesh object
+
+    Returns
+    -------
+    dict
+        A dictionary of flatness deviation for every face of the mesh.
+
+    """
+
+    flatness_dict = {fkey : 0 for fkey in mesh.face}
+
+    for fkey in mesh.face:
+        f_vkeys = mesh.face_vertices(fkey)
+        f_pts   = [mesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+        dev     = polygon_flatness(f_pts)
+
+        flatness_dict[fkey] = dev
+
+    return flatness_dict
+
+
+def mesh_face_areaness(mesh, target_areas):
+    """Compute the areaness of every face of a mesh.
+
+    Parameters
+    ----------
+    mesh : mesh object
+
+    Returns
+    -------
+    dict
+        A dictionary of area deviation for each face of the mesh.
+
+    """
+    areaness_dict = {}
+
+    for fkey in target_areas:
+        area = mesh.face_area(fkey)
+        areaness_dict[fkey] = abs(target_areas[fkey] - area)
+
+    return areaness_dict
 
 
 # ******************************************************************************
@@ -235,7 +320,7 @@ def untangle_polygon(points):
 
 
 def volmesh_face_flatness(volmesh):
-    """Compute volmesh flatness per face.
+    """Compute the flatness of every face of a volmesh.
 
     Parameters
     ----------
@@ -244,36 +329,33 @@ def volmesh_face_flatness(volmesh):
     Returns
     -------
     dict
-        A dictionary of flatness deviation for each face.
-
-    Noes
-    ----
-    compas.geometry.mesh_flatness function currently only works for quadrilateral faces.
-    This function uses the distance between each face vertex and its projected point on the best-fit plane of the face as the flatness metric.
-
-    See Also
-    --------
-    * :func: `compas.geometry.mesh_flatness`
+        A dictionary of flatness deviation for every face of the volmesh.
 
     """
     flatness_dict = {fkey : 0 for fkey in volmesh.faces()}
+
     for fkey in volmesh.faces():
-        deviation = 0
-        f_vkeys   = volmesh.halfface_vertices(fkey)
-        f_points  = [volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
-        plane     = bestfit_plane(f_points)
-        for vkey in f_vkeys:
-            xyz   = volmesh.vertex_coordinates(vkey)
-            p_xyz = project_point_plane(xyz, plane)
-            dev   = distance_point_point(xyz, p_xyz)
-            if dev > deviation:
-                deviation = dev
-        flatness_dict[fkey] = deviation
+        f_vkeys = volmesh.halfface_vertices(fkey)
+        f_pts   = [volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+        dev     = polygon_flatness(f_pts)
+
+        flatness_dict[fkey] = dev
+
     return flatness_dict
 
 
 def volmesh_face_areaness(volmesh, target_areas):
-    """Compute volmesh areaness of faces with given target areas.
+    """Compute the areaness of every face of a volmesh.
+
+    Parameters
+    ----------
+    volmesh : volmesh object
+
+    Returns
+    -------
+    dict
+        A dictionary of area deviation for each face of the volmesh.
+
     """
     areaness_dict = {}
     for hfkey in target_areas:

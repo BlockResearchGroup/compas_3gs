@@ -2,20 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
-
-
 from compas_3gs.datastructures import Network3gs
 
 from compas_3gs.diagrams import Cell
-
-
-
-
-__author__    = ['Juney Lee']
-__copyright__ = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['CellNetwork']

@@ -49,13 +49,13 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = [
-    'PlanarisationConduit',
+__all__ = ['MeshPlanarisationConduit',
+           'VolmeshPlanarisationConduit',
 
-    'MeshConduit',
-    'MeshArearisationConduit',
+           'MeshConduit',
+           'MeshArearisationConduit',
 
-    'ReciprocationConduit']
+           'ReciprocationConduit']
 
 
 # ******************************************************************************
@@ -69,10 +69,33 @@ __all__ = [
 # ******************************************************************************
 
 
-class PlanarisationConduit(Conduit):
+class MeshPlanarisationConduit(Conduit):
+
+    def __init__(self, mesh, **kwargs):
+        super(MeshPlanarisationConduit, self).__init__(**kwargs)
+
+        self.volmesh     = mesh
+        self.face_colors = {}
+
+        def DrawForeground(self, e):
+            _conduit_mesh(self.mesh, e)
+
+            if self.face_colors:
+                max_value = max(self.face_colors.values())
+                for fkey in self.face_colors:
+                    value   = round(self.face_colors[fkey], 3) / max_value
+                    color   = FromArgb(*i_to_red(value))
+                    f_vkeys = self.mesh.face_vertices(fkey)
+                    points  = [self.mesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+                    points.append(points[0])
+                    points  = [Point3d(*pt) for pt in points]
+                    e.Display.DrawPolygon(points, color, filled=True)
+
+
+class VolmeshPlanarisationConduit(Conduit):
 
     def __init__(self, volmesh, draw_faces=False, **kwargs):
-        super(PlanarisationConduit, self).__init__(**kwargs)
+        super(VolmeshPlanarisationConduit, self).__init__(**kwargs)
 
         self.volmesh     = volmesh
         self.draw_faces  = draw_faces
@@ -85,7 +108,7 @@ class PlanarisationConduit(Conduit):
             max_value = max(self.face_colors.values())
             for fkey in self.face_colors:
                 value     = round(self.face_colors[fkey], 3) / max_value
-                color     = FromArgb(*i_to_rgb(value))
+                color     = FromArgb(*i_to_red(value))
                 f_vkeys = self.volmesh.halfface_vertices(fkey)
                 points   = [self.volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
                 points.append(points[0])

@@ -38,10 +38,8 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__all__ = [
-    'egi_from_vectors',
-    'unit_polyhedron'
-]
+__all__ = ['egi_from_vectors',
+           'unit_polyhedron']
 
 
 def egi_from_vectors(vectordict, origin, tol=0.001):
