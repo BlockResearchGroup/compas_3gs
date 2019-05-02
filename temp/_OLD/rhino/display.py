@@ -9,7 +9,7 @@ from compas.geometry import scale_vector
 from compas.utilities import color_to_colordict
 
 
-from compas_rhino.utilities import xdraw_lines
+from compas_rhino.utilities import draw_lines
 
 
 def draw_cell(volmesh, ckey):
@@ -32,7 +32,7 @@ def draw_cell_force_vectors(volmesh):
             'arrow': 'end',
             'color': (0, 255, 0),
             'name' : 'hfkey.{}'.format(hfkey)})
-    xdraw_lines(lines)
+    draw_lines(lines)
 
 
 
@@ -48,7 +48,7 @@ def draw_cell_force_vectors(volmesh):
 #             'arrow': 'end',
 #             'color': (0, 255, 0),
 #             'name' : '{}.edge.{}'.format(self.attributes['name'], hfkey)})
-#     xdraw_lines(lines)
+#     draw_lines(lines)
 
 
 def draw_cell_labels(volmesh, text=None, color_dict=None):
@@ -74,7 +74,7 @@ def draw_cell_labels(volmesh, text=None, color_dict=None):
             'layer': volmesh.layer,
             'text' : str(ckey),
         })
-    return compas_rhino.xdraw_labels(labels, clear=False, redraw=False)
+    return compas_rhino.draw_labels(labels, clear=False, redraw=False)
 
 
 def clear_cell_labels(volmesh, keys=None):

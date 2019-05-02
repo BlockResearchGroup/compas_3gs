@@ -163,6 +163,10 @@ class Mesh3gs(Mesh):
     def draw(self, **kwattr):
         mesh_draw(self, clear_vertices=True, clear_faces=True, clear_edges=True, **kwattr)
 
+    def clear(self, **kwattr):
+        artist = MeshArtist(self)
+        artist.clear()
+
     def draw_vertices(self, **kwattr):
         mesh_draw_vertices(self, **kwattr)
 

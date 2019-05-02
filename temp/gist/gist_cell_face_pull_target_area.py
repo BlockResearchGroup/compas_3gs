@@ -26,7 +26,7 @@ from compas_3gs.helpers import polygon_normal_oriented
 from compas_3gs.helpers import polygon_area_oriented
 
 
-from compas_rhino.utilities import xdraw_labels
+from compas_rhino.utilities import draw_labels
 
 from compas_rhino.conduits.edges import LinesConduit
 
@@ -85,7 +85,7 @@ def cell_face_pull_target_area(volmesh, tol=1e-5):
 
     rs.AddPoint(hf_center)
 
-    xdraw_labels([{
+    draw_labels([{
         'pos'  : hf_center,
         'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
         'color': (0, 0, 0),
@@ -180,7 +180,7 @@ def cell_face_pull_target_area(volmesh, tol=1e-5):
 
     volmesh.draw()
 
-    xdraw_labels(labels)
+    draw_labels(labels)
 
     return volmesh
 

@@ -12,9 +12,9 @@ from compas_rhino.helpers.network import network_select_vertices
 from compas_3gs.rhino.interface import _get_initial_point
 from compas_3gs.rhino.interface import _get_target_point
 
-from compas_rhino.utilities import xdraw_labels
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_faces
+from compas_rhino.utilities import draw_labels
+from compas_rhino.utilities import draw_lines
+from compas_rhino.utilities import draw_faces
 
 
 dotted_color = System.Drawing.Color.FromArgb(0, 0, 0)

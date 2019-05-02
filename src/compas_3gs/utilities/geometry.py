@@ -30,9 +30,9 @@ from compas.datastructures import Network
 
 from compas.utilities import geometric_key
 
-from compas_rhino.utilities import xdraw_labels
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_faces
+# from compas_rhino.utilities import draw_labels
+# from compas_rhino.utilities import draw_lines
+# from compas_rhino.utilities import draw_faces
 
 
 __all__  = ['resultant_vector',

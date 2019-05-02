@@ -20,9 +20,9 @@ from compas.geometry import intersection_line_line
 
 from compas.utilities import geometric_key
 
-from compas_rhino.utilities import xdraw_labels
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_faces
+from compas_rhino.utilities import draw_labels
+from compas_rhino.utilities import draw_lines
+from compas_rhino.utilities import draw_faces
 
 
 def oriented_normal_polygon(points):
@@ -174,7 +174,7 @@ def oriented_normal_polygon(points):
             'end'  : add_vectors(xyz[vkey], scale_vector(normal, 0.5)),
             'arrow': 'end',
             'color': (0, 255, 0)})
-    xdraw_lines(normal_lines)
+    draw_lines(normal_lines)
 
     # split edges --------------------------------------------------------
     lines        = []
@@ -186,7 +186,7 @@ def oriented_normal_polygon(points):
                 'arrow': 'end',
                 'color': (0, 0, 0),
                 'name' : '{}-{}.from.{}'.format(u, v, split_edges[u][v])})
-    xdraw_lines(lines)
+    draw_lines(lines)
 
 
 
@@ -201,7 +201,7 @@ def oriented_normal_polygon(points):
     #         'end'  : add_vectors(xyz[vkey], normal),
     #         'arrow': 'end',
     #         'color': (0, 255, 0)})
-    # xdraw_lines(normal_lines)
+    # draw_lines(normal_lines)
 
     # lines = []
     # # split edges --------------------------------------------------------
@@ -213,7 +213,7 @@ def oriented_normal_polygon(points):
     #             'arrow': 'end',
     #             'color': (0, 0, 0),
     #             'name' : '{}-{}'.format(u, v)})
-    # xdraw_lines(lines)
+    # draw_lines(lines)
 
 
     # ==========================================================================
@@ -294,7 +294,7 @@ def oriented_normal_polygon(points):
                        'name' : str(key),
                        'color': color,
                        'text' : str(key)})
-    xdraw_labels(labels)
+    draw_labels(labels)
 
     # faces and normals --------------------------------------------------------
     faces        = []
@@ -327,7 +327,7 @@ def oriented_normal_polygon(points):
         'arrow': 'end',
         'color': (255, 255, 0),
         'name' : 'area:{}'.format(length_vector(normal_sum))})
-    xdraw_faces(faces)
+    draw_faces(faces)
 
     return normal_sum
 

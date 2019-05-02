@@ -20,9 +20,9 @@ from compas.geometry import intersection_line_line
 
 from compas.utilities import geometric_key
 
-from compas_rhino.utilities import xdraw_labels
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_faces
+from compas_rhino.utilities import draw_labels
+from compas_rhino.utilities import draw_lines
+from compas_rhino.utilities import draw_faces
 
 
 def oriented_normal_polygon(points):
@@ -301,10 +301,10 @@ def oriented_normal_polygon(points):
         'color': (255, 255, 0),
         'name' : 'area:{}'.format(length_vector(normal_sum))})
 
-    xdraw_lines(edges)
-    xdraw_lines(normal_lines)
-    xdraw_faces(faces)
-    xdraw_labels(labels)
+    draw_lines(edges)
+    draw_lines(normal_lines)
+    draw_faces(faces)
+    draw_labels(labels)
 
     # ==========================================================================
     #   6. return oriented normal of the polygon

@@ -15,8 +15,8 @@ from compas.geometry import distance_point_point
 
 from compas.utilities import i_to_rgb
 
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_labels
+from compas_rhino.utilities import draw_lines
+from compas_rhino.utilities import draw_labels
 
 from compas_rhino.helpers import volmesh_select_vertex
 from compas_rhino.helpers import volmesh_select_face
@@ -83,7 +83,7 @@ def cell_face_pull_target_area_direct(volmesh, tol=1e-6):
 
 
     # display current area -----------------------------------------------------
-    xdraw_labels([{
+    draw_labels([{
         'pos'  : hf_center,
         'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
         'color': (0, 0, 0),
@@ -160,7 +160,7 @@ def cell_face_pull_target_area_direct(volmesh, tol=1e-6):
 
 
 
-    xdraw_lines([{
+    draw_lines([{
         'start': center,
         'end'  : move,
         # 'arrow': 'end',
@@ -203,7 +203,7 @@ def cell_face_pull_target_area(volmesh, tol=1e-6):
 
 
     # display current area -----------------------------------------------------
-    xdraw_labels([{
+    draw_labels([{
         'pos'  : hf_center,
         'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
         'color': (0, 0, 0),
@@ -316,7 +316,7 @@ def cell_face_pull_target_area(volmesh, tol=1e-6):
             # areas.append(area_c)
 
 
-            # xdraw_labels([{
+            # draw_labels([{
             #     'pos'  : center_d,
             #     'layer': 'iteration-{}'.format(iteration),
             #     'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
@@ -328,7 +328,7 @@ def cell_face_pull_target_area(volmesh, tol=1e-6):
             a = c
 
             # rs.AddArcPtTanPt(center_c, (0, 1, 0), center_a)
-            # xdraw_labels([{
+            # draw_labels([{
             #     'pos'  : center_c,
             #     'layer': 'iteration-{}'.format(iteration),
             #     'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
@@ -367,7 +367,7 @@ def cell_face_pull_target_area(volmesh, tol=1e-6):
 
     volmesh.draw(layer='forcepolyhedra')
 
-    xdraw_labels(labels)
+    draw_labels(labels)
 
     return volmesh
 
@@ -690,7 +690,7 @@ def _cell_draw_current(volmesh, hfkey, center, iteration, color):
     new_normal = polygon_normal_oriented(new_pt_list, unitized=False)
     new_area = length_vector(new_normal)
 
-    xdraw_lines(lines)
+    draw_lines(lines)
 
 
 

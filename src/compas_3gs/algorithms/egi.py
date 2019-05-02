@@ -223,6 +223,9 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
     for vkey in egi.vertex:
         egi_mesh.vertex[vkey] = egi.vertex[vkey]
 
+    egi_mesh.attributes['name'] = 'egi'
+    egi_mesh.attributes['origin'] = list(origin)
+
     _egi_find_faces(egi, egi_mesh)
 
     return egi_mesh
@@ -239,7 +242,7 @@ def unit_polyhedron(egi):
 
     for vkey in egi.vertex:
         cell_face = egi.vertex_faces(vkey, ordered=True)
-        cell.add_face(cell_face, fkey=vkey)
+        cell.add_face(cell_face[::-1], fkey=vkey)
 
         cell.facedata[vkey]['type'] = egi.vertex[vkey]['type']
     # cell.add_edges_from_faces()
@@ -258,7 +261,7 @@ def unit_polyhedron(egi):
 # ******************************************************************************
 
 
-def _draw_arc(normal_1, normal_2, origin, layer=None, name=None):
+def _draw_arc(normal_1, normal_2, origin):
     mid_pt = normalize_vector(add_vectors(normal_1, normal_2))
     arc    = Arc(Point3d(*[sum(axis) for axis in zip(normal_1, origin)]),
                  Point3d(*[sum(axis) for axis in zip(mid_pt, origin)]),

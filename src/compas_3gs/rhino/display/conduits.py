@@ -49,12 +49,8 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['MeshPlanarisationConduit',
-           'VolmeshPlanarisationConduit',
-
-           'MeshConduit',
-           'MeshArearisationConduit',
-
+__all__ = ['MeshConduit',
+           'VolmeshConduit',
            'ReciprocationConduit']
 
 
@@ -62,57 +58,29 @@ __all__ = ['MeshPlanarisationConduit',
 # ******************************************************************************
 # ******************************************************************************
 #
-#   planarisation conduit
+#   mesh conduit
 #
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
 
+class MeshConduit(Conduit):
 
-class MeshPlanarisationConduit(Conduit):
+    def __init__(self, mesh, face_colordict={}, **kwargs):
+        super(MeshConduit, self).__init__(**kwargs)
 
-    def __init__(self, mesh, **kwargs):
-        super(MeshPlanarisationConduit, self).__init__(**kwargs)
-
-        self.volmesh     = mesh
-        self.face_colors = {}
-
-        def DrawForeground(self, e):
-            _conduit_mesh(self.mesh, e)
-
-            if self.face_colors:
-                max_value = max(self.face_colors.values())
-                for fkey in self.face_colors:
-                    value   = round(self.face_colors[fkey], 3) / max_value
-                    color   = FromArgb(*i_to_red(value))
-                    f_vkeys = self.mesh.face_vertices(fkey)
-                    points  = [self.mesh.vertex_coordinates(vkey) for vkey in f_vkeys]
-                    points.append(points[0])
-                    points  = [Point3d(*pt) for pt in points]
-                    e.Display.DrawPolygon(points, color, filled=True)
-
-
-class VolmeshPlanarisationConduit(Conduit):
-
-    def __init__(self, volmesh, draw_faces=False, **kwargs):
-        super(VolmeshPlanarisationConduit, self).__init__(**kwargs)
-
-        self.volmesh     = volmesh
-        self.draw_faces  = draw_faces
-        self.face_colors = {}
+        self.mesh           = mesh
+        self.face_colordict = face_colordict
 
     def DrawForeground(self, e):
-        _conduit_volmesh(self.volmesh, e)
+        _conduit_mesh_edges(self.mesh, e)
 
-        if self.face_colors:
-            max_value = max(self.face_colors.values())
-            for fkey in self.face_colors:
-                value     = round(self.face_colors[fkey], 3) / max_value
-                color     = FromArgb(*i_to_red(value))
-                f_vkeys = self.volmesh.halfface_vertices(fkey)
-                points   = [self.volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+        if face_colordict:
+            for fkey in face_colordict:
+                color  = FromArgb(*self.face_colordict[fkey])
+                points = self.mesh.face_coordinates(fkey)
                 points.append(points[0])
-                points   = [Point3d(*pt) for pt in points]
+                points  = [Point3d(*pt) for pt in points]
                 e.Display.DrawPolygon(points, color, filled=True)
 
 
@@ -120,95 +88,32 @@ class VolmeshPlanarisationConduit(Conduit):
 # ******************************************************************************
 # ******************************************************************************
 #
-#   arearisation conduit
+#   volmesh conduit
 #
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
 
 
-# class ArearisationConduit(Conduit):
+class VolmeshConduit(Conduit):
 
-#     def __init__(self,
-#                  volmesh,
-#                  target_areas_dict,
-#                  **kwargs):
-#         super(ArearisationConduit, self).__init__(**kwargs)
+    def __init__(self, volmesh, face_colordict={}, **kwargs):
+        super(VolmeshConduit, self).__init__(**kwargs)
 
-#         self.volmesh           = volmesh
-#         self.target_areas_dict = target_areas_dict
-
-#     def DrawForeground(self, e):
-
-#         deviations = {}
-#         for hfkey in self.target_areas_dict:
-#             current_area      = self.volmesh.halfface_area(hfkey)
-#             target_area       = self.target_areas_dict[hfkey]
-#             deviations[hfkey] = abs(current_area - target_area)
-#         max_deviation = max(deviations.values())
-
-#         for u, v in self.volmesh.edges_iter():
-#             sp  = self.volmesh.vertex_coordinates(u)
-#             ep  = self.volmesh.vertex_coordinates(v)
-#             e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
-
-#         for hfkey in self.target_areas_dict:
-#             value    = round(deviations[hfkey], 2) / max_deviation
-#             color    = FromArgb(*i_to_red(value))
-#             area     = self.volmesh.halfface_area(hfkey)
-#             center   = self.volmesh.halfface_center(hfkey)
-#             hf_vkeys = self.volmesh.halfface_vertices(hfkey)
-#             points   = [self.volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
-#             points.append(points[0])
-#             points   = [Point3d(*pt) for pt in points]
-#             e.Display.DrawPolygon(points, color, filled=True)
-#             e.Display.DrawDot(Point3d(*center), str(round(area, 3)), color, black)
-
-
-class MeshConduit(Conduit):
-
-    def __init__(self, mesh, **kwargs):
-        super(MeshConduit, self).__init__(**kwargs)
-
-        self.mesh = mesh
+        self.volmesh        = volmesh
+        self.face_colordict = face_colordict
 
     def DrawForeground(self, e):
-            _conduit_mesh(self.mesh, e)
+        _conduit_volmesh_edges(self.volmesh, e)
 
-
-class MeshArearisationConduit(Conduit):
-
-    def __init__(self, mesh, target_areas_dict, **kwargs):
-        super(MeshArearisationConduit, self).__init__(**kwargs)
-
-        self.mesh              = mesh
-        self.target_areas_dict = target_areas_dict
-
-    def DrawForeground(self, e):
-
-        deviations = {}
-        for hfkey in self.target_areas_dict:
-            current_area      = self.mesh.face_area(hfkey)
-            target_area       = self.target_areas_dict[hfkey]
-            deviations[hfkey] = abs(current_area - target_area)
-        max_deviation = max(deviations.values())
-
-        for u, v in self.mesh.edges():
-            sp  = self.mesh.vertex_coordinates(u)
-            ep  = self.mesh.vertex_coordinates(v)
-            e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
-
-        for hfkey in self.target_areas_dict:
-            value    = round(deviations[hfkey], 2) / max_deviation
-            color    = FromArgb(*i_to_red(value))
-            area     = self.mesh.face_area(hfkey)
-            center   = self.mesh.face_center(hfkey)
-            hf_vkeys = self.mesh.face[hfkey]
-            points   = [self.mesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
-            points.append(points[0])
-            points   = [Point3d(*pt) for pt in points]
-            e.Display.DrawPolygon(points, color, filled=True)
-            e.Display.DrawDot(Point3d(*center), str(round(area, 3)), color, black)
+        if self.face_colordict:
+            for fkey in self.face_colordict:
+                color   = FromArgb(*self.face_colordict[fkey])
+                f_vkeys = self.volmesh.halfface_vertices(fkey)
+                points  = [self.volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+                points.append(points[0])
+                points = [Point3d(*pt) for pt in points]
+                e.Display.DrawPolygon(points, color, filled=True)
 
 
 # ******************************************************************************
@@ -230,8 +135,8 @@ class ReciprocationConduit(Conduit):
         self.network = network
 
     def DrawForeground(self, e):
-        _conduit_volmesh(self.volmesh, e)
-        _conduit_network(self.network, e)
+        _conduit_volmesh_edges(self.volmesh, e)
+        _conduit_network_edges(self.network, e)
 
 
 # ******************************************************************************
@@ -245,34 +150,44 @@ class ReciprocationConduit(Conduit):
 # ******************************************************************************
 
 
-def _conduit_network(network, e):
-    form_color = Color.FromArgb(255, 255, 255)
+def _conduit_network_edges(network, e):
     for u, v in network.edges():
         sp = network.vertex_coordinates(u)
         ep = network.vertex_coordinates(v)
-        e.Display.DrawPoint(Point3d(*sp), 0, 2, form_color)
-        e.Display.DrawPoint(Point3d(*ep), 0, 2, form_color)
-        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), form_color, 1)
+        e.Display.DrawPoint(Point3d(*sp), 0, 4, white)
+        e.Display.DrawPoint(Point3d(*ep), 0, 4, white)
+        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
 
 
-def _conduit_mesh(mesh, e):
-    force_color = Color.FromArgb(0, 0, 0)
+def _conduit_mesh_edges(mesh, e):
     for u, v in mesh.edges():
         sp = mesh.vertex_coordinates(u)
         ep = mesh.vertex_coordinates(v)
-        e.Display.DrawPoint(Point3d(*sp), 0, 2, force_color)
-        e.Display.DrawPoint(Point3d(*ep), 0, 2, force_color)
-        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), force_color, 1)
+        e.Display.DrawPoint(Point3d(*sp), 0, 4, white)
+        e.Display.DrawPoint(Point3d(*ep), 0, 4, white)
+        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
 
 
-def _conduit_volmesh(volmesh, e):
-    force_color = Color.FromArgb(0, 0, 0)
+def _conduit_volmesh_edges(volmesh, e):
     for u, v in volmesh.edges():
         sp = volmesh.vertex_coordinates(u)
         ep = volmesh.vertex_coordinates(v)
-        e.Display.DrawPoint(Point3d(*sp), 0, 2, force_color)
-        e.Display.DrawPoint(Point3d(*ep), 0, 2, force_color)
-        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), force_color, 1)
+        e.Display.DrawPoint(Point3d(*sp), 0, 4, white)
+        e.Display.DrawPoint(Point3d(*ep), 0, 4, white)
+        e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), white, 1)
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   other helpers
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
 
 
 # ==============================================================================

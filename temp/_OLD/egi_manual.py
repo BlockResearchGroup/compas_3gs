@@ -25,7 +25,7 @@
 # from compas_3gs.algorithms.arearization import _scale_polygon_by_area
 # from compas_3gs.algorithms.arearization import _area_deficit
 
-# from compas_3gs.utilities.drawing import draw_egi
+# from compas_3gs.utilities.drawing import draw_egi_arcs
 # from compas.utilities import geometric_key
 
 # from Rhino.Geometry import Sphere

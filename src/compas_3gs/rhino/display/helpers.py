@@ -19,10 +19,10 @@ from compas.geometry import scale_vector
 from compas.geometry import add_vectors
 from compas.geometry import dot_vectors
 
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_points
-from compas_rhino.utilities import xdraw_labels
-from compas_rhino.utilities import xdraw_faces
+from compas_rhino.utilities import draw_lines
+from compas_rhino.utilities import draw_points
+from compas_rhino.utilities import draw_labels
+from compas_rhino.utilities import draw_faces
 
 from compas_3gs.utilities import pair_hf_to_uv
 from compas_3gs.utilities import pair_uv_to_hf
@@ -42,6 +42,7 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 __all__ = ['get_index_colordict',
            'valuedict_to_colordict',
+           'compare_initial_current',
            'get_force_colors_uv',
            'get_force_colors_hf']
 
@@ -74,12 +75,30 @@ def valuedict_to_colordict(value_dict, color_scheme=i_to_rgb):
     """From value_dict to color_dict.
     """
     c_dict = {}
+    lb = min(value_dict.values())
     ub = max(value_dict.values())
     for key in value_dict:
-        value = value_dict[key] / ub
+        value = (value_dict[key] - lb) / (ub - lb)
         color = color_scheme(value)
         c_dict[key] = color
     return c_dict
+
+
+def compare_initial_current(current_value_dict,
+                            initial_value_dict,
+                            color_scheme=i_to_rgb):
+    color_dict = {}
+    for key in current_value_dict:
+        current = current_value_dict[key]
+        initial = initial_value_dict[key]
+        if current > 0.01:
+            if initial < 0.01:
+                value = 0
+            else:
+                value = current / initial
+            color_dict[key] = color_scheme(value)
+
+    return color_dict
 
 
 # ******************************************************************************

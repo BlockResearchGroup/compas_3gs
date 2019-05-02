@@ -21,9 +21,9 @@ from compas.geometry import midpoint_point_point
 
 from compas.utilities import geometric_key
 
-from compas_rhino.utilities import xdraw_labels
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_faces
+from compas_rhino.utilities import draw_labels
+from compas_rhino.utilities import draw_lines
+from compas_rhino.utilities import draw_faces
 
 
 def untangle_polygon(points):
@@ -71,7 +71,7 @@ def untangle_polygon(points):
             'arrow': 'end',
             'color': (0, 0, 0),
             'name' : '{}-{}'.format(u, v)})
-    xdraw_lines(lines)
+    draw_lines(lines)
 
 
 

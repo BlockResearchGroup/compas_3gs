@@ -2,9 +2,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
-from compas.geometry import add_vectors
-from compas.geometry import subtract_vectors
-from compas.geometry import scale_vector
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
 from compas.geometry.transformations.transformations import project_point_plane
@@ -24,7 +21,7 @@ __all__ = ['mesh_planarise',
 # ******************************************************************************
 # ******************************************************************************
 #
-#   mesh arearisation
+#   mesh planarisation
 #
 # ******************************************************************************
 # ******************************************************************************
@@ -38,7 +35,7 @@ def mesh_planarise(mesh,
                    target_normals={},
                    target_areas={},
 
-                   omit_vkeys=[],
+                   fix_vkeys=[],
 
                    avg_fkeys=[],
 
@@ -87,8 +84,6 @@ def mesh_planarise(mesh,
 
     """
 
-    print(target_areas)
-
     if callback:
         if not callable(callback):
             raise Exception('Callback is not callable.')
@@ -96,7 +91,7 @@ def mesh_planarise(mesh,
     # --------------------------------------------------------------------------
     #   1. initialise
     # --------------------------------------------------------------------------
-    free_vkeys      = list(set(mesh.vertex) - set(omit_vkeys))
+    free_vkeys = list(set(mesh.vertex) - set(fix_vkeys))
 
     # --------------------------------------------------------------------------
     #   2. loop
@@ -112,24 +107,19 @@ def mesh_planarise(mesh,
         if avg_fkeys:
             avg_face_area = _avg_face_area(mesh, avg_fkeys)
 
-            print(avg_face_area)
-
         for fkey in mesh.face:
 
             # evaluate current face --------------------------------------------
             f_vkeys  = mesh.face_vertices(fkey)
-            f_center = mesh.face_center(fkey)
             f_normal = mesh.face_normal(fkey)
             f_area   = mesh.face_area(fkey)
+            f_center = centroid_points(mesh.face_coordinates(fkey))
 
             if fkey in target_centers:
                 f_center = target_centers[fkey]
 
             if fkey in target_normals:
                 f_normal = target_normals[fkey]
-
-            if fkey in target_areas:
-                f_area = target_areas[fkey]
 
             # projection plane -------------------------------------------------
             plane = (f_center, f_normal)
@@ -157,7 +147,9 @@ def mesh_planarise(mesh,
 
             # scale factor -----------------------------------------------------
             if target_area != 0:
+
                 scale = (target_area / f_area) ** 0.5
+
 
             elif target_area == 0:
                 scale = 1 - f_area * 0.1
@@ -166,13 +158,8 @@ def mesh_planarise(mesh,
 
             areaness  = abs(f_area - target_area)
 
-            print(f_area, target_area)
-            print(areaness)
-
             if areaness > deviation_area:
                 deviation_area = areaness
-
-
 
             # collect new coordinates ------------------------------------------
             for vkey in new_face:
@@ -207,7 +194,17 @@ def mesh_planarise(mesh,
         if callback:
             callback(mesh, k, callback_args)
 
-        print(k)
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   volmesh planarisation
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
 
 def volmesh_planarise(volmesh,
                       kmax=100,
@@ -216,10 +213,13 @@ def volmesh_planarise(volmesh,
                       target_normals={},
                       target_areas={},
 
-                      omit_vkeys=[],
+                      fix_vkeys=[],
 
                       fix_boundary_normals=False,
                       fix_all_normals=False,
+
+                      min_area=None,
+                      max_area=None,
 
                       tolerance_flat=0.001,
                       tolerance_area=0.001,
@@ -280,7 +280,7 @@ def volmesh_planarise(volmesh,
     # --------------------------------------------------------------------------
     #   1. initialise
     # --------------------------------------------------------------------------
-    free_vkeys      = list(set(volmesh.vertex) - set(omit_vkeys))
+    free_vkeys      = list(set(volmesh.vertex) - set(fix_vkeys))
     initial_normals = _get_current_volmesh_normals(volmesh)
     boundary_fkeys  = set(volmesh.halffaces_boundary())
 
@@ -342,9 +342,13 @@ def volmesh_planarise(volmesh,
                 if areaness > deviation_area:
                     deviation_area = areaness
 
+
+
             # collect new coordinates ------------------------------------------
             for vkey in new_face:
                 new_xyz[vkey].append(new_face[vkey])
+
+        print(deviation_area)
 
         # ----------------------------------------------------------------------
         #   5. compute new volmesh vertex coordinates

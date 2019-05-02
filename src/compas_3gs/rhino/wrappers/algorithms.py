@@ -28,8 +28,8 @@ from compas_3gs.utilities import volmesh_face_areaness
 
 from compas_3gs.rhino.control import volmesh3gs_select_cell
 from compas_3gs.rhino.display import ReciprocationConduit
-from compas_3gs.rhino.display import VolmeshPlanarisationConduit
-from compas_3gs.rhino.display import MeshPlanarisationConduit
+from compas_3gs.rhino.display import VolmeshConduit
+from compas_3gs.rhino.display import MeshConduit
 
 
 try:
@@ -136,7 +136,7 @@ def rhino_volmesh_planarise(volmesh,
                             refreshrate=5):
 
     # 1. callback / conduit ----------------------------------------------------
-    conduit = VolmeshPlanarisationConduit(volmesh)
+    conduit = VolmeshConduit(volmesh)
 
     def callback(volmesh, k, args):
         if k % refreshrate == 0:
@@ -154,7 +154,7 @@ def rhino_volmesh_planarise(volmesh,
                           target_centers=target_centers,
                           target_normals=target_normals,
                           target_areas=target_areas,
-                          omit_vkeys=fix_vkeys,
+                          fix_vkeys=fix_vkeys,
                           fix_boundary_normals=fix_boundary_normals,
                           fix_all_normals=fix_all_normals,
                           tolerance_flat=tolerance_flat,

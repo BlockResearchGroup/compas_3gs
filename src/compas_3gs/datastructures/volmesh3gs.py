@@ -1,30 +1,21 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from compas.utilities import pairwise
 
-# from compas_3gs.datastructures._OLD.volmesh_algorithms import VolMesh
-from compas_3gs.datastructures._old_volmesh import VolMesh
-# from compas.datastructures import VolMesh
+from compas.datastructures import VolMesh
 
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
-from compas.geometry import sum_vectors
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
-from compas.geometry import dot_vectors
-from compas.geometry import scale_vectors
 from compas.geometry import centroid_points
 
 from compas.geometry import centroid_polygon
 
 from compas_rhino.helpers.volmesh import volmesh_draw
 from compas_rhino.artists import VolMeshArtist
-
-# from compas_3gs.rhino.display import draw_cell
-# from compas_3gs.rhino.display import draw_egi_arcs
-# from compas_3gs.rhino.display import draw_cell_labels
-# from compas_3gs.rhino.display import clear_cell_labels
-# from compas_3gs.rhino.display import draw_volmesh_face_normals
 
 from compas_3gs.utilities import polygon_normal_oriented
 from compas_3gs.utilities import polygon_area_oriented
@@ -584,7 +575,7 @@ class VolMesh3gs(VolMesh):
     # def clear_cell_labels(self):
     #     clear_cell_labels(self)
 
-    # def draw_egi(self, draw_arcs=False, **kwattr):
+    # def draw_egi_arcs(self, draw_arcs=False, **kwattr):
     #     for ckey in self.cell:
     #         egi = self.c_data[ckey]['egi']
     #         draw_egi_arcs(egi)

@@ -18,11 +18,11 @@ from compas.geometry import bestfit_plane
 from compas.geometry import scale_vector
 from compas.geometry import add_vectors
 
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_points
-from compas_rhino.utilities import xdraw_labels
-from compas_rhino.utilities import xdraw_faces
-from compas_rhino.utilities import xdraw_cylinders
+from compas_rhino.utilities import draw_lines
+from compas_rhino.utilities import draw_points
+from compas_rhino.utilities import draw_labels
+from compas_rhino.utilities import draw_faces
+from compas_rhino.utilities import draw_cylinders
 
 from compas_3gs.utilities import pair_hf_to_uv
 from compas_3gs.utilities import pair_uv_to_hf
@@ -135,7 +135,7 @@ def display_mode_pipes(volmesh, network, colors=True, gradient=False, scale=1):
     network.clear()
     network.draw_edges(color=uv_c_dict)
 
-    xdraw_cylinders(cylinders, cap=True)
+    draw_cylinders(cylinders, cap=True)
 
 
 def display_mode_vectors(volmesh, network, vkeys=None, gradient=False, scale=1):
@@ -181,7 +181,7 @@ def display_mode_vectors(volmesh, network, vkeys=None, gradient=False, scale=1):
     volmesh.draw_faces(keys=hf_c_dict.keys(), color=hf_c_dict)
 
     network.clear()
-    xdraw_lines(arrows)
+    draw_lines(arrows)
 
 
 

@@ -25,8 +25,8 @@ from compas_rhino.helpers import volmesh_select_vertex
 from compas_rhino.helpers import volmesh_select_vertices
 from compas_rhino.helpers import volmesh_select_face
 from compas_rhino.helpers import volmesh_select_vertices
-from compas_rhino.utilities import xdraw_lines
-from compas_rhino.utilities import xdraw_labels
+from compas_rhino.utilities import draw_lines
+from compas_rhino.utilities import draw_labels
 from compas_rhino.conduits import LinesConduit
 
 from compas_3gs.operations import vertex_merge
