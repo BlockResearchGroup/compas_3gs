@@ -59,16 +59,6 @@ Planarisation
 ____
 
 
-Relaxation
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-____
-
-
 Unified Diagram
 ===============
 
@@ -89,7 +79,6 @@ from .duality import *
 from .egi import *
 from .planarisation import *
 from .reciprocation import *
-from .relaxation import *
 from .unifieddiagram import *
 
 

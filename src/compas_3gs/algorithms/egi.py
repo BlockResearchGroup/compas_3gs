@@ -21,10 +21,6 @@ from compas_3gs.diagrams import EGI
 from compas_3gs.diagrams import Cell
 
 try:
-    import Rhino
-    import rhinoscriptsyntax as rs
-    import scriptcontext as sc
-
     from Rhino.Geometry import Arc
     from Rhino.Geometry import Point3d
     from Rhino.Geometry import ArcCurve
@@ -38,25 +34,56 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
+__author__     = 'Juney Lee'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'juney.lee@arch.ethz.ch'
+
+
 __all__ = ['egi_from_vectors',
-           'unit_polyhedron']
+           'cell_from_egi']
 
 
 def egi_from_vectors(vectordict, origin, tol=0.001):
+    """Construct an egi from a set of vectors.
+
+    Parameters
+    ----------
+    vectordict : dict
+        A dectionary of key-vector pairs.
+    origin : list
+        The coordinates of the centroid.
+    tol : float, optional
+        Tolerance for evaluating antipodal.
+
+    Returns
+    -------
+    egi : mesh
+        A mesh object representing the egi.
+
+    Raises
+    ------
+    Exception
+        If there are less than four vectors.
+
+    Notes
+    -----
+    This algorithm is dependent on Rhinoceros objects; the adjacency arcs are implemented using Rhino.Geometry.Arc, and the cross-adjacencies (arc-arc intersections) are computed using Rhino.Geometry.Intersect.Intersection.CurveCurve.
+
+    Warning
+    -------
+    - This algorithm does not address scenarios where multiple parallel (collinear) vectors are present.
+
+    References
+    ----------
+    .. [1] Horn, B.K.P. (1984). *Extended Gaussian images*.
+    .. [2] Moni, S. (1990, June). *A closed-form solution for the reconstruction
+    of a convex polyhedron from its extended gaussian image.*
+    .. [3] Lee, J., T. Van Mele, and P. Block (2018). *Disjointed force polyhedra.*
+
     """
-
-    testing
-
-
-    warnings:
-        dependent on rhino arc function...
-
-
-    exceptions:
-        1. normals pointing in the same direction
-        2. parallel loads
-
-    """
+    if len(vectordict) < 4:
+        raise Exception('Four or more vectors are needed for the construction of egi.')
 
     egi = Network()
 
@@ -209,7 +236,6 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
             egi.vertex[vkey_1]['nbrs'] += [vkey_2]
             egi.vertex[vkey_2]['nbrs'] += [vkey_1]
             egi.add_edge(vkey_1, vkey_2)
-            # egi.edge[vkey_1][vkey_2] = {'type' : edge_type}
 
     # --------------------------------------------------------------------------
     #   6.  For each vertex, sort nbrs in ccw order
@@ -231,8 +257,30 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
     return egi_mesh
 
 
-def unit_polyhedron(egi):
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   from egi to unit polyhedron
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
 
+def cell_from_egi(egi):
+    """Construct a cell from an egi.
+
+    Parameters
+    ----------
+    egi
+        A mesh object representing the egi.
+
+    Returns
+    -------
+    cell
+        A mesh object representing the unit polyhedron.
+
+    """
     cell      = Cell()
     cell.name = 'cell'
 
@@ -245,7 +293,6 @@ def unit_polyhedron(egi):
         cell.add_face(cell_face[::-1], fkey=vkey)
 
         cell.facedata[vkey]['type'] = egi.vertex[vkey]['type']
-    # cell.add_edges_from_faces()
 
     return cell
 

@@ -4,6 +4,10 @@ from __future__ import division
 
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
+from compas.geometry import dot_vectors
+from compas.geometry import add_vectors
+from compas.geometry import subtract_vectors
+from compas.geometry import scale_vector
 from compas.geometry.transformations.transformations import project_point_plane
 
 from compas_3gs.utilities import scale_polygon
@@ -11,6 +15,12 @@ from compas_3gs.utilities import scale_polygon
 from compas_3gs.operations import cell_collapse_short_edges
 
 from compas_3gs.utilities import print_result
+
+
+__author__     = 'Juney Lee'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['mesh_planarise',
@@ -41,9 +51,12 @@ def mesh_planarise(mesh,
 
                    tolerance_flat=0.001,
                    tolerance_area=0.001,
+                   tolerance_perp=0.001,
 
                    callback=None,
-                   callback_args=None):
+                   callback_args=None,
+
+                   print_result_info=False):
     """Planarise the faces of a mesh.
 
     Planarisation of a mesh is implemented as a three-step iterative procedure.
@@ -82,8 +95,15 @@ def mesh_planarise(mesh,
         Additional parameters to be passed to the callback.
         Default is ``None``.
 
-    """
+    Raises
+    ------
+    Exception
+        If a callback is provided, but it is not callable.
 
+    .. seealso ::
+        `compas.geometry.mesh_planarize_faces`
+
+    """
     if callback:
         if not callable(callback):
             raise Exception('Callback is not callable.')
@@ -100,6 +120,7 @@ def mesh_planarise(mesh,
 
         deviation_flat = 0
         deviation_area = 0
+        deviation_perp = 0
 
         new_xyz = {vkey: [] for vkey in mesh.vertex}
 
@@ -111,6 +132,7 @@ def mesh_planarise(mesh,
 
             # evaluate current face --------------------------------------------
             f_vkeys  = mesh.face_vertices(fkey)
+            f_v_xyz  = mesh.face_coordinates(fkey)
             f_normal = mesh.face_normal(fkey)
             f_area   = mesh.face_area(fkey)
             f_center = centroid_points(mesh.face_coordinates(fkey))
@@ -119,7 +141,14 @@ def mesh_planarise(mesh,
                 f_center = target_centers[fkey]
 
             if fkey in target_normals:
-                f_normal = target_normals[fkey]
+                target_normal = target_normals[fkey]
+
+                # perpness deviation
+                perpness = 1 - abs(dot_vectors(f_normal, target_normal))
+                if perpness > deviation_perp:
+                    deviation_perp = perpness
+
+                f_normal = target_normal
 
             # projection plane -------------------------------------------------
             plane = (f_center, f_normal)
@@ -127,12 +156,13 @@ def mesh_planarise(mesh,
             # ------------------------------------------------------------------
             #   3. planarise
             # ------------------------------------------------------------------
-            new_face = {}
-            for vkey in f_vkeys:
-                xyz            = mesh.vertex_coordinates(vkey)
-                projected_xyz  = project_point_plane(xyz, plane)
-                new_face[vkey] = projected_xyz
-                dist           = distance_point_point(xyz, projected_xyz)
+            projected_face = []
+            for xyz in f_v_xyz:
+                projected_xyz = project_point_plane(xyz, plane)
+                projected_face.append(projected_xyz)
+
+                # planarisation deviation
+                dist = distance_point_point(xyz, projected_xyz)
                 if dist > deviation_flat:
                     deviation_flat = dist
 
@@ -147,23 +177,22 @@ def mesh_planarise(mesh,
 
             # scale factor -----------------------------------------------------
             if target_area != 0:
-
                 scale = (target_area / f_area) ** 0.5
-
 
             elif target_area == 0:
                 scale = 1 - f_area * 0.1
 
-            new_face = scale_polygon(new_face, scale)
+            # scale ------------------------------------------------------------
+            scaled_face = scale_polygon(projected_face, scale)
 
+            # arearisation deviation
             areaness  = abs(f_area - target_area)
-
             if areaness > deviation_area:
                 deviation_area = areaness
 
-            # collect new coordinates ------------------------------------------
-            for vkey in new_face:
-                new_xyz[vkey].append(new_face[vkey])
+            # collect new coordinates
+            for i in range(len(f_vkeys)):
+                new_xyz[f_vkeys[i]].append(scaled_face[i])
 
         # ----------------------------------------------------------------------
         #   5. compute new volmesh vertex coordinates
@@ -179,14 +208,16 @@ def mesh_planarise(mesh,
         # ----------------------------------------------------------------------
         if deviation_flat < tolerance_flat and deviation_area < tolerance_area:
 
-            name      = "Mesh planarisation"
-            deviation = deviation_flat
+            if print_result_info:
 
-            if target_areas:
-                name      = "Mesh arearisation"
-                deviation = deviation_area
+                name      = "Mesh planarisation"
+                deviation = deviation_flat
 
-            print_result(name, k, deviation)
+                if target_areas:
+                    name      = "Mesh arearisation"
+                    deviation = deviation_area
+
+                print_result(name, k, deviation)
 
             break
 
@@ -223,9 +254,12 @@ def volmesh_planarise(volmesh,
 
                       tolerance_flat=0.001,
                       tolerance_area=0.001,
+                      tolerance_perp=0.001,
 
                       callback=None,
-                      callback_args=None):
+                      callback_args=None,
+
+                      print_result_info=False):
     """Planarises the halffaces of a volmesh.
 
     Planarisation of a volmesh is implemented as a three-step iterative procedure.
@@ -235,44 +269,46 @@ def volmesh_planarise(volmesh,
 
     Parameters
     ----------
-
     volmesh : VolMesh
         A volmesh object.
     kmax : int, optional [100]
         Number of iterations.
-
     target_face_areas : dictionary, optional [{}]
         A dictionary of fkeys and target areas.
     target_face_normals : dictionary, optional [{}]
         A dictionary of fkeys and target face normals.
     target_face_centers : dictionary, optional [{}]
         A dictionary of fkeys and target face centers.
-
     omit_vkeys : list, optional [[]]
         List of vkeys to omit from arearisation.
-
     fix_boundary_face_normals : boolean, optional [False]
         Whether to keep the initial normals of the bondary faces.
     fix_all_face_normals : boolean, optional [False]
         Whether to keep the initial normals of all faces.
-
     tolerance_flat: float, optional
         Convergence tolerance for face flatness.
     tolerance_area: float, optional
-        Convergence tolerance for face areas.
-
+        Convergence tolerance for face areas against target areas.
+    tolerance_perp: float, optional
+        Convergence tolerance for face perpendicularity against target normals.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
         Default is ``None``.
     callback_args : tuple, optional
         Additional parameters to be passed to the callback.
         Default is ``None``.
+    print_result_info : bool, optional
+        If True, print the result of the algorithm.
+
+    Raises
+    ------
+    Exception
+        If a callback is provided, but it is not callable.
 
     .. seealso ::
         `compas.geometry.mesh_planarize_faces`
 
     """
-
     if callback:
         if not callable(callback):
             raise Exception('Callback is not callable.')
@@ -282,7 +318,7 @@ def volmesh_planarise(volmesh,
     # --------------------------------------------------------------------------
     free_vkeys      = list(set(volmesh.vertex) - set(fix_vkeys))
     initial_normals = _get_current_volmesh_normals(volmesh)
-    boundary_fkeys  = set(volmesh.halffaces_on_boundary())
+    boundary_fkeys  = volmesh.halffaces_on_boundary()
 
     # --------------------------------------------------------------------------
     #   2. loop
@@ -291,6 +327,7 @@ def volmesh_planarise(volmesh,
 
         deviation_flat = 0
         deviation_area = 0
+        deviation_perp = 0
 
         new_xyz = {vkey: [] for vkey in volmesh.vertex}
 
@@ -300,6 +337,7 @@ def volmesh_planarise(volmesh,
 
             # evaluate current face --------------------------------------------
             f_vkeys  = volmesh.halfface_vertices(fkey)
+            f_v_xyz  = volmesh.halfface_coordinates(fkey)
             f_center = volmesh.halfface_center(fkey)
             f_normal = volmesh.halfface_oriented_normal(fkey)
             f_area   = volmesh.halfface_oriented_area(fkey)
@@ -307,10 +345,19 @@ def volmesh_planarise(volmesh,
             # override with manual target values -------------------------------
             if _pair_membership(fkey, fkey_pair, target_centers):
                 f_center = target_centers[fkey]
+
             if _pair_membership(fkey, fkey_pair, target_normals):
-                f_normal = target_normals[fkey]
+                target_normal = target_normals[fkey]
+
+                # perpness deviation
+                perpness = 1 - abs(dot_vectors(f_normal, target_normal))
+                if perpness > deviation_perp:
+                    deviation_perp = perpness
+
+                f_normal = target_normal
+
             if fix_boundary_normals:
-                if _pair_membership(fkey, fkey_pair, boundary_fkeys):
+                if fkey in boundary_fkeys:
                     f_normal = initial_normals[fkey]['normal']
             if fix_all_normals:
                 f_normal = initial_normals[fkey]['normal']
@@ -321,14 +368,15 @@ def volmesh_planarise(volmesh,
             # ------------------------------------------------------------------
             #   3. planarise
             # ------------------------------------------------------------------
-            new_face = {}
-            for vkey in f_vkeys:
-                xyz            = volmesh.vertex_coordinates(vkey)
-                projected_xyz  = project_point_plane(xyz, plane)
-                new_face[vkey] = projected_xyz
-                dist           = distance_point_point(xyz, projected_xyz)
-                if dist > deviation_flat:
-                    deviation_flat = dist
+            new_face = []
+            for xyz in f_v_xyz:
+                projected_xyz = project_point_plane(xyz, plane)
+                new_face.append(projected_xyz)
+
+                # planarisation deviation
+                flatness = distance_point_point(xyz, projected_xyz)
+                if flatness > deviation_flat:
+                    deviation_flat = flatness
 
             # ------------------------------------------------------------------
             #   4. arearise
@@ -336,15 +384,18 @@ def volmesh_planarise(volmesh,
             if fkey in target_areas:
                 target_area = target_areas[fkey]
                 scale       = (target_area / f_area) ** 0.5
-                new_face    = scale_polygon(new_face, scale)
 
+                # scale
+                new_face = scale_polygon(new_face, scale)
+
+                # arearisation deviation
                 areaness  = abs(f_area - target_area)
                 if areaness > deviation_area:
                     deviation_area = areaness
 
             # collect new coordinates ------------------------------------------
-            for vkey in new_face:
-                new_xyz[vkey].append(new_face[vkey])
+            for i in range(len(f_vkeys)):
+                new_xyz[f_vkeys[i]].append(new_face[i])
 
         # ----------------------------------------------------------------------
         #   5. compute new volmesh vertex coordinates
@@ -356,16 +407,18 @@ def volmesh_planarise(volmesh,
         # ----------------------------------------------------------------------
         #   6. check convergence
         # ----------------------------------------------------------------------
-        if deviation_flat < tolerance_flat and deviation_area < tolerance_area:
+        if deviation_flat < tolerance_flat and deviation_area < tolerance_area and deviation_perp < tolerance_perp:
 
-            name      = "Volmesh planarisation"
-            deviation = deviation_flat
+            if print_result_info:
 
-            if target_areas:
-                name      = "Volmesh arearisation"
-                deviation = deviation_area
+                name      = "Volmesh planarisation"
+                deviation = deviation_flat
 
-            print_result(name, k, deviation)
+                if target_areas:
+                    name      = "Volmesh arearisation"
+                    deviation = deviation_area
+
+                print_result(name, k, deviation)
 
             break
 

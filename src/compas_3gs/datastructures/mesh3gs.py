@@ -24,7 +24,7 @@ from compas_3gs.utilities import polygon_area_oriented
 from compas_3gs.utilities import datastructure_centroid
 
 
-__author__     = ['Juney Lee']
+__author__     = 'Juney Lee'
 __copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
@@ -188,3 +188,18 @@ class Mesh3gs(Mesh):
     def draw_facelabels(self, **kwattr):
         artist = MeshArtist(self)
         artist.draw_facelabels(**kwattr)
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   Main
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+if __name__ == '__main__':
+    pass

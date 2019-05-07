@@ -29,11 +29,11 @@ from compas_rhino.utilities import draw_lines
 from compas_rhino.utilities import draw_labels
 from compas_rhino.conduits import LinesConduit
 
-from compas_3gs.operations import vertex_merge
-from compas_3gs.operations import vertex_lift
-from compas_3gs.operations import halfface_pinch
-from compas_3gs.operations import halfface_merge
-from compas_3gs.operations import cell_subdivide_barycentric
+from compas_3gs.operations import volmesh_vertex_merge
+from compas_3gs.operations import volmesh_vertex_lift
+from compas_3gs.operations import volmesh_halfface_pinch
+from compas_3gs.operations import volmesh_merge_adjacent_halffaces
+from compas_3gs.operations import volmesh_cell_subdivide_barycentric
 from compas_3gs.algorithms import volmesh_dual_network
 from compas_3gs.algorithms import volmesh_reciprocate
 from compas_3gs.utilities import polygon_normal_oriented
@@ -75,22 +75,22 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = ['Juney Lee']
+__author__     = 'Juney Lee'
 __copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = [
-    'rhino_vertex_lift',
-    'rhino_vertex_merge',
+    'rhino_volmesh_vertex_lift',
+    'rhino_volmesh_vertex_merge',
     'rhino_vertex_truncate',
     'rhino_vertex_volumise',
 
-    'rhino_halfface_pinch',
-    'rhino_halfface_merge',
+    'rhino_volmesh_halfface_pinch',
+    'rhino_volmesh_merge_adjacent_halffaces',
 
-    'rhino_cell_subdivide_barycentric',
+    'rhino_volmesh_cell_subdivide_barycentric',
     'volmesh_pull_faces'
 ]
 
@@ -106,7 +106,7 @@ __all__ = [
 # ******************************************************************************
 
 
-def rhino_vertex_lift(volmesh):
+def rhino_volmesh_vertex_lift(volmesh):
     """Rhino wrapper for the vertex lift operation.
     """
 
@@ -133,15 +133,12 @@ def rhino_vertex_lift(volmesh):
     axis = Rhino.Geometry.Line(ip, ip + Vector3d(*normal))
     gp   = _get_target_point(axis, OnDynamicDraw)
 
-    vertex_lift(volmesh, vkey, gp, vertex_hfkeys)
+    volmesh_vertex_lift(volmesh, vkey, gp, vertex_hfkeys)
 
     volmesh.draw()
 
 
-# ******************************************************************************
-
-
-def rhino_vertex_merge(volmesh):
+def rhino_volmesh_vertex_merge(volmesh):
     """Rhino wrapper for the vertex merge operation.
     """
 
@@ -150,23 +147,9 @@ def rhino_vertex_merge(volmesh):
     keys = volmesh_select_vertices(volmesh)
     xyz  = centroid_points([volmesh.vertex_coordinates(key) for key in keys])
 
-    vertex_merge(volmesh, keys, xyz)
+    volmesh_vertex_merge(volmesh, keys, xyz)
 
     volmesh.draw()
-
-
-# ******************************************************************************
-
-
-def rhino_vertex_truncate(volmesh):
-    pass
-
-
-# ******************************************************************************
-
-
-def rhino_vertex_volumise(volmesh):
-    pass
 
 
 # ******************************************************************************
@@ -180,7 +163,7 @@ def rhino_vertex_volumise(volmesh):
 # ******************************************************************************
 
 
-def rhino_halfface_pinch(volmesh):
+def rhino_volmesh_halfface_pinch(volmesh):
     hfkeys = select_boundary_halffaces(volmesh)
 
     key = hfkeys[0]
@@ -237,17 +220,17 @@ def rhino_halfface_pinch(volmesh):
         hf_normal = volmesh.halfface_oriented_normal(hfkey)
         ep = add_vectors(hf_center, scale_vector(hf_normal, rise))
 
-        halfface_pinch(volmesh, hfkey, ep)
+        volmesh_halfface_pinch(volmesh, hfkey, ep)
 
     volmesh.draw()
 
     return volmesh
 
 
-def rhino_halfface_merge(volmesh):
+def rhino_volmesh_merge_adjacent_halffaces(volmesh):
     volmesh.draw()
     hfkeys = select_boundary_halffaces(volmesh)
-    halfface_merge(volmesh, hfkeys)
+    volmesh_merge_adjacent_halffaces(volmesh, hfkeys)
     volmesh.draw()
     return volmesh
 
@@ -263,7 +246,7 @@ def rhino_halfface_merge(volmesh):
 # ******************************************************************************
 
 
-def rhino_cell_subdivide_barycentric(volmesh, formdiagram=None):
+def rhino_volmesh_cell_subdivide_barycentric(volmesh, formdiagram=None):
 
 
     cell_colors = {}
@@ -291,8 +274,7 @@ def rhino_cell_subdivide_barycentric(volmesh, formdiagram=None):
 
 
     for ckey in sel_ckeys:
-        cell_subdivide_barycentric(volmesh, ckey)
-
+        volmesh_cell_subdivide_barycentric(volmesh, ckey)
 
     # if formdiagram:
     #     xyz = {vkey: formdiagram.vertex_coordinates(vkey) for vkey in formdiagram.vertex}
@@ -314,6 +296,7 @@ def rhino_cell_subdivide_barycentric(volmesh, formdiagram=None):
     volmesh.draw()
 
     return volmesh
+
 
 # ******************************************************************************
 # ******************************************************************************
@@ -436,8 +419,6 @@ def volmesh_pull_faces(volmesh, uniform=False):
                 e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), black, 2)
 
 
-
-
     # --------------------------------------------------------------------------
     #  input point
     # --------------------------------------------------------------------------
@@ -495,11 +476,11 @@ def volmesh_pull_faces(volmesh, uniform=False):
 
 
 
-# def rhino_cell_subdivide_barycentric(volmesh, formdiagram=None):
+# def rhino_volmesh_cell_subdivide_barycentric(volmesh, formdiagram=None):
 
 #     ckey = volmesh3gs_select_cell(volmesh)
 
-#     new_ckeys = cell_subdivide_barycentric(volmesh, ckey)
+#     new_ckeys = volmesh_cell_subdivide_barycentric(volmesh, ckey)
 
 
 #     if formdiagram:

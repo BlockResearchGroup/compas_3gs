@@ -21,10 +21,9 @@ from compas_3gs.utilities import polygon_normal_oriented
 from compas_3gs.utilities import polygon_area_oriented
 from compas_3gs.utilities import datastructure_centroid
 
-from compas_3gs.datastructures.operations.split import cell_split_vertex
 
 
-__author__    = ['Juney Lee']
+__author__    = 'Juney Lee'
 __copyright__ = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'juney.lee@arch.ethz.ch'
@@ -47,7 +46,7 @@ class VolMesh3gs(VolMesh):
     #   inherited functions
     # --------------------------------------------------------------------------
 
-    cell_split_vertex      = cell_split_vertex
+    # cell_split_vertex      = cell_split_vertex
     # datastructure_centroid = datastructure_centroid
 
     # --------------------------------------------------------------------------
@@ -563,7 +562,6 @@ class VolMesh3gs(VolMesh):
         artist = VolMeshArtist(self)
         artist.draw_edgelabels(**kwattr)
 
-
     # def draw_face_normals(self, **kwattr):
     #     draw_volmesh_face_normals(self, **kwattr)
 
@@ -583,3 +581,19 @@ class VolMesh3gs(VolMesh):
     #         egi.draw_edges()
     #         egi.draw_facelabels(color=(150, 150, 150))
     #         egi.draw_vertexlabels(color=(255, 150, 150))
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   Main
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+if __name__ == '__main__':
+    pass
+

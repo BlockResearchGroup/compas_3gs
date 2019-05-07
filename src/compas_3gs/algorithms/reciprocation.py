@@ -14,19 +14,32 @@ from compas_3gs.algorithms import volmesh_planarise
 from compas_3gs.utilities import print_result
 
 
+__author__     = 'Juney Lee'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'juney.lee@arch.ethz.ch'
+
+
 __all__ = ['volmesh_reciprocate']
 
 
 def volmesh_reciprocate(volmesh,
                         formdiagram,
+
                         kmax=100,
                         weight=1.0,
+
                         fix_vkeys=[],
+
                         edge_min=None,
                         edge_max=None,
+
                         tolerance=0.001,
+
                         callback=None,
-                        callback_args=None):
+                        callback_args=None,
+
+                        print_result_info=False):
     """Perpendicularizes the faces of the polyhedral force diagram to the corresponding dual edges in the polyhedral form diagram.
 
     Parameters
@@ -51,6 +64,8 @@ def volmesh_reciprocate(volmesh,
         A user-defined callback function to be executed after every iteration.
     callback_args : tuple, optional [None]
         Additional parameters to be passed to the callback.
+    print_result_info : bool, optional
+        If True, print the result of the algorithm.
 
     Raises
     ------
@@ -59,7 +74,7 @@ def volmesh_reciprocate(volmesh,
 
     Notes
     -----
-        The orientations of the boundary faces of the polyhedral force diagram are always fixed by default.
+    The orientations of the boundary faces of the polyhedral force diagram are always fixed by default.
 
     .. seealso ::
         compas.geometry.network_parallelise_edges
@@ -70,13 +85,18 @@ def volmesh_reciprocate(volmesh,
         if not callable(callback):
             raise Exception('Callback is not callable.')
 
-    free_vkeys = list(set(formdiagram.vertex) - set(fix_vkeys))
+    free_vkeys   = list(set(formdiagram.vertex) - set(fix_vkeys))
+
+    init_normals = {fkey: volmesh.halfface_normal(fkey) for fkey in volmesh.faces()}
+
+    boundary_fkeys  = volmesh.halffaces_on_boundary()
 
     # --------------------------------------------------------------------------
     #   1. compute target vectors
     # --------------------------------------------------------------------------
     target_vectors = {}
     target_normals = {}
+
     for u, v in formdiagram.edges():
         u_hfkey     = volmesh.cell_pair_halffaces(u, v)[0]
         face_normal = scale_vector(volmesh.halfface_oriented_normal(u_hfkey), weight)
@@ -86,10 +106,15 @@ def volmesh_reciprocate(volmesh,
                                    'target': target}
         target_normals[u_hfkey] = target
 
+    for fkey in boundary_fkeys:
+        target_normals[fkey] = init_normals[fkey]
+
     # --------------------------------------------------------------------------
     #   2. loop
     # --------------------------------------------------------------------------
     for k in range(kmax):
+
+        deviation_boundary_perp = 0
 
         # ----------------------------------------------------------------------
         #   3. update form diagram
@@ -140,19 +165,31 @@ def volmesh_reciprocate(volmesh,
         # ----------------------------------------------------------------------
         #   4. update force diagram
         # ----------------------------------------------------------------------
+
         if weight != 1:
             volmesh_planarise(volmesh,
                               kmax=1,
-                              target_normals=target_normals,
-                              fix_boundary_normals=True)
+                              target_normals=target_normals)
+
+        # boundary perpness
+        for fkey in boundary_fkeys:
+            f_normal = volmesh.halfface_normal(fkey)
+            target_normal = target_normals[fkey]
+            b_perpness = 1 - abs(dot_vectors(f_normal, target_normal))
+
+            if b_perpness > deviation_boundary_perp:
+                deviation_boundary_perp = b_perpness
 
         # ----------------------------------------------------------------------
         #   5. check convergence
         # ----------------------------------------------------------------------
-        deviation = _check_deviation(volmesh, formdiagram)
+        perpness = _check_deviation(volmesh, formdiagram)
 
-        if deviation < tolerance:
-            print_result('Reciprocation', k, deviation)
+        if perpness < tolerance and deviation_boundary_perp < tolerance:
+
+            if print_result_info:
+                print_result('Reciprocation', k, perpness)
+
             break
 
         # callback / conduit ---------------------------------------------------

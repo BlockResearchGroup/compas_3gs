@@ -50,7 +50,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = ['Juney Lee']
+__author__     = 'Juney Lee'
 __copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
@@ -637,8 +637,6 @@ def _cell_draw_current(volmesh, hfkey, center, iteration, color):
 
     name = 'iteration-{}'.format(iteration)
     rs.AddLayer('iteration-{}'.format(iteration))
-
-
 
     hf_vkeys = volmesh.halfface_vertices(hfkey)
     points   = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]

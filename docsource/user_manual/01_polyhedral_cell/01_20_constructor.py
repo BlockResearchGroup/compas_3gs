@@ -16,7 +16,7 @@ import compas
 from compas.geometry import subtract_vectors
 
 from compas_3gs.algorithms import egi_from_vectors
-from compas_3gs.algorithms import unit_polyhedron
+from compas_3gs.algorithms import cell_from_egi
 from compas_3gs.algorithms import mesh_planarise
 
 from compas_3gs.rhino.display import MeshConduit
@@ -45,7 +45,7 @@ egi = egi_from_vectors(vectors, origin)
 
 
 # 3-4. unit polyhedron + target normals
-cell = unit_polyhedron(egi)
+cell = cell_from_egi(egi)
 
 for fkey in cell.face:
     if fkey not in target_areas:

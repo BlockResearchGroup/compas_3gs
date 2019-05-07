@@ -19,19 +19,26 @@ from compas.geometry import is_point_on_segment
 from compas.geometry import project_point_plane
 
 
+__author__     = 'Juney Lee'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'juney.lee@arch.ethz.ch'
+
+
 __all__  = ['resultant_vector',
-            'datastructure_centroid',
 
             'polygon_normal_oriented',
             'polygon_area_oriented',
             'polygon_area_footprint',
             'scale_polygon',
 
-            'mesh_face_flatness',
-            'mesh_face_areaness',
+            'cell_face_flatness',
+            'cell_face_areaness',
 
             'volmesh_face_flatness',
-            'volmesh_face_areaness']
+            'volmesh_face_areaness',
+
+            'datastructure_centroid']
 
 
 # ******************************************************************************
@@ -122,6 +129,7 @@ def polygon_normal_oriented(polygon, unitized=True):
     assert p > 2, "At least three points required"
     w          = centroid_points(polygon)
     normal_sum = (0, 0, 0)
+
     for i in range(-1, len(polygon) - 1):
         u          = polygon[i]
         v          = polygon[i + 1]
@@ -129,8 +137,10 @@ def polygon_normal_oriented(polygon, unitized=True):
         vw         = subtract_vectors(w, v)
         normal     = scale_vector(cross_vectors(uv, vw), 0.5)
         normal_sum = add_vectors(normal_sum, normal)
+
     if not unitized:
         return normal_sum
+
     return normalize_vector(normal_sum)
 
 
@@ -159,11 +169,8 @@ def polygon_area_footprint(polygon):
 
     Parameters
     ----------
-    polygon : sequence
-        The XYZ coordinates of the vertices/corners of the polygon.
-        The vertices are assumed to be in order.
-        The polygon is assumed to be closed:
-        the first and last vertex in the sequence should not be the same.
+    polygon : list of lists
+        A list of polygon point coordinates.
 
     Returns
     -------
@@ -185,13 +192,13 @@ def polygon_area_footprint(polygon):
     return area
 
 
-def scale_polygon(points_dict, scale):
+def scale_polygon(polygon, scale):
     """Scale a polygon.
 
     Parameters
     ----------
-    points_dict : dictionary
-        Dictionary of vkey-xyz pairs defining the polygon.
+    polygon : list of lists
+        A list of polygon point coordinates.
 
     Returns
     -------
@@ -199,17 +206,16 @@ def scale_polygon(points_dict, scale):
         Reordered polygon point coordinates.
 
     """
-    points = points_dict.values()
-    center = centroid_points(points)
-    new_points_dict = {}
+    center = centroid_points(polygon)
 
-    for key in points_dict:
-        point = points_dict[key]
-        vector = subtract_vectors(point, center)
-        new_point = add_vectors(center, scale_vector(vector, scale))
-        new_points_dict[key] = new_point
+    scaled_polygon = []
 
-    return new_points_dict
+    for pt in polygon:
+        vector = subtract_vectors(pt, center)
+        new_pt = add_vectors(center, scale_vector(vector, scale))
+        scaled_polygon.append(new_pt)
+
+    return scaled_polygon
 
 
 def untangle_polygon(polygon):
@@ -351,12 +357,12 @@ def is_polygon_self_intersecting(polygon):
 # ******************************************************************************
 
 
-def mesh_face_flatness(mesh):
+def cell_face_flatness(cell):
     """Compute the flatness of every face of a mesh.
 
     Parameters
     ----------
-    volmesh : volmesh object
+    cell : mesh object
 
     Returns
     -------
@@ -365,11 +371,11 @@ def mesh_face_flatness(mesh):
 
     """
 
-    flatness_dict = {fkey : 0 for fkey in mesh.face}
+    flatness_dict = {fkey : 0 for fkey in cell.face}
 
-    for fkey in mesh.face:
-        f_vkeys = mesh.face_vertices(fkey)
-        f_pts   = [mesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+    for fkey in cell.face:
+        f_vkeys = cell.face_vertices(fkey)
+        f_pts   = [cell.vertex_coordinates(vkey) for vkey in f_vkeys]
         dev     = polygon_flatness(f_pts)
 
         flatness_dict[fkey] = dev
@@ -377,12 +383,12 @@ def mesh_face_flatness(mesh):
     return flatness_dict
 
 
-def mesh_face_areaness(mesh, target_areas):
+def cell_face_areaness(cell, target_areas):
     """Compute the areaness of every face of a mesh.
 
     Parameters
     ----------
-    mesh : mesh object
+    cell : mesh object
 
     Returns
     -------
@@ -393,7 +399,7 @@ def mesh_face_areaness(mesh, target_areas):
     areaness_dict = {}
 
     for fkey in target_areas:
-        area = mesh.face_area(fkey)
+        area = cell.face_area(fkey)
         areaness_dict[fkey] = abs(target_areas[fkey] - area)
 
     return areaness_dict
@@ -449,10 +455,21 @@ def volmesh_face_areaness(volmesh, target_areas):
 
     """
     areaness_dict = {}
+
     for hfkey in target_areas:
         area = volmesh.halfface_oriented_area(hfkey)
         areaness_dict[hfkey] = abs(target_areas[hfkey] - area)
+
     return areaness_dict
+
+
+def _get_current_volmesh_normals(volmesh):
+    normal_dict = {}
+    for hfkey in volmesh.halfface:
+        center = volmesh.halfface_center(hfkey)
+        normal = volmesh.halfface_oriented_normal(hfkey)
+        normal_dict[hfkey] = {'normal': normal, 'center': center}
+    return normal_dict
 
 
 # ******************************************************************************
@@ -483,3 +500,18 @@ def datastructure_centroid(datastructure):
     points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertex]
 
     return centroid_points(points)
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   Main
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
+
+if __name__ == '__main__':
+    pass

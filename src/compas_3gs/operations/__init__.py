@@ -12,10 +12,6 @@ from __future__ import division
 from __future__ import print_function
 
 from .celloperations import *
-from .edgeoperations import *
-from .faceoperations import *
-from .meshoperations import *
-from .vertexoperations import *
 from .volmeshoperations import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

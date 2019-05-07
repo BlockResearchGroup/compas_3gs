@@ -5,7 +5,12 @@ from __future__ import print_function
 from compas.geometry import centroid_polyhedron
 
 from compas_3gs.datastructures import Mesh3gs
-from compas_3gs.diagrams import EGI
+
+
+__author__     = 'Juney Lee'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['Cell']
@@ -21,7 +26,6 @@ class Cell(Mesh3gs):
 
         self.cell = Mesh3gs()
         self.egi  = Mesh3gs()
-
 
         a  = {}
         va = {'x_fix': False,
@@ -46,10 +50,16 @@ class Cell(Mesh3gs):
         return centroid_polyhedron(vertices, self.face)
 
 
-# ==============================================================================
-# Main
-# ==============================================================================
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+#
+#   Main
+#
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+
 
 if __name__ == '__main__':
-
     pass

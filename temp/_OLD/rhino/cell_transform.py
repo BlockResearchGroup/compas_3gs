@@ -41,7 +41,7 @@ gray           = System.Drawing.Color.FromArgb(200, 200, 200)
 green          = System.Drawing.Color.FromArgb(0, 255, 0)
 white          = System.Drawing.Color.FromArgb(255, 255, 255)
 
-__author__     = ['Juney Lee']
+__author__     = 'Juney Lee'
 __copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'

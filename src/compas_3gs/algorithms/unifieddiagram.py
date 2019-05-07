@@ -8,7 +8,7 @@ from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 
 
-__author__     = ['Juney Lee']
+__author__     = 'Juney Lee'
 __copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
@@ -34,15 +34,22 @@ def volmesh_ud(volmesh,
 
     Returns
     -------
-    dictionary of dictionaries
+    halffaces : dictionary
         A dictionary of dictionaries: hfkey-{vkey: (x, y, z)}.
+    prisms : dictionary
+        A dictinoary of dictinoaries: uv - [face coordinates]
+
+    Raises
+    ------
+    Exception
+        If scale is 0, which means the unified diagram is equivalent to the polyhedral force diagram.
+    Exception
+        If scale is 0, which means the unified diagram is equivalent to the polyhedral form diagram.
 
     Notes
     -----
-    The prisms are implemented as convex hull of two halffaces for simplicity and to resolve any small geometric errors.
-
-    Unified diagram with a scale of 0 is equivalent to the polyhedral force diagram, while a scale of 1 is equivalent to the polyhedral form diagram.
-
+    - The prisms are implemented as convex hull of two halffaces for simplicity and to resolve any small geometric errors.
+    - Unified diagram with a scale of 0 is equivalent to the polyhedral force diagram, while a scale of 1 is equivalent to the polyhedral form diagram.
 
     """
 

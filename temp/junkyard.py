@@ -137,6 +137,9 @@ for fkey, attr in faces():
 
 m = [0, 1, 2, 3]
 
+if len(m) < 5:
+    print('no')
+
 a, b, c = m[0:3]
 
 print(a, b, c)

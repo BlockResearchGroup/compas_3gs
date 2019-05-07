@@ -3,26 +3,16 @@ from __future__ import print_function
 from __future__ import division
 
 import compas
-import compas_rhino
-import compas_3gs
-
-from compas.utilities import i_to_rgb
-from compas.utilities import i_to_red
-
-from compas_rhino.artists import VolMeshArtist
-from compas_rhino.artists import NetworkArtist
 
 from compas_rhino.conduits import Conduit
 
 try:
     import Rhino
-    import rhinoscriptsyntax as rs
     import scriptcontext as sc
 
     from Rhino.Geometry import Point3d
     from Rhino.Geometry import Line
 
-    from System.Drawing import Color
     from System.Drawing.Color import FromArgb
 
     find_object    = sc.doc.Objects.Find
@@ -41,6 +31,12 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
+__author__    = 'Juney Lee'
+__copyright__ = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'juney.lee@arch.ethz.ch'
+
+
 __all__ = ['MeshConduit',
            'VolmeshConduit',
            'ReciprocationConduit']
@@ -57,6 +53,9 @@ __all__ = ['MeshConduit',
 # ******************************************************************************
 
 class MeshConduit(Conduit):
+    """Conduit for mesh algorithms.
+
+    """
 
     def __init__(self, mesh, face_colordict={}, **kwargs):
         super(MeshConduit, self).__init__(**kwargs)
@@ -67,8 +66,8 @@ class MeshConduit(Conduit):
     def DrawForeground(self, e):
         _conduit_mesh_edges(self.mesh, e)
 
-        if face_colordict:
-            for fkey in face_colordict:
+        if self.face_colordict:
+            for fkey in self.face_colordict:
                 color  = FromArgb(*self.face_colordict[fkey])
                 points = self.mesh.face_coordinates(fkey)
                 points.append(points[0])
@@ -88,6 +87,9 @@ class MeshConduit(Conduit):
 
 
 class VolmeshConduit(Conduit):
+    """Conduit for volmesh algorithms.
+
+    """
 
     def __init__(self, volmesh, face_colordict={}, **kwargs):
         super(VolmeshConduit, self).__init__(**kwargs)
@@ -120,6 +122,9 @@ class VolmeshConduit(Conduit):
 
 
 class ReciprocationConduit(Conduit):
+    """Conduit for the reciprocation algorithm.
+
+    """
 
     def __init__(self, volmesh, network, **kwargs):
         super(ReciprocationConduit, self).__init__(**kwargs)
@@ -173,18 +178,11 @@ def _conduit_volmesh_edges(volmesh, e):
 # ******************************************************************************
 # ******************************************************************************
 #
-#   other helpers
+#   main
 #
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
-
-
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
 
 
 if __name__ == "__main__":
