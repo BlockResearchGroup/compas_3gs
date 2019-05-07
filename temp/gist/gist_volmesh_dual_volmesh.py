@@ -27,7 +27,7 @@ def volmesh_dual_volmesh(volmesh):
 
     # 3. find interior vertices ------------------------------------------------
     ext_vkeys = []
-    boundary_hfkeys = volmesh.halffaces_boundary()
+    boundary_hfkeys = volmesh.halffaces_on_boundary()
     for hfkey in boundary_hfkeys:
         for vkey in volmesh.halfface[hfkey]:
             ext_vkeys.append(vkey)
@@ -55,7 +55,7 @@ def volmesh_dual_volmesh(volmesh):
     return dual_volmesh
 
 
-def halffaces_boundary(self):
+def halffaces_on_boundary(self):
     halffaces = []
     for ckey in self.cell:
         hfkeys = self.cell_halffaces(ckey)
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     from compas_rhino.helpers.artists.volmeshartist import VolMeshArtist
     from compas_rhino.helpers.volmesh import volmesh_from_polysurfaces
 
-    VolMesh.halffaces_boundary = halffaces_boundary
+    VolMesh.halffaces_on_boundary = halffaces_on_boundary
     VolMesh.halfface_vertex_descendant = halfface_vertex_descendant
 
     guids   = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)

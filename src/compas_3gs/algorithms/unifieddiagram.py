@@ -14,10 +14,8 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = [
-    'volmesh_ud',
-    'cellnetwork_ud'
-]
+__all__ = ['volmesh_ud',
+           'cellnetwork_ud']
 
 
 def volmesh_ud(volmesh,
@@ -62,7 +60,7 @@ def volmesh_ud(volmesh,
     # --------------------------------------------------------------------------
     #   1. current positions of diagrams
     # --------------------------------------------------------------------------
-    volmesh_center = volmesh.datastructure_centroid()
+    volmesh_center = volmesh.centroid()
     network_center = network.datastructure_centroid()
     translation    = subtract_vectors(volmesh_center, network_center)
 
@@ -96,7 +94,7 @@ def volmesh_ud(volmesh,
     prism_faces = {}
 
     for u, v in network.edges():
-        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
+        u_hfkey, v_hfkey = volmesh.cell_pair_halffaces(u, v)
         u_pts   = halffaces[u_hfkey].values()
         v_pts   = halffaces[v_hfkey].values()
         pt_list = u_pts + v_pts

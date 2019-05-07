@@ -10,7 +10,7 @@ from compas_3gs.utilities import scale_polygon
 
 from compas_3gs.operations import cell_collapse_short_edges
 
-from compas_3gs.algorithms.helpers import print_result
+from compas_3gs.utilities import print_result
 
 
 __all__ = ['mesh_planarise',
@@ -282,7 +282,7 @@ def volmesh_planarise(volmesh,
     # --------------------------------------------------------------------------
     free_vkeys      = list(set(volmesh.vertex) - set(fix_vkeys))
     initial_normals = _get_current_volmesh_normals(volmesh)
-    boundary_fkeys  = set(volmesh.halffaces_boundary())
+    boundary_fkeys  = set(volmesh.halffaces_on_boundary())
 
     # --------------------------------------------------------------------------
     #   2. loop
@@ -296,13 +296,13 @@ def volmesh_planarise(volmesh,
 
         for fkey in volmesh.faces():
 
-            fkey_pair = volmesh.halfface_pair(fkey)
+            fkey_pair = volmesh.halfface_opposite_halfface(fkey)
 
             # evaluate current face --------------------------------------------
             f_vkeys  = volmesh.halfface_vertices(fkey)
             f_center = volmesh.halfface_center(fkey)
-            f_normal = volmesh.halfface_normal(fkey)
-            f_area   = volmesh.halfface_area(fkey)
+            f_normal = volmesh.halfface_oriented_normal(fkey)
+            f_area   = volmesh.halfface_oriented_area(fkey)
 
             # override with manual target values -------------------------------
             if _pair_membership(fkey, fkey_pair, target_centers):
@@ -342,13 +342,9 @@ def volmesh_planarise(volmesh,
                 if areaness > deviation_area:
                     deviation_area = areaness
 
-
-
             # collect new coordinates ------------------------------------------
             for vkey in new_face:
                 new_xyz[vkey].append(new_face[vkey])
-
-        print(deviation_area)
 
         # ----------------------------------------------------------------------
         #   5. compute new volmesh vertex coordinates
@@ -409,7 +405,7 @@ def _get_current_volmesh_normals(volmesh):
     normal_dict = {}
     for hfkey in volmesh.halfface:
         center = volmesh.halfface_center(hfkey)
-        normal = volmesh.halfface_normal(hfkey)
+        normal = volmesh.halfface_oriented_normal(hfkey)
         normal_dict[hfkey] = {'normal': normal, 'center': center}
     return normal_dict
 

@@ -52,7 +52,7 @@ def volmesh_planarise_faces(volmesh,
 
             target_normal = volmesh.f_data[hfkey]['target_normal']
             if target_normal:
-                hf_normal = volmesh.halfface_normal(hfkey)
+                hf_normal = volmesh.halfface_oriented_normal(hfkey)
             hf_center = volmesh.halfface_center(hfkey)
 
             hf_vkeys  = volmesh.halfface_vertices(hfkey)
@@ -108,7 +108,7 @@ def volmesh_planarise_faces(volmesh,
 
             target_normal = volmesh.f_data[hfkey]['target_normal']
             if target_normal:
-                hf_normal = volmesh.halfface_normal(hfkey)
+                hf_normal = volmesh.halfface_oriented_normal(hfkey)
             hf_center = volmesh.halfface_center(hfkey)
 
             hf_vkeys  = volmesh.halfface_vertices(hfkey)
@@ -116,7 +116,7 @@ def volmesh_planarise_faces(volmesh,
 
             target_area = volmesh.f_data[hfkey]['target_area']
             if target_area:
-                area        = volmesh.halfface_area(hfkey)
+                area        = volmesh.halfface_oriented_area(hfkey)
                 deviation   += abs(target_area - area)
                 s           = (target_area / area) ** 0.5
                 points      = scale_polygon(points, s)

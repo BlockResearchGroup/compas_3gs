@@ -346,7 +346,7 @@ if __name__ == '__main__':
 #     return cell
 
 
-# def cell_mesh_from_volmesh():
+# def cell_to_mesh_from_volmesh():
 
 #     guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 #     rs.HideObjects(guids)

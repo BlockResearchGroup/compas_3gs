@@ -54,12 +54,10 @@ white          = System.Drawing.Color.FromArgb(255, 255, 255)
 
 def volmesh_pull_faces(volmesh):
 
-
-
     # targets = {}
 
     # for hfkey in volmesh.faces():
-    #     normal = volmesh.halfface_normal(hfkey)
+    #     normal = volmesh.halfface_oriented_normal(hfkey)
     #     targets[hfkey] = normal
 
     # vertex_move(volmesh)
@@ -154,9 +152,9 @@ def volmesh_pull_faces(volmesh):
 
     # 3. move face -------------------------------------------------------------
     hf_vkeys    = volmesh.halfface_vertices(hfkey)
-    hf_normal   = volmesh.halfface_normal(hfkey)
+    hf_normal   = volmesh.halfface_oriented_normal(hfkey)
     hf_center   = volmesh.halfface_center(hfkey)
-    hf_area     = volmesh.halfface_area(hfkey)
+    hf_area     = volmesh.halfface_oriented_area(hfkey)
 
     cell_vkeys = volmesh.cell_vertices(ckey)
     cell_center = volmesh.cell_centroid(ckey)
@@ -215,7 +213,7 @@ def volmesh_pull_faces(volmesh):
 
         seen = set()
         for face_key in dep_hfkeys + [hfkey]:
-            hf_edges   = volmesh.halfface_edges(face_key)
+            hf_edges   = volmesh.halfface_halfedges(face_key)
             for edge in hf_edges:
                 u = edge[0]
                 v = edge[1]
@@ -261,16 +259,16 @@ def volmesh_pull_faces(volmesh):
 
 
 
-    # target_normals = _volmesh_current_halfface_normals(volmesh)
+    # target_normals = _volmesh_current_halfface_oriented_normals(volmesh)
     # target_centers = _volmesh_current_halfface_centers(volmesh)
     # for dep_hfkey in dep_hfkeys:
     #     del target_centers[dep_hfkey]
-    #     pair = volmesh.halfface_pair(dep_hfkey)
+    #     pair = volmesh.halfface_opposite_halfface(dep_hfkey)
     #     if pair:
-    #         del target_centers[volmesh.halfface_pair(dep_hfkey)]
+    #         del target_centers[volmesh.halfface_opposite_halfface(dep_hfkey)]
 
     # target_centers[hfkey] = gp
-    # target_centers[volmesh.halfface_pair(hfkey)] = gp
+    # target_centers[volmesh.halfface_opposite_halfface(hfkey)] = gp
 
     # volmesh_planarise_faces(volmesh,
     #                         count=1000,
@@ -305,7 +303,7 @@ def _cell_update_halfface(volmesh, hfkey, xyz):
     ckey     = volmesh.halfface_cell(hfkey)
     cell_vkeys = volmesh.cell_vertices(ckey)
     hf_vkeys = volmesh.halfface_vertices(hfkey)
-    plane    = (xyz, volmesh.halfface_normal(hfkey))
+    plane    = (xyz, volmesh.halfface_oriented_normal(hfkey))
 
     edges = {key: [] for key in hf_vkeys}
     for u in hf_vkeys:
@@ -334,7 +332,7 @@ def _volmesh_compute_dependent_face_intersections(volmesh, hfkey, xyz):
     vertex_xyz = _cell_update_halfface(volmesh, hfkey, xyz)
 
     ckey       = volmesh.halfface_cell(hfkey)
-    hf_edges   = volmesh.halfface_edges(hfkey)
+    hf_edges   = volmesh.halfface_halfedges(hfkey)
     dep_hfkeys = volmesh.halfface_dependent_halffaces(hfkey)
     hf_centers = {}
     for nbr_hfkey in dep_hfkeys:
@@ -385,10 +383,10 @@ def _volmesh_compute_dependent_face_intersections(volmesh, hfkey, xyz):
     return vertex_xyz
 
 
-def _volmesh_current_halfface_normals(volmesh):
+def _volmesh_current_halfface_oriented_normals(volmesh):
     normals = {}
     for hfkey in volmesh.halfface:
-        normal = volmesh.halfface_normal(hfkey)
+        normal = volmesh.halfface_oriented_normal(hfkey)
         normals[hfkey] = normal
     return normals
 

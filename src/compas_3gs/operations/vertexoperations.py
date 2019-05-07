@@ -49,7 +49,7 @@ def vertex_lift(volmesh, vkey, target_xyz, hfkeys):
     """
 
     # check if vertex is interior ----------------------------------------------
-    if not volmesh.is_vertex_boundary(vkey):
+    if not volmesh.is_vertex_on_boundary(vkey):
         raise Exception('This vertex is interior.')
 
     # add new, lifted vertex ---------------------------------------------------

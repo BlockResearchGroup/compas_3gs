@@ -67,7 +67,7 @@ class CellSelector(object):
 
 def select_boundary_halffaces(volmesh):
 
-    hfkeys = volmesh.halffaces_boundary()
+    hfkeys = volmesh.halffaces_on_boundary()
 
     volmesh.clear()
     volmesh.draw_edges()

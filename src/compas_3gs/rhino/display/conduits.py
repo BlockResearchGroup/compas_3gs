@@ -14,8 +14,6 @@ from compas_rhino.artists import NetworkArtist
 
 from compas_rhino.conduits import Conduit
 
-
-
 try:
     import Rhino
     import rhinoscriptsyntax as rs
@@ -41,12 +39,6 @@ try:
 
 except ImportError:
     compas.raise_if_ironpython()
-
-
-__author__     = ['Juney Lee']
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['MeshConduit',

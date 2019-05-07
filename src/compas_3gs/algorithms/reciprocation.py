@@ -11,7 +11,7 @@ from compas.geometry import centroid_points
 
 from compas_3gs.algorithms import volmesh_planarise
 
-from compas_3gs.algorithms.helpers import print_result
+from compas_3gs.utilities import print_result
 
 
 __all__ = ['volmesh_reciprocate']
@@ -78,8 +78,8 @@ def volmesh_reciprocate(volmesh,
     target_vectors = {}
     target_normals = {}
     for u, v in formdiagram.edges():
-        u_hfkey     = volmesh.cell_pair_hfkeys(u, v)[0]
-        face_normal = scale_vector(volmesh.halfface_normal(u_hfkey), weight)
+        u_hfkey     = volmesh.cell_pair_halffaces(u, v)[0]
+        face_normal = scale_vector(volmesh.halfface_oriented_normal(u_hfkey), weight)
         edge_vector = scale_vector(formdiagram.edge_vector(u, v), 1 - weight)
         target      = normalize_vector(add_vectors(face_normal, edge_vector))
         target_vectors[(u, v)]  = {'fkey'  : u_hfkey,
@@ -186,8 +186,8 @@ def _get_lambda(vector_1, vector_2):
 def _check_deviation(volmesh, network):
     deviation = 0
     for u, v in network.edges():
-        u_hf, v_hf = volmesh.cell_pair_hfkeys(u, v)
-        normal = volmesh.halfface_normal(u_hf)
+        u_hf, v_hf = volmesh.cell_pair_halffaces(u, v)
+        normal = volmesh.halfface_oriented_normal(u_hf)
         edge   = network.edge_vector(u, v, unitized=True)
         dot    = dot_vectors(normal, edge)
         perp_check = 1 - abs(dot)

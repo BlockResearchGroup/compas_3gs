@@ -662,40 +662,10 @@ class VolMesh(FromToData,
         return faces
 
     # --------------------------------------------------------------------------
-    # vertex topology
-    # --------------------------------------------------------------------------
-
-    def vertex_neighbors(self, vkey):
-        return self.plane[vkey].keys()
-
-    # --------------------------------------------------------------------------
-    # halfface topology
-    # --------------------------------------------------------------------------
-
-    def halfface_cell(self, fkey):
-        u = self.halfface[fkey][0]
-        v = self.halfface[fkey][1]
-        w = self.halfface[fkey][2]
-        return self.plane[u][v][w]
-
-    def halfface_vertices(self, fkey):
-        return self.halfface[fkey]
-
-    def halfface_edges(self, fkey):
-        vertices = self.halfface_vertices(fkey)
-        edges = []
-        for i in range(-1, len(vertices) - 1):
-            edges.append((vertices[i], vertices[i + 1]))
-        return edges
-
-    def halfface_adjacency(self, ckey):
-        raise NotImplementedError
-
-    # --------------------------------------------------------------------------
     # cell topology
     # --------------------------------------------------------------------------
 
-    def cell_neighbours(self, ckey):
+    def cell_neighbors(self, ckey):
         nbrs = []
         for fkey in self.cell_halffaces(ckey):
             u, v, w = self.halfface[fkey][0:3]
@@ -721,11 +691,11 @@ class VolMesh(FromToData,
     def cell_edges(self, ckey):
         halfedges = []
         for fkey in self.cell_halffaces(ckey):
-            halfedges += self.halfface_edges(fkey)
+            halfedges += self.halfface_halfedges(fkey)
         edges = set(frozenset(uv) for uv in halfedges)
         return map(list, edges)
 
-    def cell_vertices_and_halffaces(self, ckey):
+    def cell_to_vertices_and_halffaces(self, ckey):
         vkeys = self.cell_vertices(ckey)
         fkeys = self.cell_halffaces(ckey)
         vkey_vindex = dict((vkey, index) for index, vkey in enumerate(vkeys))
@@ -739,8 +709,8 @@ class VolMesh(FromToData,
     def cell_tree(self, root):
         raise NotImplementedError
 
-    def cell_mesh(self, ckey):
-        vertices, halffaces = self.cell_vertices_and_halffaces(ckey)
+    def cell_to_mesh(self, ckey):
+        vertices, halffaces = self.cell_to_vertices_and_halffaces(ckey)
         return Mesh.from_vertices_and_faces(vertices, halffaces)
 
     # --------------------------------------------------------------------------

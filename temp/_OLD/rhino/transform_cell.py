@@ -53,7 +53,7 @@ def cell_pull_face(volmesh):
         return
 
     # face info ----------------------------------------------------------------
-    normal = volmesh.halfface_normal(hfkey)
+    normal = volmesh.halfface_oriented_normal(hfkey)
     center = volmesh.halfface_center(hfkey)
     vkeys  = volmesh.halfface_vertices(hfkey, ordered=True)
 

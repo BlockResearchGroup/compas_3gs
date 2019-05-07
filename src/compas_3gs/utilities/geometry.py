@@ -2,37 +2,21 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry import angle_vectors
-from compas.geometry import is_ccw_xy
 from compas.geometry import cross_vectors
 from compas.geometry import subtract_vectors
-from compas.geometry import angle_vectors
-from compas.geometry import translate_points
-from compas.geometry import rotate_points
-from compas.geometry import area_polygon
 from compas.geometry import normalize_vector
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
-from compas.geometry import normal_polygon
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 from compas.geometry import weighted_centroid_points
 from compas.geometry import centroid_points
+from compas.geometry import midpoint_point_point
 from compas.geometry import bestfit_plane
-from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import intersection_line_line
 from compas.geometry import is_point_on_segment
-from compas.geometry import intersection_segment_segment
-from compas.geometry.transformations.transformations import project_point_plane
-
-from compas.datastructures import Network
-
-from compas.utilities import geometric_key
-
-# from compas_rhino.utilities import draw_labels
-# from compas_rhino.utilities import draw_lines
-# from compas_rhino.utilities import draw_faces
+from compas.geometry import project_point_plane
 
 
 __all__  = ['resultant_vector',
@@ -40,6 +24,7 @@ __all__  = ['resultant_vector',
 
             'polygon_normal_oriented',
             'polygon_area_oriented',
+            'polygon_area_footprint',
             'scale_polygon',
 
             'mesh_face_flatness',
@@ -116,12 +101,12 @@ def resultant_vector(vectors, locations):
 # ******************************************************************************
 
 
-def polygon_normal_oriented(points, unitized=True):
+def polygon_normal_oriented(polygon, unitized=True):
     """Compute the oriented normal of any closed polygon (can be convex, concave or complex).
 
     Parameters
     ----------
-    points : sequence
+    polygon : sequence
         The XYZ coordinates of the vertices/corners of the polygon.
         The vertices are assumed to be in order.
         The polygon is assumed to be closed:
@@ -133,13 +118,13 @@ def polygon_normal_oriented(points, unitized=True):
         The weighted or unitized normal vector of the polygon.
 
     """
-    p = len(points)
+    p = len(polygon)
     assert p > 2, "At least three points required"
-    w          = centroid_points(points)
+    w          = centroid_points(polygon)
     normal_sum = (0, 0, 0)
-    for i in range(-1, len(points) - 1):
-        u          = points[i]
-        v          = points[i + 1]
+    for i in range(-1, len(polygon) - 1):
+        u          = polygon[i]
+        v          = polygon[i + 1]
         uv         = subtract_vectors(v, u)
         vw         = subtract_vectors(w, v)
         normal     = scale_vector(cross_vectors(uv, vw), 0.5)
@@ -149,12 +134,12 @@ def polygon_normal_oriented(points, unitized=True):
     return normalize_vector(normal_sum)
 
 
-def polygon_area_oriented(points):
-    """Compute the area of a polygon (can be convex or concave).
+def polygon_area_oriented(polygon):
+    """Compute the oriented area of a polygon (can be convex or concave).
 
     Parameters
     ----------
-    points : sequence
+    polygon : sequence
         The XYZ coordinates of the vertices/corners of the polygon.
         The vertices are assumed to be in order.
         The polygon is assumed to be closed:
@@ -166,23 +151,81 @@ def polygon_area_oriented(points):
         The area of the polygon.
 
     """
-    return length_vector(polygon_normal_oriented(points, unitized=False))
+    return length_vector(polygon_normal_oriented(polygon, unitized=False))
+
+
+def polygon_area_footprint(polygon):
+    """Compute the non-oriented area of a polygon (can be convex or concave).
+
+    Parameters
+    ----------
+    polygon : sequence
+        The XYZ coordinates of the vertices/corners of the polygon.
+        The vertices are assumed to be in order.
+        The polygon is assumed to be closed:
+        the first and last vertex in the sequence should not be the same.
+
+    Returns
+    -------
+    float
+        The non-oriented area of the polygon.
+
+    """
+    area = 0
+    w    = centroid_points(polygon)
+
+    for i in range(-1, len(polygon) - 1):
+        u      = polygon[i]
+        v      = polygon[i + 1]
+        uv     = subtract_vectors(v, u)
+        vw     = subtract_vectors(w, v)
+        normal = scale_vector(cross_vectors(uv, vw), 0.5)
+        area   += length_vector(normal)
+
+    return area
 
 
 def scale_polygon(points_dict, scale):
+    """Scale a polygon.
+
+    Parameters
+    ----------
+    points_dict : dictionary
+        Dictionary of vkey-xyz pairs defining the polygon.
+
+    Returns
+    -------
+    list of lists
+        Reordered polygon point coordinates.
+
+    """
     points = points_dict.values()
     center = centroid_points(points)
     new_points_dict = {}
+
     for key in points_dict:
         point = points_dict[key]
         vector = subtract_vectors(point, center)
         new_point = add_vectors(center, scale_vector(vector, scale))
         new_points_dict[key] = new_point
+
     return new_points_dict
 
 
-def untangle_polygon(points):
+def untangle_polygon(polygon):
+    """Untangle a polygon.
 
+    Parameters
+    ----------
+    polygon : list of lists
+        A list of polygon point coordinates.
+
+    Returns
+    -------
+    list of lists
+        Reordered polygon point coordinates.
+
+    """
     def _cross_edges(edge1, edge2):
         a, b      = edge1
         c, d      = edge2
@@ -191,44 +234,50 @@ def untangle_polygon(points):
         cross     = cross_vectors(edge1_vec, edge2_vec)
         return cross
 
-    xyz        = {i: points[i] for i in range(len(points))}
-    vkeys      = range(len(points))
+    xyz   = {i: polygon[i] for i in range(len(polygon))}
+    vkeys = range(len(polygon))
 
     count = 20
     while count:
         count -= 1
         moved = []
-        for i in range(-1, len(points) - 1):
+
+        for i in range(-1, len(polygon) - 1):
             t       = xyz[vkeys[i - 2]]
             u       = xyz[vkeys[i - 1]]
             v       = xyz[vkeys[i]]
             w       = xyz[vkeys[i + 1]]
+
             u_cross = _cross_edges((t, u), (u, v))
             v_cross = _cross_edges((u, v), (v, w))
+
             dot = dot_vectors(u_cross, v_cross)
+
             if dot < 0:
                 midpt = midpoint_point_point(u, w)
                 vec = scale_vector(subtract_vectors(midpt, v), 1.5)
 
-
                 xyz[vkeys[i]] = add_vectors(v, vec)
                 moved.append([vkeys[i]])
+
         if len(moved) == 0 :
             break
 
     return [xyz[i] for i in vkeys]
 
 
-def polygon_flatness(pts):
+def polygon_flatness(polygon):
     """Comput the flatness of a polygon.
 
     Parameters
     ----------
-    pts: list of point coordinates
+    polygon : list of lists
+        A list of polygon point coordinates.
 
     Returns
     -------
-    float: flatness deviation of a face
+    float
+        The flatness.
 
     Note
     ----
@@ -238,9 +287,9 @@ def polygon_flatness(pts):
     """
     deviation = 0
 
-    plane     = bestfit_plane(pts)
+    plane     = bestfit_plane(polygon)
 
-    for pt in pts:
+    for pt in polygon:
         pt_proj = project_point_plane(pt, plane)
         dev     = distance_point_point(pt, pt_proj)
         if dev > deviation:
@@ -248,6 +297,48 @@ def polygon_flatness(pts):
 
     return deviation
 
+
+def is_polygon_self_intersecting(polygon):
+    """Computes if as polygon is self intersecting in plane, or self overlapping in space.
+
+    Parameters
+    ----------
+    polygon : list of lists
+        A list of polygon point coordinates.
+
+    Returns
+    -------
+    bool_1
+        ``True`` if self overlapping.
+        ``False`` otherwise.
+    bool_2
+        ``True`` if self intersecting.
+        ``False`` otherwise.
+
+    """
+    edges = []
+    for i in range(-1, len(polygon) - 1):
+        edges.append((i, i + 1))
+
+    for u1, v1 in edges:
+        for u2, v2 in edges:
+            if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
+                continue
+            else:
+                a = polygon[u1]
+                b = polygon[v1]
+                c = polygon[u2]
+                d = polygon[v2]
+
+                int_1, int_2 = intersection_line_line((a, b), (c, d))
+
+                if int_1 or int_2:
+                    if distance_point_point(int_1, int_2) > 0:
+                        overlapping = True
+                    if is_point_on_segment(int_1, (a, b)) or is_point_on_segment(int_2, (c, d)):
+                            intersecting = True
+
+    return overlapping, intersecting
 
 # ******************************************************************************
 # ******************************************************************************
@@ -359,7 +450,7 @@ def volmesh_face_areaness(volmesh, target_areas):
     """
     areaness_dict = {}
     for hfkey in target_areas:
-        area = volmesh.halfface_area(hfkey)
+        area = volmesh.halfface_oriented_area(hfkey)
         areaness_dict[hfkey] = abs(target_areas[hfkey] - area)
     return areaness_dict
 
@@ -376,60 +467,19 @@ def volmesh_face_areaness(volmesh, target_areas):
 
 
 def datastructure_centroid(datastructure):
+    """Compute the centroid of the datastructure.
+
+    Parameters
+    ----------
+    datastructure
+        A network, mesh or volmesh object.
+
+    Returns
+    -------
+    list
+        The coordinates of the centroid.
+
+    """
     points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertex]
+
     return centroid_points(points)
-
-
-
-
-
-
-
-
-
-
-
-# def is_polygon_self_intersecting(points):
-#     """Computes if as polygon is self intersecting in plane, or self overlapping in space.
-
-#     Parameters
-#     ----------
-#     polygon : sequence
-#         The XYZ coordinates of the vertices/corners of the polygon.
-#         The vertices are assumed to be in order.
-#         The polygon is assumed to be closed:
-#         the first and last vertex in the sequence should not be the same.
-
-#     Returns
-#     -------
-#     bool_1
-#         ``True`` if self overlapping.
-#         ``False`` otherwise.
-#     bool_2
-#         ``True`` if self intersecting.
-#         ``False`` otherwise.
-
-#     """
-#     edges = []
-#     for i in range(-1, len(points) - 1):
-#         edges.append((i, i + 1))
-
-#     for u1, v1 in edges:
-#         for u2, v2 in edges:
-#             if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
-#                 continue
-#             else:
-#                 a = points[u1]
-#                 b = points[v1]
-#                 c = points[u2]
-#                 d = points[v2]
-
-#                 int_1, int_2 = intersection_line_line((a, b), (c, d))
-
-#                 if int_1 or int_2:
-#                     if distance_point_point(int_1, int_2) > 0:
-#                         overlapping = True
-#                     if is_point_on_segment(int_1, (a, b)) or is_point_on_segment(int_2, (c, d)):
-#                             intersecting = True
-
-#     return overlapping, intersecting

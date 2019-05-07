@@ -165,12 +165,12 @@ class Network3gs(Network):
         network_draw_edges(self, **kwattr)
 
     def clear_edges(self, **kwattr):
-        artist = NetworkArtist(self, **kwattr)
+        artist = NetworkArtist(self)
         artist.clear_edges(**kwattr)
 
-
     def draw_vertex_labels(self, **kwattr):
-        network_draw_vertex_labels(self, **kwattr)
+        artist = NetworkArtist(self)
+        artist.draw_vertexlabels(**kwattr)
 
     def draw_edge_labels(self, **kwattr):
         network_draw_edge_labels(self, **kwattr)

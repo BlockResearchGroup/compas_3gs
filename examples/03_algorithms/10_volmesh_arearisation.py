@@ -122,7 +122,7 @@ rs.EnableRedraw(True)
 # ------------------------------------------------------------------------------
 # 3. Enter target area
 # ------------------------------------------------------------------------------
-current_area_dict = {fkey: forcediagram.halfface_area(fkey) for fkey in hfkeys}
+current_area_dict = {fkey: forcediagram.halfface_oriented_area(fkey) for fkey in hfkeys}
 target_areas      = _set_target_areas(current_area_dict)
 
 

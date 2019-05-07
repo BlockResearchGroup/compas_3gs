@@ -48,25 +48,25 @@ class VolMesh3gs(VolMesh):
     # --------------------------------------------------------------------------
 
     cell_split_vertex      = cell_split_vertex
-    datastructure_centroid = datastructure_centroid
+    # datastructure_centroid = datastructure_centroid
 
     # --------------------------------------------------------------------------
     # misc
     # --------------------------------------------------------------------------
 
-    def bounding_box(self):
+    # def bounding_box(self):
 
-        xyz = [self.vertex_coordinates(vkey) for vkey in self.vertex]
+    #     xyz = [self.vertex_coordinates(vkey) for vkey in self.vertex]
 
-        x_sorted = sorted(xyz, key=lambda k: k[0])
-        y_sorted = sorted(xyz, key=lambda k: k[1])
-        z_sorted = sorted(xyz, key=lambda k: k[2])
+    #     x_sorted = sorted(xyz, key=lambda k: k[0])
+    #     y_sorted = sorted(xyz, key=lambda k: k[1])
+    #     z_sorted = sorted(xyz, key=lambda k: k[2])
 
-        x = abs(x_sorted[0][0] - x_sorted[-1][0])
-        y = abs(y_sorted[0][1] - y_sorted[-1][1])
-        z = abs(z_sorted[0][2] - z_sorted[-1][2])
+    #     x = abs(x_sorted[0][0] - x_sorted[-1][0])
+    #     y = abs(y_sorted[0][1] - y_sorted[-1][1])
+    #     z = abs(z_sorted[0][2] - z_sorted[-1][2])
 
-        return x, y, z
+    #     return x, y, z
 
     # --------------------------------------------------------------------------
     #   deleting
@@ -88,7 +88,6 @@ class VolMesh3gs(VolMesh):
                 del self.cell[ckey][nbr_vkey][vkey]
 
         # delete halffaces -----------------------------------------------------
-        print(vkey, self.halfface)
         halffaces = self.vertex_halffaces(vkey)
         for hfkey in halffaces:
             del self.halfface[hfkey]
@@ -234,58 +233,58 @@ class VolMesh3gs(VolMesh):
     #   iterators
     # --------------------------------------------------------------------------
 
-    def halfface_iter(self, data=False):
-        for hfkey in self.halfface:
-            if data:
-                yield hfkey, self.halfface[hfkey]
-            else:
-                yield hfkey
+    # def halfface_iter(self, data=False):
+    #     for hfkey in self.halfface:
+    #         if data:
+    #             yield hfkey, self.halfface[hfkey]
+    #         else:
+    #             yield hfkey
 
-    def edges_iter(self, data=False):
-        for u in self.edge:
-            for v in self.edge[u]:
-                if data:
-                    yield u, v, self.edge[u][v]
-                else:
-                    yield u, v
+    # def edges_iter(self, data=False):
+    #     for u in self.edge:
+    #         for v in self.edge[u]:
+    #             if data:
+    #                 yield u, v, self.edge[u][v]
+    #             else:
+    #                 yield u, v
 
     # --------------------------------------------------------------------------
     #   vertices
     # --------------------------------------------------------------------------
 
-    def vertex_halffaces(self, vkey):
-        # halffaces = []
-        # for ckey in self.vertex_cells(vkey):
-        #     print(vkey, self.cell[ckey])
-        #     halffaces += self.cell[ckey][vkey].values()
-        # return halffaces
+    # def vertex_halffaces(self, vkey):
+    #     # halffaces = []
+    #     # for ckey in self.vertex_cells(vkey):
+    #     #     print(vkey, self.cell[ckey])
+    #     #     halffaces += self.cell[ckey][vkey].values()
+    #     # return halffaces
 
-        cells = self.vertex_cells(vkey)
+    #     cells = self.vertex_cells(vkey)
 
-        nbr_vkeys = self.plane[vkey].keys()
+    #     nbr_vkeys = self.plane[vkey].keys()
 
-        halffaces = []
-        for ckey in cells:
-            for v in nbr_vkeys:
-                if v in self.cell[ckey][vkey]:
-                    halffaces.append(self.cell[ckey][vkey][v])
-                    halffaces.append(self.cell[ckey][v][vkey])
-        return halffaces
+    #     halffaces = []
+    #     for ckey in cells:
+    #         for v in nbr_vkeys:
+    #             if v in self.cell[ckey][vkey]:
+    #                 halffaces.append(self.cell[ckey][vkey][v])
+    #                 halffaces.append(self.cell[ckey][v][vkey])
+    #     return halffaces
 
-    def vertex_normal(self, vkey):
-        vectors = []
-        for hfkey in self.vertex_halffaces(vkey):
-            if self.is_face_boundary(hfkey):
-                vectors.append(self.halfface_normal(hfkey))
-        return normalize_vector(centroid_points(vectors))
+    # def vertex_normal(self, vkey):
+    #     vectors = []
+    #     for hfkey in self.vertex_halffaces(vkey):
+    #         if self.is_halfface_on_boundary(hfkey):
+    #             vectors.append(self.halfface_oriented_normal(hfkey))
+    #     return normalize_vector(centroid_points(vectors))
 
-    def vertex_cells(self, vkey):
-        ckeys = set()
-        for v in self.plane[vkey].keys():
-            for w in self.plane[vkey][v].keys():
-                if self.plane[vkey][v][w] is not None:
-                    ckeys.add(self.plane[vkey][v][w])
-        return list(ckeys)
+    # def vertex_cells(self, vkey):
+    #     ckeys = set()
+    #     for v in self.plane[vkey].keys():
+    #         for w in self.plane[vkey][v].keys():
+    #             if self.plane[vkey][v][w] is not None:
+    #                 ckeys.add(self.plane[vkey][v][w])
+    #     return list(ckeys)
 
     def vertex_update_xyz(self, vkey, xyz, constrained=True):
         if constrained:
@@ -315,47 +314,49 @@ class VolMesh3gs(VolMesh):
             return normalize_vector(vector)
         return vector
 
-    def edge_halffaces(self, u, v):
-        """All halffaces of a volmesh that has edge u-v.
-        """
-        hfkeys = []
-        for hfkey in self.halfface:
-            if all(vkey in self.halfface[hfkey] for vkey in (u, v)):
-                hfkeys.append(hfkey)
-        return hfkeys
+    # def edge_halffaces(self, u, v):
+    #     """All halffaces of a volmesh that has edge u-v.
+    #     """
+    #     hfkeys = []
+    #     for hfkey in self.halfface:
+    #         if all(vkey in self.halfface[hfkey] for vkey in (u, v)):
+    #             hfkeys.append(hfkey)
+    #     return hfkeys
 
-    def edge_cells(self, u, v, ordered=False):
-        ckeys = set()
-        for hfkey in self.edge_halffaces(u, v):
-            u, v, w = self.halfface[hfkey][0:3]
-            ckey = self.halfface_cell(hfkey)
-            ckeys.add(ckey)
-        return list(ckeys)
+    # def edge_cells(self, u, v, ordered=False):
+
+    #     ckeys = set()
+    #     for hfkey in self.edge_halffaces(u, v):
+    #         u, v, w = self.halfface[hfkey][0:3]
+    #         ckey = self.halfface_cell(hfkey)
+    #         ckeys.add(ckey)
+
+    #     return list(ckeys)
 
     # --------------------------------------------------------------------------
     # halffaces and faces
     # --------------------------------------------------------------------------
 
-    def face_center(self, fkey):
-        return centroid_polygon(self.halfface_coordinates(fkey))
+    # def face_center(self, fkey):
+    #     return centroid_polygon(self.halfface_coordinates(fkey))
 
-    def halfface_coordinates(self, hfkey):
-        return [self.vertex_coordinates(key) for key in self.halfface_vertices(hfkey)]
+    # def halfface_coordinates(self, hfkey):
+    #     return [self.vertex_coordinates(key) for key in self.halfface_vertices(hfkey)]
 
-    def halfface_center(self, hfkey):
-        return centroid_polygon(self.halfface_coordinates(hfkey))
+    # def halfface_center(self, hfkey):
+    #     return centroid_polygon(self.halfface_coordinates(hfkey))
 
-    def halfface_halfedges(self, hfkey):
-        vertices = self.halfface_vertices(hfkey)
-        return list(pairwise(vertices + vertices[0:1]))
+    # def halfface_halfedges(self, hfkey):
+    #     vertices = self.halfface_vertices(hfkey)
+    #     return list(pairwise(vertices + vertices[0:1]))
 
-    def halfface_area(self, hfkey):
+    def halfface_oriented_area(self, hfkey):
         vertices = self.halfface_vertices(hfkey)
         points   = [self.vertex_coordinates(vkey) for vkey in vertices]
         area     = polygon_area_oriented(points)
         return area
 
-    def halfface_normal(self, hfkey, unitized=True):
+    def halfface_oriented_normal(self, hfkey, unitized=True):
         vertices = self.halfface_vertices(hfkey)
         points   = [self.vertex_coordinates(vkey) for vkey in vertices]
         normal   = polygon_normal_oriented(points, unitized)
@@ -365,46 +366,46 @@ class VolMesh3gs(VolMesh):
             normal = normalize_vector(cross_vectors(uv, vw))
         return normal
 
-    def halfface_vertex_ancestor(self, hfkey, key):
-        i = self.halfface[hfkey].index(key)
-        return self.halfface[hfkey][i - 1]
+    # def halfface_vertex_ancestor(self, hfkey, key):
+    #     i = self.halfface[hfkey].index(key)
+    #     return self.halfface[hfkey][i - 1]
 
-    def halfface_vertex_descendent(self, hfkey, key):
-        if self.halfface[hfkey][-1] == key:
-            return self.halfface[hfkey][0]
-        i = self.halfface[hfkey].index(key)
-        return self.halfface[hfkey][i + 1]
+    # def halfface_vertex_descendent(self, hfkey, key):
+    #     if self.halfface[hfkey][-1] == key:
+    #         return self.halfface[hfkey][0]
+    #     i = self.halfface[hfkey].index(key)
+    #     return self.halfface[hfkey][i + 1]
 
-    def halfface_pair(self, hfkey):
-        u = self.halfface[hfkey][0]
-        v = self.halfface[hfkey][1]
-        w = self.halfface[hfkey][2]
-        nbr_ckey = self.plane[w][v][u]
-        if not nbr_ckey:
-            return None
-        return self.cell[nbr_ckey][v][u]
+    # def halfface_opposite_halfface(self, hfkey):
+    #     u = self.halfface[hfkey][0]
+    #     v = self.halfface[hfkey][1]
+    #     w = self.halfface[hfkey][2]
+    #     nbr_ckey = self.plane[w][v][u]
+    #     if not nbr_ckey:
+    #         return None
+    #     return self.cell[nbr_ckey][v][u]
 
-    def halffaces_boundary(self):
-        halffaces = []
-        for ckey in self.cell:
-            hfkeys = self.cell_halffaces(ckey)
-            for hfkey in hfkeys:
-                u = self.halfface[hfkey][0]
-                v = self.halfface[hfkey][1]
-                w = self.halfface[hfkey][2]
-                if self.plane[w][v][u] is None:
-                    halffaces.append(hfkey)
-        return halffaces
+    # def halffaces_on_boundary(self):
+    #     halffaces = []
+    #     for ckey in self.cell:
+    #         hfkeys = self.cell_halffaces(ckey)
+    #         for hfkey in hfkeys:
+    #             u = self.halfface[hfkey][0]
+    #             v = self.halfface[hfkey][1]
+    #             w = self.halfface[hfkey][2]
+    #             if self.plane[w][v][u] is None:
+    #                 halffaces.append(hfkey)
+    #     return halffaces
 
-    def halffaces_interior(self):
-        halffaces = set(self.halfface.keys())
-        hf_boundary = set(self.halffaces_boundary())
-        return halffaces - hf_boundary
+    # def halffaces_interior(self):
+    #     halffaces = set(self.halfface.keys())
+    #     hf_boundary = set(self.halffaces_on_boundary())
+    #     return halffaces - hf_boundary
 
     def halfface_dependent_halffaces(self, hfkey):
         dep_hfkeys = {}
         ckey       = self.halfface_cell(hfkey)
-        hf_edges   = self.halfface_edges(hfkey)
+        hf_edges   = self.halfface_halfedges(hfkey)
         for edge in hf_edges:
             u = edge[0]
             v = edge[1]
@@ -441,80 +442,80 @@ class VolMesh3gs(VolMesh):
     #   cells
     # --------------------------------------------------------------------------
 
-    def cell_halffaces(self, ckey):
-        halffaces = set()
-        for u in self.cell[ckey]:
-            for v in self.cell[ckey][u]:
-                fkey = self.cell[ckey][u][v]
-                halffaces.add(fkey)
-        return list(halffaces)
+    # def cell_halffaces(self, ckey):
+    #     halffaces = set()
+    #     for u in self.cell[ckey]:
+    #         for v in self.cell[ckey][u]:
+    #             fkey = self.cell[ckey][u][v]
+    #             halffaces.add(fkey)
+    #     return list(halffaces)
 
-    def cell_vertex_neighbours(self, ckey, vkey):
-        nbr_vkeys = self.cell[ckey][vkey].keys()
-        u = vkey
-        v = nbr_vkeys[0]
-        ordered_vkeys = [v]
-        for i in range(len(nbr_vkeys) - 1):
-            hfkey = self.cell[ckey][u][v]
-            v     = self.halfface_vertex_ancestor(hfkey, u)
-            ordered_vkeys.append(v)
-        return ordered_vkeys
+    # def cell_vertex_neighbours(self, ckey, vkey):
+    #     nbr_vkeys = self.cell[ckey][vkey].keys()
+    #     u = vkey
+    #     v = nbr_vkeys[0]
+    #     ordered_vkeys = [v]
+    #     for i in range(len(nbr_vkeys) - 1):
+    #         hfkey = self.cell[ckey][u][v]
+    #         v     = self.halfface_vertex_ancestor(hfkey, u)
+    #         ordered_vkeys.append(v)
+    #     return ordered_vkeys
 
-    def cell_vertex_halffaces(self, ckey, vkey):
-        nbr_vkeys = self.cell[ckey][vkey].keys()
-        u = vkey
-        v = nbr_vkeys[0]
-        ordered_hfkeys = []
-        for i in range(len(nbr_vkeys)):
-            hfkey = self.cell[ckey][u][v]
-            v     = self.halfface_vertex_ancestor(hfkey, u)
-            ordered_hfkeys.append(hfkey)
-        return ordered_hfkeys
+    # def cell_vertex_halffaces(self, ckey, vkey):
+    #     nbr_vkeys = self.cell[ckey][vkey].keys()
+    #     u = vkey
+    #     v = nbr_vkeys[0]
+    #     ordered_hfkeys = []
+    #     for i in range(len(nbr_vkeys)):
+    #         hfkey = self.cell[ckey][u][v]
+    #         v     = self.halfface_vertex_ancestor(hfkey, u)
+    #         ordered_hfkeys.append(hfkey)
+    #     return ordered_hfkeys
 
-    def cell_halfface_neighbours(self, ckey, hfkey):
-        """Includes both edge and vertex neighbours.
+    # def cell_halfface_neighbours(self, ckey, hfkey):
+    #     """Includes both edge and vertex neighbours.
 
-        note to self: why... would this be useful?
-        """
-        hf_vkeys = self.halfface[hfkey]
-        hf_nbrs = []
-        for vkey in hf_vkeys:
-            nbrs = self.cell_vertex_halffaces(ckey, vkey)
-            for key in nbrs:
-                if key not in hf_nbrs and key != hfkey:
-                    hf_nbrs.append(key)
-        return hf_nbrs
+    #     note to self: why... would this be useful?
+    #     """
+    #     hf_vkeys = self.halfface[hfkey]
+    #     hf_nbrs = []
+    #     for vkey in hf_vkeys:
+    #         nbrs = self.cell_vertex_halffaces(ckey, vkey)
+    #         for key in nbrs:
+    #             if key not in hf_nbrs and key != hfkey:
+    #                 hf_nbrs.append(key)
+    #     return hf_nbrs
 
-    def cell_pair_hfkeys(self, ckey_1, ckey_2):
-        """Given 2 ckeys, returns the interfacing halffaces, respectively.
-        """
-        for hfkey in self.cell_halffaces(ckey_1):
-            u   = self.halfface[hfkey][0]
-            v   = self.halfface[hfkey][1]
-            w   = self.halfface[hfkey][2]
-            nbr = self.plane[w][v][u]
-            if nbr == ckey_2:
-                return hfkey, self.halfface_pair(hfkey)
-        return
+    # def cell_pair_halffaces(self, ckey_1, ckey_2):
+    #     """Given 2 ckeys, returns the interfacing halffaces, respectively.
+    #     """
+    #     for hfkey in self.cell_halffaces(ckey_1):
+    #         u   = self.halfface[hfkey][0]
+    #         v   = self.halfface[hfkey][1]
+    #         w   = self.halfface[hfkey][2]
+    #         nbr = self.plane[w][v][u]
+    #         if nbr == ckey_2:
+    #             return hfkey, self.halfface_opposite_halfface(hfkey)
+    #     return
 
     # --------------------------------------------------------------------------
     # queries
     # --------------------------------------------------------------------------
 
-    def is_vertex_boundary(self, vkey):
-        hfkeys = self.vertex_halffaces(vkey)
-        for hfkey in hfkeys:
-            if self.is_face_boundary(hfkey):
-                return True
-        return False
+    # def is_vertex_on_boundary(self, vkey):
+    #     hfkeys = self.vertex_halffaces(vkey)
+    #     for hfkey in hfkeys:
+    #         if self.is_halfface_on_boundary(hfkey):
+    #             return True
+    #     return False
 
-    def is_face_boundary(self, hfkey):
-        u   = self.halfface[hfkey][0]
-        v   = self.halfface[hfkey][1]
-        w   = self.halfface[hfkey][2]
-        if self.plane[w][v][u] is None:
-            return True
-        return False
+    # def is_halfface_on_boundary(self, hfkey):
+    #     u   = self.halfface[hfkey][0]
+    #     v   = self.halfface[hfkey][1]
+    #     w   = self.halfface[hfkey][2]
+    #     if self.plane[w][v][u] is None:
+    #         return True
+    #     return False
 
     # --------------------------------------------------------------------------
     # drawing

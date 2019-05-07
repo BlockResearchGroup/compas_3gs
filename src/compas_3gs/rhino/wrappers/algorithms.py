@@ -170,50 +170,6 @@ def rhino_volmesh_planarise(volmesh,
 # ******************************************************************************
 # ******************************************************************************
 #
-#   arearisation
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-
-
-# def rhino_volmesh_arearise(volmesh,
-#                            conduit=False):
-
-#     volmesh.clear()
-#     volmesh.draw_edges()
-#     volmesh.draw_faces()
-
-#     rs.EnableRedraw(True)
-
-#     hfkeys = volmesh_select_faces(volmesh)
-#     area = rs.GetReal("Enter target area", 1000, 0)
-
-#     target_areas = {hfkey: area for hfkey in hfkeys}
-
-#     if conduit:
-#         conduit = ArearisationConduit(volmesh, target_areas)
-#         conduit.Enabled = True
-
-#     volmesh_planarise(volmesh,
-#                       count=1000,
-#                       target_normals=None,
-#                       target_centers=None,
-#                       fix_all=False,
-#                       target_areas=target_areas,
-#                       fix_boundary=True)
-
-#     if conduit:
-#         conduit.Enabled = False
-#         del conduit
-
-#     volmesh.draw()
-
-
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
 #   reciprocation
 #
 # ******************************************************************************

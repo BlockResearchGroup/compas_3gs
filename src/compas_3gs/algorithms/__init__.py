@@ -91,7 +91,6 @@ from .planarisation import *
 from .reciprocation import *
 from .relaxation import *
 from .unifieddiagram import *
-from .helpers import *
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

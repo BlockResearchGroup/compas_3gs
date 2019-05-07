@@ -76,8 +76,8 @@ def cell_face_pull_target_area_direct(volmesh, tol=1e-6):
     hfkey = _cell_select_halfface(volmesh)
 
     hf_center     = volmesh.halfface_center(hfkey)
-    hf_normal     = volmesh.halfface_normal(hfkey)
-    hf_area       = volmesh.halfface_area(hfkey)
+    hf_normal     = volmesh.halfface_oriented_normal(hfkey)
+    hf_area       = volmesh.halfface_oriented_area(hfkey)
 
     rs.AddPoint(hf_center)
 
@@ -172,7 +172,7 @@ def cell_face_pull_target_area_direct(volmesh, tol=1e-6):
 
 
     # print(iteration)
-    # print(volmesh.halfface_area(hfkey))
+    # print(volmesh.halfface_oriented_area(hfkey))
 
     _cell_face_pull_location(volmesh, hfkey, new_center)
     rs.EnableRedraw(True)
@@ -196,8 +196,8 @@ def cell_face_pull_target_area(volmesh, tol=1e-6):
     hfkey = _cell_select_halfface(volmesh)
 
     hf_center     = volmesh.halfface_center(hfkey)
-    hf_normal     = volmesh.halfface_normal(hfkey)
-    hf_area       = volmesh.halfface_area(hfkey)
+    hf_normal     = volmesh.halfface_oriented_normal(hfkey)
+    hf_area       = volmesh.halfface_oriented_area(hfkey)
 
     rs.AddPoint(hf_center)
 
@@ -391,9 +391,9 @@ def cell_face_pull_interactive(volmesh):
             if v not in hf_vkeys:
                 edges[u] = v
 
-    hf_normal     = volmesh.halfface_normal(hfkey)
+    hf_normal     = volmesh.halfface_oriented_normal(hfkey)
     hf_center     = volmesh.halfface_center(hfkey)
-    hf_area       = volmesh.halfface_area(hfkey)
+    hf_area       = volmesh.halfface_oriented_area(hfkey)
     hf_vkeys      = volmesh.halfface_vertices(hfkey)
 
     ckey = volmesh.cell.keys()[0]
@@ -554,7 +554,7 @@ def _cell_split_indet_vertices(volmesh, hfkey):
 def _evaluate_trial_face_area(volmesh, hfkey, new_xyz):
     hf_vkeys = volmesh.halfface_vertices(hfkey)
     points   = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
-    normal   = volmesh.halfface_normal(hfkey)
+    normal   = volmesh.halfface_oriented_normal(hfkey)
 
     edges    = {}
     for u in hf_vkeys:
@@ -562,7 +562,7 @@ def _evaluate_trial_face_area(volmesh, hfkey, new_xyz):
         for v in u_nbrs:
             if v not in hf_vkeys:
                 edges[u] = v
-    new_plane   = (new_xyz, volmesh.halfface_normal(hfkey))
+    new_plane   = (new_xyz, volmesh.halfface_oriented_normal(hfkey))
     new_pt_list = []
     for u in hf_vkeys:
         v     = edges[u]
@@ -588,9 +588,9 @@ def _evaluate_trial_face_area(volmesh, hfkey, new_xyz):
 
 
 def _get_move_direction(volmesh, hfkey):
-    normal     = volmesh.halfface_normal(hfkey)
+    normal     = volmesh.halfface_oriented_normal(hfkey)
     center     = volmesh.halfface_center(hfkey)
-    area       = volmesh.halfface_area(hfkey)
+    area       = volmesh.halfface_oriented_area(hfkey)
     new_center = add_vectors(center, normal)
     new_area = _evaluate_trial_face_area(volmesh, hfkey, new_center)
 
@@ -619,7 +619,7 @@ def _cell_face_pull_location(volmesh, hfkey, new_center):
             if v not in hf_vkeys:
                 edges[u] = v
 
-    plane = (new_center, volmesh.halfface_normal(hfkey))
+    plane = (new_center, volmesh.halfface_oriented_normal(hfkey))
     for u in edges:
         v     = edges[u]
         u_xyz = volmesh.vertex_coordinates(u)
@@ -650,7 +650,7 @@ def _cell_draw_current(volmesh, hfkey, center, iteration, color):
         for v in u_nbrs:
             if v not in hf_vkeys:
                 edges[u] = v
-    new_plane   = (center, volmesh.halfface_normal(hfkey))
+    new_plane   = (center, volmesh.halfface_oriented_normal(hfkey))
     new_pt_list = []
 
 

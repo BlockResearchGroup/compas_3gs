@@ -37,7 +37,7 @@ def bake_cells_as_polysurfaces(volmesh):
 
         for hfkey in volmesh.cell_halffaces(ckey):
             center = volmesh.halfface_center(hfkey)
-            normal = volmesh.halfface_normal(hfkey)
+            normal = volmesh.halfface_oriented_normal(hfkey)
             plane  = Plane(Point3d(*tuple(center)), Vector3d(*tuple(normal)))
             intersection = brep.Trim(plane, 0.1)
             if intersection:

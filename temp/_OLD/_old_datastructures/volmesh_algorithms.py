@@ -623,7 +623,7 @@ under construction
     def halfface_vertices(self, fkey):
         return self.halfface[fkey]
 
-    def halfface_edges(self, fkey):
+    def halfface_halfedges(self, fkey):
         vertices = self.halfface_vertices(fkey)
         for i in range(-1, len(vertices) - 1):
             u = vertices[i]
@@ -652,7 +652,7 @@ under construction
     # cell topology
     # --------------------------------------------------------------------------
 
-    def cell_neighbours(self, ckey):
+    def cell_neighbors(self, ckey):
         nbrs = []
         for fkey in self.cell_halffaces(ckey):
             u, v, w = self.halfface[fkey][0:3]
@@ -679,11 +679,11 @@ under construction
     def cell_edges(self, ckey):
         halfedges = []
         for fkey in self.cell_halffaces(ckey):
-            halfedges += self.halfface_edges(fkey)
+            halfedges += self.halfface_halfedges(fkey)
         edges = set(frozenset(uv) for uv in halfedges)
         return map(list, edges)
 
-    def cell_vertices_and_halffaces(self, ckey):
+    def cell_to_vertices_and_halffaces(self, ckey):
         vkeys = self.cell_vertices(ckey)
         fkeys = self.cell_halffaces(ckey)
         vkey_vindex = {vkey: index for index, vkey in enumerate(vkeys)}
@@ -697,8 +697,8 @@ under construction
     def cell_tree(self, root):
         raise NotImplementedError
 
-    def cell_mesh(self, ckey):
-        vertices, halffaces = self.cell_vertices_and_halffaces(ckey)
+    def cell_to_mesh(self, ckey):
+        vertices, halffaces = self.cell_to_vertices_and_halffaces(ckey)
         return Mesh.from_vertices_and_faces(vertices, halffaces)
 
     # --------------------------------------------------------------------------

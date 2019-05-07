@@ -28,7 +28,7 @@ class EGI(Mesh):
         vertices  = volmesh.cell_vertices(ckey)
 
         for hfkey in halffaces:
-            normal  = volmesh.halfface_normal(hfkey)
+            normal  = volmesh.halfface_oriented_normal(hfkey)
             x, y, z = add_vectors(origin, normal)
             egi.add_vertex(key=hfkey, x=x, y=y, z=z)
 
@@ -70,7 +70,7 @@ if __name__ == '__main__':
         i = self.halfface[hfkey].index(key)
         return self.halfface[hfkey][i - 1]
 
-    def halfface_normal(self, hfkey):
+    def halfface_oriented_normal(self, hfkey):
         return normal_polygon(self.halfface_coordinates(hfkey))
 
     def cell_vertex_halffaces(self, ckey, vkey):
@@ -85,7 +85,7 @@ if __name__ == '__main__':
         return ordered_hfkeys
 
     VolMesh.face_center              = face_center
-    VolMesh.halfface_normal          = halfface_normal
+    VolMesh.halfface_oriented_normal          = halfface_oriented_normal
     VolMesh.halfface_coordinates     = halfface_coordinates
     VolMesh.halfface_vertex_ancestor = halfface_vertex_ancestor
     VolMesh.cell_vertex_halffaces    = cell_vertex_halffaces

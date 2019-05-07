@@ -49,7 +49,7 @@ def halfface_merge(volmesh, hfkeys):
 
     # check halffaces ----------------------------------------------------------
     for hfkey in hfkeys:
-        if not volmesh.is_face_boundary(hfkey):
+        if not volmesh.is_halfface_on_boundary(hfkey):
             raise ValueError('Halfface {} is interior.'.format(hfkey))
     if not _are_halffaces_chained(volmesh, hfkeys):
         raise ValueError('These halffaces are not chained.')

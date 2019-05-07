@@ -12,7 +12,7 @@ def egi_from_cell(volmesh, ckey):
     egi.attributes['origin'] = volmesh.cell_cente_of_mass(ckey)
 
     for hfkey in volmesh.cell_halffaces(ckey):
-        normal  = volmesh.halfface_normal(hfkey)
+        normal  = volmesh.halfface_oriented_normal(hfkey)
         x, y, z = add_vectors(origin, normal)
         egi.add_vertex(key=hfkey, x=x, y=y, z=z)
 
@@ -54,7 +54,7 @@ def oriented_normal_polygon(points, unitized=True):
 def cell_halfface_push(volmesh, hfkey, z):
 
     hf_center = volmesh.halfface_center(hfkey)
-    hf_normal = volmesh.halfface_normal(hfkey)
+    hf_normal = volmesh.halfface_oriented_normal(hfkey)
     hf_vkeys  = volmesh.halfface_vertices(hfkey)
 
     xyz       = add_vector(hf_center, scale_vector(hf_normal, z))

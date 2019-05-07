@@ -39,7 +39,7 @@ def volmesh_dual_volmesh(volmesh, cls=None):
 
     # 3. find interior vertices ------------------------------------------------
     ext_vkeys = []
-    boundary_hfkeys = volmesh.halffaces_boundary()
+    boundary_hfkeys = volmesh.halffaces_on_boundary()
     for hfkey in boundary_hfkeys:
         for vkey in volmesh.halfface[hfkey]:
             ext_vkeys.append(vkey)
@@ -53,15 +53,17 @@ def volmesh_dual_volmesh(volmesh, cls=None):
     for u in int_vkeys:
         cell_halffaces = []
         for v in volmesh.vertex_neighbors(u):
-            edge_ckeys = volmesh.plane[u][v].values()
-            ckey       = edge_ckeys[0]
-            halfface   = [ckey]
-            for i in range(len(edge_ckeys) - 1):
-                hfkey = volmesh.cell[ckey][u][v]
-                w     = volmesh.halfface_vertex_descendent(hfkey, v)
-                ckey  = volmesh.plane[w][v][u]
-                halfface.append(ckey)
+            halfface = volmesh.edge_cells(u, v)
+            # edge_ckeys = volmesh.plane[u][v].values()
+            # ckey       = edge_ckeys[0]
+            # halfface   = [ckey]
+            # for i in range(len(edge_ckeys) - 1):
+            #     hfkey = volmesh.cell[ckey][u][v]
+            #     w     = volmesh.halfface_vertex_descendent(hfkey, v)
+            #     ckey  = volmesh.plane[w][v][u]
+            #     halfface.append(ckey)
             cell_halffaces.append(halfface)
+
         dual_volmesh.add_cell(cell_halffaces, ckey=u)
 
     return dual_volmesh
@@ -90,7 +92,7 @@ def volmesh_dual_network(volmesh, cls=None):
         x, y, z = volmesh.cell_centroid(ckey)
         dual_network.add_vertex(key=ckey, x=x, y=y, z=z)
 
-        for nbr in volmesh.cell_neighbours(ckey):
+        for nbr in volmesh.cell_neighbors(ckey):
             if nbr in dual_network.edge[ckey]:
                 continue
             if nbr in dual_network.edge and ckey in dual_network.edge[nbr]:

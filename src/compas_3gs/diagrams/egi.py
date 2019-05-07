@@ -2,16 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-
 from compas_3gs.datastructures import Mesh3gs
 
 from compas.geometry import add_vectors
-
-
-__author__    = ['Juney Lee']
-__copyright__ = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['EGI']
@@ -57,7 +50,7 @@ class EGI(Mesh3gs):
         vertices  = volmesh.cell_vertices(ckey)
 
         for hfkey in halffaces:
-            normal  = volmesh.halfface_normal(hfkey)
+            normal  = volmesh.halfface_oriented_normal(hfkey)
             x, y, z = add_vectors(origin, normal)
             egi.add_vertex(key=hfkey, x=x, y=y, z=z)
 

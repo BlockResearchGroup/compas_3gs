@@ -7,15 +7,6 @@ __all__ = ['pair_hf_to_uv',
            'pair_uv_to_hf']
 
 
-# def directed_hfs(volmesh, datastructure):
-
-#     hfkeys = []
-#     for u, v in datastructure.edges():
-#         u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
-#         hfkeys.append(u_hfkey)
-#     return hfkeys
-
-
 def pair_hf_to_uv(volmesh, network):
     """Pairs the directed halffaces of a volmesh to the corresponding edge (u, v) of the dual network.
 
@@ -39,7 +30,7 @@ def pair_hf_to_uv(volmesh, network):
     hf_uv_dict = {}
 
     for u, v in network.edges():
-        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
+        u_hfkey, v_hfkey = volmesh.cell_pair_halffaces(u, v)
         hf_uv_dict[u_hfkey] = (u, v)
         hf_uv_dict[v_hfkey] = (v, u)
 
@@ -65,7 +56,7 @@ def pair_uv_to_hf(network, volmesh):
     uv_hf_dict = {}
 
     for u, v in network.edges():
-        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
+        u_hfkey, v_hfkey = volmesh.cell_pair_halffaces(u, v)
         uv_hf_dict[(u, v)] = u_hfkey
 
     return uv_hf_dict

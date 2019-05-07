@@ -43,6 +43,7 @@ __email__      = 'juney.lee@arch.ethz.ch'
 __all__ = ['get_index_colordict',
            'valuedict_to_colordict',
            'compare_initial_current',
+           'get_force_mags',
            'get_force_colors_uv',
            'get_force_colors_hf']
 
@@ -123,8 +124,8 @@ def get_force_mags(volmesh, network):
     for u, v in network.edges():
         hfkey       = uv_hf_dict[(u, v)]
         edge_vector = network.edge_vector(u, v)
-        face_normal = volmesh.halfface_normal(hfkey)
-        face_area   = volmesh.halfface_area(hfkey)
+        face_normal = volmesh.halfface_oriented_normal(hfkey)
+        face_area   = volmesh.halfface_oriented_area(hfkey)
         dot         = dot_vectors(face_normal, edge_vector)
         if dot < 0:
             factor = -1
@@ -186,14 +187,14 @@ def get_force_colors_hf(volmesh,
     hf_c_dict = {}
     for uv in uv_c_dict:
         u_hfkey = uv_hf_dict[uv]
-        v_hfkey = volmesh.halfface_pair(u_hfkey)
+        v_hfkey = volmesh.halfface_opposite_halfface(u_hfkey)
         hf_c_dict[u_hfkey] = uv_c_dict[uv]
         hf_c_dict[v_hfkey] = uv_c_dict[uv]
 
     # boundary halffaces -------------------------------------------------------
     if boundary:
-        b_hfkeys = volmesh.halffaces_boundary()
-        b_hf_areas = {hfkey: volmesh.halfface_area(hfkey) for hfkey in b_hfkeys}
+        b_hfkeys = volmesh.halffaces_on_boundary()
+        b_hf_areas = {hfkey: volmesh.halfface_oriented_area(hfkey) for hfkey in b_hfkeys}
         b_hf_c_dict = valuedict_to_colordict(b_hf_areas,
                                              color_scheme=i_to_green)
         for hfkey in b_hfkeys:

@@ -269,7 +269,7 @@ class BiCellInspector(Conduit):
                     nbr_xyz = self.network.vertex_coordinates(nbr_vkey)
                     e.Display.DrawLine(Point3d(*dual_p0), Point3d(*nbr_xyz), color, 4)
 
-                    hfkey = self.volmesh.cell_pair_hfkeys(ckey, nbr_vkey)[0]
+                    hfkey = self.volmesh.cell_pair_halffaces(ckey, nbr_vkey)[0]
                     hf_colors[hfkey] = color
 
 

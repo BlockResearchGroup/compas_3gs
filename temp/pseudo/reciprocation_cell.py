@@ -9,8 +9,8 @@ def volmesh_reciprocate(volmesh,
     target_normals = {}
     halfface_uv    = {}
     for u, v in formdiagram.edges_iter():
-        u_hfkey, v_hfkey = volmesh.cell_pair_hfkeys(u, v)
-        face_normal   = scale_vector(volmesh.halfface_normal(u_hfkey), weight)
+        u_hfkey, v_hfkey = volmesh.cell_pair_halffaces(u, v)
+        face_normal   = scale_vector(volmesh.halfface_oriented_normal(u_hfkey), weight)
         edge_vector   = scale_vector(formdiagram.edge_vector(u, v), 1 - weight)
         target_vector = normalize_vector(add_vectors(face_normal, edge_vector))
         target_normals[u_hfkey] = target_vector

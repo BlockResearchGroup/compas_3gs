@@ -23,7 +23,7 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['volmesh3gs_select_cell',]
+__all__ = ['volmesh3gs_select_cell']
 
 
 def volmesh3gs_select_cell(volmesh):

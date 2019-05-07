@@ -54,7 +54,7 @@ def from_volmesh_cell(cls, ckey, volmesh):
 
     halffaces = volmesh.cell_halffaces(ckey)
     for hfkey in halffaces:
-        normal  = volmesh.halfface_normal(hfkey)
+        normal  = volmesh.halfface_oriented_normal(hfkey)
         x, y, z = add_vectors(origin, normal)
         egi.add_vertex(key=hfkey, x=x, y=y, z=z)
 

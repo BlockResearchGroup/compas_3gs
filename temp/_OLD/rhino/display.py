@@ -24,7 +24,7 @@ def draw_cell_force_vectors(volmesh):
 
     lines = []
     for hfkey in volmesh.halfface:
-        normal = volmesh.halfface_normal(hfkey, unitized=False)
+        normal = volmesh.halfface_oriented_normal(hfkey, unitized=False)
         # normal = scale_vector(normal, -1)
         lines.append({
             'start': center,
@@ -41,7 +41,7 @@ def draw_cell_force_vectors(volmesh):
 #     lines = []
 #     for hfkey in hfkeys:
 #         center = self.halfface_center(hfkey)
-#         normal = self.halfface_normal(hfkey)
+#         normal = self.halfface_oriented_normal(hfkey)
 #         lines.append({
 #             'start': center,
 #             'end'  : add_vectors(center, normal),

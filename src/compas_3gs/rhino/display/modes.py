@@ -58,26 +58,6 @@ __all__ = ['display_mode_colors',
 # ******************************************************************************
 
 
-
-
-
-
-
-
-
-
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
-#   display modes
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-
-
-
 def display_mode_colors(volmesh, network, label=False):
 
     hf_uv_dict = pair_hf_to_uv(volmesh, network)
@@ -124,7 +104,7 @@ def display_mode_pipes(volmesh, network, colors=True, gradient=False, scale=1):
         cylinders.append({
             'start': network.vertex_coordinates(uv[0]),
             'end'  : network.vertex_coordinates(uv[1]),
-            'radius': volmesh.halfface_area(uv_hf_dict[uv]) * scale,
+            'radius': volmesh.halfface_oriented_area(uv_hf_dict[uv]) * scale,
             'color': color,
             'layer': network.layer})
 
@@ -182,7 +162,6 @@ def display_mode_vectors(volmesh, network, vkeys=None, gradient=False, scale=1):
 
     network.clear()
     draw_lines(arrows)
-
 
 
 def display_mode_unified_diagram(volmesh, network):

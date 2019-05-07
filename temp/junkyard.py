@@ -123,28 +123,21 @@ print(isinstance(testclass, Foo))
 
 
 
-import compas_rhino
 
-from compas.datastructures import Mesh
-
-from compas_rhino.helpers import mesh_from_surface
-
-guid = rs.GetObject("select polysurface", filter=rs.filter.polysurface)
-rs.HideObjects(guid)
-
-mesh = mesh_from_surface(Mesh, guid)
-
-
-boundary_fkeys = mesh.faces_on_boundary()
-
-
-compas_rhino.mesh_draw_edges(mesh)
-compas_rhino.meesh_draw_faces(mesh, keys=boundary_fkeys)
+def faces():
+    faces = {0: [], 1: [], 2: [], 3: []}
+    for fkey in faces:
+        yield fkey, faces[fkey]
 
 
 
+for fkey, attr in faces():
+    print(fkey)
 
 
+m = [0, 1, 2, 3]
 
+a, b, c = m[0:3]
 
+print(a, b, c)
 

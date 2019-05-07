@@ -116,7 +116,7 @@ def rhino_vertex_lift(volmesh):
 
     vertex_hfkeys = []
     for hfkey in volmesh.vertex_halffaces(vkey):
-        if volmesh.is_face_boundary(hfkey):
+        if volmesh.is_halfface_on_boundary(hfkey):
             vertex_hfkeys.append(hfkey)
 
     xyz    = volmesh.vertex_coordinates(vkey)
@@ -186,7 +186,7 @@ def rhino_halfface_pinch(volmesh):
     key = hfkeys[0]
 
     center = volmesh.halfface_center(key)
-    normal = volmesh.halfface_normal(key)
+    normal = volmesh.halfface_oriented_normal(key)
     line   = (center, add_vectors(center, normal))
     # --------------------------------------------------------------------------
     #  dynamic draw
@@ -208,7 +208,7 @@ def rhino_halfface_pinch(volmesh):
 
         for hfkey in hfkeys:
             hf_center = volmesh.halfface_center(hfkey)
-            hf_normal = volmesh.halfface_normal(hfkey)
+            hf_normal = volmesh.halfface_oriented_normal(hfkey)
             ep = add_vectors(hf_center, scale_vector(hf_normal, dist))
             e.Display.DrawDottedLine(Point3d(*hf_center), Point3d(*ep), feedback_color)
             e.Display.DrawPoint(Point3d(*ep), 0, 4, black)
@@ -234,7 +234,7 @@ def rhino_halfface_pinch(volmesh):
 
     for hfkey in hfkeys:
         hf_center = volmesh.halfface_center(hfkey)
-        hf_normal = volmesh.halfface_normal(hfkey)
+        hf_normal = volmesh.halfface_oriented_normal(hfkey)
         ep = add_vectors(hf_center, scale_vector(hf_normal, rise))
 
         halfface_pinch(volmesh, hfkey, ep)
@@ -376,9 +376,9 @@ def volmesh_pull_faces(volmesh, uniform=False):
 
     # 3. move face -------------------------------------------------------------
     hf_vkeys    = volmesh.halfface_vertices(hfkey)
-    hf_normal   = volmesh.halfface_normal(hfkey)
+    hf_normal   = volmesh.halfface_oriented_normal(hfkey)
     hf_center   = volmesh.halfface_center(hfkey)
-    hf_area     = volmesh.halfface_area(hfkey)
+    hf_area     = volmesh.halfface_oriented_area(hfkey)
 
     cell_vkeys = volmesh.cell_vertices(ckey)
     cell_center = volmesh.cell_centroid(ckey)
@@ -411,7 +411,7 @@ def volmesh_pull_faces(volmesh, uniform=False):
 
         seen = set()
         for face_key in dep_hfkeys + [hfkey]:
-            hf_edges   = volmesh.halfface_edges(face_key)
+            hf_edges   = volmesh.halfface_halfedges(face_key)
             for edge in hf_edges:
                 u = edge[0]
                 v = edge[1]
@@ -551,9 +551,9 @@ def volmesh_pull_faces(volmesh, uniform=False):
 #             if v not in hf_vkeys:
 #                 edges[u] = v
 
-#     hf_normal     = volmesh.halfface_normal(hfkey)
+#     hf_normal     = volmesh.halfface_oriented_normal(hfkey)
 #     hf_center     = volmesh.halfface_center(hfkey)
-#     hf_area       = volmesh.halfface_area(hfkey)
+#     hf_area       = volmesh.halfface_oriented_area(hfkey)
 #     hf_vkeys      = volmesh.halfface_vertices(hfkey)
 
 #     ckey = volmesh.cell.keys()[0]
@@ -717,7 +717,7 @@ def _volmesh_compute_dependent_face_intersections(volmesh,
     vertex_xyz = _cell_update_halfface(volmesh, hfkey, xyz, normal)
 
     ckey       = volmesh.halfface_cell(hfkey)
-    hf_edges   = volmesh.halfface_edges(hfkey)
+    hf_edges   = volmesh.halfface_halfedges(hfkey)
     dep_hfkeys = volmesh.halfface_dependent_halffaces(hfkey)
     hf_centers = {}
     for nbr_hfkey in dep_hfkeys:
@@ -781,7 +781,7 @@ def _cell_update_halfface(volmesh,
     cell_vkeys   = volmesh.cell_vertices(ckey)
     hf_vkeys     = volmesh.halfface_vertices(hfkey)
     if not normal:
-        normal = volmesh.halfface_normal(hfkey)
+        normal = volmesh.halfface_oriented_normal(hfkey)
     plane    = (xyz, normal)
 
     edges = {key: [] for key in hf_vkeys}
@@ -802,10 +802,10 @@ def _cell_update_halfface(volmesh,
     return new_cell_xyz
 
 
-def _volmesh_current_halfface_normals(volmesh):
+def _volmesh_current_halfface_oriented_normals(volmesh):
     normals = {}
     for hfkey in volmesh.halfface:
-        normal = volmesh.halfface_normal(hfkey)
+        normal = volmesh.halfface_oriented_normal(hfkey)
         normals[hfkey] = normal
     return normals
 
@@ -821,7 +821,7 @@ def _volmesh_current_halfface_centers(volmesh):
 def _halffaces_avg_normals(volmesh, hfkeys):
     vectors = []
     for hfkey in hfkeys:
-        vectors.append(volmesh.halfface_normal(hfkey))
+        vectors.append(volmesh.halfface_oriented_normal(hfkey))
     return normalize_vector(centroid_points(vectors))
 
 

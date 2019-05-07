@@ -5,8 +5,8 @@ def arearize_halfface(volmesh, hfkey, target, tol=1e-6):
     cell_split_halfface_vertices(volmesh, hfkey)
 
     hf_center     = volmesh.halfface_center(hfkey)
-    hf_normal     = volmesh.halfface_normal(hfkey)
-    hf_area       = volmesh.halfface_area(hfkey)
+    hf_normal     = volmesh.halfface_oriented_normal(hfkey)
+    hf_area       = volmesh.halfface_oriented_area(hfkey)
 
     move_dir = _get_move_direction(volmesh, hfkey)
 
@@ -49,7 +49,7 @@ def arearize_halfface(volmesh, hfkey, target, tol=1e-6):
 def cell_halfface_push(volmesh, hfkey, z):
 
     hf_center = volmesh.halfface_center(hfkey)
-    hf_normal = volmesh.halfface_normal(hfkey)
+    hf_normal = volmesh.halfface_oriented_normal(hfkey)
     hf_vkeys  = volmesh.halfface_vertices(hfkey)
 
     xyz       = add_vector(hf_center, scale_vector(hf_normal, z))
