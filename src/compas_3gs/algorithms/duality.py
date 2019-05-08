@@ -142,22 +142,4 @@ def volmesh_dual_network(volmesh, cls=None):
 
 
 if __name__ == '__main__':
-
-    import rhinoscriptsyntax as rs
-
-    from compas_rhino.artists import VolMeshArtist
-    from compas_rhino.helpers.volmesh import volmesh_from_polysurfaces
-
-    guids   = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
-    rs.HideObjects(guids)
-
-    volmesh = VolMesh()
-    volmesh = volmesh_from_polysurfaces(volmesh, guids)
-    volmesh_artist = VolMeshArtist(volmesh, layer='primal')
-    volmesh_artist.draw_vertices()
-    volmesh_artist.draw_edges()
-
-    dual_volmesh = volmesh_dual_volmesh(volmesh)
-    dual_volmesh_artist = VolMeshArtist(dual_volmesh, layer='dual')
-    dual_volmesh_artist.draw_vertices()
-    dual_volmesh_artist.draw_faces()
+    pass

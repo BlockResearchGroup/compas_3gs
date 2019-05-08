@@ -2,49 +2,35 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import ast
-
 import compas
 
 from compas.geometry import add_vectors
 from compas.geometry import subtract_vectors
 from compas.geometry import dot_vectors
 from compas.geometry import scale_vector
-from compas.geometry import length_vector
 from compas.geometry import normalize_vector
-from compas.geometry import centroid_polyhedron
 from compas.geometry import intersection_line_plane
 from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
 from compas.utilities import i_to_rgb
 
-from compas_rhino.selectors import VertexSelector
-from compas_rhino.selectors import EdgeSelector
-from compas_rhino.selectors import FaceSelector
 from compas_rhino.helpers import volmesh_select_vertex
 from compas_rhino.helpers import volmesh_select_vertices
 from compas_rhino.helpers import volmesh_select_face
-from compas_rhino.helpers import volmesh_select_vertices
-from compas_rhino.utilities import draw_lines
-from compas_rhino.utilities import draw_labels
-from compas_rhino.conduits import LinesConduit
 
 from compas_3gs.operations import volmesh_vertex_merge
 from compas_3gs.operations import volmesh_vertex_lift
 from compas_3gs.operations import volmesh_halfface_pinch
 from compas_3gs.operations import volmesh_merge_adjacent_halffaces
 from compas_3gs.operations import volmesh_cell_subdivide_barycentric
-from compas_3gs.algorithms import volmesh_dual_network
-from compas_3gs.algorithms import volmesh_reciprocate
-from compas_3gs.utilities import polygon_normal_oriented
-from compas_3gs.utilities import polygon_area_oriented
 
-from compas_3gs.rhino.control import select_boundary_halffaces
-from compas_3gs.rhino.control import CellSelector
-from compas_3gs.rhino.control import volmesh3gs_select_cell
-from compas_3gs.rhino.control import VolmeshVertexInspector
-from compas_3gs.rhino.control import VolmeshHalffaceInspector
-from compas_3gs.rhino.control import VolmeshCellInspector
+from compas_3gs.rhino import select_boundary_halffaces
+from compas_3gs.rhino import CellSelector
+from compas_3gs.rhino import VolmeshHalffaceInspector
+from compas_3gs.rhino import VolmeshCellInspector
+
+from compas_3gs.rhino import get_target_point
+
 
 try:
     import Rhino
@@ -54,12 +40,7 @@ try:
     from System.Drawing.Color import FromArgb
 
     from Rhino.Geometry import Point3d
-    from Rhino.Geometry import Arc
-    from Rhino.Geometry import ArcCurve
-    from Rhino.Geometry import Sphere
     from Rhino.Geometry import Vector3d
-    from Rhino.Geometry import Plane
-    from Rhino.Geometry import Brep
     from Rhino.Geometry import Line
 
     find_object    = sc.doc.Objects.Find
@@ -81,18 +62,14 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = [
-    'rhino_volmesh_vertex_lift',
-    'rhino_volmesh_vertex_merge',
-    'rhino_vertex_truncate',
-    'rhino_vertex_volumise',
+__all__ = ['rhino_volmesh_vertex_lift',
+           'rhino_volmesh_vertex_merge',
 
-    'rhino_volmesh_halfface_pinch',
-    'rhino_volmesh_merge_adjacent_halffaces',
+           'rhino_volmesh_halfface_pinch',
+           'rhino_volmesh_merge_adjacent_halffaces',
 
-    'rhino_volmesh_cell_subdivide_barycentric',
-    'volmesh_pull_faces'
-]
+           'rhino_volmesh_cell_subdivide_barycentric',
+           'volmesh_pull_faces']
 
 
 # ******************************************************************************
@@ -131,7 +108,7 @@ def rhino_volmesh_vertex_lift(volmesh):
 
     ip   = Point3d(*xyz)
     axis = Rhino.Geometry.Line(ip, ip + Vector3d(*normal))
-    gp   = _get_target_point(axis, OnDynamicDraw)
+    gp   = get_target_point(axis, OnDynamicDraw)
 
     volmesh_vertex_lift(volmesh, vkey, gp, vertex_hfkeys)
 
@@ -204,7 +181,7 @@ def rhino_volmesh_halfface_pinch(volmesh):
     # --------------------------------------------------------------------------
     ip    = Point3d(*center)
     axis  = Rhino.Geometry.Line(ip, ip + Vector3d(*normal))
-    gp    = _get_target_point(axis, OnDynamicDraw)
+    gp    = get_target_point(axis, OnDynamicDraw)
 
     plane = (gp, normal)
     it    = intersection_line_plane(line, plane)
@@ -248,7 +225,6 @@ def rhino_volmesh_merge_adjacent_halffaces(volmesh):
 
 def rhino_volmesh_cell_subdivide_barycentric(volmesh, formdiagram=None):
 
-
     cell_colors = {}
     ckeys = volmesh.cell.keys()
     for index, ckey in enumerate(ckeys):
@@ -272,25 +248,8 @@ def rhino_volmesh_cell_subdivide_barycentric(volmesh, formdiagram=None):
     del cell_inspector
     volmesh.clear_cell_labels()
 
-
     for ckey in sel_ckeys:
         volmesh_cell_subdivide_barycentric(volmesh, ckey)
-
-    # if formdiagram:
-    #     xyz = {vkey: formdiagram.vertex_coordinates(vkey) for vkey in formdiagram.vertex}
-
-    #     dual = volmesh_dual_network(volmesh)
-    #     for vkey in xyz:
-    #         dual.vertex_update_xyz(vkey, xyz[vkey], constrained=False)
-
-    #     volmesh_reciprocate(volmesh,
-    #                         formdiagram,
-    #                         weight=1,
-    #                         min_edge=5,
-    #                         max_edge=15,
-    #                         fix_vkeys=xyz.keys(),)
-
-    # dual.draw()
 
     volmesh.clear()
     volmesh.draw()
@@ -384,7 +343,6 @@ def volmesh_pull_faces(volmesh, uniform=False):
     else:
         target_normal = None
 
-
     # --------------------------------------------------------------------------
 
     def OnDynamicDraw(sender, e):
@@ -418,37 +376,12 @@ def volmesh_pull_faces(volmesh, uniform=False):
                     ep = xyz[v]
                 e.Display.DrawLine(Line(Point3d(*sp), Point3d(*ep)), black, 2)
 
-
     # --------------------------------------------------------------------------
     #  input point
     # --------------------------------------------------------------------------
     ip   = Point3d(*hf_center)
     line = Rhino.Geometry.Line(ip, ip + Vector3d(*hf_normal))
-    gp   = _get_target_point(line, OnDynamicDraw)
-
-
-    # if uniform:
-    #     listIndex = 3
-    #     gp.AddOptionList("target_ plane", ["avg", "world", "custom"], listIndex)
-
-
-
-
-    # while True:
-    #     get_rc = gp.Get()
-    #     gp.DynamicDraw += OnDynamicDraw
-    #     # loop until a point is picked -----------------------------------------
-    #     if gp.CommandResult() != Rhino.Commands.Result.Success:
-    #         break
-    #     if get_rc == Rhino.Input.GetResult.Option:  # keep picking options
-    #         continue
-    #     # loop until a point is picked -----------------------------------------
-    #     elif get_rc == Rhino.Input.GetResult.Point:
-    #         target = gp.Point()
-    #     break
-
-
-
+    gp   = get_target_point(line, OnDynamicDraw)
 
     new_xyz = _volmesh_compute_dependent_face_intersections(volmesh, hfkey, gp, target_normal)
 
@@ -472,225 +405,10 @@ def volmesh_pull_faces(volmesh, uniform=False):
 # ******************************************************************************
 
 
-
-
-
-
-# def rhino_volmesh_cell_subdivide_barycentric(volmesh, formdiagram=None):
-
-#     ckey = volmesh3gs_select_cell(volmesh)
-
-#     new_ckeys = volmesh_cell_subdivide_barycentric(volmesh, ckey)
-
-
-#     if formdiagram:
-#         xyz = {vkey: formdiagram.vertex_coordinates(vkey) for vkey in formdiagram.vertex}
-
-#         dual = volmesh_dual_network(volmesh)
-#         for vkey in xyz:
-#             dual.vertex_update_xyz(vkey, xyz[vkey], constrained=False)
-
-#         volmesh_reciprocate(volmesh,
-#                             formdiagram,
-#                             weight=1,
-#                             min_edge=5,
-#                             max_edge=15,
-#                             fix_vkeys=xyz.keys(),)
-
-
-#     dual.draw()
-
-#     volmesh.draw()
-
-#     return volmesh
-
-
-
-
-
-
-
-
-
-
-# def cell_face_pull_interactive(volmesh):
-
-#     hfkey = _cell_select_halfface(volmesh)
-
-#     _cell_split_indet_vertices(volmesh, hfkey)
-
-#     volmesh.clear()
-
-#     # --------------------------------------------------------------------------
-#     #  get edgees
-#     # --------------------------------------------------------------------------
-#     hf_vkeys  = volmesh.halfface_vertices(hfkey)
-#     edges = {}
-#     for u in hf_vkeys:
-#         u_nbrs = volmesh.vertex_neighbours(u)
-#         for v in u_nbrs:
-#             if v not in hf_vkeys:
-#                 edges[u] = v
-
-#     hf_normal     = volmesh.halfface_oriented_normal(hfkey)
-#     hf_center     = volmesh.halfface_center(hfkey)
-#     hf_area       = volmesh.halfface_oriented_area(hfkey)
-#     hf_vkeys      = volmesh.halfface_vertices(hfkey)
-
-#     ckey = volmesh.cell.keys()[0]
-#     cell_center = volmesh.cell_centroid(ckey)
-
-#     xyz_dict = {}
-#     for vkey in volmesh.vertex:
-#         if vkey not in hf_vkeys:
-#             xyz_dict[vkey] = volmesh.vertex_coordinates(vkey)
-
-#     # --------------------------------------------------------------------------
-#     #  dynamic draw
-#     # --------------------------------------------------------------------------
-#     rs.EnableRedraw(True)
-#     def OnDynamicDraw(sender, e):
-#         cp          = e.CurrentPoint
-#         plane       = (cp, hf_normal)
-#         new_pt_list = []
-#         for u in hf_vkeys:
-#             v     = edges[u]
-#             u_xyz = volmesh.vertex_coordinates(u)
-#             v_xyz = volmesh.vertex_coordinates(v)
-#             line  = (u_xyz, v_xyz)
-#             it    = intersection_line_plane(line, plane)
-#             xyz_dict[u] = it
-#             new_pt_list.append(it)
-#             e.Display.DrawDottedLine(
-#                 Point3d(*u_xyz),
-#                 Point3d(*it),
-#                 feedback_color)
-
-#         for vkey in volmesh.vertex:
-#             xyz = volmesh.vertex_coordinates(vkey)
-#             e.Display.DrawPoint(Point3d(*xyz), 0, 6, black)
-
-#         # old normal and area --------------------------------------------------
-#         e.Display.DrawDot(
-#             Point3d(*hf_center), str(round(hf_area, 3)), gray, white)
-
-#         # draw original face ---------------------------------------------------
-#         for i in range(-1, len(hf_vkeys) - 1):
-#             vkey1 = hf_vkeys[i]
-#             vkey2 = hf_vkeys[i + 1]
-#             sp    = Point3d(*volmesh.vertex_coordinates(vkey1))
-#             np    = Point3d(*volmesh.vertex_coordinates(vkey2))
-#             e.Display.DrawDottedLine(sp, np, feedback_color)
-
-#         # get current face info ------------------------------------------------
-#         areas = {}
-#         normals = {}
-#         for fkey in volmesh.halfface:
-#             face_coordinates = [xyz_dict[vkey] for vkey in volmesh.halfface[fkey]]
-#             area          = polygon_area_oriented(face_coordinates)
-#             areas[fkey]   = area
-#             normal        = polygon_normal_oriented(face_coordinates)
-#             normals[fkey] = normal
-
-#         # draw new face areas / vectors ----------------------------------------
-#         for fkey in volmesh.halfface:
-#             area   = areas[fkey]
-#             normal = normals[fkey]
-#             value  = area / max(areas.values())
-#             color  = i_to_rgb(value)
-#             color  = System.Drawing.Color.FromArgb(*color)
-#             scale  = 0.25
-#             sp = Point3d(*cell_center)
-#             ep = Point3d(*add_vectors(cell_center, scale_vector(normal, area * scale)))
-#             e.Display.DrawArrow(Line(sp, ep), color, 20, 0)
-
-#             face_coordinates = [xyz_dict[vkey] for vkey in volmesh.halfface[fkey]]
-#             face_coordinates.append(face_coordinates[0])
-#             polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
-#             e.Display.DrawPolyline(polygon_xyz, black, 2)
-#             if fkey == hfkey:
-#                 xyz = centroid_polyhedron(face_coordinates)
-#                 e.Display.DrawDot(Point3d(*xyz), str(round(area, 3)), black, white)
-#                 e.Display.DrawPolyline(polygon_xyz, black, 6)
-#                 e.Display.DrawPolygon(polygon_xyz, color, filled=True)
-
-#     # --------------------------------------------------------------------------
-#     #  input point
-#     # --------------------------------------------------------------------------
-#     ip   = Point3d(*hf_center)
-#     line = Rhino.Geometry.Line(ip, ip + Vector3d(*hf_normal))
-#     gp   = _get_target_point(line, OnDynamicDraw)
-
-#     # --------------------------------------------------------------------------
-#     #  update volmesh coordinates
-#     # --------------------------------------------------------------------------
-#     final_plane = (gp, hf_normal)
-#     for u in edges:
-#         v     = edges[u]
-#         u_xyz = volmesh.vertex_coordinates(u)
-#         v_xyz = volmesh.vertex_coordinates(v)
-#         line  = (u_xyz, v_xyz)
-#         it    = intersection_line_plane(line, final_plane)
-#         volmesh.vertex_update_xyz(u, it, constrained=False)
-
-#     volmesh.draw()
-
-
-# def _cell_select_halfface(volmesh):
-#     if len(volmesh.cell) > 1:
-#         print("too many cells in this volmesh!")
-#         return
-#     hfkey = volmesh_select_face(volmesh)
-#     return hfkey
-
-
-# def _cell_split_indet_vertices(volmesh, hfkey):
-#     ckey          = volmesh.cell.keys()[0]
-#     egi           = volmesh.c_data[ckey]['egi']
-#     hf_vkeys      = volmesh.halfface_vertices(hfkey)
-#     egi_nbr_vkeys = egi.vertex_neighbours(hfkey)
-#     for egi_fkey in hf_vkeys:
-#         hfkeys = egi.face[egi_fkey]
-#         n      = hfkeys.index(hfkey)
-#         hfkeys = hfkeys[n:] + hfkeys[:n]
-#         egi_face_vertices = [key for key in hfkeys if key not in egi_nbr_vkeys + [hfkey]]
-#         fkey    = egi_fkey
-#         x, y, z = volmesh.vertex_coordinates(egi_fkey)
-#         for vkey in egi_face_vertices:
-#             f, g = egi.mesh_split_face(fkey, hfkey, vkey)
-#             volmesh.add_vertex(key=f, x=x, y=y, z=z)
-#             volmesh.add_vertex(key=g, x=x, y=y, z=z)
-#             for new_hfkey in hfkeys:
-#                 new_vkeys = egi.vertex_faces(new_hfkey, ordered=True)
-#                 volmesh.add_halfface(new_vkeys[::-1], fkey=new_hfkey)
-#             volmesh.cell_vertex_delete(fkey)
-#             fkey = g
-#     return volmesh
-
-
-
-
-
-
-
-
-
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
-#   helpers
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-
-
 def _volmesh_compute_dependent_face_intersections(volmesh,
                                                   hfkey,
                                                   xyz,
                                                   normal=None):
-
 
     if not normal:
         normal = None
@@ -701,6 +419,7 @@ def _volmesh_compute_dependent_face_intersections(volmesh,
     hf_edges   = volmesh.halfface_halfedges(hfkey)
     dep_hfkeys = volmesh.halfface_dependent_halffaces(hfkey)
     hf_centers = {}
+
     for nbr_hfkey in dep_hfkeys:
         center_key = dep_hfkeys[nbr_hfkey]
         center_xyz = vertex_xyz[center_key]
@@ -810,29 +529,12 @@ def _halffaces_avg_normals(volmesh, hfkeys):
 # ******************************************************************************
 # ******************************************************************************
 #
-#   rhino
+#   Main
 #
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
 
 
-def _get_initial_point(message='Point to move from?'):
-    ip = Rhino.Input.Custom.GetPoint()
-    ip.SetCommandPrompt(message)
-    ip.Get()
-    ip = ip.Point()
-    return ip
-
-
-def _get_target_point(constraint, OnDynamicDraw, option='None', message='Point to move to?'):
-    gp = Rhino.Input.Custom.GetPoint()
-    gp.SetCommandPrompt(message)
-    if option == 'None':
-        gp.Constrain(constraint)
-    else:
-        gp.Constrain(constraint, option)
-    gp.DynamicDraw += OnDynamicDraw
-    gp.Get()
-    gp = gp.Point()
-    return gp
+if __name__ == '__main__':
+    pass

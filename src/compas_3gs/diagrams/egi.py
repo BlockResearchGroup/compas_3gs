@@ -79,23 +79,4 @@ class EGI(Mesh3gs):
 
 
 if __name__ == '__main__':
-
-    import rhinoscriptsyntax as rs
-
-    # from compas.datastructures import VolMesh
-    from compas_rhino.artists import VolMeshArtist
-    from compas_3gs.datastructures.forcevolmesh import ForceVolMesh as VolMesh
-    from compas_rhino.helpers.volmesh import volmesh_from_polysurfaces
-
-    guids   = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
-    rs.HideObjects(guids)
-
-    volmesh = VolMesh()
-    volmesh = volmesh_from_polysurfaces(volmesh, guids)
-    volmesh_artist = VolMeshArtist(volmesh, layer='primal')
-    volmesh_artist.draw_vertices()
-    volmesh_artist.draw_edges()
-
-    for ckey in volmesh.cell:
-        egi = EGI.from_volmesh_cell(ckey, volmesh)
-        egi.draw()
+    pass

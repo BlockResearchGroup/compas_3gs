@@ -11,22 +11,22 @@ from compas.geometry import scale_vector
 from compas.geometry import length_vector
 from compas.geometry import centroid_polyhedron
 from compas.geometry import intersection_line_plane
-from compas.geometry import distance_point_point
 
 from compas.utilities import i_to_rgb
 
 from compas_rhino.utilities import draw_lines
 from compas_rhino.utilities import draw_labels
 
-from compas_rhino.helpers import volmesh_select_vertex
 from compas_rhino.helpers import volmesh_select_face
-
-from compas_rhino.conduits import LinesConduit
 
 from compas_3gs.utilities import polygon_normal_oriented
 from compas_3gs.utilities import polygon_area_oriented
 
+from compas_3gs.rhino import get_target_point
+
+
 try:
+    import System
     import Rhino
     import scriptcontext as sc
     import rhinoscriptsyntax as rs
@@ -56,7 +56,8 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['cell_face_pull_interactive']
+__all__ = ['cell_face_pull_target_area',
+           'cell_face_pull_interactive']
 
 
 # ******************************************************************************
@@ -81,14 +82,12 @@ def cell_face_pull_target_area_direct(volmesh, tol=1e-6):
 
     rs.AddPoint(hf_center)
 
-
     # display current area -----------------------------------------------------
     draw_labels([{
         'pos'  : hf_center,
         'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
         'color': (0, 0, 0),
         'text' : str(round(hf_area, 3))}])
-
 
     # enter target area --------------------------------------------------------
     gn = Rhino.Input.Custom.GetNumber()
@@ -98,56 +97,30 @@ def cell_face_pull_target_area_direct(volmesh, tol=1e-6):
     target = gn.Number()
     gn.Dispose()
 
-
     # prep cell ----------------------------------------------------------------
     _cell_split_indet_vertices(volmesh, hfkey)
-
-
-    print('hf_normal', hf_normal)
 
     new_xyz    = add_vectors(hf_center, hf_normal)
     trial_area = _evaluate_trial_face_area(volmesh, hfkey, new_xyz)
 
-
-
-    ratio      = trial_area - hf_area
-    print('trial_area', trial_area)
-    print('ratio', ratio)
-
-    x          = (target - hf_area) / ratio
-
-
-    # new_center = add_vectors(hf_center, scale_vector(hf_normal, x))
-    # _cell_face_pull_location(volmesh, hfkey, new_center)
-
+    ratio = trial_area - hf_area
+    x     = (target - hf_area) / ratio
 
     deviation = 1
     iteration = 0
+
     while deviation > tol:
         if iteration > 100:
             break
 
-
-
-
         new_center = add_vectors(hf_center, scale_vector(hf_normal, x))
 
         current_area = _evaluate_trial_face_area(volmesh, hfkey, new_center)
-
-
-        # new_xyz = add_vectors(hf_center, hf_normal)
-
-        # trial_area = _evaluate_trial_face_area(volmesh, hfkey, new_xyz)
         extra = (target - current_area) / ratio
         x = x + extra
-
         deviation = abs(target - current_area)
 
-
-        iteration +=1
-        print(iteration)
-        print(current_area)
-
+        iteration += 1
 
     y = (0, 1, 0)
 
@@ -155,39 +128,18 @@ def cell_face_pull_target_area_direct(volmesh, tol=1e-6):
 
     move = add_vectors(center, scale_vector(y, current_area))
 
-
-
-
-
-
-    draw_lines([{
-        'start': center,
-        'end'  : move,
-        # 'arrow': 'end',
-        'layer': 'area_lines',
-        'name' : 'area-{}'.format(current_area)}])
-
-
-
-
-
-    # print(iteration)
-    # print(volmesh.halfface_oriented_area(hfkey))
+    draw_lines([{'start': center,
+                 'end'  : move,
+                 'layer': 'area_lines',
+                 'name' : 'area-{}'.format(current_area)}])
 
     _cell_face_pull_location(volmesh, hfkey, new_center)
+
     rs.EnableRedraw(True)
 
     volmesh.draw(layer='forcepolyhedra')
 
-
     return volmesh
-
-
-
-
-
-
-
 
 
 def cell_face_pull_target_area(volmesh, tol=1e-6):
@@ -201,14 +153,12 @@ def cell_face_pull_target_area(volmesh, tol=1e-6):
 
     rs.AddPoint(hf_center)
 
-
     # display current area -----------------------------------------------------
     draw_labels([{
         'pos'  : hf_center,
         'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
         'color': (0, 0, 0),
         'text' : str(round(hf_area, 3))}])
-
 
     # enter target area --------------------------------------------------------
     gn = Rhino.Input.Custom.GetNumber()
@@ -218,10 +168,8 @@ def cell_face_pull_target_area(volmesh, tol=1e-6):
     target = gn.Number()
     gn.Dispose()
 
-
     # prep cell ----------------------------------------------------------------
     _cell_split_indet_vertices(volmesh, hfkey)
-
 
     # get move direction -------------------------------------------------------
 
@@ -234,13 +182,7 @@ def cell_face_pull_target_area(volmesh, tol=1e-6):
 
     move_dir = _get_move_direction(volmesh, hfkey) * sign
 
-
-
-
-
-
     rs.EnableRedraw(False)
-
 
     gr = (math.sqrt(5) + 1) / 2
     a  = 0
@@ -248,15 +190,11 @@ def cell_face_pull_target_area(volmesh, tol=1e-6):
     c  = b - (b - a) / gr
     d  = a + (b - a) / gr
 
-
-    areas = []
-
     iteration = 0
     count     = 50
 
-
-    centers = []
-    labels = []
+    centers   = []
+    labels    = []
 
     while abs(c - d) > tol:
 
@@ -274,91 +212,27 @@ def cell_face_pull_target_area(volmesh, tol=1e-6):
         center_c = add_vectors(hf_center, scale_vector(hf_normal, move_c))
         center_d = add_vectors(hf_center, scale_vector(hf_normal, move_d))
 
-
         area_c   = _evaluate_trial_face_area(volmesh, hfkey, center_c)
         area_d   = _evaluate_trial_face_area(volmesh, hfkey, center_d)
         eval_c   = area_c - target
         eval_d   = area_d - target
 
-        col_c = 255 - iteration * 6
-        col_d = iteration * 6
-        # labels.append({
-        #     'pos'  : center_c,
-        #     'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
-        #     'color': (col_c, col_c, col_c),
-        #     'text' : str(iteration)})
-        # labels.append({
-        #     'pos'  : center_d,
-        #     'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
-        #     'color': (col_d, col_d, col_d),
-        #     'text' : str(iteration)})
-
-
-        # if iteration == 0:
-        #     rs.AddPoint(center_c)
-        #     rs.AddArcPtTanPt(hf_center, (0, 1, 0), center_d)
-
-
-
-        _cell_draw_current(volmesh, hfkey, center_c, iteration, color=(0, 0, 255))
-        _cell_draw_current(volmesh, hfkey, center_d, iteration, color=(255, 0, 0))
-
-        rs.CurrentLayer('iteration-{}'.format(iteration))
-        rs.AddArcPtTanPt(center_a, (0, 1, 0), center_b)
-
-
-
         if abs(eval_c) < abs(eval_d):
-
-            # rs.AddArcPtTanPt(center_c, (0, 1, 0), center_d)
             b = d
 
-            # areas.append(area_c)
-
-
-            # draw_labels([{
-            #     'pos'  : center_d,
-            #     'layer': 'iteration-{}'.format(iteration),
-            #     'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
-            #     'color': (0, 0, 255),
-            #     'text' : str(area_d)}])
-
         else:
-            # rs.AddArcPtTanPt(center_c, (0, 1, 0), center_d)
             a = c
-
-            # rs.AddArcPtTanPt(center_c, (0, 1, 0), center_a)
-            # draw_labels([{
-            #     'pos'  : center_c,
-            #     'layer': 'iteration-{}'.format(iteration),
-            #     'name' : '{}.vertex.label.*'.format(volmesh.attributes['name']),
-            #     'color': (255, 0, 0),
-            #     'text' : str(area_c)}])
-
 
         c = b - (b - a) / gr
         d = a + (b - a) / gr
 
-
-
         centers.append(center_c)
-
 
         iteration += 1
         count     -= 1
 
-
-    print(areas)
-    print(iteration)
-
     final = (b + a) / 2
     translation = final * move_dir
-
-
-    # for i in range(0, len(centers) - 1):
-    #     sp = centers[i]
-    #     ep = centers[i + 1]
-    #     rs.AddArcPtTanPt(sp, (0, 1, 0), ep)
 
     new_center = add_vectors(hf_center, scale_vector(hf_normal, translation))
     _cell_face_pull_location(volmesh, hfkey, new_center)
@@ -408,6 +282,7 @@ def cell_face_pull_interactive(volmesh):
     #  dynamic draw
     # --------------------------------------------------------------------------
     rs.EnableRedraw(True)
+
     def OnDynamicDraw(sender, e):
         cp          = e.CurrentPoint
         plane       = (cp, hf_normal)
@@ -478,7 +353,7 @@ def cell_face_pull_interactive(volmesh):
     # --------------------------------------------------------------------------
     ip   = Point3d(*hf_center)
     line = Rhino.Geometry.Line(ip, ip + Vector3d(*hf_normal))
-    gp   = _get_target_point(line, OnDynamicDraw)
+    gp   = get_target_point(line, OnDynamicDraw)
 
     # --------------------------------------------------------------------------
     #  update volmesh coordinates
@@ -547,7 +422,6 @@ def _cell_split_indet_vertices(volmesh, hfkey):
 
     print(egi.face)
 
-
     return volmesh
 
 
@@ -580,11 +454,6 @@ def _evaluate_trial_face_area(volmesh, hfkey, new_xyz):
         sign = -1
 
     return new_area * sign
-
-
-
-
-
 
 
 def _get_move_direction(volmesh, hfkey):
@@ -651,8 +520,6 @@ def _cell_draw_current(volmesh, hfkey, center, iteration, color):
     new_plane   = (center, volmesh.halfface_oriented_normal(hfkey))
     new_pt_list = []
 
-
-
     for u in hf_vkeys:
         v     = edges[u]
         u_xyz = volmesh.vertex_coordinates(u)
@@ -660,7 +527,6 @@ def _cell_draw_current(volmesh, hfkey, center, iteration, color):
         line  = (u_xyz, v_xyz)
         it    = intersection_line_plane(line, new_plane)
         new_pt_list.append(it)
-
 
         lines.append({
             'start': u_xyz,
@@ -691,65 +557,16 @@ def _cell_draw_current(volmesh, hfkey, center, iteration, color):
     draw_lines(lines)
 
 
-
-
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
 #
-#   rhino
+#   Main
 #
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
 
 
-def _get_initial_point(message='Point to move from?'):
-    ip = Rhino.Input.Custom.GetPoint()
-    ip.SetCommandPrompt(message)
-    ip.Get()
-    ip = ip.Point()
-    return ip
-
-
-def _get_target_point(constraint, OnDynamicDraw, option='None', message='Point to move to?'):
-    gp = Rhino.Input.Custom.GetPoint()
-    gp.SetCommandPrompt(message)
-    if option == 'None':
-        gp.Constrain(constraint)
-    else:
-        gp.Constrain(constraint, option)
-    gp.DynamicDraw += OnDynamicDraw
-    gp.Get()
-    gp = gp.Point()
-    return gp
-
-
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
-#   UNUSED
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-
-
-# def cell_split_vertex(volmesh):
-
-#     vkey = volmesh_select_vertex(volmesh)
-#     hfkey1 = volmesh_select_face(volmesh)
-#     hfkey2 = volmesh_select_face(volmesh)
-
-#     volmesh.cell_split_vertex(vkey, hfkey1, hfkey2)
-#     volmesh.draw(layer='forcepolyhedra')
-#     volmesh.draw_vertexlabels()
-#     volmesh.draw_facelabels()
-
-#     ckey = volmesh.cell.keys()[0]
-#     egi = volmesh.c_data[ckey]['egi']
-#     egi.draw_vertexlabels(color=(255, 150, 150))
-#     egi.draw()
-#     egi.draw_facelabels(color=(150, 150, 150))
-#
+if __name__ == '__main__':
+    pass

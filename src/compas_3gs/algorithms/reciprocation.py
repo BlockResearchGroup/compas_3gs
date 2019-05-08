@@ -35,6 +35,7 @@ def volmesh_reciprocate(volmesh,
                         edge_max=None,
 
                         tolerance=0.001,
+                        tolerance_boundary=0.0001,
 
                         callback=None,
                         callback_args=None,
@@ -185,7 +186,7 @@ def volmesh_reciprocate(volmesh,
         # ----------------------------------------------------------------------
         perpness = _check_deviation(volmesh, formdiagram)
 
-        if perpness < tolerance and deviation_boundary_perp < tolerance:
+        if perpness < tolerance and deviation_boundary_perp < tolerance_boundary:
 
             if print_result_info:
                 print_result('Reciprocation', k, perpness)

@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import ast
-
 import compas
 from compas.utilities import i_to_rgb
 
@@ -12,7 +10,6 @@ from compas_3gs.rhino.control.selectors import CellSelector
 
 try:
     import rhinoscriptsyntax as rs
-    import scriptcontext as sc
 except ImportError:
     compas.raise_if_ironpython()
 

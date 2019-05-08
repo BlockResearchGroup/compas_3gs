@@ -9,7 +9,6 @@ from compas.geometry import length_vector
 from compas_rhino.helpers.network import network_draw
 from compas_rhino.helpers.network import network_draw_vertices
 from compas_rhino.helpers.network import network_draw_edges
-from compas_rhino.helpers.network import network_draw_vertex_labels
 from compas_rhino.helpers.network import network_draw_edge_labels
 
 from compas_rhino.artists import NetworkArtist
@@ -41,48 +40,6 @@ class Network3gs(Network):
     # --------------------------------------------------------------------------
 
     datastructure_centroid = datastructure_centroid
-
-    # --------------------------------------------------------------------------
-    # iterators
-    # --------------------------------------------------------------------------
-
-    # def edges_iter(self, data=False):
-    #     for u in self.edge:
-    #         for v in self.edge[u]:
-    #             if data:
-    #                 yield u, v, self.edge[u][v]
-    #             else:
-    #                 yield u, v
-
-    # --------------------------------------------------------------------------
-    #   updaters / setters
-    # --------------------------------------------------------------------------
-
-    # def update_v_data(self, vkey, attr_dict=None, **kwattr):
-    #     if vkey not in self.v_data:
-    #         self.v_data[vkey] = {}
-    #     attr = self.default_v_prop.copy()
-    #     if not attr_dict:
-    #         attr_dict = {}
-    #     attr_dict.update(kwattr)
-    #     attr.update(attr_dict)
-    #     self.v_data[vkey].update(attr)
-
-    # def update_e_data(self, u, v, attr_dict=None, **kwattr):
-    #     if (u, v) not in self.e_data:
-    #         self.e_data[u, v] = {}
-    #     attr = self.default_e_prop.copy()
-    #     if not attr_dict:
-    #         attr_dict = {}
-    #     attr_dict.update(kwattr)
-    #     attr.update(attr_dict)
-    #     self.e_data[u, v].update(attr)
-
-    # def initialize_data(self):
-    #     for vkey in self.vertex:
-    #         self.update_v_data(vkey)
-    #     for u, v in self.edges():
-    #         self.update_e_data(u, v)
 
     # --------------------------------------------------------------------------
     # misc

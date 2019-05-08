@@ -114,7 +114,8 @@ with conduit.enabled():
                    kmax=2000,
                    target_areas=target_areas,
                    target_normals=target_normals,
-                   callback=callback)
+                   callback=callback,
+                   print_result_info=True)
 
 
 # ------------------------------------------------------------------------------

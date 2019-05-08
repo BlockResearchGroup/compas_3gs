@@ -87,7 +87,7 @@ def callback(forcediagram, k, args):
 # planarise
 with conduit.enabled():
     volmesh_planarise(forcediagram,
-                      kmax=2000,
+                      kmax=5000,
                       target_areas=target_areas,
                       fix_all_normals=True,
                       tolerance_area=0.01,

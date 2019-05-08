@@ -9,13 +9,9 @@ from compas.geometry import add_vectors
 from compas_rhino.selectors import VertexSelector
 
 from compas_3gs.rhino.control import get_initial_point
-from compas_3gs.rhino.control import get_target_point
 
 try:
-    import rhinoscriptsyntax as rs
-    import scriptcontext as sc
     import Rhino
-    import System
 
     from Rhino.ApplicationSettings import *
     from Rhino.Geometry import Point3d
@@ -36,14 +32,12 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = [
-    'vertex_modify_fixity',
-    'vertex_move',
-    'volmesh_vertex_align',
+__all__ = ['vertex_modify_fixity',
+           'vertex_move',
+           'volmesh_vertex_align',
 
-    'network_vertex_move',
-    'network_vertex_fixity'
-]
+           'network_vertex_move',
+           'network_vertex_fixity']
 
 
 # ******************************************************************************
@@ -120,7 +114,7 @@ def vertex_move(diagram):
                 nbrs.append(nbr)
         nbr_vkeys[vkey] = nbrs
 
-    ip = _get_initial_point()
+    ip = get_initial_point()
 
     def OnDynamicDraw(sender, e):
         cp = e.CurrentPoint
@@ -168,23 +162,6 @@ def vertex_move(diagram):
         diagram.vertex_update_xyz(vkey, new_xyz, constrained=False)
 
     diagram.draw()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def volmesh_vertex_align(volmesh):
@@ -274,32 +251,6 @@ def volmesh_vertex_align(volmesh):
     volmesh.draw()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
@@ -369,7 +320,7 @@ def network_vertex_move(network):
                 nbrs.append(nbr)
         nbr_vkeys[vkey] = nbrs
 
-    ip   = _get_initial_point()
+    ip   = get_initial_point()
 
     def OnDynamicDraw(sender, e):
         cp = e.CurrentPoint
@@ -423,29 +374,12 @@ def network_vertex_move(network):
 # ******************************************************************************
 # ******************************************************************************
 #
-#   helpers
+#   Main
 #
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************
 
 
-def _get_initial_point(message='Point to move from?'):
-    ip = Rhino.Input.Custom.GetPoint()
-    ip.SetCommandPrompt(message)
-    ip.Get()
-    ip = ip.Point()
-    return ip
-
-
-def _get_target_point(constraint, OnDynamicDraw, option='None', message='Point to move to?'):
-    gp = Rhino.Input.Custom.GetPoint()
-    gp.SetCommandPrompt(message)
-    if option == 'None':
-        gp.Constrain(constraint)
-    else:
-        gp.Constrain(constraint, option)
-    gp.DynamicDraw += OnDynamicDraw
-    gp.Get()
-    gp = gp.Point()
-    return gp
+if __name__ == '__main__':
+    pass
