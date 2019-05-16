@@ -64,9 +64,9 @@ for vkey in egi.vertex:
         color = (255, 0, 0)
     egi_vertex_colordict[vkey] = color
 
-
 # draw egi vertex labels and edgees as arcs
 rs.AddLayer('egi')
+
 egi.draw_vertexlabels(color=egi_vertex_colordict)
 draw_egi_arcs(egi)
 

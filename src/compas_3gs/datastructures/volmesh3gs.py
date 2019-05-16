@@ -216,6 +216,11 @@ class VolMesh3gs(VolMesh):
             dependents.remove(hfkey)
         return list(dependents)
 
+
+    def clean(self):
+        pass
+
+
     # --------------------------------------------------------------------------
     # drawing
     # --------------------------------------------------------------------------

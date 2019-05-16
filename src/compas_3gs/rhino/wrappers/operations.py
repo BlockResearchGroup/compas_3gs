@@ -69,7 +69,7 @@ __all__ = ['rhino_volmesh_vertex_lift',
            'rhino_volmesh_merge_adjacent_halffaces',
 
            'rhino_volmesh_cell_subdivide_barycentric',
-           'volmesh_pull_faces']
+           'rhino_volmesh_pull_faces']
 
 
 # ******************************************************************************
@@ -268,7 +268,7 @@ def rhino_volmesh_cell_subdivide_barycentric(volmesh, formdiagram=None):
 # ******************************************************************************
 
 
-def volmesh_pull_faces(volmesh, uniform=False):
+def rhino_volmesh_pull_faces(volmesh, uniform=False):
 
     cell_colors = {}
     ckeys = volmesh.cell.keys()

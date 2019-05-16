@@ -32,12 +32,9 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['vertex_modify_fixity',
-           'vertex_move',
-           'volmesh_vertex_align',
-
-           'network_vertex_move',
-           'network_vertex_fixity']
+__all__ = ['rhino_vertex_modify_fixity',
+           'rhino_vertex_move',
+           'rhino_vertex_align']
 
 
 # ******************************************************************************
@@ -51,7 +48,7 @@ __all__ = ['vertex_modify_fixity',
 # ******************************************************************************
 
 
-def vertex_modify_fixity(diagram):
+def rhino_vertex_modify_fixity(diagram):
     """Modifies the fixity attribute(s) of selected vertices.
 
     """
@@ -95,7 +92,7 @@ def vertex_modify_fixity(diagram):
     diagram.draw(layer=diagram.layer)
 
 
-def vertex_move(diagram):
+def rhino_vertex_move(diagram):
     """Moves the selected vertices.
 
     """
@@ -164,7 +161,7 @@ def vertex_move(diagram):
     diagram.draw()
 
 
-def volmesh_vertex_align(volmesh):
+def rhino_vertex_align(diagram):
 
     def update_point(old, new):
         if boolOptionA.CurrentValue is True:
@@ -181,11 +178,11 @@ def volmesh_vertex_align(volmesh):
     # --------------------------------------------------------------------------
     # get vkeys to align
     # --------------------------------------------------------------------------
-    vkeys = VertexSelector.select_vertices(volmesh)
+    vkeys = VertexSelector.select_vertices(diagram)
     nbr_vkeys = {}
     edges = set()
     for vkey in vkeys:
-        all_nbrs = volmesh.plane[vkey].keys()
+        all_nbrs = diagram.plane[vkey].keys()
         nbrs = []
         for nbr in all_nbrs:
             if nbr in vkeys:
@@ -214,19 +211,19 @@ def volmesh_vertex_align(volmesh):
         cp = e.CurrentPoint
 
         for vkey in vkeys:
-            xyz = volmesh.vertex_coordinates(vkey)
+            xyz = diagram.vertex_coordinates(vkey)
             sp  = Point3d(*xyz)
             sp_f = update_point(sp, cp)
             for nbr_vkey in nbr_vkeys[vkey]:
-                nbr  = volmesh.vertex_coordinates(nbr_vkey)
+                nbr  = diagram.vertex_coordinates(nbr_vkey)
                 np   = Point3d(*nbr)
                 e.Display.DrawDottedLine(np, sp_f, dotted_color)
                 e.Display.DrawLine(sp, sp_f, edge_color, 3)
 
         for pair in list(edges):
             pair = list(pair)
-            u  = volmesh.vertex_coordinates(pair[0])
-            v  = volmesh.vertex_coordinates(pair[1])
+            u  = diagram.vertex_coordinates(pair[0])
+            v  = diagram.vertex_coordinates(pair[1])
             sp = update_point(Point3d(*u), cp)
             ep = update_point(Point3d(*v), cp)
             e.Display.DrawLine(sp, ep, edge_color, 3)
@@ -245,10 +242,10 @@ def volmesh_vertex_align(volmesh):
         break
 
     for vkey in vkeys:
-        xyz = update_point(volmesh.vertex_coordinates(vkey), target)
-        volmesh.vertex_update_xyz(vkey, xyz, constrained=False)
+        xyz = update_point(diagram.vertex_coordinates(vkey), target)
+        diagram.vertex_update_xyz(vkey, xyz, constrained=False)
 
-    volmesh.draw()
+    diagram.draw()
 
 
 # ******************************************************************************
@@ -262,112 +259,112 @@ def volmesh_vertex_align(volmesh):
 # ******************************************************************************
 
 
-def network_vertex_fixity(network):
+# def network_vertex_fixity(network):
 
-    vkeys = VertexSelector.select_vertices(network)
+#     vkeys = VertexSelector.select_vertices(network)
 
-    go = Rhino.Input.Custom.GetOption()
-    go.SetCommandPrompt('Set axes Constraints')
+#     go = Rhino.Input.Custom.GetOption()
+#     go.SetCommandPrompt('Set axes Constraints')
 
-    boolOptionA = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
-    boolOptionX = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
-    boolOptionY = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
-    boolOptionZ = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
+#     boolOptionA = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
+#     boolOptionX = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
+#     boolOptionY = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
+#     boolOptionZ = Rhino.Input.Custom.OptionToggle(False, 'False', 'True')
 
-    go.AddOptionToggle('A', boolOptionA)
-    go.AddOptionToggle('X', boolOptionX)
-    go.AddOptionToggle('Y', boolOptionY)
-    go.AddOptionToggle('Z', boolOptionZ)
+#     go.AddOptionToggle('A', boolOptionA)
+#     go.AddOptionToggle('X', boolOptionX)
+#     go.AddOptionToggle('Y', boolOptionY)
+#     go.AddOptionToggle('Z', boolOptionZ)
 
-    while True:
-        opt = go.Get()
-        if go.CommandResult() != Rhino.Commands.Result.Success:
-            break
-        if opt == Rhino.Input.GetResult.Option:  # keep picking options
-            continue
-        break
+#     while True:
+#         opt = go.Get()
+#         if go.CommandResult() != Rhino.Commands.Result.Success:
+#             break
+#         if opt == Rhino.Input.GetResult.Option:  # keep picking options
+#             continue
+#         break
 
-    if not vkeys:
-        return
+#     if not vkeys:
+#         return
 
-    for vkey in vkeys:
-        if boolOptionA.CurrentValue:
-            network.v_data[vkey]['x_fix'] = True
-            network.v_data[vkey]['y_fix'] = True
-            network.v_data[vkey]['z_fix'] = True
-        network.v_data[vkey]['x_fix'] = boolOptionX.CurrentValue
-        network.v_data[vkey]['y_fix'] = boolOptionY.CurrentValue
-        network.v_data[vkey]['z_fix'] = boolOptionZ.CurrentValue
+#     for vkey in vkeys:
+#         if boolOptionA.CurrentValue:
+#             network.v_data[vkey]['x_fix'] = True
+#             network.v_data[vkey]['y_fix'] = True
+#             network.v_data[vkey]['z_fix'] = True
+#         network.v_data[vkey]['x_fix'] = boolOptionX.CurrentValue
+#         network.v_data[vkey]['y_fix'] = boolOptionY.CurrentValue
+#         network.v_data[vkey]['z_fix'] = boolOptionZ.CurrentValue
 
-    network.draw()
+#     network.draw()
 
-    return network
+#     return network
 
 
-def network_vertex_move(network):
+# def network_vertex_move(network):
 
-    vkeys = VertexSelector.select_vertices(network)
+#     vkeys = VertexSelector.select_vertices(network)
 
-    nbr_vkeys = {}
-    edges = set()
-    for vkey in vkeys:
-        all_nbrs = network.vertex_neighbours(vkey)
-        nbrs = []
-        for nbr in all_nbrs:
-            if nbr in vkeys:
-                edges.add(frozenset([vkey, nbr]))
-            else:
-                nbrs.append(nbr)
-        nbr_vkeys[vkey] = nbrs
+#     nbr_vkeys = {}
+#     edges = set()
+#     for vkey in vkeys:
+#         all_nbrs = network.vertex_neighbours(vkey)
+#         nbrs = []
+#         for nbr in all_nbrs:
+#             if nbr in vkeys:
+#                 edges.add(frozenset([vkey, nbr]))
+#             else:
+#                 nbrs.append(nbr)
+#         nbr_vkeys[vkey] = nbrs
 
-    ip   = get_initial_point()
+#     ip   = get_initial_point()
 
-    def OnDynamicDraw(sender, e):
-        cp = e.CurrentPoint
-        translation = cp - ip
-        for vkey in vkeys:
-            xyz = network.vertex_coordinates(vkey)
-            sp  = Point3d(*xyz)
-            for nbr_vkey in nbr_vkeys[vkey]:
-                nbr  = network.vertex_coordinates(nbr_vkey)
-                np   = Point3d(*nbr)
-                line = Rhino.Geometry.Line(sp, sp + translation)
-                e.Display.DrawDottedLine(np, sp + translation, dotted_color)
-                e.Display.DrawArrow(line, arrow_color, 15, 0)
+#     def OnDynamicDraw(sender, e):
+#         cp = e.CurrentPoint
+#         translation = cp - ip
+#         for vkey in vkeys:
+#             xyz = network.vertex_coordinates(vkey)
+#             sp  = Point3d(*xyz)
+#             for nbr_vkey in nbr_vkeys[vkey]:
+#                 nbr  = network.vertex_coordinates(nbr_vkey)
+#                 np   = Point3d(*nbr)
+#                 line = Rhino.Geometry.Line(sp, sp + translation)
+#                 e.Display.DrawDottedLine(np, sp + translation, dotted_color)
+#                 e.Display.DrawArrow(line, arrow_color, 15, 0)
 
-        for pair in list(edges):
-            pair = list(pair)
-            u  = network.vertex_coordinates(pair[0])
-            v  = network.vertex_coordinates(pair[1])
-            sp = Point3d(*u) + translation
-            ep = Point3d(*v) + translation
-            e.Display.DrawLine(sp, ep, edge_color, 3)
+#         for pair in list(edges):
+#             pair = list(pair)
+#             u  = network.vertex_coordinates(pair[0])
+#             v  = network.vertex_coordinates(pair[1])
+#             sp = Point3d(*u) + translation
+#             ep = Point3d(*v) + translation
+#             e.Display.DrawLine(sp, ep, edge_color, 3)
 
-    ModelAidSettings.Ortho = True
-    gp = Rhino.Input.Custom.GetPoint()
-    gp.DynamicDraw += OnDynamicDraw
-    gp.SetCommandPrompt('Point to move to')
-    ortho_option = Rhino.Input.Custom.OptionToggle(True, 'Off', 'On')
-    gp.AddOptionToggle('ortho_snap', ortho_option)
+#     ModelAidSettings.Ortho = True
+#     gp = Rhino.Input.Custom.GetPoint()
+#     gp.DynamicDraw += OnDynamicDraw
+#     gp.SetCommandPrompt('Point to move to')
+#     ortho_option = Rhino.Input.Custom.OptionToggle(True, 'Off', 'On')
+#     gp.AddOptionToggle('ortho_snap', ortho_option)
 
-    while True:
-        ModelAidSettings.Ortho = ortho_option.CurrentValue
-        get_rc = gp.Get()
-        gp.SetBasePoint(ip, False)
-        if gp.CommandResult() != Rhino.Commands.Result.Success:
-            continue
-        if get_rc == Rhino.Input.GetResult.Option:
-            continue
-        elif get_rc == Rhino.Input.GetResult.Point:
-            target = gp.Point()
-        break
+#     while True:
+#         ModelAidSettings.Ortho = ortho_option.CurrentValue
+#         get_rc = gp.Get()
+#         gp.SetBasePoint(ip, False)
+#         if gp.CommandResult() != Rhino.Commands.Result.Success:
+#             continue
+#         if get_rc == Rhino.Input.GetResult.Option:
+#             continue
+#         elif get_rc == Rhino.Input.GetResult.Point:
+#             target = gp.Point()
+#         break
 
-    translation = target - ip
-    for vkey in vkeys:
-        new_xyz = add_vectors(network.vertex_coordinates(vkey), translation)
-        network.vertex_update_xyz(vkey, new_xyz, constrained=False)
+#     translation = target - ip
+#     for vkey in vkeys:
+#         new_xyz = add_vectors(network.vertex_coordinates(vkey), translation)
+#         network.vertex_update_xyz(vkey, new_xyz, constrained=False)
 
-    network.draw()
+#     network.draw()
 
 
 # ******************************************************************************
