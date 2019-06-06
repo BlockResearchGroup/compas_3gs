@@ -5,7 +5,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
+    
         <meta name="author" content="" />
         <meta name="description" content="" />
 
@@ -17,13 +17,13 @@
         <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
         <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
-
+        
             <link rel="next" title="compas_3gs.diagrams" href="../compas_3gs.diagrams.html" />
-
-
-
+        
+        
+        
             <link rel="prev" title="compas_3gs.datastructures.Mesh3gs" href="compas_3gs.datastructures.Mesh3gs.html" />
-
+        
 
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
@@ -45,7 +45,7 @@
                 </li>
             </ul>
         </header>
-
+        
         <div class="container-fluid compas-container">
             <div class="row flex-xl-nowrap">
 
@@ -53,16 +53,16 @@
 
                 <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
 
+                    
 
-
-
+                        
 
                         <div class="section" id="compas-3gs-datastructures-volmesh3gs">
 <h1>compas_3gs.datastructures.VolMesh3gs</h1>
 <dl class="class">
 <dt id="compas_3gs.datastructures.VolMesh3gs">
 <em class="property">class </em><code class="descclassname">compas_3gs.datastructures.</code><code class="descname">VolMesh3gs</code><a class="reference internal" href="../../_modules/compas_3gs/datastructures/volmesh3gs.html#VolMesh3gs"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_3gs.datastructures._old_volmesh.VolMesh</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.volmesh.volmesh.VolMesh</span></code></p>
 <p>Inherits and extends the compas VolMesh class, such that it is more suitable for 3D graphic statics applications.</p>
 <p>Primarily used for polyhedral form and force diagrams.</p>
 <dl class="method">
@@ -81,7 +81,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#compas_3gs.datastructures.VolMesh3gs.__init__" title="compas_3gs.datastructures.VolMesh3gs.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_cell</span></code>(halffaces[, ckey, attr_dict])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_cell</span></code>(halffaces[, ckey])</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_halfface</span></code>(vertices[, fkey])</p></td>
@@ -102,22 +102,22 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_edges</span></code>(ckey)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_halfface_neighbours</span></code>(ckey, hfkey)</p></td>
-<td><p>Includes both edge and vertex neighbours.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.cell_halfface_neighbours</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_halffaces</span></code>(ckey)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_to_mesh</span></code>(ckey)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.cell_to_mesh</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_neighbors</span></code>(ckey)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_pair_halffaces</span></code>(ckey_1, ckey_2)</p></td>
-<td><p>Given 2 ckeys, returns the interfacing halffaces, respectively.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.cell_pair_halffaces</span></code></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_split_vertex</span></code>(vkey, hfkey1, hfkey2)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.cell_split_vertex</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_tree</span></code>(root)</p></td>
@@ -126,19 +126,19 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertex_delete</span></code>(vkey)</p></td>
 <td><p>This removes the vertex, and everything that is attached to the vertex EXCEPT the cell itself.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertex_halffaces</span></code>(ckey, vkey)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.cell_vertex_halffaces</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertex_neighbors</span></code>(ckey)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertex_neighbours</span></code>(ckey, vkey)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.cell_vertex_neighbours</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertices</span></code>(ckey)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_to_vertices_and_halffaces</span></code>(ckey)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.cell_to_vertices_and_halffaces</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cells</span></code>([data])</p></td>
@@ -156,7 +156,7 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">datastructure_centroid</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.datastructure_centroid</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_cell</span></code>(ckey)</p></td>
@@ -186,7 +186,7 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code>(**kwattr)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_cells</span></code>(u, v[, ordered])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.edge_cells</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_coordinates</span></code>(u, v[, axes])</p></td>
@@ -195,8 +195,8 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_direction</span></code>(u, v)</p></td>
 <td><p>Return the direction vector of an edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_halffaces</span></code>(u, v)</p></td>
-<td><p>All halffaces of a volmesh that has edge u-v.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.edge_halffaces</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_label_name</span></code>(u, v)</p></td>
 <td><p>Get the name of an edge label.</p></td>
@@ -219,10 +219,10 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code>([data])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges_iter</span></code>([data])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.edges_iter</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_center</span></code>(fkey)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.face_center</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_coordinates</span></code>(fkey[, axes])</p></td>
@@ -312,49 +312,49 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_cell</span></code>(fkey)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_center</span></code>(hfkey)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.halfface_center</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_coordinates</span></code>(hfkey)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.halfface_coordinates</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_dependent_halffaces</span></code>(hfkey)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_halfedges</span></code>(fkey)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.halfface_halfedges</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_halfedges</span></code>(hfkey)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.halfface_halfedges</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_iter</span></code>([data])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.halfface_iter</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_oriented_normal</span></code>(hfkey[, unitized])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_opposite_halfface</span></code>(hfkey)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.halfface_opposite_halfface</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_ancestor</span></code>(hfkey, key)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.halfface_vertex_ancestor</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertex_descendent</span></code>(hfkey, key)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.halfface_vertex_descendent</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertices</span></code>(fkey)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfface_vertices</span></code>(fkey[, ordered])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces_on_boundary</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.halffaces_on_boundary</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">halffaces_interior</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.halffaces_interior</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_halfface_on_boundary</span></code>(hfkey)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.is_halfface_on_boundary</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code>(vkey)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.is_vertex_on_boundary</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_cells</span></code>()</p></td>
@@ -429,13 +429,13 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code>([attr_dict])</p></td>
 <td><p>Update the default vertex attributes (this also affects already existing vertices).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_cells</span></code>(vkey)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.vertex_cells</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_coordinates</span></code>(vkey[, axes])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_halffaces</span></code>(vkey)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.vertex_halffaces</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_label_name</span></code>(key)</p></td>
@@ -447,7 +447,7 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code>(vkey)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_normal</span></code>(vkey)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMesh3gs.vertex_normal</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_update_xyz</span></code>(vkey, xyz[, constrained])</p></td>
@@ -475,10 +475,10 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p><em>dict</em> – A data dict representing the volmesh data structure for serialisation.</p></td>
+<td><p>The data representing the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p><em>str</em> – The name of the volmesh data structure.</p></td>
+<td><p>The name of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></p></td>
 <td><p><em>list</em> – The X coordinates of the vertices.</p></td>
@@ -501,14 +501,14 @@
 
 </div>
 
-
-
+                        
+                    
 
                 </main>
 
                 <!-- site navigation sidebar -->
 
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
                     <div class="navbar-light">
 
                         <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
@@ -521,18 +521,19 @@
                             </button>
                         </form>
 
-
-
+                        
+                        
 
                             <div class="navbar-expand-md">
                                 <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
                                 <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../user_manual.html">User manual</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">API Reference</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../api_reference.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.html">compas_3gs</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.algorithms.html">compas_3gs.algorithms</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.datastructures.html">compas_3gs.datastructures</a></li>
@@ -553,16 +554,16 @@
                                 </div>
                             </div>
 
-
+                        
 
                     </div>
                 </div>
 
                 <!-- table of contents of main content -->
-
+                
                 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 
-
+                    
 
                     <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">compas_3gs.datastructures.VolMesh3gs</a></li>
@@ -575,16 +576,16 @@
         </div>
 
         <footer class="compas-footer">
+            
+                Last updated on Jun 03, 2019.
+            
 
-                Last updated on Apr 05, 2019.
-
-
-
+            
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
-
+            
         </footer>
 
-
+        
 
             <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
@@ -601,7 +602,7 @@ var DOCUMENTATION_OPTIONS = {
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-
+            
             <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 
@@ -649,6 +650,6 @@ $(document).ready(function() {
 });
             </script>
 
-
+        
     </body>
 </html>

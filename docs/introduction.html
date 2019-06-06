@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="Setting Up" href="gettingstarted.html" />
+            <link rel="next" title="Getting started" href="getting_started.html" />
         
         
         
@@ -63,6 +63,8 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<div class="section" id="about">
+<h2>About</h2>
 <p><code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> is a 3D graphic statics add-on package for the <strong>COMPAS</strong> framework.</p>
 <p>Graphic statics is a graphical method of analysis and design of structures using reciprocal form and force diagrams.
 Computational graphic statics is a powerful design tool that automates the drawing process of the reciprocal diagrams.
@@ -75,6 +77,40 @@ Conventional CAD tools are limited in its functions and visualisation methods to
 Using the <code class="docutils literal notranslate"><span class="pre">network</span></code>, <code class="docutils literal notranslate"><span class="pre">mesh</span></code> and <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> datastructures, this packages aids the user in setting up and initialising polyhedral reciprocal diagrams.
 Various algorithms allow precise control and transformation of the polyhedral form and force diagrams.
 Most importantly, the legibility and usability of the polyhedral reciprocal diagrams are maximised through various visualisation functionalities to provide the user with new design insights, which is one of the most rewarding inherent benefits of graphic statics.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="general-approach">
+<h2>General approach</h2>
+<p>The functionalities and algorithms of <code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> are mainly based on transparent, geometry-based solvers and optimisation techniques as opposed to “black-box,” numerical methods.
+<code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> is developed with the following goals in mind:</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>1. Flexibility</strong></p>
+<p>The implementation needs to be general and flexible enough to cover a wide range of both known and unknown structural typologies.
+It also needs to have as few software dependencies as possible, so that users from a variety of backgrounds and expertise can adapt the library for various applications regardless of the CAD software being used.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>2. Simplicity</strong></p>
+<p>In computational geometry, improvement of the computational efficiency of solving procedures and algorithms are often prioritised over the user’s ability to modify and interact with the resulting solutions.
+Instead of focusing on computing the absolute solution in the shortest amount of time possible, the solution as well as the procedure should communicate complex information in simple ways that are easy to understand and potentially provide meaningful insights.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>3. Customisability</strong></p>
+<p>During early stages of design, it may be desirable to explore multiple
+feasible solutions as rapidly as possible while meeting the requirements
+that are specific to the design problem at hand.
+This requires a set of flexible yet robust functions and operations, which can be easily mix-and-matched to create customised toolbars and workflows that are
+tailored for the needs of the user.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>4. Open source</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> is developed as an open-source library, encouraging researchers from a wide range of disciplines and expertise to make contributions that all users can benefit from.
+In order to incentivise the researchers to contribute their work, each contribution to <code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> will be treated like a publication which can be cited and referenced.</p>
+</div>
 </div>
 
                         
@@ -105,10 +141,11 @@ Most importantly, the legibility and usability of the polyhedral reciprocal diag
 
                                 <ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="user_manual.html">User manual</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="api_reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="citing.html">Citing</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="contribution.html">How to contribute</a></li>
@@ -130,7 +167,11 @@ Most importantly, the legibility and usability of the polyhedral reciprocal diag
                     
 
                     <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Introduction</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#about">About</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#general-approach">General approach</a></li>
+</ul>
+</li>
 </ul>
 
 
@@ -141,7 +182,7 @@ Most importantly, the legibility and usability of the polyhedral reciprocal diag
 
         <footer class="compas-footer">
             
-                Last updated on Apr 05, 2019.
+                Last updated on Jun 03, 2019.
             
 
             

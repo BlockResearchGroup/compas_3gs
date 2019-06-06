@@ -7,10 +7,11 @@ compas_3gs
     :titlesonly:
 
     introduction
-    gettingstarted
+    getting_started
     overview
-    user_manual
-    reference
+    theoretical_background
+    examples
+    api_reference
     license
     citing
     contribution

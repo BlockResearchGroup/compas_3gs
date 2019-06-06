@@ -61,7 +61,7 @@
 <h1>compas_3gs.algorithms.volmesh_planarise</h1>
 <dl class="function">
 <dt id="compas_3gs.algorithms.volmesh_planarise">
-<code class="descclassname">compas_3gs.algorithms.</code><code class="descname">volmesh_planarise</code><span class="sig-paren">(</span><em>volmesh</em>, <em>kmax=100</em>, <em>target_centers={}</em>, <em>target_normals={}</em>, <em>target_areas={}</em>, <em>omit_vkeys=[]</em>, <em>fix_boundary_normals=False</em>, <em>fix_all_normals=False</em>, <em>tolerance_flat=0.001</em>, <em>tolerance_area=0.001</em>, <em>callback=None</em>, <em>callback_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/planarisation.html#volmesh_planarise"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas_3gs.algorithms.</code><code class="descname">volmesh_planarise</code><span class="sig-paren">(</span><em>volmesh</em>, <em>kmax=100</em>, <em>target_centers={}</em>, <em>target_normals={}</em>, <em>target_areas={}</em>, <em>fix_vkeys=[]</em>, <em>fix_boundary_normals=False</em>, <em>fix_all_normals=False</em>, <em>min_area=None</em>, <em>max_area=None</em>, <em>tolerance_flat=0.001</em>, <em>tolerance_area=0.001</em>, <em>tolerance_perp=0.001</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>print_result_info=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/planarisation.html#volmesh_planarise"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Planarises the halffaces of a volmesh.</p>
 <p>Planarisation of a volmesh is implemented as a three-step iterative procedure.
 At every iteration, each halfface is first individually projected to its best-fit plane (unless a target normal is given).
@@ -79,12 +79,19 @@ Finally, the new vertex coordinates are computed by taking the centroid of the d
 <li><p><strong>fix_boundary_face_normals</strong> (<em>boolean, optional [False]</em>) – Whether to keep the initial normals of the bondary faces.</p></li>
 <li><p><strong>fix_all_face_normals</strong> (<em>boolean, optional [False]</em>) – Whether to keep the initial normals of all faces.</p></li>
 <li><p><strong>tolerance_flat</strong> (<em>float, optional</em>) – Convergence tolerance for face flatness.</p></li>
-<li><p><strong>tolerance_area</strong> (<em>float, optional</em>) – Convergence tolerance for face areas.</p></li>
+<li><p><strong>tolerance_area</strong> (<em>float, optional</em>) – Convergence tolerance for face areas against target areas.</p></li>
+<li><p><strong>tolerance_perp</strong> (<em>float, optional</em>) – Convergence tolerance for face perpendicularity against target normals.</p></li>
 <li><p><strong>callback</strong> (<em>callable, optional</em>) – A user-defined callback function to be executed after every iteration.
 Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>callback_args</strong> (<em>tuple, optional</em>) – Additional parameters to be passed to the callback.
 Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>.. seealso ::</strong> – <cite>compas.geometry.mesh_planarize_faces</cite></p></li>
+<li><p><strong>print_result_info</strong> (<em>bool, optional</em>) – If True, print the result of the algorithm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a> – If a callback is provided, but it is not callable.</p></li>
+<li><p><em>.. seealso ::</em> – <cite>compas.geometry.mesh_planarize_faces</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -120,10 +127,11 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 
                                 <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../user_manual.html">User manual</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">API Reference</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../api_reference.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.html">compas_3gs</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.algorithms.html">compas_3gs.algorithms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.datastructures.html">compas_3gs.datastructures</a></li>
@@ -167,7 +175,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 
         <footer class="compas-footer">
             
-                Last updated on Apr 05, 2019.
+                Last updated on Jun 03, 2019.
             
 
             

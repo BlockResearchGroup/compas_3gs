@@ -61,7 +61,7 @@
 <h1>compas_3gs.algorithms.volmesh_reciprocate</h1>
 <dl class="function">
 <dt id="compas_3gs.algorithms.volmesh_reciprocate">
-<code class="descclassname">compas_3gs.algorithms.</code><code class="descname">volmesh_reciprocate</code><span class="sig-paren">(</span><em>volmesh</em>, <em>formdiagram</em>, <em>kmax=100</em>, <em>weight=1.0</em>, <em>fix_vkeys=[]</em>, <em>edge_min=None</em>, <em>edge_max=None</em>, <em>tolerance=0.001</em>, <em>callback=None</em>, <em>callback_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/reciprocation.html#volmesh_reciprocate"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas_3gs.algorithms.</code><code class="descname">volmesh_reciprocate</code><span class="sig-paren">(</span><em>volmesh</em>, <em>formdiagram</em>, <em>kmax=100</em>, <em>weight=1.0</em>, <em>fix_vkeys=[]</em>, <em>edge_min=None</em>, <em>edge_max=None</em>, <em>tolerance=0.001</em>, <em>tolerance_boundary=0.0001</em>, <em>callback=None</em>, <em>callback_args=None</em>, <em>print_result_info=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/reciprocation.html#volmesh_reciprocate"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Perpendicularizes the faces of the polyhedral force diagram to the corresponding dual edges in the polyhedral form diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -76,6 +76,7 @@
 <li><p><strong>tolerance</strong> (<em>float, optional [0.001]</em>) – Value for convergence tolerance. Deviation is measured by the the dot product of the input and target vectors.</p></li>
 <li><p><strong>callback</strong> (<em>callable, optional [None]</em>) – A user-defined callback function to be executed after every iteration.</p></li>
 <li><p><strong>callback_args</strong> (<em>tuple, optional [None]</em>) – Additional parameters to be passed to the callback.</p></li>
+<li><p><strong>print_result_info</strong> (<em>bool, optional</em>) – If True, print the result of the algorithm.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -120,10 +121,11 @@
 
                                 <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../user_manual.html">User manual</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">API Reference</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../api_reference.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.html">compas_3gs</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.algorithms.html">compas_3gs.algorithms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.datastructures.html">compas_3gs.datastructures</a></li>
@@ -167,7 +169,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Apr 05, 2019.
+                Last updated on Jun 03, 2019.
             
 
             

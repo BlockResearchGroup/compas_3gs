@@ -60,18 +60,25 @@
 
 <span class="kn">import</span> <span class="nn">compas</span>
 
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
-    <span class="kn">import</span> <span class="nn">scriptcontext</span> <span class="k">as</span> <span class="nn">sc</span>
     <span class="kn">import</span> <span class="nn">Rhino</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;get_initial_point&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;get_target_point&#39;</span>
-<span class="p">]</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">&#39;Juney Lee&#39;</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2019, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;juney.lee@arch.ethz.ch&#39;</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;get_initial_point&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;get_target_point&#39;</span><span class="p">,</span>
+
+           <span class="s1">&#39;set_target_areas&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="get_initial_point"><a class="viewcode-back" href="../../../../reference/generated/compas_3gs.rhino.get_initial_point.html#compas_3gs.rhino.get_initial_point">[docs]</a><span class="k">def</span> <span class="nf">get_initial_point</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Point to move from?&#39;</span><span class="p">):</span>
@@ -94,6 +101,73 @@
     <span class="n">gp</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Point</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">gp</span></div>
 
+
+<span class="k">def</span> <span class="nf">set_target_areas</span><span class="p">(</span><span class="n">area_dict</span><span class="p">):</span>
+
+    <span class="n">go</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Input</span><span class="o">.</span><span class="n">Custom</span><span class="o">.</span><span class="n">GetOption</span><span class="p">()</span>
+    <span class="n">go</span><span class="o">.</span><span class="n">SetCommandPrompt</span><span class="p">(</span><span class="s2">&quot;Enter target areas&quot;</span><span class="p">)</span>
+
+    <span class="c1"># face key -----------------------------------------------------------------</span>
+    <span class="n">sortedkeys</span>  <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">area_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">key_strings</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;key_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">sortedkeys</span><span class="p">]</span>
+    <span class="n">fkey_index</span>  <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">key_list</span>    <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">AddOptionList</span><span class="p">(</span><span class="s2">&quot;pick_face&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">key_strings</span><span class="p">,</span> <span class="n">fkey_index</span><span class="p">)</span>
+
+    <span class="c1"># assign new target areas --------------------------------------------------</span>
+    <span class="n">new_area_dict</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">area_dict</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+        <span class="n">opt</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">go</span><span class="o">.</span><span class="n">CommandResult</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Commands</span><span class="o">.</span><span class="n">Result</span><span class="o">.</span><span class="n">Success</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="k">elif</span> <span class="n">opt</span> <span class="o">==</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Input</span><span class="o">.</span><span class="n">GetResult</span><span class="o">.</span><span class="n">Option</span><span class="p">:</span>  <span class="c1"># keep picking options</span>
+            <span class="k">if</span> <span class="n">go</span><span class="o">.</span><span class="n">OptionIndex</span><span class="p">()</span> <span class="o">==</span> <span class="n">key_list</span><span class="p">:</span>
+                <span class="n">fkey_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Option</span><span class="p">()</span><span class="o">.</span><span class="n">CurrentListOptionIndex</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">fkey_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">avg</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">area_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">area_dict</span><span class="p">)</span>
+
+                    <span class="n">target_area</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s2">&quot;Enter target area for ALL faces&quot;</span><span class="p">,</span> <span class="n">avg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">target_area</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">new_area_dict</span><span class="p">:</span>
+                            <span class="n">new_area_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_area</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">fkey_key</span> <span class="o">=</span> <span class="n">sortedkeys</span><span class="p">[</span><span class="n">fkey_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="n">current_area</span> <span class="o">=</span> <span class="n">area_dict</span><span class="p">[</span><span class="n">fkey_key</span><span class="p">]</span>
+                    <span class="n">target_area</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s2">&quot;Enter target area value&quot;</span><span class="p">,</span> <span class="n">current_area</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">target_area</span><span class="p">:</span>
+                        <span class="n">new_area_dict</span><span class="p">[</span><span class="n">fkey_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_area</span>
+
+            <span class="c1"># print current targets --------------------------------------------</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-----------------------------------------------------------&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">new_area_dict</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;face&quot;</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="s2">&quot;has target area of :&quot;</span><span class="p">,</span> <span class="n">new_area_dict</span><span class="p">[</span><span class="n">fkey</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-----------------------------------------------------------&#39;</span><span class="p">)</span>
+
+            <span class="k">continue</span>
+
+        <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">new_area_dict</span>
+
+
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1">#</span>
+<span class="c1">#   Main</span>
+<span class="c1">#</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">pass</span>
 </code></pre></div>
                         
                     
@@ -123,10 +197,11 @@
 
                                 <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../user_manual.html">User manual</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../api_reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../citing.html">Citing</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../../contribution.html">How to contribute</a></li>
@@ -156,7 +231,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Apr 05, 2019.
+                Last updated on Jun 03, 2019.
             
 
             

@@ -72,12 +72,24 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>dictionary of dictionaries</em> – A dictionary of dictionaries: hfkey-{vkey: (x, y, z)}.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>halffaces</strong> (<em>dictionary</em>) – A dictionary of dictionaries: hfkey-{vkey: (x, y, z)}.</p></li>
+<li><p><strong>prisms</strong> (<em>dictionary</em>) – A dictinoary of dictinoaries: uv - [face coordinates]</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a> – If scale is 0, which means the unified diagram is equivalent to the polyhedral force diagram.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a> – If scale is 0, which means the unified diagram is equivalent to the polyhedral form diagram.</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The prisms are implemented as convex hull of two halffaces for simplicity and to resolve any small geometric errors.</p>
-<p>Unified diagram with a scale of 0 is equivalent to the polyhedral force diagram, while a scale of 1 is equivalent to the polyhedral form diagram.</p>
+<ul class="simple">
+<li><p>The prisms are implemented as convex hull of two halffaces for simplicity and to resolve any small geometric errors.</p></li>
+<li><p>Unified diagram with a scale of 0 is equivalent to the polyhedral force diagram, while a scale of 1 is equivalent to the polyhedral form diagram.</p></li>
+</ul>
 </dd></dl>
 
 </div>
@@ -110,10 +122,11 @@
 
                                 <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../user_manual.html">User manual</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">API Reference</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../api_reference.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.html">compas_3gs</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.algorithms.html">compas_3gs.algorithms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.datastructures.html">compas_3gs.datastructures</a></li>
@@ -157,7 +170,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Apr 05, 2019.
+                Last updated on Jun 03, 2019.
             
 
             

@@ -62,19 +62,41 @@
 <dl class="function">
 <dt id="compas_3gs.algorithms.egi_from_vectors">
 <code class="descclassname">compas_3gs.algorithms.</code><code class="descname">egi_from_vectors</code><span class="sig-paren">(</span><em>vectordict</em>, <em>origin</em>, <em>tol=0.001</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/egi.html#egi_from_vectors"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>testing</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>dependent on rhino arc function…</p>
-</div>
-<dl class="simple">
-<dt>exceptions:</dt>
-<dd><ol class="arabic simple">
-<li><p>normals pointing in the same direction</p></li>
-<li><p>parallel loads</p></li>
-</ol>
+<dd><p>Construct an egi from a set of vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vectordict</strong> (<em>dict</em>) – A dectionary of key-vector pairs.</p></li>
+<li><p><strong>origin</strong> (<em>list</em>) – The coordinates of the centroid.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – Tolerance for evaluating antipodal.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>egi</strong> (<em>mesh</em>) – A mesh object representing the egi.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code></a> – If there are less than four vectors.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This algorithm is dependent on Rhinoceros objects; the adjacency arcs are implemented using Rhino.Geometry.Arc, and the cross-adjacencies (arc-arc intersections) are computed using Rhino.Geometry.Intersect.Intersection.CurveCurve.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul class="simple">
+<li><p>This algorithm does not address scenarios where multiple parallel (collinear) vectors are present.</p></li>
+</ul>
+</div>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>Horn, B.K.P. (1984). <em>Extended Gaussian images</em>.</p>
+</dd>
+<dt class="label" id="id2"><span class="brackets">2</span></dt>
+<dd><p>Moni, S. (1990, June). <a href="#id3"><span class="problematic" id="id4">*</span></a>A closed-form solution for the reconstruction</p>
+</dd>
+</dl>
+<p>of a convex polyhedron from its extended gaussian image.*
+.. [3] Lee, J., T. Van Mele, and P. Block (2018). <em>Disjointed force polyhedra.</em></p>
 </dd></dl>
 
 </div>
@@ -107,10 +129,11 @@
 
                                 <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../user_manual.html">User manual</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../reference.html">API Reference</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../api_reference.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.html">compas_3gs</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.algorithms.html">compas_3gs.algorithms</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.datastructures.html">compas_3gs.datastructures</a></li>
@@ -154,7 +177,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Apr 05, 2019.
+                Last updated on Jun 03, 2019.
             
 
             

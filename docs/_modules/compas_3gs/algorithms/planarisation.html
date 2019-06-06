@@ -5,7 +5,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
+    
         <meta name="author" content="" />
         <meta name="description" content="" />
 
@@ -17,9 +17,9 @@
         <link rel="stylesheet" type="text/css" href="../../../_static/css/compas.css" />
         <link rel="stylesheet" type="text/css" href="../../../_static/css/compas-reference.css" />
 
-
-
-
+        
+        
+        
 
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
@@ -41,7 +41,7 @@
                 </li>
             </ul>
         </header>
-
+        
         <div class="container-fluid compas-container">
             <div class="row flex-xl-nowrap">
 
@@ -49,25 +49,31 @@
 
                 <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
 
+                    
 
-
-
+                        
 
                         <h1>Source code for compas_3gs.algorithms.planarisation</h1><div class="highlight"><pre><code>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">add_vectors</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">scale_vector</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">distance_point_point</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">centroid_points</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.transformations.transformations</span> <span class="k">import</span> <span class="n">project_point_plane</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">dot_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">project_point_plane</span>
 
 <span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">scale_polygon</span>
 
-<span class="kn">from</span> <span class="nn">compas_3gs.algorithms.helpers</span> <span class="k">import</span> <span class="n">print_result</span>
+<span class="kn">from</span> <span class="nn">compas_3gs.operations</span> <span class="k">import</span> <span class="n">cell_collapse_short_edges</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">print_result</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">&#39;Juney Lee&#39;</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2019, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;juney.lee@arch.ethz.ch&#39;</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mesh_planarise&#39;</span><span class="p">,</span>
@@ -78,7 +84,7 @@
 <span class="c1"># ******************************************************************************</span>
 <span class="c1"># ******************************************************************************</span>
 <span class="c1">#</span>
-<span class="c1">#   mesh arearisation</span>
+<span class="c1">#   mesh planarisation</span>
 <span class="c1">#</span>
 <span class="c1"># ******************************************************************************</span>
 <span class="c1"># ******************************************************************************</span>
@@ -92,15 +98,18 @@
                    <span class="n">target_normals</span><span class="o">=</span><span class="p">{},</span>
                    <span class="n">target_areas</span><span class="o">=</span><span class="p">{},</span>
 
-                   <span class="n">omit_vkeys</span><span class="o">=</span><span class="p">[],</span>
+                   <span class="n">fix_vkeys</span><span class="o">=</span><span class="p">[],</span>
 
                    <span class="n">avg_fkeys</span><span class="o">=</span><span class="p">[],</span>
 
                    <span class="n">tolerance_flat</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
                    <span class="n">tolerance_area</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+                   <span class="n">tolerance_perp</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
 
                    <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+                   <span class="n">print_result_info</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Planarise the faces of a mesh.</span>
 
 <span class="sd">    Planarisation of a mesh is implemented as a three-step iterative procedure.</span>
@@ -139,8 +148,15 @@
 <span class="sd">        Additional parameters to be passed to the callback.</span>
 <span class="sd">        Default is ``None``.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    Exception</span>
+<span class="sd">        If a callback is provided, but it is not callable.</span>
 
+<span class="sd">    .. seealso ::</span>
+<span class="sd">        `compas.geometry.mesh_planarize_faces`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Callback is not callable.&#39;</span><span class="p">)</span>
@@ -148,7 +164,7 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1">#   1. initialise</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="n">free_vkeys</span>      <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">omit_vkeys</span><span class="p">))</span>
+    <span class="n">free_vkeys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">fix_vkeys</span><span class="p">))</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1">#   2. loop</span>
@@ -157,6 +173,7 @@
 
         <span class="n">deviation_flat</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">deviation_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">deviation_perp</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="n">new_xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">vkey</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">}</span>
 
@@ -167,19 +184,24 @@
         <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face</span><span class="p">:</span>
 
             <span class="c1"># evaluate current face --------------------------------------------</span>
-            <span class="n">f_vkeys</span>  <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
-            <span class="n">f_center</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_center</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+            <span class="n">f_vkeys</span>  <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+            <span class="n">f_v_xyz</span>  <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
             <span class="n">f_normal</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
             <span class="n">f_area</span>   <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+            <span class="n">f_center</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span>
 
             <span class="k">if</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">target_centers</span><span class="p">:</span>
                 <span class="n">f_center</span> <span class="o">=</span> <span class="n">target_centers</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">target_normals</span><span class="p">:</span>
-                <span class="n">f_normal</span> <span class="o">=</span> <span class="n">target_normals</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+                <span class="n">target_normal</span> <span class="o">=</span> <span class="n">target_normals</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">target_areas</span><span class="p">:</span>
-                <span class="n">f_area</span> <span class="o">=</span> <span class="n">target_areas</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+                <span class="c1"># perpness deviation</span>
+                <span class="n">perpness</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">f_normal</span><span class="p">,</span> <span class="n">target_normal</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">perpness</span> <span class="o">&gt;</span> <span class="n">deviation_perp</span><span class="p">:</span>
+                    <span class="n">deviation_perp</span> <span class="o">=</span> <span class="n">perpness</span>
+
+                <span class="n">f_normal</span> <span class="o">=</span> <span class="n">target_normal</span>
 
             <span class="c1"># projection plane -------------------------------------------------</span>
             <span class="n">plane</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_center</span><span class="p">,</span> <span class="n">f_normal</span><span class="p">)</span>
@@ -187,12 +209,13 @@
             <span class="c1"># ------------------------------------------------------------------</span>
             <span class="c1">#   3. planarise</span>
             <span class="c1"># ------------------------------------------------------------------</span>
-            <span class="n">new_face</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">f_vkeys</span><span class="p">:</span>
-                <span class="n">xyz</span>            <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span>
-                <span class="n">projected_xyz</span>  <span class="o">=</span> <span class="n">project_point_plane</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span>
-                <span class="n">new_face</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">projected_xyz</span>
-                <span class="n">dist</span>           <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">projected_xyz</span><span class="p">)</span>
+            <span class="n">projected_face</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">f_v_xyz</span><span class="p">:</span>
+                <span class="n">projected_xyz</span> <span class="o">=</span> <span class="n">project_point_plane</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span>
+                <span class="n">projected_face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">projected_xyz</span><span class="p">)</span>
+
+                <span class="c1"># planarisation deviation</span>
+                <span class="n">dist</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">projected_xyz</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">dist</span> <span class="o">&gt;</span> <span class="n">deviation_flat</span><span class="p">:</span>
                     <span class="n">deviation_flat</span> <span class="o">=</span> <span class="n">dist</span>
 
@@ -212,15 +235,17 @@
             <span class="k">elif</span> <span class="n">target_area</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">f_area</span> <span class="o">*</span> <span class="mf">0.1</span>
 
-            <span class="n">new_face</span> <span class="o">=</span> <span class="n">scale_polygon</span><span class="p">(</span><span class="n">new_face</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+            <span class="c1"># scale ------------------------------------------------------------</span>
+            <span class="n">scaled_face</span> <span class="o">=</span> <span class="n">scale_polygon</span><span class="p">(</span><span class="n">projected_face</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 
+            <span class="c1"># arearisation deviation</span>
             <span class="n">areaness</span>  <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f_area</span> <span class="o">-</span> <span class="n">target_area</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">areaness</span> <span class="o">&gt;</span> <span class="n">deviation_area</span><span class="p">:</span>
                 <span class="n">deviation_area</span> <span class="o">=</span> <span class="n">areaness</span>
 
-            <span class="c1"># collect new coordinates ------------------------------------------</span>
-            <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">new_face</span><span class="p">:</span>
-                <span class="n">new_xyz</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_face</span><span class="p">[</span><span class="n">vkey</span><span class="p">])</span>
+            <span class="c1"># collect new coordinates</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f_vkeys</span><span class="p">)):</span>
+                <span class="n">new_xyz</span><span class="p">[</span><span class="n">f_vkeys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scaled_face</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
         <span class="c1"># ----------------------------------------------------------------------</span>
         <span class="c1">#   5. compute new volmesh vertex coordinates</span>
@@ -236,20 +261,33 @@
         <span class="c1"># ----------------------------------------------------------------------</span>
         <span class="k">if</span> <span class="n">deviation_flat</span> <span class="o">&lt;</span> <span class="n">tolerance_flat</span> <span class="ow">and</span> <span class="n">deviation_area</span> <span class="o">&lt;</span> <span class="n">tolerance_area</span><span class="p">:</span>
 
-            <span class="n">name</span>      <span class="o">=</span> <span class="s2">&quot;Mesh planarisation&quot;</span>
-            <span class="n">deviation</span> <span class="o">=</span> <span class="n">deviation_flat</span>
+            <span class="k">if</span> <span class="n">print_result_info</span><span class="p">:</span>
 
-            <span class="k">if</span> <span class="n">target_areas</span><span class="p">:</span>
-                <span class="n">name</span>      <span class="o">=</span> <span class="s2">&quot;Mesh arearisation&quot;</span>
-                <span class="n">deviation</span> <span class="o">=</span> <span class="n">deviation_area</span>
+                <span class="n">name</span>      <span class="o">=</span> <span class="s2">&quot;Mesh planarisation&quot;</span>
+                <span class="n">deviation</span> <span class="o">=</span> <span class="n">deviation_flat</span>
 
-            <span class="n">print_result</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">deviation</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">target_areas</span><span class="p">:</span>
+                    <span class="n">name</span>      <span class="o">=</span> <span class="s2">&quot;Mesh arearisation&quot;</span>
+                    <span class="n">deviation</span> <span class="o">=</span> <span class="n">deviation_area</span>
+
+                <span class="n">print_result</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">deviation</span><span class="p">)</span>
 
             <span class="k">break</span>
 
         <span class="c1"># callback / conduit ---------------------------------------------------</span>
         <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
             <span class="n">callback</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span>
+
+
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1">#</span>
+<span class="c1">#   volmesh planarisation</span>
+<span class="c1">#</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
 
 
 <div class="viewcode-block" id="volmesh_planarise"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.algorithms.volmesh_planarise.html#compas_3gs.algorithms.volmesh_planarise">[docs]</a><span class="k">def</span> <span class="nf">volmesh_planarise</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span>
@@ -259,16 +297,22 @@
                       <span class="n">target_normals</span><span class="o">=</span><span class="p">{},</span>
                       <span class="n">target_areas</span><span class="o">=</span><span class="p">{},</span>
 
-                      <span class="n">omit_vkeys</span><span class="o">=</span><span class="p">[],</span>
+                      <span class="n">fix_vkeys</span><span class="o">=</span><span class="p">[],</span>
 
                       <span class="n">fix_boundary_normals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                       <span class="n">fix_all_normals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 
+                      <span class="n">min_area</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">max_area</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
                       <span class="n">tolerance_flat</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
                       <span class="n">tolerance_area</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+                      <span class="n">tolerance_perp</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
 
                       <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                      <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+                      <span class="n">print_result_info</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Planarises the halffaces of a volmesh.</span>
 
 <span class="sd">    Planarisation of a volmesh is implemented as a three-step iterative procedure.</span>
@@ -278,44 +322,46 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-
 <span class="sd">    volmesh : VolMesh</span>
 <span class="sd">        A volmesh object.</span>
 <span class="sd">    kmax : int, optional [100]</span>
 <span class="sd">        Number of iterations.</span>
-
 <span class="sd">    target_face_areas : dictionary, optional [{}]</span>
 <span class="sd">        A dictionary of fkeys and target areas.</span>
 <span class="sd">    target_face_normals : dictionary, optional [{}]</span>
 <span class="sd">        A dictionary of fkeys and target face normals.</span>
 <span class="sd">    target_face_centers : dictionary, optional [{}]</span>
 <span class="sd">        A dictionary of fkeys and target face centers.</span>
-
 <span class="sd">    omit_vkeys : list, optional [[]]</span>
 <span class="sd">        List of vkeys to omit from arearisation.</span>
-
 <span class="sd">    fix_boundary_face_normals : boolean, optional [False]</span>
 <span class="sd">        Whether to keep the initial normals of the bondary faces.</span>
 <span class="sd">    fix_all_face_normals : boolean, optional [False]</span>
 <span class="sd">        Whether to keep the initial normals of all faces.</span>
-
 <span class="sd">    tolerance_flat: float, optional</span>
 <span class="sd">        Convergence tolerance for face flatness.</span>
 <span class="sd">    tolerance_area: float, optional</span>
-<span class="sd">        Convergence tolerance for face areas.</span>
-
+<span class="sd">        Convergence tolerance for face areas against target areas.</span>
+<span class="sd">    tolerance_perp: float, optional</span>
+<span class="sd">        Convergence tolerance for face perpendicularity against target normals.</span>
 <span class="sd">    callback : callable, optional</span>
 <span class="sd">        A user-defined callback function to be executed after every iteration.</span>
 <span class="sd">        Default is ``None``.</span>
 <span class="sd">    callback_args : tuple, optional</span>
 <span class="sd">        Additional parameters to be passed to the callback.</span>
 <span class="sd">        Default is ``None``.</span>
+<span class="sd">    print_result_info : bool, optional</span>
+<span class="sd">        If True, print the result of the algorithm.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    Exception</span>
+<span class="sd">        If a callback is provided, but it is not callable.</span>
 
 <span class="sd">    .. seealso ::</span>
 <span class="sd">        `compas.geometry.mesh_planarize_faces`</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Callback is not callable.&#39;</span><span class="p">)</span>
@@ -323,9 +369,9 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1">#   1. initialise</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="n">free_vkeys</span>      <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">omit_vkeys</span><span class="p">))</span>
+    <span class="n">free_vkeys</span>      <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">fix_vkeys</span><span class="p">))</span>
     <span class="n">initial_normals</span> <span class="o">=</span> <span class="n">_get_current_volmesh_normals</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span>
-    <span class="n">boundary_fkeys</span>  <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">volmesh</span><span class="o">.</span><span class="n">halffaces_on_boundary</span><span class="p">())</span>
+    <span class="n">boundary_fkeys</span>  <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">halffaces_on_boundary</span><span class="p">()</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1">#   2. loop</span>
@@ -334,6 +380,7 @@
 
         <span class="n">deviation_flat</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">deviation_area</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">deviation_perp</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="n">new_xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">vkey</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">}</span>
 
@@ -343,6 +390,7 @@
 
             <span class="c1"># evaluate current face --------------------------------------------</span>
             <span class="n">f_vkeys</span>  <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+            <span class="n">f_v_xyz</span>  <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
             <span class="n">f_center</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_center</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
             <span class="n">f_normal</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_oriented_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
             <span class="n">f_area</span>   <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_oriented_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
@@ -350,10 +398,19 @@
             <span class="c1"># override with manual target values -------------------------------</span>
             <span class="k">if</span> <span class="n">_pair_membership</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">fkey_pair</span><span class="p">,</span> <span class="n">target_centers</span><span class="p">):</span>
                 <span class="n">f_center</span> <span class="o">=</span> <span class="n">target_centers</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+
             <span class="k">if</span> <span class="n">_pair_membership</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">fkey_pair</span><span class="p">,</span> <span class="n">target_normals</span><span class="p">):</span>
-                <span class="n">f_normal</span> <span class="o">=</span> <span class="n">target_normals</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+                <span class="n">target_normal</span> <span class="o">=</span> <span class="n">target_normals</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+
+                <span class="c1"># perpness deviation</span>
+                <span class="n">perpness</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">f_normal</span><span class="p">,</span> <span class="n">target_normal</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">perpness</span> <span class="o">&gt;</span> <span class="n">deviation_perp</span><span class="p">:</span>
+                    <span class="n">deviation_perp</span> <span class="o">=</span> <span class="n">perpness</span>
+
+                <span class="n">f_normal</span> <span class="o">=</span> <span class="n">target_normal</span>
+
             <span class="k">if</span> <span class="n">fix_boundary_normals</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">_pair_membership</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">fkey_pair</span><span class="p">,</span> <span class="n">boundary_fkeys</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">boundary_fkeys</span><span class="p">:</span>
                     <span class="n">f_normal</span> <span class="o">=</span> <span class="n">initial_normals</span><span class="p">[</span><span class="n">fkey</span><span class="p">][</span><span class="s1">&#39;normal&#39;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">fix_all_normals</span><span class="p">:</span>
                 <span class="n">f_normal</span> <span class="o">=</span> <span class="n">initial_normals</span><span class="p">[</span><span class="n">fkey</span><span class="p">][</span><span class="s1">&#39;normal&#39;</span><span class="p">]</span>
@@ -364,14 +421,15 @@
             <span class="c1"># ------------------------------------------------------------------</span>
             <span class="c1">#   3. planarise</span>
             <span class="c1"># ------------------------------------------------------------------</span>
-            <span class="n">new_face</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">f_vkeys</span><span class="p">:</span>
-                <span class="n">xyz</span>            <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span>
-                <span class="n">projected_xyz</span>  <span class="o">=</span> <span class="n">project_point_plane</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span>
-                <span class="n">new_face</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">projected_xyz</span>
-                <span class="n">dist</span>           <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">projected_xyz</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">dist</span> <span class="o">&gt;</span> <span class="n">deviation_flat</span><span class="p">:</span>
-                    <span class="n">deviation_flat</span> <span class="o">=</span> <span class="n">dist</span>
+            <span class="n">new_face</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">f_v_xyz</span><span class="p">:</span>
+                <span class="n">projected_xyz</span> <span class="o">=</span> <span class="n">project_point_plane</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span>
+                <span class="n">new_face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">projected_xyz</span><span class="p">)</span>
+
+                <span class="c1"># planarisation deviation</span>
+                <span class="n">flatness</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">projected_xyz</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">flatness</span> <span class="o">&gt;</span> <span class="n">deviation_flat</span><span class="p">:</span>
+                    <span class="n">deviation_flat</span> <span class="o">=</span> <span class="n">flatness</span>
 
             <span class="c1"># ------------------------------------------------------------------</span>
             <span class="c1">#   4. arearise</span>
@@ -379,15 +437,18 @@
             <span class="k">if</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">target_areas</span><span class="p">:</span>
                 <span class="n">target_area</span> <span class="o">=</span> <span class="n">target_areas</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
                 <span class="n">scale</span>       <span class="o">=</span> <span class="p">(</span><span class="n">target_area</span> <span class="o">/</span> <span class="n">f_area</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-                <span class="n">new_face</span>    <span class="o">=</span> <span class="n">scale_polygon</span><span class="p">(</span><span class="n">new_face</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 
+                <span class="c1"># scale</span>
+                <span class="n">new_face</span> <span class="o">=</span> <span class="n">scale_polygon</span><span class="p">(</span><span class="n">new_face</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+
+                <span class="c1"># arearisation deviation</span>
                 <span class="n">areaness</span>  <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f_area</span> <span class="o">-</span> <span class="n">target_area</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">areaness</span> <span class="o">&gt;</span> <span class="n">deviation_area</span><span class="p">:</span>
                     <span class="n">deviation_area</span> <span class="o">=</span> <span class="n">areaness</span>
 
             <span class="c1"># collect new coordinates ------------------------------------------</span>
-            <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">new_face</span><span class="p">:</span>
-                <span class="n">new_xyz</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_face</span><span class="p">[</span><span class="n">vkey</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f_vkeys</span><span class="p">)):</span>
+                <span class="n">new_xyz</span><span class="p">[</span><span class="n">f_vkeys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_face</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
         <span class="c1"># ----------------------------------------------------------------------</span>
         <span class="c1">#   5. compute new volmesh vertex coordinates</span>
@@ -399,16 +460,18 @@
         <span class="c1"># ----------------------------------------------------------------------</span>
         <span class="c1">#   6. check convergence</span>
         <span class="c1"># ----------------------------------------------------------------------</span>
-        <span class="k">if</span> <span class="n">deviation_flat</span> <span class="o">&lt;</span> <span class="n">tolerance_flat</span> <span class="ow">and</span> <span class="n">deviation_area</span> <span class="o">&lt;</span> <span class="n">tolerance_area</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">deviation_flat</span> <span class="o">&lt;</span> <span class="n">tolerance_flat</span> <span class="ow">and</span> <span class="n">deviation_area</span> <span class="o">&lt;</span> <span class="n">tolerance_area</span> <span class="ow">and</span> <span class="n">deviation_perp</span> <span class="o">&lt;</span> <span class="n">tolerance_perp</span><span class="p">:</span>
 
-            <span class="n">name</span>      <span class="o">=</span> <span class="s2">&quot;Volmesh planarisation&quot;</span>
-            <span class="n">deviation</span> <span class="o">=</span> <span class="n">deviation_flat</span>
+            <span class="k">if</span> <span class="n">print_result_info</span><span class="p">:</span>
 
-            <span class="k">if</span> <span class="n">target_areas</span><span class="p">:</span>
-                <span class="n">name</span>      <span class="o">=</span> <span class="s2">&quot;Volmesh arearisation&quot;</span>
-                <span class="n">deviation</span> <span class="o">=</span> <span class="n">deviation_area</span>
+                <span class="n">name</span>      <span class="o">=</span> <span class="s2">&quot;Volmesh planarisation&quot;</span>
+                <span class="n">deviation</span> <span class="o">=</span> <span class="n">deviation_flat</span>
 
-            <span class="n">print_result</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">deviation</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">target_areas</span><span class="p">:</span>
+                    <span class="n">name</span>      <span class="o">=</span> <span class="s2">&quot;Volmesh arearisation&quot;</span>
+                    <span class="n">deviation</span> <span class="o">=</span> <span class="n">deviation_area</span>
+
+                <span class="n">print_result</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">deviation</span><span class="p">)</span>
 
             <span class="k">break</span>
 
@@ -472,14 +535,14 @@
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="k">pass</span>
 </code></pre></div>
-
-
+                        
+                    
 
                 </main>
 
                 <!-- site navigation sidebar -->
 
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
                     <div class="navbar-light">
 
                         <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
@@ -492,18 +555,19 @@
                             </button>
                         </form>
 
-
-
+                        
+                        
 
                             <div class="navbar-expand-md">
                                 <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
                                 <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Setting Up</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../user_manual.html">User manual</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../api_reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../contribution.html">How to contribute</a></li>
@@ -513,18 +577,18 @@
                                 </div>
                             </div>
 
-
+                        
 
                     </div>
                 </div>
 
                 <!-- table of contents of main content -->
-
+                
                 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 
+                    
 
-
-
+                    
 
                 </div>
 
@@ -532,16 +596,16 @@
         </div>
 
         <footer class="compas-footer">
+            
+                Last updated on Jun 03, 2019.
+            
 
-                Last updated on Apr 05, 2019.
-
-
-
+            
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
-
+            
         </footer>
 
-
+        
 
             <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
@@ -558,7 +622,7 @@ var DOCUMENTATION_OPTIONS = {
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-
+            
             <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 
@@ -606,6 +670,6 @@ $(document).ready(function() {
 });
             </script>
 
-
+        
     </body>
 </html>
