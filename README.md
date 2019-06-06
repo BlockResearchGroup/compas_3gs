@@ -5,11 +5,11 @@
 
 ## Getting Started
 
-``compas_3gs`` can be installed directly from th GitHub repo:
+``compas_3gs`` can be installed directly from the GitHub repo:
 
     $ pip install git+https://github.com/BlockResearchGroup/compas_3gs.git
 
-Or by cloning it using the URL above.
+Or by cloning it from the URL above using a free Git client such as [Sourcetree](https://www.sourcetreeapp.com/).
 
 
 ## First Steps
@@ -31,4 +31,9 @@ If you want to contribute, check out the [contribution guidelines](https://block
 
 ## License
 
-The ``compas_3gs`` add-on package for **COMPAS** is [released under the MIT license](https://compas-dev.github.io/main/license.html).
+The ``compas_3gs`` add-on package for **COMPAS** is [released under the MIT license](https://blockresearchgroup.github.io/compas_3gs/license.html).
+
+
+## Contact
+
+For any questions, suggestions or feedback, please conact the main contributor of ``compas_3gs``, Juney Lee, via email: juney.lee@arch.ethz.ch.

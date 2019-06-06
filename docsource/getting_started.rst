@@ -11,20 +11,22 @@ Getting started
 Installation
 ============
 
-The released versions of :mod:`compas_3gs` can be instlled directly from the GitHub repo.
+The released versions of :mod:`compas_3gs` can be instlled directly from the GitHub repo:
 
 ::
 
     $ pip install git+https://github.com/BlockResearchGroup/compas_3gs.git
 
 
-Or from local source files.
+Or from local source files:
 
 ::
 
     $ git clone https://github.com/BlockResearchGroup/compas_3gs.git
     $ cd compas_3gs
     $ pip install -r requirements-dev.txt
+
+Alternatively, the :mod:`compas_3gs` `repo <https://github.com/BlockResearchGroup/compas_3gs`_ can be cloned using a free Git client such as `Sourcetree <https://www.sourcetreeapp.com/>`_.
 
 
 Rhino
