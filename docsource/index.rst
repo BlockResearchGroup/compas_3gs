@@ -13,5 +13,5 @@ compas_3gs
     examples
     api_reference
     license
-    citing
+    publications
     contribution

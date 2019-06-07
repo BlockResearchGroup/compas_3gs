@@ -11,22 +11,32 @@ Getting started
 Installation
 ============
 
-The released versions of :mod:`compas_3gs` can be instlled directly from the GitHub repo:
+Released versions of :mod:`compas_3gs` can be installed with *pip*.
+With the desired virtual environment activated, do
 
 ::
 
-    $ pip install git+https://github.com/BlockResearchGroup/compas_3gs.git
+    $ pip install compas-3gs
 
 
-Or from local source files:
+You can also install directly from the GitHub repo.
 
 ::
 
-    $ git clone https://github.com/BlockResearchGroup/compas_3gs.git
-    $ cd compas_3gs
-    $ pip install -r requirements-dev.txt
+    $ pip install git+https://github.com/compas-dev/compas_3gs.git
 
-Alternatively, the :mod:`compas_3gs` `repo <https://github.com/BlockResearchGroup/compas_3gs`_ can be cloned using a free Git client such as `Sourcetree <https://www.sourcetreeapp.com/>`_.
+
+Updates
+=======
+
+If you already have :mod:`compas_3gs` installed and you want to upgrade it to the latest version, do
+
+::
+
+    $ pip install compas-3gs --upgrade
+
+
+----
 
 
 Rhino
@@ -36,6 +46,15 @@ Rhino
 However, CAD software is still necessary in a computational design environment for visualising and interacting with datastructures and geometrical objects.
 For the examples presented in this documentation, `Rhinoceros <https://www.rhino3d.com/>`_ is chosen as the CAD software for user interaction and visualisation of script results.
 For a more detailed information on how to install COMPAS and its packages for Rhino, please refer to `Working in Rhino <https://compas-dev.github.io/main/renvironments/rhino.html>`_ page of the COMPAS documentation.
+
+In order to install :mod:`compas_3gs` for Rhino, first activate the desired virtual environment, then do
+
+::
+
+    $ python -p compas_rhino install -p compas_3gs
+
+
+----
 
 
 First Steps

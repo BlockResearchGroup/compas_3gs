@@ -63,8 +63,7 @@ def volmesh_dual_volmesh(volmesh, cls=None):
     int_vkeys = list(set(volmesh.vertices()) - set(ext_vkeys))
 
     if len(int_vkeys) < 1:
-        print("Not enough cells to create a dual volmesh.")
-        return
+        raise Exception('Not enough cells to create a dual volmesh.')
 
     # 4. for each interior vertex, find neighbors ------------------------------
     for u in int_vkeys:

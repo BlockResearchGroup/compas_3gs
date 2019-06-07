@@ -1,5 +1,5 @@
 ********************************************************************************
-Constructor
+Example: constructor
 ********************************************************************************
 
 Background
@@ -28,7 +28,7 @@ ____
 Example
 =======
 
-.. literalinclude:: 01_2_constructor.py
+.. literalinclude:: ../../../examples/01_egi_cell_construction.py
     :language: python
 
 |
