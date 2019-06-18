@@ -99,18 +99,16 @@ class Mesh3gs(Mesh):
     # --------------------------------------------------------------------------
 
     def face_area(self, fkey):
-        vertices = self.face[fkey]
-        points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-        area     = polygon_area_oriented(points)
+        points = self.face_coordinates(fkey)
+        area   = polygon_area_oriented(points)
         return area
 
     def face_normal(self, fkey, unitized=True):
-        vertices = self.face[fkey]
-        points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-        normal   = polygon_normal_oriented(points, unitized)
+        points = self.face_coordinates(fkey)
+        normal = polygon_normal_oriented(points, unitized)
         if length_vector(normal) == 0 :
-            uv = subtract_vectors(points[1], points[0])
-            vw = subtract_vectors(points[2], points[1])
+            uv     = subtract_vectors(points[1], points[0])
+            vw     = subtract_vectors(points[2], points[1])
             normal = normalize_vector(cross_vectors(uv, vw))
         return normal
 

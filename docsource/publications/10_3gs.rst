@@ -1,0 +1,70 @@
+********************************************************************************
+3D graphic statics
+********************************************************************************
+
+For further reading on 3D graphic statics, please refer to these publications.
+
+|
+
+----
+
+Principle of the equilibrium of polyhedral frames
+=================================================
+
+*by* William John Macquorn Rankine
+
+
+.. code-block:: latex
+
+    @article{rankine_1864,
+        author  = "Rankine, W.J.M.",
+        title   = "Principle of the equilibrium of polyhedral frames",
+        journal = "Philosophical Magazine Series 4",
+        volume  = "27",
+        number  = "180",
+        pages   = "92",
+        year    = "1864"
+    }
+
+|
+
+----
+
+Principle of the Equilibrium of Polyhedral Frames
+=================================================
+
+*by* Masoud Akbarzadeh, Tom Van Mele, Philippe Block
+
+
+.. code-block:: latex
+
+    @article{akbarzadeh_2015,
+        author  = "Akbarzadeh, M and Van Mele, T and Block, P",
+        title   = "On the equilibrium of funicular polyhedral frames and convex polyhedral force diagrams",
+        journal = "Computer-Aided Design",
+        volume  = "63",
+        pages   = "118-128",
+        year    = "2015"
+    }
+
+|
+
+----
+
+The geometry of structural equilibrium
+======================================
+
+*by* Allan McRobie
+
+
+.. code-block:: latex
+
+    @article{mcrobie_2017,
+        author     = "{McRobie, Allan",
+        title      = "The geometry of structural equilibrium",
+        volume     = "4",
+        number     = "3",
+        year       = "2017",
+        publisher  = "The Royal Society",
+        journal    = "Royal Society Open Science"
+    }

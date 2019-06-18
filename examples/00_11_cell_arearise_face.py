@@ -1,0 +1,117 @@
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import division
+
+import compas
+
+from compas.geometry import dot_vectors
+
+from compas.utilities import i_to_blue
+
+from compas_rhino.artists import MeshArtist
+
+from compas_rhino.helpers import mesh_from_surface
+from compas_rhino.helpers import mesh_select_face
+from compas_rhino.helpers import mesh_select_faces
+
+from compas_3gs.algorithms import cell_arearise_face
+
+from compas_3gs.rhino import MeshConduit
+
+from compas_3gs.diagrams import Cell
+
+from compas_3gs.operations import cell_relocate_face
+
+from compas_3gs.utilities import cell_face_flatness
+from compas_3gs.utilities import compare_initial_current
+
+from compas_3gs.rhino import rhino_cell_face_pull_interactive
+
+from compas_3gs.utilities import cell_face_areaness
+from compas_3gs.utilities import compare_initial_current
+
+
+try:
+    import rhinoscriptsyntax as rs
+
+except ImportError:
+    compas.raise_if_ironpython()
+
+
+__author__     = 'Juney Lee'
+__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
+__license__    = 'MIT License'
+__email__      = 'juney.lee@arch.ethz.ch'
+
+
+# ------------------------------------------------------------------------------
+#   1. make cell from rhino polysurfaces
+# ------------------------------------------------------------------------------
+layer = 'cell'
+
+guid = rs.GetObject("select a closed polysurface", filter=rs.filter.polysurface)
+rs.HideObjects(guid)
+
+cell = mesh_from_surface(Cell, guid)
+cell.draw()
+
+# ------------------------------------------------------------------------------
+#   2. Target area
+# ------------------------------------------------------------------------------
+fkey   = mesh_select_face(cell)
+
+area   = cell.face_area(fkey)
+center = cell.face_centroid(fkey)
+normal = cell.face_normal(fkey)
+
+target_area = rs.GetReal("Enter target area", number=area)
+
+
+# ------------------------------------------------------------------------------
+#   3. Arearise cell face
+# ------------------------------------------------------------------------------
+
+# conduit
+conduit = MeshConduit(cell)
+
+
+def callback(cell, args):
+
+    current_area = cell.face_area(fkey)
+    color  = i_to_blue(abs(current_area - target_area) / target_area)
+    conduit.face_colordict = {fkey: color}
+
+    conduit.redraw()
+
+
+with conduit.enabled():
+    cell_arearise_face(cell,
+                       fkey,
+                       target_area,
+                       callback=callback)
+
+
+# ------------------------------------------------------------------------------
+#   4. Check result
+# ------------------------------------------------------------------------------
+new_area   = cell.face_area(fkey)
+new_normal = cell.face_normal(fkey)
+if dot_vectors(normal, new_normal) < 0:
+    new_area *= -1
+
+if abs(new_area - target_area) > 1:
+
+    print('===================================================================')
+    print('')
+    print('Arearisation attempted, but did not converge...')
+    print('It is likely that the target area is not valid / inexistent...')
+    print('')
+    print('===================================================================')
+
+    cell_relocate_face(cell, fkey, center, normal)
+
+
+# ------------------------------------------------------------------------------
+#   5. Draw result
+# ------------------------------------------------------------------------------
+cell.draw()

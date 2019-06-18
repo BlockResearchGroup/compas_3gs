@@ -69,6 +69,10 @@ def point_reflection(datastructure):
         datastructure.vertex_update_xyz(vkey, new_xyz, constrained=False)
 
 
+def reverse_cycle_directions(volmesh):
+    raise NotImplementedError
+
+
 # ******************************************************************************
 # ******************************************************************************
 # ******************************************************************************

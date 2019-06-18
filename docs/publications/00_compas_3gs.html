@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>compas_3gs</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="" />
+        <meta name="description" content="" />
+
+        <link rel="shortcut icon" href="../_static/images/compas.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+
+        <link rel="stylesheet" type="text/css" href="../_static/css/prism.css" />
+        <link rel="stylesheet" type="text/css" href="../_static/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
+
+        
+            <link rel="next" title="3D graphic statics" href="10_3gs.html" />
+        
+        
+        
+            <link rel="prev" title="Publications" href="../08_publications.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand compas-navbar justify-content-between">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../index.html">
+                    compas_3gs 0.2.0
+                </a>
+            </div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://compas-dev.github.io">
+                        <img src="../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
+                    </a>
+                </li>
+            </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <!-- main content -->
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+
+                        <div class="section" id="compas-3gs">
+<h1>compas_3gs</h1>
+<p>The theoretical foundation and the computational development of the main library of the <a class="reference internal" href="../reference/compas_3gs.html#module-compas_3gs" title="compas_3gs"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_3gs</span></code></a> are based on these following publications.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<hr class="docutils" />
+<div class="section" id="computational-design-framework-for-3d-graphic-statics">
+<h2>Computational Design Framework for 3D Graphic Statics</h2>
+<p><em>by</em> Juney Lee</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="figure">
+<a class="reference internal image-reference" href="../_images/phd.jpg"><img alt="../_images/phd.jpg" src="../_images/phd.jpg" style="width: 100%;" /></a>
+</div>
+<p><strong>Abstract</strong></p>
+<p>This dissertation presents a computational framework for structural design applications based on 3D graphic statics using polyhedral force diagrams.
+At the core of this framework is the development of a generalised theoretical foundation for 3D graphic statics, underpinned by the formulation of three datastructures for addressing a wide range of equilibrium problems involving spatial systems of forces: a polyhedral cell, the multi-cell polyhedron, and generalised cell networks.
+The three datastructures along with the relevant operations and geometric algorithms are implemented in an open-source library with interactive user interfaces to common computational design environments targeting both architects and structural engineers.
+The framework is developed with the goal of maximising the inherent benefits of computational graphic statics, which diminish with increasing complexity of spatial structures: legible visualisation of force equilibrium, intuitive designer interactivity in real time, and provision of new structural design insights.
+In contrast to conventional numerical approaches to structural design that are dependent on predefined formsbefore any analysis can be executed, the presented framework enables new design methodologies that explore the geometry of forces as the catalyst for design, analysis, and optimisation of spatial structures.
+These new potentials are illustrated through numerous examples, showcasing how the framework could be used to address structural design problems in a variety of new ways that are simply not possible with existing, form-dependent tools.
+Beyond equilibrium design and analysis,the practical relevance of this research in architectural fabrication and construction is demonstrated through the MycoTree project, a 1-to-1 built prototype of a spatially branching structure made of load-bearing mycelium components.</p>
+<p><strong>Contributions</strong></p>
+<ul class="simple">
+<li><p>State of the art on computational graphic statics</p></li>
+<li><p>Theoretical background of the computational framework for 3D graphic statics</p></li>
+<li><p>Detailed formulations and descriptions of the three datastructures: polyhedral cell (mesh), multi-cell polyhedron (volmesh) and cell networks (network of meshes)</p></li>
+<li><p>Design results and applications using the framework</p></li>
+</ul>
+<p>Available via <a class="reference external" href="https://www.research-collection.ethz.ch/handle/20.500.11850/331210">ETH Zurich Research Collection</a>.</p>
+<div class="language-latex notranslate"><div class="highlight"><pre><code><span></span>@phdthesis<span class="nb">{</span>Lee<span class="nb">_</span>2018<span class="nb">_</span>phd,
+    author      = &quot;Juney Lee&quot;,
+    title       = &quot;Computational Design Framework for 3D Graphic Statics&quot;,
+    institution = &quot;ETH Zurich, Department of Architecture&quot;,
+    year        = &quot;2018&quot;,
+    address     = &quot;Zurich&quot;,
+    month       = &quot;&quot;,
+    doi         = &quot;10.3929/ethz-b-000331210&quot;,
+    note        = &quot;&quot;,
+<span class="nb">}</span>
+</code></pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="disjointed-force-polyhedra">
+<h2>Disjointed force polyhedra</h2>
+<p><em>by</em> Juney Lee, Tom Van Mele, Philippe Block</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Abstract</strong></p>
+<p>This paper presents a new computational framework for 3D graphic statics based on the concept of disjointed force polyhedra.
+At the core of this framework are the Extended Gaussian Image and area-pursuit algorithms, which allow more precise control of the face areas of force polyhedra, and consequently of the magnitudes and distributions of the forces within the structure.
+The explicit control of the polyhedral face areas enables designers to implement more quantitative, force-driven constraints and it expands the range of 3D graphic statics applications beyond just shape explorations.
+The significance and potential of this new computational approach to 3D graphic statics is demonstrated through numerous examples, which illustrate how the disjointed force polyhedra enable force-driven design explorations of new structural typologies that were simply not realisable with previous implementations of 3D graphic statics.</p>
+<p><strong>Contributions</strong></p>
+<ul class="simple">
+<li><p>Iterative method for constructing polyhedral cells from equilibrated force vectors using the Extended Gaussian Image</p></li>
+<li><p>Theoretical background for disjointed network of polyhedral cells</p></li>
+</ul>
+<p>Available via <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0010448518300654?via%3Dihub">ScienceDirect</a>.</p>
+<div class="language-latex notranslate"><div class="highlight"><pre><code><span></span>@article<span class="nb">{</span>Lee<span class="nb">_</span>2018<span class="nb">_</span>dfp,
+    author  = &quot;Lee, J. and Van Mele, T. and Block, P.&quot;,
+    title   = &quot;Disjointed Force Polyhedra&quot;,
+    journal = &quot;Computer-Aided Design&quot;,
+    year    = &quot;2018&quot;,
+    volume  = &quot;99&quot;,
+    number  = &quot;&quot;,
+    pages   = &quot;11-28&quot;,
+    month   = &quot;June&quot;,
+    doi     = &quot;10.1016/j.cad.2018.02.004&quot;,
+    note    = &quot;&quot;,
+<span class="nb">}</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+
+                        
+                    
+
+                </main>
+
+                <!-- site navigation sidebar -->
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../00_introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../01_getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../02_overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../03_theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../04_user_manual.html">User manual</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../05_api_reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../06_license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../07_citing.html">Citing</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../08_publications.html">Publications</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">compas_3gs</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="10_3gs.html">3D graphic statics</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="20_contributions.html">Contributions</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../09_how_to_contribute.html">How to contribute</a></li>
+</ul>
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+
+                <!-- table of contents of main content -->
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas_3gs</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#computational-design-framework-for-3d-graphic-statics">Computational Design Framework for 3D Graphic Statics</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#disjointed-force-polyhedra">Disjointed force polyhedra</a></li>
+</ul>
+</li>
+</ul>
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="compas-footer">
+            
+                Last updated on Jun 17, 2019.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
+            
+        </footer>
+
+        
+
+            <script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.2.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+};
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+            <script src="../_static/underscore.js"></script>
+            <script src="../_static/doctools.js"></script>
+            <script src="../_static/js/searchtools_.js"></script>
+            <script src="../_static/js/prism.js"></script>
+
+            <script>
+$(document).ready(function() {
+
+    // $(".language-default pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-bash pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-python pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-c pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-cpp pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-fortran pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-markdown pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-rest pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    anchors.add();
+});
+            </script>
+
+        
+    </body>
+</html>

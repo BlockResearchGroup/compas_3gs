@@ -41,9 +41,6 @@ If you want to contribute, check out the [contribution guidelines](https://block
 All contributions and relevant publications will be fully credited under [Publications](https://compas-dev.github.io/compas_3gs/Publications.html).
 
 
-file:///Users/junlee/compas/packages/compas_3gs/docs/publications.html
-
-
 ## License
 
 The ``compas_3gs`` add-on package for **COMPAS** is [released under the MIT license](https://compas-dev.github.io/compas_3gs/license.html).

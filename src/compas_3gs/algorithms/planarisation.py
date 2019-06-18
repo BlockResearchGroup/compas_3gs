@@ -9,7 +9,7 @@ from compas.geometry import project_point_plane
 
 from compas_3gs.utilities import scale_polygon
 
-from compas_3gs.operations import cell_collapse_short_edges
+from compas_3gs.operations import cell_collapse_short_edge
 
 from compas_3gs.utilities import print_result
 
@@ -20,7 +20,7 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['mesh_planarise',
+__all__ = ['cell_planarise',
            'volmesh_planarise']
 
 
@@ -35,7 +35,7 @@ __all__ = ['mesh_planarise',
 # ******************************************************************************
 
 
-def mesh_planarise(mesh,
+def cell_planarise(cell,
                    kmax=100,
 
                    target_centers={},
@@ -46,17 +46,18 @@ def mesh_planarise(mesh,
 
                    avg_fkeys=[],
 
+                   collapse_edge_length=0.1,
+
                    tolerance_flat=0.001,
                    tolerance_area=0.001,
-                   tolerance_perp=0.001,
 
                    callback=None,
                    callback_args=None,
 
                    print_result_info=False):
-    """Planarise the faces of a mesh.
+    """Planarise the faces of a cell.
 
-    Planarisation of a mesh is implemented as a three-step iterative procedure.
+    Planarisation of a cell is implemented as a three-step iterative procedure.
     At every iteration, each face is first individually projected to its best-fit plane (unless a target normal is given).
     Then, each face is re-sized to its target area (if given).
     Finally, the new vertex coordinates are computed by taking the centroid of the disconnected corners of the faces.
@@ -64,7 +65,7 @@ def mesh_planarise(mesh,
     Parameters
     ----------
 
-    mesh : Mesh
+    cell : Mesh
         A mesh object
 
     kmax : int, optional [100]
@@ -77,8 +78,14 @@ def mesh_planarise(mesh,
     target_face_centers : dictionary, optional [{}]
         A dictionary of fkeys and target face centers.
 
-    omit_vkeys : list, optional [[]]
+    fix_vkeys : list, optional [[]]
         List of vkeys to omit from arearisation.
+
+    avg_fkeys : list, optional [[]]
+        List of fkeys to average areas.
+
+    collapse_edge_length : real, optional [0.1]
+        Minimum length of edge to collapse.
 
     tolerance_flat: float, optional
         Convergence tolerance for face flatness.
@@ -108,7 +115,7 @@ def mesh_planarise(mesh,
     # --------------------------------------------------------------------------
     #   1. initialise
     # --------------------------------------------------------------------------
-    free_vkeys = list(set(mesh.vertex) - set(fix_vkeys))
+    free_vkeys = list(set(cell.vertex) - set(fix_vkeys))
 
     # --------------------------------------------------------------------------
     #   2. loop
@@ -119,20 +126,20 @@ def mesh_planarise(mesh,
         deviation_area = 0
         deviation_perp = 0
 
-        new_xyz = {vkey: [] for vkey in mesh.vertex}
+        new_xyz = {vkey: [] for vkey in cell.vertex}
 
         # faces to be averaged -------------------------------------------------
         if avg_fkeys:
-            avg_face_area = _avg_face_area(mesh, avg_fkeys)
+            avg_face_area = _avg_face_area(cell, avg_fkeys)
 
-        for fkey in mesh.face:
+        for fkey in cell.faces():
 
             # evaluate current face --------------------------------------------
-            f_vkeys  = mesh.face_vertices(fkey)
-            f_v_xyz  = mesh.face_coordinates(fkey)
-            f_normal = mesh.face_normal(fkey)
-            f_area   = mesh.face_area(fkey)
-            f_center = centroid_points(mesh.face_coordinates(fkey))
+            f_vkeys  = cell.face_vertices(fkey)
+            f_v_xyz  = cell.face_coordinates(fkey)
+            f_normal = cell.face_normal(fkey)
+            f_area   = cell.face_area(fkey)
+            f_center = cell.face_centroid(fkey)
 
             if fkey in target_centers:
                 f_center = target_centers[fkey]
@@ -169,6 +176,9 @@ def mesh_planarise(mesh,
             if fkey in target_areas:
                 target_area = target_areas[fkey]
 
+            else:
+                target_area = f_area
+
             if fkey in avg_fkeys:
                 target_area = avg_face_area
 
@@ -178,6 +188,8 @@ def mesh_planarise(mesh,
 
             elif target_area == 0:
                 scale = 1 - f_area * 0.1
+                # scale = (target_area / f_area) ** 0.5
+                # scale = 0.9
 
             # scale ------------------------------------------------------------
             scaled_face = scale_polygon(projected_face, scale)
@@ -192,13 +204,17 @@ def mesh_planarise(mesh,
                 new_xyz[f_vkeys[i]].append(scaled_face[i])
 
         # ----------------------------------------------------------------------
-        #   5. compute new volmesh vertex coordinates
+        #   5. compute new cell vertex coordinates
         # ----------------------------------------------------------------------
         for vkey in free_vkeys:
             final_xyz = centroid_points(new_xyz[vkey])
-            mesh.vertex_update_xyz(vkey, final_xyz)
+            cell.vertex_update_xyz(vkey, final_xyz)
 
-        cell_collapse_short_edges(mesh)
+        for u, v in cell.edges():
+            cell_collapse_short_edge(cell,
+                                     u,
+                                     v,
+                                     min_length=collapse_edge_length)
 
         # ----------------------------------------------------------------------
         #   7. check convergence
@@ -207,11 +223,11 @@ def mesh_planarise(mesh,
 
             if print_result_info:
 
-                name      = "Mesh planarisation"
+                name      = "Cell planarisation"
                 deviation = deviation_flat
 
                 if target_areas:
-                    name      = "Mesh arearisation"
+                    name      = "Cell arearisation"
                     deviation = deviation_area
 
                 print_result(name, k, deviation)
@@ -220,7 +236,7 @@ def mesh_planarise(mesh,
 
         # callback / conduit ---------------------------------------------------
         if callback:
-            callback(mesh, k, callback_args)
+            callback(cell, k, callback_args)
 
 
 # ******************************************************************************
