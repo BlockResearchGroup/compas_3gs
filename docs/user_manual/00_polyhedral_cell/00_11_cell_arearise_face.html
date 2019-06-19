@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>compas_3gs</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="" />
+        <meta name="description" content="" />
+
+        <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+
+        <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
+        
+            <link rel="next" title="Constructor" href="00_20_cell_constructor.html" />
+        
+        
+        
+            <link rel="prev" title="Constrained manipulation" href="00_10_cell_pull_face.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand compas-navbar justify-content-between">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../../index.html">
+                    compas_3gs 0.2.0
+                </a>
+            </div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://compas-dev.github.io">
+                        <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
+                    </a>
+                </li>
+            </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <!-- main content -->
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+
+                        <div class="section" id="arearisation">
+<h1>Arearisation</h1>
+<p>Face pull operation of a cell changes the distribution of the forces.
+However, the precise amount of change in the area of the pulled face is not visually quantifiable, and it is not immediately apparent how the opeartion will affect the face’s oriented normal.
+Rather than pulling the faces in arbitrary amounts, finding the new face location such that the resulting face area matches a target value will enable a more force-controlled geometric operation.</p>
+<p>A face’s area can be formulated as a function of its <span class="math notranslate nohighlight">\(z\)</span> position along its normal.
+A simple iterative minimisation technique, such as the <em>Golden Section Search</em> (<a class="footnote-reference brackets" href="#id5" id="id1">1</a>), can be used to compute the <span class="math notranslate nohighlight">\(z\)</span> position at which the face area is equal to the target area.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/cell_arearise_gss.jpg"><img alt="../../_images/cell_arearise_gss.jpg" src="../../_images/cell_arearise_gss.jpg" style="width: 100%;" /></a>
+</div>
+<p>Because arearisation algorithm allows a more precise control of the areas of individual faces of a cell, and therefore the magnitudes of the forces in the corresponding members in the form diagram, it can be used to explain the concept of static indeterminacy of spatial structures.
+It can also demonstrate that polyhedral reciprocal diagrams are not limited to the exploration of statically determinate spatial structures, but also various possible equilibrium solutions for statically indeterminate structures
+(<a class="footnote-reference brackets" href="#id6" id="id2">2</a>, <a class="footnote-reference brackets" href="#id7" id="id3">3</a> and <a class="footnote-reference brackets" href="#id8" id="id4">4</a>).</p>
+<p>In an indeterminate structure, the distribution of forces among the members of the structure is highly dependent on the boundary conditions, imperfections of the building components and the tolerance accumulated during the assembly on site.
+Therefore, the actual internal stress state is unknown, difficult to predict and is sensitive to minor changes in the boundary conditions. Using polyhedral force diagrams and the arearisation algorithm, indeterminate states of equilibrium can be visualised and described.
+In the context of structural design, this indeterminacy can be exploited to explore and obtain different internal equilibrium states.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/cell_arearise_examples.jpg"><img alt="../../_images/cell_arearise_examples.jpg" src="../../_images/cell_arearise_examples.jpg" style="width: 100%;" /></a>
+</div>
+<hr class="docutils" />
+<div class="section" id="example">
+<h2>Example</h2>
+<a class="reference internal image-reference" href="../../_images/cell_face_arearise_gif.gif"><img alt="../../_images/cell_face_arearise_gif.gif" src="../../_images/cell_face_arearise_gif.gif" style="width: 100%;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="card bg-light">
+<div class="card-body">
+<div class="card-title">Download</div><ul class="simple">
+<li><p><a class="reference download internal" href="../../_downloads/cell_gss.3dm" download=""><code class="xref download docutils literal notranslate"><span class="pre">cell_gss.3dm</span></code></a></p></li>
+</ul>
+</div>
+</div><div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">dot_vectors</span>
+
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">i_to_blue</span>
+
+<span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="kn">import</span> <span class="n">mesh_from_surface</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="kn">import</span> <span class="n">mesh_select_face</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.algorithms</span> <span class="kn">import</span> <span class="n">cell_arearise_face</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.diagrams</span> <span class="kn">import</span> <span class="n">Cell</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.operations</span> <span class="kn">import</span> <span class="n">cell_relocate_face</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">MeshConduit</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
+
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">&#39;Juney Lee&#39;</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2019, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;juney.lee@arch.ethz.ch&#39;</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1">#   1. make cell from rhino polysurfaces</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="n">layer</span> <span class="o">=</span> <span class="s1">&#39;cell&#39;</span>
+
+<span class="n">guid</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="s2">&quot;select a closed polysurface&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">polysurface</span><span class="p">)</span>
+<span class="n">rs</span><span class="o">.</span><span class="n">HideObjects</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+
+<span class="n">cell</span> <span class="o">=</span> <span class="n">mesh_from_surface</span><span class="p">(</span><span class="n">Cell</span><span class="p">,</span> <span class="n">guid</span><span class="p">)</span>
+<span class="n">cell</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1">#   2. Target area</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="n">fkey</span>   <span class="o">=</span> <span class="n">mesh_select_face</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+
+<span class="n">area</span>   <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+<span class="n">center</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+<span class="n">normal</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+
+<span class="n">target_area</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s2">&quot;Enter target area&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="n">area</span><span class="p">)</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1">#   3. Arearise cell face</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+<span class="c1"># conduit</span>
+<span class="n">conduit</span> <span class="o">=</span> <span class="n">MeshConduit</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+
+    <span class="n">current_area</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">color</span>  <span class="o">=</span> <span class="n">i_to_blue</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">current_area</span> <span class="o">-</span> <span class="n">target_area</span><span class="p">)</span> <span class="o">/</span> <span class="n">target_area</span><span class="p">)</span>
+    <span class="n">conduit</span><span class="o">.</span><span class="n">face_colordict</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">color</span><span class="p">}</span>
+
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+
+    <span class="n">conduit</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+
+
+<span class="k">with</span> <span class="n">conduit</span><span class="o">.</span><span class="n">enabled</span><span class="p">():</span>
+    <span class="n">cell_arearise_face</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span>
+                       <span class="n">fkey</span><span class="p">,</span>
+                       <span class="n">target_area</span><span class="p">,</span>
+                       <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1">#   4. Check result</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="n">new_area</span>   <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+<span class="n">new_normal</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">new_normal</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">new_area</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+
+<span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">new_area</span> <span class="o">-</span> <span class="n">target_area</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;===================================================================&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Arearisation attempted, but did not converge...&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;It is likely that the target area is not valid / inexistent...&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;===================================================================&#39;</span><span class="p">)</span>
+
+    <span class="n">cell_relocate_face</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1">#   5. Draw result</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="n">cell</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>If a negative target area is entered, the face must flip its normal direction as well as match the magnitude of the target area. It is possible that one or both of these two constraints can not be satisfied.</p></li>
+<li><p>For a positive target area, two solutions exist. The solution with a <span class="math notranslate nohighlight">\(z\)</span> value that is closer to the initial face position will be given.</p></li>
+</ul>
+</div>
+<dl class="footnote brackets">
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Kiefer, J. (1953). Sequential minimax search for a maximum. In <em>Proceedings of the American Mathematical Society</em> 4(3), 502-506.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Kilian, A. and J. Ochsendorf (2005). Particle-spring systems for structural form finding. <em>Journal of the International Association for Shell and Spatial Structures</em> 46(147), 77–84.</p>
+</dd>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Block, P. (2005). <em>Equilibrium systems: Studies in masonry structure</em>. Master’s thesis, Massachusetts Institute of Technology, Cambridge, MA, USA.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id4">4</a></span></dt>
+<dd><p>Van Mele, T., L. Lachauer, M. Rippmann and P. Block (2012). Geometry-based understanding of structures. <em>Journal of the International Association for Shell and Spatial Structures</em> 53(174), 285–295.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+                        
+                    
+
+                </main>
+
+                <!-- site navigation sidebar -->
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../00_introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../01_getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../02_overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../03_theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../04_user_manual.html">User manual</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../00_polyhedral_cell.html">Polyhedral cell</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="00_00_datastructure.html">Datastructure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="00_10_cell_pull_face.html">Constrained manipulation</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Arearisation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="00_20_cell_constructor.html">Constructor</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../01_multi-cell_polyhedron.html">Multi-cell polyhedron</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../02_cell_network.html">Cell network</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../03_materialisation.html">Materialisation</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../05_api_reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../06_license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../07_citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../08_publications.html">Publications</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../09_how_to_contribute.html">How to contribute</a></li>
+</ul>
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+
+                <!-- table of contents of main content -->
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Arearisation</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="compas-footer">
+            
+                Last updated on Jun 19, 2019.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
+            
+        </footer>
+
+        
+
+            <script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.2.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+};
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+            <script src="../../_static/underscore.js"></script>
+            <script src="../../_static/doctools.js"></script>
+            <script src="../../_static/js/searchtools_.js"></script>
+            <script src="../../_static/js/prism.js"></script>
+
+            <script>
+$(document).ready(function() {
+
+    // $(".language-default pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-bash pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-python pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-c pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-cpp pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-fortran pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-markdown pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-rest pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    anchors.add();
+});
+            </script>
+
+        
+    </body>
+</html>

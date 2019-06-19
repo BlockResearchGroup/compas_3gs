@@ -5,7 +5,7 @@
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
+    
         <meta name="author" content="" />
         <meta name="description" content="" />
 
@@ -17,9 +17,9 @@
         <link rel="stylesheet" type="text/css" href="../../../_static/css/compas.css" />
         <link rel="stylesheet" type="text/css" href="../../../_static/css/compas-reference.css" />
 
-
-
-
+        
+        
+        
 
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
@@ -29,7 +29,7 @@
         <header class="navbar navbar-expand compas-navbar justify-content-between">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../../index.html">
-                    compas_3gs 0.1.0
+                    compas_3gs 0.2.0
                 </a>
             </div>
 
@@ -41,7 +41,7 @@
                 </li>
             </ul>
         </header>
-
+        
         <div class="container-fluid compas-container">
             <div class="row flex-xl-nowrap">
 
@@ -49,191 +49,92 @@
 
                 <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
 
+                    
 
-
-
+                        
 
                         <h1>Source code for compas_3gs.algorithms.arearisation</h1><div class="highlight"><pre><code>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
-<span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">import</span> <span class="nn">compas_rhino</span> <span class="k">as</span> <span class="nn">rhino</span>
-
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">add_vectors</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">subtract_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">dot_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">scale_vector</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">distance_point_point</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">length_vector</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">cross_vectors</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">centroid_points</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">midpoint_point_point</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">bestfit_plane</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">is_polygon_convex</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">project_points_plane</span>
 
-<span class="kn">from</span> <span class="nn">compas.geometry.transformations.transformations</span> <span class="k">import</span> <span class="n">project_point_plane</span>
+<span class="kn">from</span> <span class="nn">compas_3gs.algorithms.other</span> <span class="k">import</span> <span class="n">golden_section_search</span>
 
-<span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="k">import</span> <span class="n">volmesh_select_vertices</span>
-
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">i_to_blue</span>
-
-<span class="c1"># from compas_3gs.algorithms import volmesh_planarise</span>
-
-<span class="kn">from</span> <span class="nn">compas_3gs.operations</span> <span class="k">import</span> <span class="n">cell_collapse_short_edges</span>
-
-<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">polygon_normal_oriented</span>
-<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">polygon_area_oriented</span>
-
-<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="k">import</span> <span class="n">scale_polygon</span>
+<span class="kn">from</span> <span class="nn">compas_3gs.operations</span> <span class="k">import</span> <span class="n">cell_split_indet_face_vertices</span>
+<span class="kn">from</span> <span class="nn">compas_3gs.operations</span> <span class="k">import</span> <span class="n">cell_relocate_face</span>
 
 
-<span class="n">__author__</span>     <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Juney Lee&#39;</span><span class="p">]</span>
+<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">&#39;Juney Lee&#39;</span>
 <span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2019, BLOCK Research Group - ETH Zurich&#39;</span>
 <span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
 <span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;juney.lee@arch.ethz.ch&#39;</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mesh_arearise&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cell_arearise_face&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="mesh_arearise"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.algorithms.mesh_arearise.html#compas_3gs.algorithms.mesh_arearise">[docs]</a><span class="k">def</span> <span class="nf">mesh_arearise</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span>
-                  <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                  <span class="n">target_areas</span><span class="o">=</span><span class="p">{},</span>
-                  <span class="n">target_normals</span><span class="o">=</span><span class="p">{},</span>
-                  <span class="n">avg_fkeys</span><span class="o">=</span><span class="p">[],</span>
-                  <span class="n">area_tolerance</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
-                  <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="cell_arearise_face"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.algorithms.cell_arearise_face.html#compas_3gs.algorithms.cell_arearise_face">[docs]</a><span class="k">def</span> <span class="nf">cell_arearise_face</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span>
+                       <span class="n">fkey</span><span class="p">,</span>
+                       <span class="n">target_area</span><span class="p">,</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+                       <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
 
-<span class="sd">    complex faces are not allowed...</span>
-
-<span class="sd">    footprint area is used instead of oriented area...</span>
-
-
-<span class="sd">    &quot;&quot;&quot;</span>
+                       <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
     <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Callback is not callable.&#39;</span><span class="p">)</span>
 
-    <span class="n">loops</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cell_split_indet_face_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">)</span>
+
+    <span class="n">area</span>   <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1">#   2. loop</span>
+    <span class="c1">#   get move direction</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kmax</span><span class="p">):</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># if it needs to get larger...</span>
+    <span class="k">if</span> <span class="n">area</span> <span class="o">-</span> <span class="n">target_area</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># if it needs to be smaller...</span>
 
-        <span class="n">area_deviation</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">area</span> <span class="o">*</span> <span class="n">target_area</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>  <span class="c1"># if it needs to flip...</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
-        <span class="n">new_xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">vkey</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">}</span>
+    <span class="n">move_dir</span> <span class="o">=</span> <span class="n">_get_move_direction</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">)</span> <span class="o">*</span> <span class="n">sign</span>
 
-        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face</span><span class="p">:</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   evaluation function</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
 
-            <span class="n">f_vkeys</span>  <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
-            <span class="n">f_pts</span>    <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">f_vkeys</span><span class="p">]</span>
-            <span class="n">f_center</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">f_pts</span><span class="p">)</span>
-            <span class="n">f_area</span>   <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
-            <span class="c1"># f_area   = _area_polygon_footprint(f_pts)</span>
-
-            <span class="n">target_area</span>  <span class="o">=</span> <span class="n">target_areas</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
-
-            <span class="n">delta</span> <span class="o">=</span> <span class="n">target_area</span> <span class="o">-</span> <span class="n">f_area</span>
-
-            <span class="c1"># ------------------------------------------------------------------</span>
-            <span class="n">new_face</span> <span class="o">=</span> <span class="p">{</span><span class="n">vkey</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">f_vkeys</span><span class="p">}</span>
-
-            <span class="c1"># ------------------------------------------------------------------</span>
-            <span class="c1">#   project</span>
-            <span class="c1"># ------------------------------------------------------------------</span>
-            <span class="k">if</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">target_normals</span><span class="p">:</span>
-                <span class="n">target_plane</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_center</span><span class="p">,</span> <span class="n">target_normals</span><span class="p">[</span><span class="n">fkey</span><span class="p">])</span>
-                <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">f_vkeys</span><span class="p">:</span>
-                    <span class="n">xyz</span>            <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span>
-                    <span class="n">projected_xyz</span>  <span class="o">=</span> <span class="n">project_point_plane</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">target_plane</span><span class="p">)</span>
-                    <span class="n">new_face</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">projected_xyz</span>
-
-            <span class="c1"># ----------------------------------------------------------------</span>
-            <span class="c1">#   for non-zero faces</span>
-            <span class="c1"># ---------------------------------------------------------------</span>
-            <span class="k">if</span> <span class="n">target_area</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">target_area</span> <span class="o">/</span> <span class="n">f_area</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-
-
-            <span class="c1"># ------------------------------------------------------------------</span>
-            <span class="c1">#   for zero faces</span>
-            <span class="c1"># ------------------------------------------------------------------</span>
-            <span class="k">elif</span> <span class="n">target_area</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">f_area</span> <span class="o">*</span> <span class="mf">0.1</span>
-
-                <span class="c1"># if f_area &lt; 1:</span>
-                <span class="c1">#     scale = 1 - f_area</span>
-                <span class="c1"># scale = 0.9</span>
-
-            <span class="n">new_face</span> <span class="o">=</span> <span class="n">scale_polygon</span><span class="p">(</span><span class="n">new_face</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
-
-            <span class="c1"># ==================================================================</span>
-            <span class="k">if</span> <span class="n">target_area</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">polyline</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">f_vkeys</span><span class="p">:</span>
-                    <span class="n">polyline</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_face</span><span class="p">[</span><span class="n">vkey</span><span class="p">])</span>
-                <span class="n">loops</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="n">polyline</span> <span class="o">+</span> <span class="p">[</span><span class="n">polyline</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
-                              <span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">i_to_blue</span><span class="p">(</span><span class="n">k</span> <span class="o">/</span> <span class="n">kmax</span><span class="p">),</span>
-                              <span class="s1">&#39;name&#39;</span>  <span class="p">:</span> <span class="s1">&#39;iteration-</span><span class="si">{0}</span><span class="s1">.face-</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">fkey</span><span class="p">)})</span>
-            <span class="c1"># ==================================================================</span>
-
-            <span class="n">areaness</span>  <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f_area</span> <span class="o">-</span> <span class="n">target_area</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">areaness</span> <span class="o">&gt;</span> <span class="n">area_deviation</span><span class="p">:</span>
-                <span class="n">area_deviation</span> <span class="o">=</span> <span class="n">areaness</span>
-
-            <span class="c1"># 6. collect new coordinates ---------------------------------------</span>
-            <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">new_face</span><span class="p">:</span>
-                <span class="n">new_xyz</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_face</span><span class="p">[</span><span class="n">vkey</span><span class="p">])</span>
-
-
-
-        <span class="c1"># for u, v in mesh.edges():</span>
-        <span class="c1">#     sp   = mesh.vertex_coordinates(u)</span>
-        <span class="c1">#     ep   = mesh.vertex_coordinates(v)</span>
-        <span class="c1">#     dist = distance_point_point(sp, ep)</span>
-        <span class="c1">#     if dist &lt; 0.5:</span>
-        <span class="c1">#         mp = midpoint_point_point(sp, ep)</span>
-        <span class="c1">#         new_xyz[u].append(mp)</span>
-        <span class="c1">#         new_xyz[v].append(mp)</span>
-
-
-
-        <span class="c1"># 7. compute new coordinates</span>
-        <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
-            <span class="n">final_xyz</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">new_xyz</span><span class="p">[</span><span class="n">vkey</span><span class="p">])</span>
-            <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_update_xyz</span><span class="p">(</span><span class="n">vkey</span><span class="p">,</span> <span class="n">final_xyz</span><span class="p">)</span>
-
-
-        <span class="c1"># # 8. check convergence -------------------------------------------------</span>
-        <span class="n">cell_collapse_short_edges</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-
-        <span class="c1"># 8. check convergence -------------------------------------------------</span>
-        <span class="k">if</span> <span class="n">area_deviation</span> <span class="o">&lt;</span> <span class="n">area_tolerance</span><span class="p">:</span>
-            <span class="k">break</span>
+    <span class="k">def</span> <span class="nf">evaluation</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">xyz</span>      <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">move_dir</span><span class="p">))</span>
+        <span class="n">new_area</span> <span class="o">=</span> <span class="n">_evaluate_new_face_area</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
 
         <span class="c1"># callback / conduit ---------------------------------------------------</span>
         <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
-            <span class="n">callback</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span>
+            <span class="n">callback</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">callback_args</span><span class="p">)</span>
 
-    <span class="c1"># mesh.draw()</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">new_area</span> <span class="o">-</span> <span class="n">target_area</span><span class="p">)</span>
 
-    <span class="n">rhino</span><span class="o">.</span><span class="n">xdraw_polylines</span><span class="p">(</span><span class="n">loops</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   golden section search</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">area</span> <span class="o">-</span> <span class="n">target_area</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">area_deviation</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></div>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">golden_section_search</span><span class="p">(</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
 
-
-
-<span class="c1"># volmesh_arearise = volmesh_planarise</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   update cell</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">xyz</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">z</span> <span class="o">*</span> <span class="n">move_dir</span><span class="p">))</span>
+    <span class="n">cell_relocate_face</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span></div>
 
 
 <span class="c1"># ******************************************************************************</span>
@@ -247,185 +148,68 @@
 <span class="c1"># ******************************************************************************</span>
 
 
-<span class="k">def</span> <span class="nf">_area_polygon_footprint</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_move_direction</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
 
-    <span class="n">area</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">p</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-    <span class="n">w</span>    <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">normal</span>     <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">center</span>     <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_center</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">area</span>       <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">u</span>      <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">v</span>      <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="n">uv</span>     <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
-        <span class="n">vw</span>     <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="n">normal</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">uv</span><span class="p">,</span> <span class="n">vw</span><span class="p">),</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">area</span>   <span class="o">+=</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span>
+    <span class="n">new_center</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">area</span>
+    <span class="n">new_area</span>   <span class="o">=</span> <span class="n">_evaluate_new_face_area</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">new_center</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">new_area</span> <span class="o">&gt;</span> <span class="n">area</span><span class="p">:</span>
+        <span class="n">move_dir</span> <span class="o">=</span> <span class="mi">1</span>
 
+    <span class="k">if</span> <span class="n">new_area</span> <span class="o">&lt;</span> <span class="n">area</span><span class="p">:</span>
+        <span class="n">move_dir</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
+    <span class="n">cell_relocate_face</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">new_area</span> <span class="o">==</span> <span class="n">area</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Pulling this face will not change its area!&#39;</span><span class="p">)</span>
 
-<span class="c1"># # ******************************************************************************</span>
-<span class="c1"># # ******************************************************************************</span>
-<span class="c1"># # ******************************************************************************</span>
-<span class="c1"># #</span>
-<span class="c1"># #   arearise mesh</span>
-<span class="c1"># #</span>
-<span class="c1"># # ******************************************************************************</span>
-<span class="c1"># # ******************************************************************************</span>
-<span class="c1"># # ******************************************************************************</span>
+    <span class="k">return</span> <span class="n">move_dir</span>
 
 
-<span class="c1"># def mesh_arearise(mesh,</span>
-<span class="c1">#                       count=100,</span>
-<span class="c1">#                       target_normals=None,</span>
-<span class="c1">#                       target_centers=None,</span>
-<span class="c1">#                       target_areas={},</span>
-<span class="c1">#                       fix_boundary=False,</span>
-<span class="c1">#                       fix_all=False,</span>
-<span class="c1">#                       omit_vkeys=[],</span>
-<span class="c1">#                       flat_tolerance=0.0001,</span>
-<span class="c1">#                       area_tolerance=0.0001):</span>
+<span class="k">def</span> <span class="nf">_evaluate_new_face_area</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">init_normal</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-<span class="c1">#     # ..........................................................................</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">init_normal</span><span class="p">:</span>
+        <span class="n">init_normal</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
-<span class="c1">#     iteration = 0</span>
+    <span class="n">cell_relocate_face</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">init_normal</span><span class="p">)</span>
 
-<span class="c1">#     while count:</span>
+    <span class="n">new_area</span>   <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">new_normal</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
-<span class="c1">#         flatness_deviation = 0</span>
-<span class="c1">#         area_deviation     = 0</span>
-<span class="c1">#         new_vertices       = {}</span>
+    <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">init_normal</span><span class="p">,</span> <span class="n">new_normal</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">new_area</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
 
-<span class="c1">#         for hfkey in mesh.face:</span>
-<span class="c1">#             hf_vkeys  = mesh.face[hfkey]</span>
-<span class="c1">#             points    = [mesh.vertex_coordinates(vkey) for vkey in hf_vkeys]</span>
-<span class="c1">#             hf_normal = bestfit_plane(points)[1]</span>
-<span class="c1">#             hf_area   = mesh.face_area(hfkey)</span>
-<span class="c1">#             hf_center = mesh.face_center(hfkey)</span>
+    <span class="k">return</span> <span class="n">new_area</span>
 
 
-<span class="c1">#             if target_normals:</span>
-<span class="c1">#                 if hfkey in target_normals:</span>
-<span class="c1">#                     hf_normal = target_normals[hfkey]</span>
-<span class="c1">#             if target_centers:</span>
-<span class="c1">#                 if hfkey in target_centers:</span>
-<span class="c1">#                     hf_center = target_centers[hfkey]</span>
-
-<span class="c1">#             plane = (hf_center, hf_normal)</span>
-
-
-<span class="c1">#             pt_dict = {}</span>
-<span class="c1">#             for vkey in hf_vkeys:</span>
-<span class="c1">#                 if vkey not in new_vertices:</span>
-<span class="c1">#                     new_vertices[vkey] = []</span>
-<span class="c1">#                 xyz           = mesh.vertex_coordinates(vkey)</span>
-<span class="c1">#                 new_xyz       = project_point_plane(xyz, plane)</span>
-<span class="c1">#                 pt_dict[vkey] = new_xyz</span>
-<span class="c1">#                 dist          = distance_point_point(xyz, new_xyz)</span>
-<span class="c1">#                 if dist &gt; flatness_deviation:</span>
-<span class="c1">#                     flatness_deviation = dist</span>
-
-<span class="c1">#             if hfkey in target_areas:</span>
-<span class="c1">#                 # if hf_area &gt; 0.001:</span>
-<span class="c1">#                 target_area = target_areas[hfkey]</span>
-<span class="c1">#                 if target_area == 0:</span>
-<span class="c1">#                     scale = 0.001</span>
-<span class="c1">#                 else:</span>
-<span class="c1">#                     scale       = (target_area / hf_area)**0.5</span>
-<span class="c1">#                 pt_dict     = _scale_polygon(pt_dict, scale)</span>
-<span class="c1">#                 difference  = abs(hf_area - target_area)</span>
-<span class="c1">#                 if difference &gt; area_tolerance:</span>
-<span class="c1">#                     area_deviation = difference</span>
-
-<span class="c1">#             for vkey in pt_dict:</span>
-<span class="c1">#                 new_vertices[vkey].append(pt_dict[vkey])</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1">#</span>
+<span class="c1">#   Main</span>
+<span class="c1">#</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
 
 
-<span class="c1">#         # ----------------------------------------------------------------------</span>
-<span class="c1">#         # compute new coordinates</span>
-<span class="c1">#         # ----------------------------------------------------------------------</span>
-<span class="c1">#         for vkey in new_vertices:</span>
-<span class="c1">#             if vkey not in omit_vkeys:</span>
-<span class="c1">#                 final_xyz = centroid_points(new_vertices[vkey])</span>
-
-<span class="c1">#                 mesh.vertex[vkey][&#39;x&#39;] = final_xyz[0]</span>
-<span class="c1">#                 mesh.vertex[vkey][&#39;y&#39;] = final_xyz[1]</span>
-<span class="c1">#                 mesh.vertex[vkey][&#39;z&#39;] = final_xyz[2]</span>
-
-<span class="c1">#         # ----------------------------------------------------------------------</span>
-<span class="c1">#         # update</span>
-<span class="c1">#         # ----------------------------------------------------------------------</span>
-<span class="c1">#         if iteration &gt; 1:</span>
-<span class="c1">#             if flatness_deviation &lt; flat_tolerance and area_deviation &lt; area_tolerance:</span>
-<span class="c1">#                 break</span>
-
-<span class="c1">#         sc.doc.Views.Redraw()</span>
-<span class="c1">#         iteration += 1</span>
-<span class="c1">#         count -= 1</span>
-
-<span class="c1">#     # ..........................................................................</span>
-
-<span class="c1">#     print(&#39;===================================================================&#39;)</span>
-<span class="c1">#     print(&#39;&#39;)</span>
-<span class="c1">#     print(&#39;planarisation ended at:&#39;, iteration)</span>
-<span class="c1">#     print(&#39;flatness deviation:&#39;, flatness_deviation)</span>
-<span class="c1">#     print(&#39;area deviation:&#39;, area_deviation)</span>
-<span class="c1">#     print(&#39;&#39;)</span>
-<span class="c1">#     print(&#39;===================================================================&#39;)</span>
-
-
-<span class="c1"># # ******************************************************************************</span>
-<span class="c1"># # ******************************************************************************</span>
-<span class="c1"># # ******************************************************************************</span>
-<span class="c1"># #</span>
-<span class="c1"># #   helpers</span>
-<span class="c1"># #</span>
-<span class="c1"># # ******************************************************************************</span>
-<span class="c1"># # ******************************************************************************</span>
-<span class="c1"># # ******************************************************************************</span>
-
-
-<span class="c1"># def _get_current_normals(mesh):</span>
-<span class="c1">#     normal_dict = {}</span>
-<span class="c1">#     for hfkey in mesh.halfface:</span>
-<span class="c1">#         center = mesh.halfface_center(hfkey)</span>
-<span class="c1">#         normal = mesh.halfface_oriented_normal(hfkey)</span>
-<span class="c1">#         normal_dict[hfkey] = {&#39;normal&#39;: normal, &#39;center&#39;: center}</span>
-<span class="c1">#     return normal_dict</span>
-
-
-<span class="c1"># def _store_initial_normals(mesh):</span>
-<span class="c1">#     for hfkey in mesh.halfface:</span>
-<span class="c1">#         center = mesh.halfface_center(hfkey)</span>
-<span class="c1">#         normal = mesh.halfface_oriented_normal(hfkey)</span>
-<span class="c1">#         mesh.update_f_data(</span>
-<span class="c1">#             hfkey,</span>
-<span class="c1">#             attr_dict={&#39;normal_i&#39;: normal, &#39;center_i&#39;: center})</span>
-<span class="c1">#     return mesh</span>
-
-
-<span class="c1"># def _scale_polygon(points_dict, scale):</span>
-<span class="c1">#     points = points_dict.values()</span>
-<span class="c1">#     center = centroid_points(points)</span>
-<span class="c1">#     new_points_dict = {}</span>
-<span class="c1">#     for key in points_dict:</span>
-<span class="c1">#         point = points_dict[key]</span>
-<span class="c1">#         vector = subtract_vectors(point, center)</span>
-<span class="c1">#         new_point = add_vectors(center, scale_vector(vector, scale))</span>
-<span class="c1">#         new_points_dict[key] = new_point</span>
-<span class="c1">#     return new_points_dict</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">pass</span>
 </code></pre></div>
-
-
+                        
+                    
 
                 </main>
 
                 <!-- site navigation sidebar -->
 
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation">
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
                     <div class="navbar-light">
 
                         <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
@@ -438,39 +222,41 @@
                             </button>
                         </form>
 
-
-
+                        
+                        
 
                             <div class="navbar-expand-md">
                                 <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
                                 <ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="../../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Setting Up</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../user_manual.html">User manual</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../reference.html">API Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../contribution.html">How to contribute</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../00_introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../01_getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../02_overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../03_theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../04_user_manual.html">User manual</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../05_api_reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../06_license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../07_citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../08_publications.html">Publications</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../09_how_to_contribute.html">How to contribute</a></li>
 </ul>
 
 
                                 </div>
                             </div>
 
-
+                        
 
                     </div>
                 </div>
 
                 <!-- table of contents of main content -->
-
+                
                 <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
 
+                    
 
-
-
+                    
 
                 </div>
 
@@ -478,21 +264,21 @@
         </div>
 
         <footer class="compas-footer">
+            
+                Last updated on Jun 19, 2019.
+            
 
-                Last updated on Mar 28, 2019.
-
-
-
+            
                 Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
-
+            
         </footer>
 
-
+        
 
             <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.1.0',
+    VERSION           : '0.2.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
@@ -504,7 +290,7 @@ var DOCUMENTATION_OPTIONS = {
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-
+            
             <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 
@@ -552,6 +338,6 @@ $(document).ready(function() {
 });
             </script>
 
-
+        
     </body>
 </html>

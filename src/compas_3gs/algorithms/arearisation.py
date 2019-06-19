@@ -11,12 +11,6 @@ from compas_3gs.algorithms.other import golden_section_search
 from compas_3gs.operations import cell_split_indet_face_vertices
 from compas_3gs.operations import cell_relocate_face
 
-try:
-    import rhinoscriptsyntax as rs
-    from Rhino.Geometry import Point3d
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 __author__     = 'Juney Lee'
 __copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
@@ -117,7 +111,7 @@ def _get_move_direction(cell, fkey):
     cell_relocate_face(cell, fkey, center, normal)
 
     if new_area == area:
-        raise ValueError('The face already has target area!')
+        raise Exception('Pulling this face will not change its area!')
 
     return move_dir
 
