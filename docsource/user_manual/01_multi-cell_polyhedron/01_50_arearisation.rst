@@ -2,14 +2,25 @@
 Arearisation
 ********************************************************************************
 
+Arearisation of a ``volmesh`` is implemented as a special case of the planarisation algorithm.
+In addition to the planarisation of the faces by projection at each iteration step, they can be re-sized to match target areas.
 
+|
 
+----
 
-____
 
 Example
 =======
 
+In this example, four randomly chosen faces are given new target areas.
+The initial normals of all of the faces are constrained to remain unchanged.
+
+
+.. image:: ../../_images/volmesh_arearisation_gif.gif
+    :width: 100%
+
+|
 
 .. raw:: html
 

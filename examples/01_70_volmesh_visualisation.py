@@ -12,8 +12,7 @@ from compas_3gs.diagrams import ForceVolMesh
 from compas_3gs.algorithms import volmesh_dual_network
 from compas_3gs.algorithms import volmesh_reciprocate
 
-from compas_3gs.rhino import ReciprocationConduit
-
+from compas_3gs.rhino import draw_corresponding_elements
 from compas_3gs.rhino import draw_network_pipes
 from compas_3gs.rhino import draw_compression_tension
 from compas_3gs.rhino import draw_network_external_forces
@@ -77,7 +76,8 @@ formdiagram.draw(layer=layer)
 while True:
 
     display = rs.GetString('pick visualisation type',
-                           strings=['compression_tension',
+                           strings=['id',
+                                    'compression_tension',
                                     'pipes',
                                     'external_forces',
                                     'internal_forces',
@@ -88,7 +88,11 @@ while True:
     if display is None or display == 'exit':
         break
 
-    if display == 'pipes':
+    if display == 'id':
+        formdiagram.clear()
+        draw_corresponding_elements(forcediagram, formdiagram)
+
+    elif display == 'pipes':
         scale = rs.GetReal('scale', 1, 0.01, 10.0)
         formdiagram.clear()
         draw_network_pipes(forcediagram, formdiagram, scale=scale)
@@ -96,15 +100,15 @@ while True:
     elif display == 'compression_tension':
         forcediagram.clear()
         formdiagram.clear()
-        draw_compression_tension(forcediagram, formdiagram)
+        draw_compression_tension(forcediagram, formdiagram, gradient=True)
 
     elif display == 'external_forces':
-        scale = rs.GetReal('scale', 1, 0.1, 10.0)
+        scale = rs.GetReal('scale', 1, 0.01, 10.0)
         formdiagram.draw()
-        draw_network_external_forces(forcediagram, formdiagram, scale=scale)
+        draw_network_external_forces(forcediagram, formdiagram, gradient=True, scale=scale)
 
     elif display == 'internal_forces':
-        scale = rs.GetReal('scale', 1, 0.1, 10.0)
+        scale = rs.GetReal('scale', 1, 0.01, 10.0)
         formdiagram.clear()
         draw_network_internal_forces(forcediagram, formdiagram, scale=scale)
 

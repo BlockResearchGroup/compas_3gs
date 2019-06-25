@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="Transformations" href="01_60_transformation.html" />
+            <link rel="next" title="Modification" href="01_60_modification.html" />
         
         
         
@@ -59,9 +59,20 @@
 
                         <div class="section" id="arearisation">
 <h1>Arearisation</h1>
+<p>Arearisation of a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> is implemented as a special case of the planarisation algorithm.
+In addition to the planarisation of the faces by projection at each iteration step, they can be re-sized to match target areas.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <hr class="docutils" />
 <div class="section" id="example">
 <h2>Example</h2>
+<p>In this example, four randomly chosen faces are given new target areas.
+The initial normals of all of the faces are constrained to remain unchanged.</p>
+<a class="reference internal image-reference" href="../../_images/volmesh_arearisation_gif.gif"><img alt="../../_images/volmesh_arearisation_gif.gif" src="../../_images/volmesh_arearisation_gif.gif" style="width: 100%;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Downloads</div><ul class="simple">
@@ -207,12 +218,14 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../00_polyhedral_cell.html">Polyhedral cell</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../01_multi-cell_polyhedron.html">Multi-cell polyhedron</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="01_00_datastructure.html">Datastructure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_01_interpretation.html">Interpreting diagrams</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_10_constructor.html">Constructor</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_20_duality.html">Duality</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_30_reciprocation.html">Reciprocation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_40_planarisation.html">Planarisation</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Arearisation</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="01_60_transformation.html">Transformations</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_60_modification.html">Modification</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_61_transformation.html">Transformation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_70_visualisation.html">Visualisation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_80_unified_diagram.html">Unified diagram</a></li>
 </ul>
@@ -258,7 +271,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 19, 2019.
+                Last updated on Jun 25, 2019.
             
 
             

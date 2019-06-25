@@ -13,16 +13,20 @@ If :math:`\gamma = 0`, the form diagram will remain fixed, and only the faces of
 
 For a detailed description of this procedure, please see [3]_.
 
+|
 
 .. image:: ../../_images/reciprocation.jpg
     :width: 100%
 
+|
 
-____
+----
 
 Example
 =======
 
+.. image:: ../../_images/volmesh_reciprocation_gif.gif
+    :width: 100%
 
 |
 
@@ -32,7 +36,7 @@ Example
     <div class="card-body">
     <div class="card-title">Download</div>
 
-* :download:`volmesh_shells.3dm <../../../examples/volmesh_shells.3dm>`
+* :download:`volmesh_shells.3dm <../../../examples/rhino_files/volmesh_shells.3dm>`
 
 .. raw:: html
 
@@ -43,8 +47,9 @@ Example
 .. literalinclude:: ../../../examples/01_30_volmesh_reciprocation.py
     :language: python
 
+|
 
-____
+----
 
 
 References

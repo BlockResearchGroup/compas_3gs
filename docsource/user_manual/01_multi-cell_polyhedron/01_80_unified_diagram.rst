@@ -1,5 +1,3 @@
-.. _02_7_unified_diagram:
-
 ********************************************************************************
 Unified diagram
 ********************************************************************************
@@ -62,7 +60,7 @@ Example
     <div class="card-body">
     <div class="card-title">Download</div>
 
-* :download:`volmesh_shells.3dm <../../../examples/volmesh_shells.3dm>`
+* :download:`volmesh_shells.3dm <../../../examples/rhino_files/volmesh_shells.3dm>`
 
 .. raw:: html
 
@@ -72,7 +70,6 @@ Example
 
 .. literalinclude:: ../../../examples/01_80_volmesh_unified_diagram.py
     :language: python
-
 
 |
 

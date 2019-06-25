@@ -89,16 +89,19 @@
     <span class="k">return</span> <span class="n">ip</span></div>
 
 
-<div class="viewcode-block" id="get_target_point"><a class="viewcode-back" href="../../../../reference/generated/compas_3gs.rhino.get_target_point.html#compas_3gs.rhino.get_target_point">[docs]</a><span class="k">def</span> <span class="nf">get_target_point</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">OnDynamicDraw</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Point to move to?&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_target_point"><a class="viewcode-back" href="../../../../reference/generated/compas_3gs.rhino.get_target_point.html#compas_3gs.rhino.get_target_point">[docs]</a><span class="k">def</span> <span class="nf">get_target_point</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">OnDynamicDraw</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Point to move to?&#39;</span><span class="p">):</span>
     <span class="n">gp</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Input</span><span class="o">.</span><span class="n">Custom</span><span class="o">.</span><span class="n">GetPoint</span><span class="p">()</span>
     <span class="n">gp</span><span class="o">.</span><span class="n">SetCommandPrompt</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
-        <span class="n">gp</span><span class="o">.</span><span class="n">Constrain</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">option</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+
+    <span class="n">gp</span><span class="o">.</span><span class="n">Constrain</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">option</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">gp</span><span class="o">.</span><span class="n">Constrain</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">option</span><span class="p">)</span>
+
     <span class="n">gp</span><span class="o">.</span><span class="n">DynamicDraw</span> <span class="o">+=</span> <span class="n">OnDynamicDraw</span>
     <span class="n">gp</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span>
     <span class="n">gp</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Point</span><span class="p">()</span>
+
     <span class="k">return</span> <span class="n">gp</span></div>
 
 
@@ -232,7 +235,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 19, 2019.
+                Last updated on Jun 25, 2019.
             
 
             

@@ -84,10 +84,12 @@
 <span class="c1"># ******************************************************************************</span>
 
 
-<div class="viewcode-block" id="FormNetwork"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.diagrams.FormNetwork.html#compas_3gs.diagrams.FormNetwork">[docs]</a><span class="k">class</span> <span class="nc">FormNetwork</span><span class="p">(</span><span class="n">Network3gs</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FormNetwork</span><span class="p">(</span><span class="n">Network3gs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A polyhedral form diagram, represented as a network object.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;compas_3gs.diagrams&#39;</span>
 
 <div class="viewcode-block" id="FormNetwork.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.diagrams.FormNetwork.html#compas_3gs.diagrams.FormNetwork.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FormNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -105,7 +107,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">va</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ea</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ea</span><span class="p">)</span></div>
 
 
 <span class="c1"># ******************************************************************************</span>
@@ -119,10 +121,12 @@
 <span class="c1"># ******************************************************************************</span>
 
 
-<div class="viewcode-block" id="FormVolMesh"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.diagrams.FormVolMesh.html#compas_3gs.diagrams.FormVolMesh">[docs]</a><span class="k">class</span> <span class="nc">FormVolMesh</span><span class="p">(</span><span class="n">VolMesh3gs</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FormVolMesh</span><span class="p">(</span><span class="n">VolMesh3gs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A polyhedral form diagram, represented as a volmesh object.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;compas_3gs.diagrams&#39;</span>
 
 <div class="viewcode-block" id="FormVolMesh.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.diagrams.FormVolMesh.html#compas_3gs.diagrams.FormVolMesh.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FormVolMesh</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -148,7 +152,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">va</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ea</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">fa</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ca</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ca</span><span class="p">)</span></div>
 
 
 <span class="c1"># ******************************************************************************</span>
@@ -162,10 +166,12 @@
 <span class="c1"># ******************************************************************************</span>
 
 
-<div class="viewcode-block" id="ForceVolMesh"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.diagrams.ForceVolMesh.html#compas_3gs.diagrams.ForceVolMesh">[docs]</a><span class="k">class</span> <span class="nc">ForceVolMesh</span><span class="p">(</span><span class="n">VolMesh3gs</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ForceVolMesh</span><span class="p">(</span><span class="n">VolMesh3gs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A polyhedral force diagram, represented as a volmesh object.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;compas_3gs.diagrams&#39;</span>
 
 <div class="viewcode-block" id="ForceVolMesh.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.diagrams.ForceVolMesh.html#compas_3gs.diagrams.ForceVolMesh.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ForceVolMesh</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -190,7 +196,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">va</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ea</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">fa</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ca</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ca</span><span class="p">)</span></div>
 
 
 <span class="c1"># ******************************************************************************</span>
@@ -270,7 +276,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 19, 2019.
+                Last updated on Jun 25, 2019.
             
 
             

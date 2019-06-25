@@ -64,6 +64,10 @@ Example
     - If a negative target area is entered, the face must flip its normal direction as well as match the magnitude of the target area. It is possible that one or both of these two constraints can not be satisfied.
     - For a positive target area, two solutions exist. The solution with a :math:`z` value that is closer to the initial face position will be given.
 
+----
+
+References
+==========
 
 .. [1] Kiefer, J. (1953). Sequential minimax search for a maximum. In *Proceedings of the American Mathematical Society* 4(3), 502-506.
 

@@ -18,7 +18,9 @@ The duality relationships between the elements of :math:`n`-dimensional structur
 
     Summary of the duality relationships between the elements of :math:`n`-dimensional structures and the :math:`(n+1)`-dimension of the corresponding stress functions (force diagrams) (after Figure 1 of [6]_).
 
-____
+
+----
+
 
 Face dual
 =========
@@ -32,7 +34,9 @@ The steps of the "face_dual" constructor is graphically summarised below.
 .. figure:: ../../_images/dual_mesh.jpg
     :width: 100%
 
-____
+
+----
+
 
 Cell dual
 =========
@@ -47,7 +51,9 @@ The steps of the "cell_dual" constructor is graphically summarised below.
 .. figure:: ../../_images/dual_volmesh.jpg
     :width: 100%
 
-____
+
+----
+
 
 From volmesh to volmesh
 =======================
@@ -65,7 +71,7 @@ Using the "cell dual" relationship, a dual volmesh can be constructed from an ex
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`cubes_4x4.3dm <../../../examples/rhino_files/cubes_4x4.3dm>`
+* :download:`volmesh_cubes_4x4.3dm <../../../examples/rhino_files/volmesh_cubes_4x4.3dm>`
 
 .. raw:: html
 
@@ -80,7 +86,8 @@ Using the "cell dual" relationship, a dual volmesh can be constructed from an ex
 .. note::
     An input ``volmesh`` with a minimum of four cells is required for the construction of a dual ``volmesh`` (a tetrahedron). In another words, in order for a volmesh to have a dual volmesh, the volmesh needs to have an interior vertex.
 
-____
+
+----
 
 
 From volmesh to network
@@ -106,7 +113,7 @@ For example, the face and cell information of the network can be computed from t
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`cubes_4x4.3dm <../../../examples/rhino_files/cubes_4x4.3dm>`
+* :download:`volmesh_cubes_4x4.3dm <../../../examples/rhino_files/volmesh_cubes_4x4.3dm>`
 
 .. raw:: html
 
@@ -118,7 +125,7 @@ For example, the face and cell information of the network can be computed from t
     :language: python
 
 
-____
+----
 
 
 References

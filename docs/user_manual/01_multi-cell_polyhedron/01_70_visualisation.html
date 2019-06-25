@@ -22,7 +22,7 @@
         
         
         
-            <link rel="prev" title="Transformations" href="01_60_transformation.html" />
+            <link rel="prev" title="Transformation" href="01_61_transformation.html" />
         
 
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -59,13 +59,24 @@
 
                         <div class="section" id="visualisation">
 <h1>Visualisation</h1>
+<p>Different visualisation modes may be necessary depending on the design
+problem at hand.
+By default, the faces of the force diagrams are displayed as a set of meshes, and the corresponding form diagram is displayed using points and lines.
+If the global force distribution needs to be assessed, the magnitudes of the forces in the structure can be displayed through pipes with different sizes, as scaled force vectors at each of the nodes, or by simply using a consistent colour scale on both form and force diagrams.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <hr class="docutils" />
 <div class="section" id="example">
 <h2>Example</h2>
+<a class="reference internal image-reference" href="../../_images/volmesh_visualisation.jpg"><img alt="../../_images/volmesh_visualisation.jpg" src="../../_images/volmesh_visualisation.jpg" style="width: 100%;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Downloads</div><ul class="simple">
-<li><p><code class="xref download docutils literal notranslate"><span class="pre">volmesh_shells.3dm</span></code></p></li>
+<li><p><a class="reference download internal" href="../../_downloads/volmesh_shells.3dm" download=""><code class="xref download docutils literal notranslate"><span class="pre">volmesh_shells.3dm</span></code></a></p></li>
 </ul>
 </div>
 </div><div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -82,8 +93,7 @@
 <span class="kn">from</span> <span class="nn">compas_3gs.algorithms</span> <span class="kn">import</span> <span class="n">volmesh_dual_network</span>
 <span class="kn">from</span> <span class="nn">compas_3gs.algorithms</span> <span class="kn">import</span> <span class="n">volmesh_reciprocate</span>
 
-<span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">ReciprocationConduit</span>
-
+<span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">draw_corresponding_elements</span>
 <span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">draw_network_pipes</span>
 <span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">draw_compression_tension</span>
 <span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">draw_network_external_forces</span>
@@ -147,7 +157,8 @@
 <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
 
     <span class="n">display</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetString</span><span class="p">(</span><span class="s1">&#39;pick visualisation type&#39;</span><span class="p">,</span>
-                           <span class="n">strings</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;compression_tension&#39;</span><span class="p">,</span>
+                           <span class="n">strings</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span>
+                                    <span class="s1">&#39;compression_tension&#39;</span><span class="p">,</span>
                                     <span class="s1">&#39;pipes&#39;</span><span class="p">,</span>
                                     <span class="s1">&#39;external_forces&#39;</span><span class="p">,</span>
                                     <span class="s1">&#39;internal_forces&#39;</span><span class="p">,</span>
@@ -158,7 +169,11 @@
     <span class="k">if</span> <span class="n">display</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">display</span> <span class="o">==</span> <span class="s1">&#39;exit&#39;</span><span class="p">:</span>
         <span class="k">break</span>
 
-    <span class="k">if</span> <span class="n">display</span> <span class="o">==</span> <span class="s1">&#39;pipes&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">display</span> <span class="o">==</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span>
+        <span class="n">formdiagram</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">draw_corresponding_elements</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">display</span> <span class="o">==</span> <span class="s1">&#39;pipes&#39;</span><span class="p">:</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
         <span class="n">formdiagram</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">draw_network_pipes</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
@@ -166,15 +181,15 @@
     <span class="k">elif</span> <span class="n">display</span> <span class="o">==</span> <span class="s1">&#39;compression_tension&#39;</span><span class="p">:</span>
         <span class="n">forcediagram</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">formdiagram</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="n">draw_compression_tension</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">)</span>
+        <span class="n">draw_compression_tension</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">,</span> <span class="n">gradient</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">display</span> <span class="o">==</span> <span class="s1">&#39;external_forces&#39;</span><span class="p">:</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
         <span class="n">formdiagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-        <span class="n">draw_network_external_forces</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+        <span class="n">draw_network_external_forces</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">,</span> <span class="n">gradient</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">display</span> <span class="o">==</span> <span class="s1">&#39;internal_forces&#39;</span><span class="p">:</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
         <span class="n">formdiagram</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">draw_network_internal_forces</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
 
@@ -223,12 +238,14 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../00_polyhedral_cell.html">Polyhedral cell</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../01_multi-cell_polyhedron.html">Multi-cell polyhedron</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="01_00_datastructure.html">Datastructure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_01_interpretation.html">Interpreting diagrams</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_10_constructor.html">Constructor</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_20_duality.html">Duality</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_30_reciprocation.html">Reciprocation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_40_planarisation.html">Planarisation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_50_arearisation.html">Arearisation</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="01_60_transformation.html">Transformations</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_60_modification.html">Modification</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_61_transformation.html">Transformation</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Visualisation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_80_unified_diagram.html">Unified diagram</a></li>
 </ul>
@@ -274,7 +291,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 19, 2019.
+                Last updated on Jun 25, 2019.
             
 
             

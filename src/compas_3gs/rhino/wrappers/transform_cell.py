@@ -2,24 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import math
 import compas
 
 from compas.geometry import add_vectors
-from compas.geometry import dot_vectors
 from compas.geometry import scale_vector
-from compas.geometry import length_vector
 from compas.geometry import normalize_vector
-from compas.geometry import centroid_polygon
 from compas.geometry import intersection_line_plane
 
 from compas.utilities import i_to_rgb
 
-from compas_rhino.utilities import draw_lines
-from compas_rhino.utilities import draw_labels
-
 from compas_rhino.helpers import mesh_select_face
-from compas_rhino.helpers import volmesh_select_face
 
 from compas_3gs.operations import cell_split_indet_face_vertices
 from compas_3gs.operations import cell_relocate_face
@@ -31,9 +23,7 @@ from compas_3gs.utilities import datastructure_centroid
 from compas_3gs.rhino import get_target_point
 
 try:
-    import System
     import Rhino
-    import scriptcontext as sc
     import rhinoscriptsyntax as rs
 
     from Rhino.Geometry import Point3d
@@ -42,13 +32,8 @@ try:
 
     from System.Drawing.Color import FromArgb
 
-    find_object    = sc.doc.Objects.Find
-    feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-    arrow_color    = FromArgb(255, 0, 79)
-    jl_blue        = FromArgb(0, 113, 188)
     black          = FromArgb(0, 0, 0)
     gray           = FromArgb(200, 200, 200)
-    green          = FromArgb(0, 255, 0)
     white          = FromArgb(255, 255, 255)
 
 except ImportError:
@@ -61,7 +46,7 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['rhino_cell_face_pull_interactive']
+__all__ = ['rhino_cell_face_pull']
 
 
 # ******************************************************************************
@@ -75,7 +60,7 @@ __all__ = ['rhino_cell_face_pull_interactive']
 # ******************************************************************************
 
 
-def rhino_cell_face_pull_interactive(cell):
+def rhino_cell_face_pull(cell):
 
     # --------------------------------------------------------------------------
     #  1. pick face
@@ -131,7 +116,7 @@ def rhino_cell_face_pull_interactive(cell):
             e.Display.DrawDottedLine(
                 Point3d(*u_xyz),
                 Point3d(*it),
-                feedback_color)
+                black)
 
         for vkey in cell.vertex:
             xyz = cell.vertex_coordinates(vkey)
@@ -149,7 +134,7 @@ def rhino_cell_face_pull_interactive(cell):
             sp    = Point3d(*cell.vertex_coordinates(vkey1))
             np    = Point3d(*cell.vertex_coordinates(vkey2))
 
-            e.Display.DrawDottedLine(sp, np, feedback_color)
+            e.Display.DrawDottedLine(sp, np, black)
 
         # get current face info ------------------------------------------------
         areas   = {}
@@ -165,7 +150,7 @@ def rhino_cell_face_pull_interactive(cell):
             normal = normals[fkey]
             value  = area / max(areas.values())
             color  = i_to_rgb(value)
-            color  = System.Drawing.Color.FromArgb(*color)
+            color  = FromArgb(*color)
 
             # draw vectors -----------------------------------------------------
             scale  = 0.25
@@ -209,127 +194,6 @@ def rhino_cell_face_pull_interactive(cell):
     cell_relocate_face(cell, face, gp, f_normal)
 
     cell.draw()
-
-
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-#
-#   helpers
-#
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-
-
-def _evaluate_trial_face_area(volmesh, hfkey, new_xyz):
-    hf_vkeys = volmesh.halfface_vertices(hfkey)
-    points   = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
-    normal   = volmesh.halfface_oriented_normal(hfkey)
-
-    edges    = {}
-    for u in hf_vkeys:
-        u_nbrs = volmesh.vertex_neighbours(u)
-        for v in u_nbrs:
-            if v not in hf_vkeys:
-                edges[u] = v
-    new_plane   = (new_xyz, volmesh.halfface_oriented_normal(hfkey))
-    new_pt_list = []
-    for u in hf_vkeys:
-        v     = edges[u]
-        u_xyz = volmesh.vertex_coordinates(u)
-        v_xyz = volmesh.vertex_coordinates(v)
-        line  = (u_xyz, v_xyz)
-        it    = intersection_line_plane(line, new_plane)
-        new_pt_list.append(it)
-
-    new_normal = polygon_normal_oriented(new_pt_list, unitized=False)
-    new_area = length_vector(new_normal)
-
-    sign = 1
-    if dot_vectors(normal, new_normal) < 0:
-        sign = -1
-
-    return new_area * sign
-
-
-def _get_move_direction(volmesh, hfkey):
-    normal     = volmesh.halfface_oriented_normal(hfkey)
-    center     = volmesh.halfface_center(hfkey)
-    area       = volmesh.halfface_oriented_area(hfkey)
-    new_center = add_vectors(center, normal)
-    new_area = _evaluate_trial_face_area(volmesh, hfkey, new_center)
-
-    print('new_area', new_area)
-    print('area', area)
-
-    if new_area > area:
-        move_dir = 1
-    if new_area < area:
-        move_dir = -1
-    if new_area == area:
-        raise ValueError('The face already has target area!')
-
-    print(move_dir)
-
-    return move_dir
-
-
-# def _cell_draw_current(volmesh, hfkey, center, iteration, color):
-
-#     lines = []
-
-#     name = 'iteration-{}'.format(iteration)
-#     rs.AddLayer('iteration-{}'.format(iteration))
-
-#     hf_vkeys = volmesh.halfface_vertices(hfkey)
-#     points   = [volmesh.vertex_coordinates(vkey) for vkey in hf_vkeys]
-#     normal   = polygon_normal_oriented(points)
-
-#     edges    = {}
-#     for u in hf_vkeys:
-#         u_nbrs = volmesh.vertex_neighbours(u)
-#         for v in u_nbrs:
-#             if v not in hf_vkeys:
-#                 edges[u] = v
-#     new_plane   = (center, volmesh.halfface_oriented_normal(hfkey))
-#     new_pt_list = []
-
-#     for u in hf_vkeys:
-#         v     = edges[u]
-#         u_xyz = volmesh.vertex_coordinates(u)
-#         v_xyz = volmesh.vertex_coordinates(v)
-#         line  = (u_xyz, v_xyz)
-#         it    = intersection_line_plane(line, new_plane)
-#         new_pt_list.append(it)
-
-#         lines.append({
-#             'start': u_xyz,
-#             'end'  : it,
-#             # 'arrow': 'end',
-#             'color': color,
-#             'layer': name,
-#             'name' : 'iteration.{}'.format(iteration)})
-
-#     new_normal = polygon_normal_oriented(new_pt_list, unitized=False)
-#     new_area = length_vector(new_normal)
-
-#     for i in range(-1, len(new_pt_list) - 1):
-#         a = new_pt_list[i]
-#         b = new_pt_list[i + 1]
-
-#         lines.append({
-#             'start': a,
-#             'end'  : b,
-#             # 'arrow': 'end',
-#             'color': color,
-#             'layer': name,
-#             'name' : 'iteration-{}.area-{}'.format(iteration, new_area)})
-
-#     new_normal = polygon_normal_oriented(new_pt_list, unitized=False)
-#     new_area = length_vector(new_normal)
-
-#     draw_lines(lines)
 
 
 # ******************************************************************************

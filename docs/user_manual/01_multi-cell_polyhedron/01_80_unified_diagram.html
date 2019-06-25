@@ -58,32 +58,32 @@
                         
 
                         <div class="section" id="unified-diagram">
-<span id="id1"></span><h1>Unified diagram</h1>
+<h1>Unified diagram</h1>
 <div class="section" id="background">
 <h2>Background</h2>
-<p>A <em>unified diagram</em> represents both the geometry and internal forces of a structure in a single diagram, thereby improving the legibility of reciprocal diagrams (<a class="footnote-reference brackets" href="#id9" id="id2">1</a>).
+<p>A <em>unified diagram</em> represents both the geometry and internal forces of a structure in a single diagram, thereby improving the legibility of reciprocal diagrams (<a class="footnote-reference brackets" href="#id8" id="id1">1</a>).
 In a unified diagram, the constituent polygons or cells of either the force diagram are scaled relative to the coordinates of the corresponding nodes in the form diagram, resulting in an “exploded view” of the force diagram.
 Each pair of neighbouring polygons of a 2D unified diagram are connected by interstitial rectangles, whereas each pair of neighbouring cells of a 3D unified diagram are connected by interstitial prisms.</p>
-<div class="figure" id="id14">
+<div class="figure" id="id13">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_UD_maxwell.jpg"><img alt="../../_images/compas_3gs_UD_maxwell.jpg" src="../../_images/compas_3gs_UD_maxwell.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text">Form diagram <span class="math notranslate nohighlight">\(G\)</span>, the reciprocal force diagram <span class="math notranslate nohighlight">\(G^\perp\)</span> and the unified diagram <span class="math notranslate nohighlight">\(G^{\perp}({\alpha})\)</span> for a simple truss (After <a class="footnote-reference brackets" href="#id10" id="id3">2</a>).</span></p>
+<p class="caption"><span class="caption-text">Form diagram <span class="math notranslate nohighlight">\(G\)</span>, the reciprocal force diagram <span class="math notranslate nohighlight">\(G^\perp\)</span> and the unified diagram <span class="math notranslate nohighlight">\(G^{\perp}({\alpha})\)</span> for a simple truss (After <a class="footnote-reference brackets" href="#id9" id="id2">2</a>).</span></p>
 </div>
 <hr class="docutils" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>In contrast to traditional, side-by-side representation of form and force diagrams, the unique visualisation method of unified diagrams provide new insights and perspectives.
-Unified diagrams are not only more discernible, but also provide an interesting visual representation of the volume of material required for a uniform stress design (<a class="footnote-reference brackets" href="#id10" id="id4">2</a>).
-Furthermore, the unified diagram reveals visual insights in relation to some of the most fundamental principles of structural engineering and analysis, such as: kinematics and mechanisms (<a class="footnote-reference brackets" href="#id9" id="id5">1</a>); virtual work and displacements (<a class="footnote-reference brackets" href="#id11" id="id6">3</a>); and stress-fields and strut-and-tie models (<a class="footnote-reference brackets" href="#id12" id="id7">4</a>, <a class="footnote-reference brackets" href="#id13" id="id8">5</a>).</p>
-<div class="figure" id="id15">
+Unified diagrams are not only more discernible, but also provide an interesting visual representation of the volume of material required for a uniform stress design (<a class="footnote-reference brackets" href="#id9" id="id3">2</a>).
+Furthermore, the unified diagram reveals visual insights in relation to some of the most fundamental principles of structural engineering and analysis, such as: kinematics and mechanisms (<a class="footnote-reference brackets" href="#id8" id="id4">1</a>); virtual work and displacements (<a class="footnote-reference brackets" href="#id10" id="id5">3</a>); and stress-fields and strut-and-tie models (<a class="footnote-reference brackets" href="#id11" id="id6">4</a>, <a class="footnote-reference brackets" href="#id12" id="id7">5</a>).</p>
+<div class="figure" id="id14">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_UD_trusses.gif"><img alt="../../_images/compas_3gs_UD_trusses.gif" src="../../_images/compas_3gs_UD_trusses.gif" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">Animation of unified diagrams for 2D trusses with varying scale factor <span class="math notranslate nohighlight">\(\alpha\)</span>.</span></p>
 </div>
-<div class="figure" id="id16">
+<div class="figure" id="id15">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_UD_scales.jpg"><img alt="../../_images/compas_3gs_UD_scales.jpg" src="../../_images/compas_3gs_UD_scales.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">A simple 3D truss and its unified diagram: <span class="math notranslate nohighlight">\(\Gamma\)</span> of the truss, which is equivalent to <span class="math notranslate nohighlight">\(\Gamma^{\perp}({\alpha}=1)\)</span>; and the <span class="math notranslate nohighlight">\(\Gamma^{\perp}({\alpha})\)</span> with varying scaling factor of <span class="math notranslate nohighlight">\(\alpha\)</span>.</span></p>
 </div>
-<div class="figure" id="id17">
+<div class="figure" id="id16">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_UD_mycotree.gif"><img alt="../../_images/compas_3gs_UD_mycotree.gif" src="../../_images/compas_3gs_UD_mycotree.gif" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">Animation of the unified diagram for a compression-only spatially branching structure.</span></p>
 </div>
@@ -98,7 +98,7 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Download</div><ul class="simple">
-<li><p><code class="xref download docutils literal notranslate"><span class="pre">volmesh_shells.3dm</span></code></p></li>
+<li><p><a class="reference download internal" href="../../_downloads/volmesh_shells.3dm" download=""><code class="xref download docutils literal notranslate"><span class="pre">volmesh_shells.3dm</span></code></a></p></li>
 </ul>
 </div>
 </div><div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -229,19 +229,19 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 <div class="section" id="references">
 <h2>References</h2>
 <dl class="footnote brackets">
-<dt class="label" id="id9"><span class="brackets">1</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id5">2</a>)</span></dt>
+<dt class="label" id="id8"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id4">2</a>)</span></dt>
 <dd><p>Zanni G. and Pennock G.R. (2009). <em>A unified graphical approach to the static analysis of axially loaded structures</em>. Mechanism and Machine Theory 44(12), 2187 – 2203.</p>
 </dd>
-<dt class="label" id="id10"><span class="brackets">2</span><span class="fn-backref">(<a href="#id3">1</a>,<a href="#id4">2</a>)</span></dt>
+<dt class="label" id="id9"><span class="brackets">2</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>)</span></dt>
 <dd><p>McRobie A. (2016). <em>Maxwell and rankine reciprocal diagrams via minkowski sums for two-dimensional and three-dimensional trusses under load</em>. International Journal of Space Structures 31(2-4), 203–216.</p>
 </dd>
-<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id6">3</a></span></dt>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id5">3</a></span></dt>
 <dd><p>McRobie A., Konstantatou M., Athanasopoulos G., and Hannigan L. (2017). <em>Graphic kinematics, visual virtual work and elastographics</em>. Royal Society Open Science 4(5).</p>
 </dd>
-<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id7">4</a></span></dt>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id6">4</a></span></dt>
 <dd><p>Schlaich M. and Anagnostou G. (1990). <em>Stress fields for nodes of strut-andtie models.</em> Journal of Structural Engineering 116 (1), 13–23.</p>
 </dd>
-<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id8">5</a></span></dt>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id7">5</a></span></dt>
 <dd><p>Muttoni A., Schwartz J., and Thürlimann B. (1997). <em>Design of Concrete Structures with Stress Fields</em>. Birkhäuser Basel.</p>
 </dd>
 </dl>
@@ -283,12 +283,14 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 <li class="nav-item"><a class="nav-link reference internal" href="../00_polyhedral_cell.html">Polyhedral cell</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../01_multi-cell_polyhedron.html">Multi-cell polyhedron</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="01_00_datastructure.html">Datastructure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_01_interpretation.html">Interpreting diagrams</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_10_constructor.html">Constructor</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_20_duality.html">Duality</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_30_reciprocation.html">Reciprocation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_40_planarisation.html">Planarisation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_50_arearisation.html">Arearisation</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="01_60_transformation.html">Transformations</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_60_modification.html">Modification</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_61_transformation.html">Transformation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_70_visualisation.html">Visualisation</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Unified diagram</a></li>
 </ul>
@@ -336,7 +338,7 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 
         <footer class="compas-footer">
             
-                Last updated on Jun 19, 2019.
+                Last updated on Jun 25, 2019.
             
 
             

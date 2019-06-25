@@ -35,6 +35,7 @@ If you already have :mod:`compas_3gs` installed and you want to upgrade it to th
 
     $ pip install compas-3gs --upgrade
 
+|
 
 ----
 
@@ -53,17 +54,9 @@ In order to install :mod:`compas_3gs` for Rhino, first activate the desired virt
 
     $ python -p compas_rhino install -p compas_3gs
 
-When running scripts using the Rhino Python Editor, this error is occasionally raised while Rhino tries to execute :mod:`compas` drawing functions, often when a new file is opened:
+Every time a new file is opened in Rhino, be sure to reset the Python Scritp Engine before running scripts.
 
 |
-
-.. image:: _images/ironpython_error.png
-   :width: 100 %
-
-|
-
-If such an error is raised, just reset the Python script engine, and the scripts should run without errors.
-
 
 ----
 

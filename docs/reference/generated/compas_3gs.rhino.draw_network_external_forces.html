@@ -61,7 +61,7 @@
 <h1>compas_3gs.rhino.draw_network_external_forces</h1>
 <dl class="function">
 <dt id="compas_3gs.rhino.draw_network_external_forces">
-<code class="descclassname">compas_3gs.rhino.</code><code class="descname">draw_network_external_forces</code><span class="sig-paren">(</span><em>volmesh</em>, <em>network</em>, <em>vkeys=[]</em>, <em>color=None</em>, <em>scale=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/rhino/display/drawing.html#draw_network_external_forces"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descclassname">compas_3gs.rhino.</code><code class="descname">draw_network_external_forces</code><span class="sig-paren">(</span><em>volmesh</em>, <em>network</em>, <em>vkeys=[]</em>, <em>gradient=True</em>, <em>scale=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/rhino/display/drawing.html#draw_network_external_forces"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draws the boundary forces on the form diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -69,8 +69,6 @@
 <li><p><strong>volmesh</strong> (<em>volmesh object</em>) – A volmesh datastructure representing a polyhedral force diagram.</p></li>
 <li><p><strong>network</strong> (<em>network object</em>) – A network datastructure representing a polyhedral form diagram.</p></li>
 <li><p><strong>vkeys</strong> (<em>list, optional</em>) – List of vertex keys to draw the boundary forces for.</p></li>
-<li><p><strong>gradient</strong> (<em>boolean, optional</em>) – Whether to display the boundary forces in a gradient color range. Default is green: (0, 255, 0).</p></li>
-<li><p><strong>show_value</strong> (<em>boolean, optional</em>) – Whether to display the magnitude of boundary force as a number.</p></li>
 <li><p><strong>scale</strong> (<em>float, optional</em>) – Drawing scale factor for the boundary forces.</p></li>
 </ul>
 </dd>
@@ -156,7 +154,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 19, 2019.
+                Last updated on Jun 25, 2019.
             
 
             

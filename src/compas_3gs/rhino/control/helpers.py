@@ -33,16 +33,19 @@ def get_initial_point(message='Point to move from?'):
     return ip
 
 
-def get_target_point(constraint, OnDynamicDraw, option='None', message='Point to move to?'):
+def get_target_point(constraint, OnDynamicDraw, option=None, message='Point to move to?'):
     gp = Rhino.Input.Custom.GetPoint()
     gp.SetCommandPrompt(message)
-    if option == 'None':
-        gp.Constrain(constraint)
-    if option != 'None':
+
+    gp.Constrain(constraint)
+
+    if option is not None:
         gp.Constrain(constraint, option)
+
     gp.DynamicDraw += OnDynamicDraw
     gp.Get()
     gp = gp.Point()
+
     return gp
 
 

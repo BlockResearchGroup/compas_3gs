@@ -37,7 +37,7 @@ If you find a bug, please help us solve it by [filing a report](https://github.c
 
 ## Contributing
 
-If you want to contribute, check out the [contribution guidelines](https://blockresearchgroup.github.io/compas_3gs/contribution.html).
+If you would like to contribute, check out the [contribution guidelines](https://blockresearchgroup.github.io/compas_3gs/contribution.html).
 All contributions and relevant publications will be fully credited under [Publications](https://compas-dev.github.io/compas_3gs/Publications.html).
 
 
@@ -48,4 +48,4 @@ The ``compas_3gs`` add-on package for **COMPAS** is [released under the MIT lice
 
 ## Contact
 
-For any additional suggestions or feedback, please conact the main contributor of ``compas_3gs``, Juney Lee, via email: juney.lee@arch.ethz.ch.
+For any additional suggestions or feedback, please conact the main contributors of ``compas_3gs``, Juney Lee (juney.lee@arch.ethz.ch) and Tom Van Mele (van.mele@arch.ethz.ch).

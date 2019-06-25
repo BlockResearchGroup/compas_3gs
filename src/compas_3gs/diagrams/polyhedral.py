@@ -33,6 +33,8 @@ class FormNetwork(Network3gs):
 
     """
 
+    __module__ = 'compas_3gs.diagrams'
+
     def __init__(self):
         super(FormNetwork, self).__init__()
 
@@ -67,6 +69,8 @@ class FormVolMesh(VolMesh3gs):
     """A polyhedral form diagram, represented as a volmesh object.
 
     """
+
+    __module__ = 'compas_3gs.diagrams'
 
     def __init__(self):
         super(FormVolMesh, self).__init__()
@@ -110,6 +114,8 @@ class ForceVolMesh(VolMesh3gs):
     """A polyhedral force diagram, represented as a volmesh object.
 
     """
+
+    __module__ = 'compas_3gs.diagrams'
 
     def __init__(self):
         super(ForceVolMesh, self).__init__()

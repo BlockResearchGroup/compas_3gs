@@ -76,10 +76,10 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
 
     References
     ----------
-    .. [1] Horn, B.K.P. (1984). *Extended Gaussian images*.
-    .. [2] Moni, S. (1990, June). *A closed-form solution for the reconstruction
+    - Horn, B.K.P. (1984). *Extended Gaussian images*.
+    - Moni, S. (1990, June). *A closed-form solution for the reconstruction
     of a convex polyhedron from its extended gaussian image.*
-    .. [3] Lee, J., T. Van Mele, and P. Block (2018). *Disjointed force polyhedra.*
+    - Lee, J., T. Van Mele, and P. Block (2018). *Disjointed force polyhedra.*
 
     """
     if len(vectordict) < 4:

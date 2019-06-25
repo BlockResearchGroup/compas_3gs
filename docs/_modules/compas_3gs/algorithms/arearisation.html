@@ -92,8 +92,8 @@
 
     <span class="n">cell_split_indet_face_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">)</span>
 
-    <span class="n">area</span>   <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
-    <span class="n">normal</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">area</span>   <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_oriented_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_oriented_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
     <span class="n">center</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -150,9 +150,9 @@
 
 <span class="k">def</span> <span class="nf">_get_move_direction</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
 
-    <span class="n">normal</span>     <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">normal</span>     <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_oriented_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">area</span>       <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_oriented_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
     <span class="n">center</span>     <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_center</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
-    <span class="n">area</span>       <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
     <span class="n">new_center</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
 
@@ -179,8 +179,8 @@
 
     <span class="n">cell_relocate_face</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">init_normal</span><span class="p">)</span>
 
-    <span class="n">new_area</span>   <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
-    <span class="n">new_normal</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">new_area</span>   <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_oriented_area</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="n">new_normal</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">face_oriented_normal</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">init_normal</span><span class="p">,</span> <span class="n">new_normal</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">new_area</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
@@ -265,7 +265,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 19, 2019.
+                Last updated on Jun 25, 2019.
             
 
             

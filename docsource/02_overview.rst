@@ -2,7 +2,7 @@
 Overview
 ********************************************************************************
 
-The online documentation of :mod:`compas_3gs` is organised as follows.
+The online documentation of ``compas_3gs`` is organised as follows.
 
 
 ----
@@ -16,6 +16,7 @@ The main motivations for the development of ``compas_3gs`` is also stated.
 In addition, the intended design workflow using the package is described.
 The basic nomenclature and terminology are also defined in this section.
 
+|
 
 ----
 
@@ -27,6 +28,7 @@ In this section, various examples are presented to demonstrate how the package c
 For each example, the underlying concepts of the computational methods used are visually expalined using diagrams.
 The full source code for each example is provided, as well as the relevant CAD files.
 
+|
 
 ----
 

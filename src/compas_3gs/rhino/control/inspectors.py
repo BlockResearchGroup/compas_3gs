@@ -14,7 +14,9 @@ from compas_rhino.conduits import Conduit
 from compas_rhino.ui import Mouse
 
 try:
+    from Rhino.Geometry import Line
     from Rhino.Geometry import Point3d
+
     from System.Drawing.Color import FromArgb
 
 except ImportError:
@@ -102,20 +104,20 @@ class VolmeshHalffaceInspector(Conduit):
     def __init__(self, volmesh, hfkeys=None, dependents=False, tol=1, **kwargs):
         super(VolmeshHalffaceInspector, self).__init__(**kwargs)
 
-        dotcolor       = (0, 0, 0)
-        textcolor      = (255, 255, 255)
-        edgecolor      = (0, 0, 0)
-        facecolor      = (255, 0, 0)
+        dotcolor        = (0, 0, 0)
+        textcolor       = (255, 255, 255)
+        edgecolor       = (255, 255, 0)
+        facecolor       = (255, 0, 0)
 
-        self.volmesh   = volmesh
-        self.hfkeys    = hfkeys
+        self.volmesh    = volmesh
+        self.hfkeys     = hfkeys
         self.dependents = dependents
-        self.tol       = tol
-        self.mouse     = Mouse()
-        self.dotcolor  = FromArgb(*dotcolor)
-        self.textcolor = FromArgb(*textcolor)
-        self.edgecolor = FromArgb(*edgecolor)
-        self.facecolor = FromArgb(*facecolor)
+        self.tol        = tol
+        self.mouse      = Mouse()
+        self.dotcolor   = FromArgb(*dotcolor)
+        self.textcolor  = FromArgb(*textcolor)
+        self.edgecolor  = FromArgb(*edgecolor)
+        self.facecolor  = FromArgb(*facecolor)
 
     def enable(self):
         self.mouse.Enabled = True
@@ -128,6 +130,7 @@ class VolmeshHalffaceInspector(Conduit):
     def DrawForeground(self, e):
         p1  = self.mouse.p1
         p2  = self.mouse.p2
+
         v12 = subtract_vectors(p2, p1)
         l12 = length_vector(v12)
 
@@ -135,7 +138,6 @@ class VolmeshHalffaceInspector(Conduit):
         if self.hfkeys:
             hfkeys = self.hfkeys
 
-        # force diagram
         for hfkey in hfkeys:
 
             p0  = self.volmesh.halfface_center(hfkey)
@@ -143,23 +145,22 @@ class VolmeshHalffaceInspector(Conduit):
             v02 = subtract_vectors(p2, p0)
             l   = length_vector(cross_vectors(v01, v02))
 
-            # dep_hfkeys = self.volmesh.volmesh_all_dependent_halffaces(hfkey)
-
             if l12 == 0.0 or (l / l12) < self.tol:
 
-                vkeys = self.volmesh.halfface_vertices(hfkey)
-                face_coordinates = [self.volmesh.vertex_coordinates(vkey) for vkey in vkeys]
+                face_coordinates = self.volmesh.halfface_coordinates(hfkey)
                 face_coordinates.append(face_coordinates[0])
                 polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
                 e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 6)
 
-                # if self.dependents:
-                #     for key in dep_hfkeys:
-                #         vkeys = self.volmesh.halfface_vertices(key)
-                #         face_coordinates = [self.volmesh.vertex_coordinates(vkey) for vkey in vkeys]
-                #         face_coordinates.append(face_coordinates[0])
-                #         polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
-                #         e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 4)
+                if self.dependents:
+
+                    d_hfkeys = self.volmesh.volmesh_edge_dependents_all(hfkey)
+
+                    for d_hfkey in d_hfkeys:
+                        face_coordinates = self.volmesh.halfface_coordinates(d_hfkey)
+                        face_coordinates.append(face_coordinates[0])
+                        polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]
+                        e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 2)
 
                 break
 

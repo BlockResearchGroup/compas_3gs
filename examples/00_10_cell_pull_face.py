@@ -8,7 +8,7 @@ from compas_rhino.helpers import mesh_from_surface
 
 from compas_3gs.diagrams import Cell
 
-from compas_3gs.rhino import rhino_cell_face_pull_interactive
+from compas_3gs.rhino import rhino_cell_face_pull
 
 try:
     import rhinoscriptsyntax as rs
@@ -37,4 +37,4 @@ cell.draw()
 # ------------------------------------------------------------------------------
 #   2. pull cell face
 # ------------------------------------------------------------------------------
-rhino_cell_face_pull_interactive(cell)
+rhino_cell_face_pull(cell)

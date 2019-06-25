@@ -1,6 +1,5 @@
 ********************************************************************************
-MycoTree node
+Constructor
 ********************************************************************************
 
-.. figure:: ../../_images/compas_3gs_datastructure_cell_network.jpg
-    :width: 100%
+Under construction...

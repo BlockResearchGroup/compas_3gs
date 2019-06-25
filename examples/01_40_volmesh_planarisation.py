@@ -19,6 +19,8 @@ from compas_3gs.rhino import VolmeshConduit
 from compas_3gs.utilities import compare_initial_current
 from compas_3gs.utilities import volmesh_face_flatness
 
+from compas_3gs.rhino import bake_cells_as_polysurfaces
+
 try:
     import rhinoscriptsyntax as rs
 
@@ -88,4 +90,6 @@ with conduit.enabled():
                       print_result_info=True)
 
 # update / redraw
-forcediagram.draw()
+# forcediagram.draw()
+
+bake_cells_as_polysurfaces(forcediagram)

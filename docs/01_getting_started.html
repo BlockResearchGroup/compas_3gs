@@ -77,6 +77,9 @@ With the desired virtual environment activated, do</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>$ pip install compas-3gs --upgrade
 </code></pre></div>
 </div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 </div>
 <hr class="docutils" />
 <div class="section" id="rhino">
@@ -89,15 +92,10 @@ For a more detailed information on how to install COMPAS and its packages for Rh
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>$ python -p compas_rhino install -p compas_3gs
 </code></pre></div>
 </div>
-<p>When running scripts using the Rhino Python Editor, this error is occasionally raised while Rhino tries to execute <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code> drawing functions, often when a new file is opened:</p>
+<p>Every time a new file is opened in Rhino, be sure to reset the Python Scritp Engine before running scripts.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<a class="reference internal image-reference" href="_images/ironpython_error.png"><img alt="_images/ironpython_error.png" src="_images/ironpython_error.png" style="width: 100%;" /></a>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>If such an error is raised, just reset the Python script engine, and the scripts should run without errors.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="first-steps">
@@ -182,7 +180,7 @@ For a more detailed information on how to install COMPAS and its packages for Rh
 
         <footer class="compas-footer">
             
-                Last updated on Jun 19, 2019.
+                Last updated on Jun 25, 2019.
             
 
             

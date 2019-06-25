@@ -131,6 +131,7 @@
            <span class="s1">&#39;draw_network_internal_forces&#39;</span><span class="p">,</span>
 
            <span class="s1">&#39;draw_volmesh_cells&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;draw_corresponding_elements&#39;</span><span class="p">,</span>
            <span class="s1">&#39;draw_compression_tension&#39;</span><span class="p">,</span>
            <span class="s1">&#39;draw_directed_hf_and_uv&#39;</span><span class="p">,</span>
            <span class="s1">&#39;draw_volmesh_face_normals&#39;</span><span class="p">,</span>
@@ -468,7 +469,7 @@
 <div class="viewcode-block" id="draw_network_external_forces"><a class="viewcode-back" href="../../../../reference/generated/compas_3gs.rhino.draw_network_external_forces.html#compas_3gs.rhino.draw_network_external_forces">[docs]</a><span class="k">def</span> <span class="nf">draw_network_external_forces</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span></div>
                                  <span class="n">network</span><span class="p">,</span>
                                  <span class="n">vkeys</span><span class="o">=</span><span class="p">[],</span>
-                                 <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                  <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draws the boundary forces on the form diagram.</span>
 
@@ -480,10 +481,6 @@
 <span class="sd">        A network datastructure representing a polyhedral form diagram.</span>
 <span class="sd">    vkeys : list, optional</span>
 <span class="sd">        List of vertex keys to draw the boundary forces for.</span>
-<span class="sd">    gradient : boolean, optional</span>
-<span class="sd">        Whether to display the boundary forces in a gradient color range. Default is green: (0, 255, 0).</span>
-<span class="sd">    show_value : boolean, optional</span>
-<span class="sd">        Whether to display the magnitude of boundary force as a number.</span>
 <span class="sd">    scale : float, optional</span>
 <span class="sd">        Drawing scale factor for the boundary forces.</span>
 
@@ -509,9 +506,12 @@
 
     <span class="c1"># 3. get hf areas and colors -----------------------------------------------</span>
     <span class="n">hf_areas</span>  <span class="o">=</span> <span class="p">{</span><span class="n">hfkey</span><span class="p">:</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_oriented_area</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">hfkey</span> <span class="ow">in</span> <span class="n">hfkeys</span><span class="p">}</span>
-    <span class="c1"># hf_c_dict = valuedict_to_colordict(hf_areas, color_scheme=i_to_green)</span>
 
-    <span class="n">colordict</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
+    <span class="n">hf_c_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">gradient</span><span class="p">:</span>
+        <span class="n">hf_c_dict</span> <span class="o">=</span> <span class="n">valuedict_to_colordict</span><span class="p">(</span><span class="n">hf_areas</span><span class="p">,</span> <span class="n">color_scheme</span><span class="o">=</span><span class="n">i_to_green</span><span class="p">)</span>
+
+    <span class="n">colordict</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">hf_c_dict</span><span class="p">,</span>
                                    <span class="n">hfkeys</span><span class="p">,</span>
                                    <span class="n">default</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
                                    <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
@@ -543,7 +543,7 @@
 
 <span class="k">def</span> <span class="nf">draw_network_internal_forces</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span>
                                  <span class="n">network</span><span class="p">,</span>
-                                 <span class="n">vkeys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">vkeys</span><span class="o">=</span><span class="p">[],</span>
                                  <span class="n">gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                  <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
 
@@ -631,6 +631,26 @@
 <span class="c1"># ******************************************************************************</span>
 
 
+<span class="k">def</span> <span class="nf">draw_corresponding_elements</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span>
+                                <span class="n">datastructure</span><span class="p">,</span>
+                                <span class="n">edges</span><span class="o">=</span><span class="p">[]):</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">datastructure</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
+
+    <span class="n">uv_c_dict</span> <span class="o">=</span> <span class="n">get_index_colordict</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">hf_c_dict</span> <span class="o">=</span> <span class="n">get_force_colors_hf</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">datastructure</span><span class="p">,</span> <span class="n">uv_c_dict</span><span class="o">=</span><span class="n">uv_c_dict</span><span class="p">)</span>
+
+    <span class="n">faces_to_draw</span> <span class="o">=</span> <span class="p">[</span><span class="n">pair_uv_to_hf</span><span class="p">(</span><span class="n">datastructure</span><span class="p">,</span> <span class="n">volmesh</span><span class="p">)[</span><span class="n">uv</span><span class="p">]</span> <span class="k">for</span> <span class="n">uv</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span>
+
+    <span class="n">volmesh</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">volmesh</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+    <span class="n">volmesh</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="n">faces_to_draw</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">hf_c_dict</span><span class="p">)</span>
+
+    <span class="n">datastructure</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">datastructure</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">uv_c_dict</span><span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">draw_compression_tension</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span>
                              <span class="n">network</span><span class="p">,</span>
                              <span class="n">gradient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -675,7 +695,7 @@
                             <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="draw_directed_hf_and_uv"><a class="viewcode-back" href="../../../../reference/generated/compas_3gs.rhino.draw_directed_uv_and_hf.html#compas_3gs.rhino.draw_directed_hf_and_uv">[docs]</a><span class="k">def</span> <span class="nf">draw_directed_hf_and_uv</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span></div>
+<div class="viewcode-block" id="draw_directed_hf_and_uv"><a class="viewcode-back" href="../../../../reference/generated/compas_3gs.rhino.draw_directed_hf_and_uv.html#compas_3gs.rhino.draw_directed_hf_and_uv">[docs]</a><span class="k">def</span> <span class="nf">draw_directed_hf_and_uv</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span></div>
                             <span class="n">datastructure</span><span class="p">,</span>
                             <span class="n">uv_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                             <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
@@ -746,8 +766,8 @@
             <span class="n">plane</span>  <span class="o">=</span> <span class="n">Plane</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">center</span><span class="p">)),</span> <span class="n">Vector3d</span><span class="p">(</span><span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">normal</span><span class="p">)))</span>
             <span class="n">intersection</span> <span class="o">=</span> <span class="n">brep</span><span class="o">.</span><span class="n">Trim</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">intersection</span><span class="p">:</span>
-                <span class="n">brep</span> <span class="o">=</span> <span class="n">brep</span><span class="o">.</span><span class="n">Trim</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">brep</span> <span class="o">=</span> <span class="n">brep</span><span class="o">.</span><span class="n">CapPlanarHoles</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
+                <span class="n">brep</span> <span class="o">=</span> <span class="n">brep</span><span class="o">.</span><span class="n">Trim</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">brep</span> <span class="o">=</span> <span class="n">brep</span><span class="o">.</span><span class="n">CapPlanarHoles</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">)</span>
         <span class="n">guid</span>  <span class="o">=</span> <span class="n">add_brep</span><span class="p">(</span><span class="n">brep</span><span class="p">)</span>
         <span class="n">obj</span>   <span class="o">=</span> <span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
         <span class="n">attr</span>  <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">Attributes</span>
@@ -846,7 +866,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 19, 2019.
+                Last updated on Jun 25, 2019.
             
 
             
