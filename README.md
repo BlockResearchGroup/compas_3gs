@@ -3,7 +3,7 @@
 ``compas_3gs`` is a 3D graphic statics add-on package for the **COMPAS** framework.
 
 
-## Getting Started
+## Installation
 
 Released versions of ``compas_3gs`` can be installed with *pip*.
 
