@@ -5,17 +5,10 @@
 
 ## Getting Started
 
-Released versions of :mod:`compas_3gs` can be installed with *pip*.
-With the desired virtual environment activated, do:
+Released versions of ``compas_3gs`` can be installed with *pip*.
 
-    $ pip install compas-3gs
-
-To verify your setup, start Python from the command line and run the following:
-
-```python
-
->>> import compas_3gs
-
+```bash
+$ pip install compas-3gs
 ```
 
 ## First Steps
