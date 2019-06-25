@@ -88,8 +88,10 @@ With the desired virtual environment activated, do</p>
 However, CAD software is still necessary in a computational design environment for visualising and interacting with datastructures and geometrical objects.
 For the examples presented in this documentation, <a class="reference external" href="https://www.rhino3d.com/">Rhinoceros</a> is chosen as the CAD software for user interaction and visualisation of script results.
 For a more detailed information on how to install COMPAS and its packages for Rhino, please refer to <a class="reference external" href="https://compas-dev.github.io/main/renvironments/rhino.html">Working in Rhino</a> page of the COMPAS documentation.</p>
-<p>In order to install <a class="reference internal" href="reference/compas_3gs.html#module-compas_3gs" title="compas_3gs"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_3gs</span></code></a> for Rhino, first activate the desired virtual environment, then do</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>$ python -p compas_rhino install -p compas_3gs
+<p>In order to install <a class="reference internal" href="reference/compas_3gs.html#module-compas_3gs" title="compas_3gs"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_3gs</span></code></a> for Rhino, do</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>$ python -m compas_rhino.uninstall
+$ python -m compas_rhino.install
+$ python -m compas_rhino.install -p compas_3gs
 </code></pre></div>
 </div>
 <p>Every time a new file is opened in Rhino, be sure to reset the Python Scritp Engine before running scripts.</p>

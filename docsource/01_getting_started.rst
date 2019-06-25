@@ -48,11 +48,13 @@ However, CAD software is still necessary in a computational design environment f
 For the examples presented in this documentation, `Rhinoceros <https://www.rhino3d.com/>`_ is chosen as the CAD software for user interaction and visualisation of script results.
 For a more detailed information on how to install COMPAS and its packages for Rhino, please refer to `Working in Rhino <https://compas-dev.github.io/main/renvironments/rhino.html>`_ page of the COMPAS documentation.
 
-In order to install :mod:`compas_3gs` for Rhino, first activate the desired virtual environment, then do
+In order to install :mod:`compas_3gs` for Rhino, do
 
 ::
 
-    $ python -p compas_rhino install -p compas_3gs
+    $ python -m compas_rhino.uninstall
+    $ python -m compas_rhino.install
+    $ python -m compas_rhino.install -p compas_3gs
 
 Every time a new file is opened in Rhino, be sure to reset the Python Scritp Engine before running scripts.
 
