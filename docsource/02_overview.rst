@@ -4,6 +4,7 @@ Overview
 
 The online documentation of ``compas_3gs`` is organised as follows.
 
+|
 
 ----
 

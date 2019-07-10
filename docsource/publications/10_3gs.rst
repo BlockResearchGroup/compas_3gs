@@ -30,8 +30,8 @@ Principle of the equilibrium of polyhedral frames
 
 ----
 
-Principle of the Equilibrium of Polyhedral Frames
-=================================================
+On the equilibrium of funicular polyhedral frames and convex polyhedral force diagrams
+================================================================================
 
 *by* Masoud Akbarzadeh, Tom Van Mele, Philippe Block
 
