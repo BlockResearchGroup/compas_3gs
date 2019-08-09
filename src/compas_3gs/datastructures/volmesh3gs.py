@@ -85,7 +85,6 @@ class VolMesh3gs(VolMesh):
             u = vertices[i]
             v = vertices[i + 1]
             w = vertices[i + 2]
-            print(u, v, w)
             del self.plane[u][v][w]
             if self.plane[w][v][u] is None:
                 del self.plane[w][v][u]
