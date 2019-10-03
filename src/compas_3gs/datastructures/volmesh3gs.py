@@ -85,7 +85,6 @@ class VolMesh3gs(VolMesh):
             u = vertices[i]
             v = vertices[i + 1]
             w = vertices[i + 2]
-            print(u, v, w)
             del self.plane[u][v][w]
             if self.plane[w][v][u] is None:
                 del self.plane[w][v][u]
@@ -180,7 +179,7 @@ class VolMesh3gs(VolMesh):
             normal = normalize_vector(cross_vectors(uv, vw))
         return normal
 
-    def halfface_dependent_halffaces(self, hfkey):
+    def halfface_edge_dependents(self, hfkey):
         dep_hfkeys = {}
         ckey       = self.halfface_cell(hfkey)
         hf_edges   = self.halfface_halfedges(hfkey)
@@ -195,31 +194,38 @@ class VolMesh3gs(VolMesh):
                 dep_hfkeys[dep_hfkey] = u
         return dep_hfkeys
 
-    def volmesh_all_dependent_halffaces(self, hfkey):
-        dependents = set(self.halfface_dependent_halffaces(hfkey).keys())
+    def volmesh_edge_dependents_all(self, hfkey):
+        dependents = set(self.halfface_edge_dependents(hfkey).keys())
         seen = set()
         i = 0
+
         while True:
+
             if i == 100:
                 break
+
             if i != 0 and len(seen) == 0:
                 break
+
             temp = []
             for dep_hfkey in dependents:
+
                 if dep_hfkey not in seen:
-                    hfkeys = self.halfface_dependent_halffaces(dep_hfkey).keys()
+                    hfkeys = self.halfface_edge_dependents(dep_hfkey).keys()
                     temp += hfkeys
                     seen.add(dep_hfkey)
+
             dependents.update(temp)
+
             i += 1
+
         if hfkey in dependents:
             dependents.remove(hfkey)
-        return list(dependents)
 
+        return list(dependents)
 
     def clean(self):
         pass
-
 
     # --------------------------------------------------------------------------
     # drawing

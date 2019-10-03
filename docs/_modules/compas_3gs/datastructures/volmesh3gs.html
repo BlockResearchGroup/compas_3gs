@@ -29,7 +29,7 @@
         <header class="navbar navbar-expand compas-navbar justify-content-between">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../../index.html">
-                    compas_3gs 0.1.0
+                    compas_3gs 0.2.0
                 </a>
             </div>
 
@@ -236,7 +236,7 @@
             <span class="n">normal</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">uv</span><span class="p">,</span> <span class="n">vw</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">normal</span>
 
-    <span class="k">def</span> <span class="nf">halfface_dependent_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_edge_dependents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">):</span>
         <span class="n">dep_hfkeys</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">ckey</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span>
         <span class="n">hf_edges</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_halfedges</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span>
@@ -251,31 +251,38 @@
                 <span class="n">dep_hfkeys</span><span class="p">[</span><span class="n">dep_hfkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span>
         <span class="k">return</span> <span class="n">dep_hfkeys</span>
 
-    <span class="k">def</span> <span class="nf">volmesh_all_dependent_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">):</span>
-        <span class="n">dependents</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_dependent_halffaces</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">def</span> <span class="nf">volmesh_edge_dependents_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">):</span>
+        <span class="n">dependents</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_edge_dependents</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">100</span><span class="p">:</span>
                 <span class="k">break</span>
+
             <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">break</span>
+
             <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">dep_hfkey</span> <span class="ow">in</span> <span class="n">dependents</span><span class="p">:</span>
+
                 <span class="k">if</span> <span class="n">dep_hfkey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
-                    <span class="n">hfkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_dependent_halffaces</span><span class="p">(</span><span class="n">dep_hfkey</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                    <span class="n">hfkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_edge_dependents</span><span class="p">(</span><span class="n">dep_hfkey</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
                     <span class="n">temp</span> <span class="o">+=</span> <span class="n">hfkeys</span>
                     <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dep_hfkey</span><span class="p">)</span>
+
             <span class="n">dependents</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
         <span class="k">if</span> <span class="n">hfkey</span> <span class="ow">in</span> <span class="n">dependents</span><span class="p">:</span>
             <span class="n">dependents</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">dependents</span><span class="p">)</span>
 
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">dependents</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
-
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># drawing</span>
@@ -363,15 +370,16 @@
                                 <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
                                 <ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="../../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../getting_started.html">Getting started</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../theoretical_background.html">Theoretical background</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../api_reference.html">API Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../contribution.html">How to contribute</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../00_introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../01_getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../02_overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../03_theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../04_user_manual.html">User manual</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../05_api_reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../06_license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../07_citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../08_publications.html">Publications</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../09_how_to_contribute.html">How to contribute</a></li>
 </ul>
 
 
@@ -398,7 +406,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 06, 2019.
+                Last updated on Jul 10, 2019.
             
 
             
@@ -411,7 +419,7 @@
             <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.1.0',
+    VERSION           : '0.2.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

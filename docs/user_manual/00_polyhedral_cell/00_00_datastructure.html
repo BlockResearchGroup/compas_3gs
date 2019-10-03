@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>compas_3gs</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="" />
+        <meta name="description" content="" />
+
+        <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+
+        <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
+        
+            <link rel="next" title="Interpreting diagrams" href="00_01_interpretation.html" />
+        
+        
+        
+            <link rel="prev" title="Polyhedral cell" href="../00_polyhedral_cell.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand compas-navbar justify-content-between">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../../index.html">
+                    compas_3gs 0.2.0
+                </a>
+            </div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://compas-dev.github.io">
+                        <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
+                    </a>
+                </li>
+            </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <!-- main content -->
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+
+                        <div class="section" id="datastructure">
+<h1>Datastructure</h1>
+<p>A polyhedral cell which is typically used for the representation of a global
+force polyhedron <span class="math notranslate nohighlight">\(\Lambda^{\perp}\)</span>, is modelled as a <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.
+The initial form diagram <span class="math notranslate nohighlight">\(\Lambda\)</span>, which contains the information of the magnitudes and locations of the external forces, are typically a disconnected set of vectors or “lines” in space.
+These vectors can be moved to one location such that the heads of the
+vectors are coincident.
+The consolidated vectors then can be modelled as a <code class="docutils literal notranslate"><span class="pre">network</span></code>, where each external force is represented with an edge.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/04_datastructures_01_cell.jpg"><img alt="../../_images/04_datastructures_01_cell.jpg" src="../../_images/04_datastructures_01_cell.jpg" style="width: 100%;" /></a>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<hr class="docutils" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The topology and geometry of a polyhedral cell can be represented by a <code class="docutils literal notranslate"><span class="pre">mesh</span></code>, which is based on a halfedge datastructure that stores incidenceinformation of vertices, edges and faces.
+Each edge of a mesh is decomposed into two halfedges with opposite directions.
+Each halfedge stores the information of the face that it belongs to.
+Using the halfedge directions and incident face information, various data of the mesh can be accessed and traversed.
+The data of a <code class="docutils literal notranslate"><span class="pre">mesh</span></code> thus consists of vertices, faces and halfedges.</p>
+<p>For a detiled overview of the <code class="docutils literal notranslate"><span class="pre">mesh</span></code> datastructure, please refer to this page <a class="reference external" href="https://compas-dev.github.io/main/tutorials/meshes.html">page</a> of the online documentation of COMPAS.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/compas_3gs_datastructure_mesh.jpg"><img alt="../../_images/compas_3gs_datastructure_mesh.jpg" src="../../_images/compas_3gs_datastructure_mesh.jpg" style="width: 100%;" /></a>
+</div>
+</div>
+
+                        
+                    
+
+                </main>
+
+                <!-- site navigation sidebar -->
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../00_introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../01_getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../02_overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../03_theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../04_user_manual.html">User manual</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../00_polyhedral_cell.html">Polyhedral cell</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Datastructure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="00_01_interpretation.html">Interpreting diagrams</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="00_10_cell_pull_face.html">Constrained manipulation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="00_11_cell_arearise_face.html">Arearisation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="00_20_cell_constructor.html">Constructor</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../01_multi-cell_polyhedron.html">Multi-cell polyhedron</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../02_cell_network.html">Cell network</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../03_materialisation.html">Materialisation</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../05_api_reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../06_license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../07_citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../08_publications.html">Publications</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../09_how_to_contribute.html">How to contribute</a></li>
+</ul>
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+
+                <!-- table of contents of main content -->
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Datastructure</a></li>
+</ul>
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="compas-footer">
+            
+                Last updated on Jul 10, 2019.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
+            
+        </footer>
+
+        
+
+            <script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.2.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+};
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+            <script src="../../_static/underscore.js"></script>
+            <script src="../../_static/doctools.js"></script>
+            <script src="../../_static/js/searchtools_.js"></script>
+            <script src="../../_static/js/prism.js"></script>
+
+            <script>
+$(document).ready(function() {
+
+    // $(".language-default pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-bash pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-python pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-c pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-cpp pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-fortran pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-markdown pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-rest pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    anchors.add();
+});
+            </script>
+
+        
+    </body>
+</html>

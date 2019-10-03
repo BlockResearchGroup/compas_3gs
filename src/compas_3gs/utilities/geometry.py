@@ -362,7 +362,8 @@ def cell_face_flatness(cell):
 
     Parameters
     ----------
-    cell : mesh object
+    cell : Mesh
+        Cell as a mesh object.
 
     Returns
     -------
@@ -388,7 +389,10 @@ def cell_face_areaness(cell, target_areas):
 
     Parameters
     ----------
-    cell : mesh object
+    cell : Mesh
+        Cell as a mesh object.
+    target_areas : dict
+        Dictionary of target areas.
 
     Returns
     -------

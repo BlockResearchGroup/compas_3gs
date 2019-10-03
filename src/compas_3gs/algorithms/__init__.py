@@ -56,6 +56,17 @@ Planarisation
     volmesh_planarise
 
 
+Arearisation
+============
+
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    cell_arearise_face
+
+
 ____
 
 
@@ -75,8 +86,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from .arearisation import *
 from .duality import *
 from .egi import *
+from .other import *
 from .planarisation import *
 from .reciprocation import *
 from .unifieddiagram import *

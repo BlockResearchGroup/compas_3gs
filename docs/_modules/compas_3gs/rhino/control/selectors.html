@@ -29,7 +29,7 @@
         <header class="navbar navbar-expand compas-navbar justify-content-between">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../../../index.html">
-                    compas_3gs 0.1.0
+                    compas_3gs 0.2.0
                 </a>
             </div>
 
@@ -75,8 +75,7 @@
 <span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;juney.lee@arch.ethz.ch&#39;</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CellSelector&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;select_boundary_halffaces&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CellSelector&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="CellSelector"><a class="viewcode-back" href="../../../../reference/generated/compas_3gs.rhino.CellSelector.html#compas_3gs.rhino.CellSelector">[docs]</a><span class="k">class</span> <span class="nc">CellSelector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -111,22 +110,6 @@
                             <span class="n">key</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
                             <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">keys</span></div>
-
-
-<div class="viewcode-block" id="select_boundary_halffaces"><a class="viewcode-back" href="../../../../reference/generated/compas_3gs.rhino.select_boundary_halffaces.html#compas_3gs.rhino.select_boundary_halffaces">[docs]</a><span class="k">def</span> <span class="nf">select_boundary_halffaces</span><span class="p">(</span><span class="n">volmesh</span><span class="p">):</span>
-
-    <span class="n">hfkeys</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">halffaces_on_boundary</span><span class="p">()</span>
-
-    <span class="n">volmesh</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-    <span class="n">volmesh</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-    <span class="n">volmesh</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">fkeys</span><span class="o">=</span><span class="n">hfkeys</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="n">hfkey</span> <span class="o">=</span> <span class="n">volmesh_select_faces</span><span class="p">(</span><span class="n">volmesh</span><span class="p">)</span>
-
-    <span class="n">volmesh</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">hfkey</span></div>
 
 
 <span class="c1"># ******************************************************************************</span>
@@ -170,15 +153,16 @@
                                 <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
                                 <ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../getting_started.html">Getting started</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../theoretical_background.html">Theoretical background</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../api_reference.html">API Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../license.html">License</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../citing.html">Citing</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../contribution.html">How to contribute</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../00_introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../01_getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../02_overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../03_theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../04_user_manual.html">User manual</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../05_api_reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../06_license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../07_citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../08_publications.html">Publications</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../09_how_to_contribute.html">How to contribute</a></li>
 </ul>
 
 
@@ -205,7 +189,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 06, 2019.
+                Last updated on Jul 10, 2019.
             
 
             
@@ -218,7 +202,7 @@
             <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.1.0',
+    VERSION           : '0.2.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

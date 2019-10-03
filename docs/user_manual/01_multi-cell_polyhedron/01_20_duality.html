@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>compas_3gs</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="" />
+        <meta name="description" content="" />
+
+        <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+
+        <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
+        
+            <link rel="next" title="Reciprocation" href="01_30_reciprocation.html" />
+        
+        
+        
+            <link rel="prev" title="Constructor" href="01_10_constructor.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand compas-navbar justify-content-between">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../../index.html">
+                    compas_3gs 0.2.0
+                </a>
+            </div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://compas-dev.github.io">
+                        <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
+                    </a>
+                </li>
+            </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <!-- main content -->
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+
+                        <div class="section" id="duality">
+<h1>Duality</h1>
+<p>James Clerk Maxwell used the principle of duality in projective geometry to express the
+reciprocal relationship between the form and force diagrams in the context
+of graphic statics (<a class="footnote-reference brackets" href="#id7" id="id1">1</a>).
+The 2D form and force diagrams have a dual relationship with each other; the points and lines of one diagram is mapped to the lines and points of the other.
+The mapping of one geometric object in one diagram to a different geometric object in the other diagram can be explained by Maxwell’s observation that 2D form and force diagrams are projections of plane-faced three-dimensional polyhedrons (<a class="footnote-reference brackets" href="#id8" id="id2">2</a>, <a class="footnote-reference brackets" href="#id9" id="id3">3</a>).</p>
+<p>The same relationship is true for any <span class="math notranslate nohighlight">\(n\)</span>-dimensional reciprocal form and
+force diagrams: n-dimensional reciprocal diagrams are projections of <span class="math notranslate nohighlight">\((n+1)\)</span>-dimensional stress functions (<a class="footnote-reference brackets" href="#id10" id="id4">4</a>, <a class="footnote-reference brackets" href="#id11" id="id5">5</a>)
+Based on this principle, three-dimensional form and force diagrams can be defined as projections of four-dimensional stress functions.
+The duality relationships between the elements of <span class="math notranslate nohighlight">\(n\)</span>-dimensional structures and the <span class="math notranslate nohighlight">\((n+1)\)</span>-dimension of the corresponding stress functions are summarised in the figure below.</p>
+<div class="figure" id="id13">
+<a class="reference internal image-reference" href="../../_images/04_duality_relationships_simple.jpg"><img alt="../../_images/04_duality_relationships_simple.jpg" src="../../_images/04_duality_relationships_simple.jpg" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text">Summary of the duality relationships between the elements of <span class="math notranslate nohighlight">\(n\)</span>-dimensional structures and the <span class="math notranslate nohighlight">\((n+1)\)</span>-dimension of the corresponding stress functions (force diagrams) (after Figure 1 of <a class="footnote-reference brackets" href="#id12" id="id6">6</a>).</span></p>
+</div>
+<hr class="docutils" />
+<div class="section" id="face-dual">
+<h2>Face dual</h2>
+<p>The reciprocal diagrams of 2D structures have a “face dual” relationship, where the vertices one diagram corresponds to the faces of the other diagram.
+“Face dual” is equivalent to the <a class="reference external" href="https://compas-dev.github.io/main/api/generated/compas.datastructures.mesh_dual.html#compas.datastructures.mesh_dual">compas.datastructures.mesh_dual</a>.
+The steps of the “face_dual” constructor is graphically summarised below.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/dual_mesh.jpg"><img alt="../../_images/dual_mesh.jpg" src="../../_images/dual_mesh.jpg" style="width: 100%;" /></a>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="cell-dual">
+<h2>Cell dual</h2>
+<p>The reciprocal diagrams of 3D structures have a “cell dual” relationship, where the vertices of one diagram corresponds to the cells of the other diagram.
+A polyhedral cell and the corresponding form diagram have a cell dual relationship; the polyhedral cell and its faces correspond to a vertex and edges of the form diagram, respectively.
+The “cell dual” constructor is implemented as <a class="reference internal" href="../../reference/generated/compas_3gs.algorithms.volmesh_dual_volmesh.html#compas_3gs.algorithms.volmesh_dual_volmesh" title="compas_3gs.algorithms.volmesh_dual_volmesh"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas_3gs.algorithms.volmesh_dual_volmesh()</span></code></a>.
+The steps of the “cell_dual” constructor is graphically summarised below.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/dual_volmesh.jpg"><img alt="../../_images/dual_volmesh.jpg" src="../../_images/dual_volmesh.jpg" style="width: 100%;" /></a>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="from-volmesh-to-volmesh">
+<h2>From volmesh to volmesh</h2>
+<p>Using the “cell dual” relationship, a dual volmesh can be constructed from an existing volmesh.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/02_20_duality_volmesh_volmesh_screenshot_2.jpg"><img alt="../../_images/02_20_duality_volmesh_volmesh_screenshot_2.jpg" src="../../_images/02_20_duality_volmesh_volmesh_screenshot_2.jpg" style="width: 100%;" /></a>
+</div>
+<div class="card bg-light">
+<div class="card-body">
+<div class="card-title">Downloads</div><ul class="simple">
+<li><p><a class="reference download internal" href="../../_downloads/volmesh_cubes_4x4.3dm" download=""><code class="xref download docutils literal notranslate"><span class="pre">volmesh_cubes_4x4.3dm</span></code></a></p></li>
+</ul>
+</div>
+</div><div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
+
+<span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="kn">import</span> <span class="n">volmesh_from_polysurfaces</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.diagrams</span> <span class="kn">import</span> <span class="n">ForceVolMesh</span>
+<span class="kn">from</span> <span class="nn">compas_3gs.diagrams</span> <span class="kn">import</span> <span class="n">FormVolMesh</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.algorithms</span> <span class="kn">import</span> <span class="n">volmesh_dual_volmesh</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">draw_cell_labels</span>
+<span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">draw_directed_hf_and_uv</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="kn">import</span> <span class="n">get_index_colordict</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">&#39;Juney Lee&#39;</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2019, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;juney.lee@arch.ethz.ch&#39;</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1"># 1. make vomesh from rhino polysurfaces (force diagram)</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="n">layer</span> <span class="o">=</span> <span class="s1">&#39;volmesh&#39;</span>
+
+<span class="n">guids</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="s2">&quot;select polysurfaces&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">polysurface</span><span class="p">)</span>
+<span class="n">rs</span><span class="o">.</span><span class="n">HideObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
+
+<span class="n">volmesh</span>       <span class="o">=</span> <span class="n">ForceVolMesh</span><span class="p">()</span>
+<span class="n">volmesh</span>       <span class="o">=</span> <span class="n">volmesh_from_polysurfaces</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
+<span class="n">volmesh</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
+<span class="n">volmesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1"># 2. make dual volmesh (form diagram)</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="n">dual_layer</span>   <span class="o">=</span> <span class="s1">&#39;dual_volmesh&#39;</span>
+
+<span class="n">dual_volmesh</span> <span class="o">=</span> <span class="n">volmesh_dual_volmesh</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">FormVolMesh</span><span class="p">)</span>
+<span class="n">dual_volmesh</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">dual_layer</span>
+<span class="n">dual_volmesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dual_layer</span>
+
+<span class="c1"># move dual_network</span>
+<span class="n">offset</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">x_move</span> <span class="o">=</span> <span class="n">dual_volmesh</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">offset</span>
+<span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">dual_volmesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
+    <span class="n">dual_volmesh</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">vkey</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x_move</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1"># 3. visualise diagrams</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+<span class="c1"># draw volmesh cell labels and dual_volmesh vertex labels</span>
+<span class="n">cell_c_dict</span> <span class="o">=</span> <span class="n">get_index_colordict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">volmesh</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+<span class="c1"># draw volmesh</span>
+<span class="n">volmesh</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<span class="n">draw_cell_labels</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cell_c_dict</span><span class="p">)</span>
+
+<span class="c1"># draw dual volmesh</span>
+<span class="n">dual_volmesh</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">dual_volmesh</span><span class="o">.</span><span class="n">draw_vertex_labels</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">cell_c_dict</span><span class="p">)</span>
+
+<span class="c1"># draw directed volmesh halffaces and directed dual_volmesh edges</span>
+<span class="n">uv_c_dict</span> <span class="o">=</span> <span class="n">get_index_colordict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dual_volmesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span>
+
+<span class="n">face_normal_scale</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">draw_directed_hf_and_uv</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span>
+                        <span class="n">dual_volmesh</span><span class="p">,</span>
+                        <span class="n">uv_color</span><span class="o">=</span><span class="n">uv_c_dict</span><span class="p">,</span>
+                        <span class="n">scale</span><span class="o">=</span><span class="n">face_normal_scale</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An input <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> with a minimum of four cells is required for the construction of a dual <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> (a tetrahedron). In another words, in order for a volmesh to have a dual volmesh, the volmesh needs to have an interior vertex.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="from-volmesh-to-network">
+<h2>From volmesh to network</h2>
+<p>If the initial volmesh is interpreted as a polyhedral force diagram, then the edges of the dual_volmesh then represents the polyhedral form diagram.
+The topological information (vertices, edges, faces and cells) of the dual_volmesh is intrinsically embedded in the volmesh.
+From a practical point of view, the edges of the form diagram are typically of interest to the designer.
+Therefore, not all information need to be constantly duplicated during the design process.
+The corresponding form diagram of a polyhedral force diagram modelled as a volmesh, can equivalently be represented by a network.
+When needed, additional topological information about the network can be retrieved from the volmesh.
+For example, the face and cell information of the network can be computed from the topological information of the corresponding interior vertex of the volmesh.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="figure">
+<a class="reference internal image-reference" href="../../_images/02_20_duality_volmesh_network_screenshot.jpg"><img alt="../../_images/02_20_duality_volmesh_network_screenshot.jpg" src="../../_images/02_20_duality_volmesh_network_screenshot.jpg" style="width: 100%;" /></a>
+</div>
+<div class="card bg-light">
+<div class="card-body">
+<div class="card-title">Downloads</div><ul class="simple">
+<li><p><a class="reference download internal" href="../../_downloads/volmesh_cubes_4x4.3dm" download=""><code class="xref download docutils literal notranslate"><span class="pre">volmesh_cubes_4x4.3dm</span></code></a></p></li>
+</ul>
+</div>
+</div><div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
+
+<span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="kn">import</span> <span class="n">volmesh_from_polysurfaces</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.diagrams</span> <span class="kn">import</span> <span class="n">ForceVolMesh</span>
+<span class="kn">from</span> <span class="nn">compas_3gs.diagrams</span> <span class="kn">import</span> <span class="n">FormNetwork</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.algorithms</span> <span class="kn">import</span> <span class="n">volmesh_dual_network</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">draw_directed_hf_and_uv</span>
+<span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">draw_cell_labels</span>
+
+<span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="kn">import</span> <span class="n">get_index_colordict</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
+
+
+<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">&#39;Juney Lee&#39;</span>
+<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2019, BLOCK Research Group - ETH Zurich&#39;</span>
+<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;juney.lee@arch.ethz.ch&#39;</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1"># 1. make vomesh from rhino polysurfaces (force diagram)</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="n">layer</span> <span class="o">=</span> <span class="s1">&#39;volmesh&#39;</span>
+
+<span class="n">guids</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="s2">&quot;select polysurfaces&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">polysurface</span><span class="p">)</span>
+<span class="n">rs</span><span class="o">.</span><span class="n">HideObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
+
+<span class="n">volmesh</span>       <span class="o">=</span> <span class="n">ForceVolMesh</span><span class="p">()</span>
+<span class="n">volmesh</span>       <span class="o">=</span> <span class="n">volmesh_from_polysurfaces</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
+<span class="n">volmesh</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
+<span class="n">volmesh</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1"># 2. make dual network (form diagram)</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="n">dual_layer</span>   <span class="o">=</span> <span class="s1">&#39;dual_network&#39;</span>
+
+<span class="n">dual_network</span> <span class="o">=</span> <span class="n">volmesh_dual_network</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">FormNetwork</span><span class="p">)</span>
+<span class="n">dual_network</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">dual_layer</span>
+<span class="n">dual_network</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dual_layer</span>
+
+<span class="c1"># move dual_network</span>
+<span class="n">offset</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">x_move</span> <span class="o">=</span> <span class="n">dual_network</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">offset</span>
+<span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">dual_network</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
+    <span class="n">dual_network</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">vkey</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x_move</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1"># 3. visualise diagrams</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+<span class="c1"># draw directed volmesh halffaces and directed dual_volmesh edges</span>
+<span class="n">uv_c_dict</span> <span class="o">=</span> <span class="n">get_index_colordict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dual_network</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span>
+
+<span class="n">face_normal_scale</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">volmesh</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+<span class="n">draw_directed_hf_and_uv</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span>
+                        <span class="n">dual_network</span><span class="p">,</span>
+                        <span class="n">uv_color</span><span class="o">=</span><span class="n">uv_c_dict</span><span class="p">,</span>
+                        <span class="n">scale</span><span class="o">=</span><span class="n">face_normal_scale</span><span class="p">)</span>
+
+
+<span class="c1"># draw volmesh cell labels and dual network vertex labels</span>
+<span class="n">cell_c_dict</span> <span class="o">=</span> <span class="n">get_index_colordict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">volmesh</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+<span class="n">draw_cell_labels</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cell_c_dict</span><span class="p">)</span>
+<span class="n">dual_network</span><span class="o">.</span><span class="n">draw_vertex_labels</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">cell_c_dict</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="references">
+<h2>References</h2>
+<dl class="footnote brackets">
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Harman, P. M. (2001). <em>The Natural Philosophy of James Clerk Maxwell</em>. Cambridge University Press.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Maxwell, J. C. (1864). On reciprocal figures and diagrams of forces. <em>Philosophical Magazine Series 4</em> 27(182), 250–261.</p>
+</dd>
+<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Maxwell, J. C. (1870). On reciprocal figures, frames and diagrams of forces. <em>Transactions of the Royal Society of Edinburgh</em> 26(1), 1–40.</p>
+</dd>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id4">4</a></span></dt>
+<dd><p>Crapo, H. andW. Whiteley (1994). Spaces of stresses, projections and parallel drawings for spherical polyhedra. <em>Beiträge zur Algebra und Geometrie</em> 35(2), 259–281.</p>
+</dd>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id5">5</a></span></dt>
+<dd><p>Konstantatou, M. and A. McRobie (2016). Reciprocal constructions using conic sections poncelet duality. In <em>Proceedings of the 2016 International Association for Shell and Spatial Structures (IASS) Symposium</em>, Tokyo, Japan.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id6">6</a></span></dt>
+<dd><p>Konstantatou, M. and A. Mcrobie (2018). Graphic statics for optimal trusses geometry-based structural optimisation. In <em>Proceedings of the 2018 International Association for Shell and Spatial Structures (IASS) Symposium</em>, Boston, USA.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+                        
+                    
+
+                </main>
+
+                <!-- site navigation sidebar -->
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../00_introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../01_getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../02_overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../03_theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../04_user_manual.html">User manual</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../00_polyhedral_cell.html">Polyhedral cell</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../01_multi-cell_polyhedron.html">Multi-cell polyhedron</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="01_00_datastructure.html">Datastructure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_01_interpretation.html">Interpreting diagrams</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_10_constructor.html">Constructor</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Duality</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_30_reciprocation.html">Reciprocation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_40_planarisation.html">Planarisation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_50_arearisation.html">Arearisation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_60_modification.html">Modification</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_61_transformation.html">Transformation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_70_visualisation.html">Visualisation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_80_unified_diagram.html">Unified diagram</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../02_cell_network.html">Cell network</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../03_materialisation.html">Materialisation</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../05_api_reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../06_license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../07_citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../08_publications.html">Publications</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../09_how_to_contribute.html">How to contribute</a></li>
+</ul>
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+
+                <!-- table of contents of main content -->
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Duality</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#face-dual">Face dual</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#cell-dual">Cell dual</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#from-volmesh-to-volmesh">From volmesh to volmesh</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#from-volmesh-to-network">From volmesh to network</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="compas-footer">
+            
+                Last updated on Jul 10, 2019.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
+            
+        </footer>
+
+        
+
+            <script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.2.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+};
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+            <script src="../../_static/underscore.js"></script>
+            <script src="../../_static/doctools.js"></script>
+            <script src="../../_static/js/searchtools_.js"></script>
+            <script src="../../_static/js/prism.js"></script>
+
+            <script>
+$(document).ready(function() {
+
+    // $(".language-default pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-bash pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-python pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-c pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-cpp pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-fortran pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-markdown pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-rest pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    anchors.add();
+});
+            </script>
+
+        
+    </body>
+</html>

@@ -29,7 +29,7 @@
         <header class="navbar navbar-expand compas-navbar justify-content-between">
             <div class="navbar-header">
                 <a class="navbar-brand" href="../../../../index.html">
-                    compas_3gs 0.1.0
+                    compas_3gs 0.2.0
                 </a>
             </div>
 
@@ -70,7 +70,9 @@
 <span class="kn">from</span> <span class="nn">compas_rhino.ui</span> <span class="k">import</span> <span class="n">Mouse</span>
 
 <span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="k">import</span> <span class="n">Line</span>
     <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="k">import</span> <span class="n">Point3d</span>
+
     <span class="kn">from</span> <span class="nn">System.Drawing.Color</span> <span class="k">import</span> <span class="n">FromArgb</span>
 
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -158,20 +160,20 @@
 <div class="viewcode-block" id="VolmeshHalffaceInspector.__init__"><a class="viewcode-back" href="../../../../reference/generated/compas_3gs.rhino.VolmeshHalffaceInspector.html#compas_3gs.rhino.VolmeshHalffaceInspector.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volmesh</span><span class="p">,</span> <span class="n">hfkeys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dependents</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">VolmeshHalffaceInspector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="n">dotcolor</span>       <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">textcolor</span>      <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
-        <span class="n">edgecolor</span>      <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">facecolor</span>      <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">dotcolor</span>        <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">textcolor</span>       <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="n">edgecolor</span>       <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">facecolor</span>       <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span>   <span class="o">=</span> <span class="n">volmesh</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hfkeys</span>    <span class="o">=</span> <span class="n">hfkeys</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span>    <span class="o">=</span> <span class="n">volmesh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hfkeys</span>     <span class="o">=</span> <span class="n">hfkeys</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dependents</span> <span class="o">=</span> <span class="n">dependents</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span>       <span class="o">=</span> <span class="n">tol</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mouse</span>     <span class="o">=</span> <span class="n">Mouse</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dotcolor</span>  <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">dotcolor</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">textcolor</span> <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">textcolor</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">edgecolor</span> <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">edgecolor</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">facecolor</span> <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">facecolor</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span>        <span class="o">=</span> <span class="n">tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mouse</span>      <span class="o">=</span> <span class="n">Mouse</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dotcolor</span>   <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">dotcolor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textcolor</span>  <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">textcolor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edgecolor</span>  <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">edgecolor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facecolor</span>  <span class="o">=</span> <span class="n">FromArgb</span><span class="p">(</span><span class="o">*</span><span class="n">facecolor</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">Enabled</span> <span class="o">=</span> <span class="kc">True</span>
@@ -184,6 +186,7 @@
     <span class="k">def</span> <span class="nf">DrawForeground</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
         <span class="n">p1</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">p1</span>
         <span class="n">p2</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">p2</span>
+
         <span class="n">v12</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p1</span><span class="p">)</span>
         <span class="n">l12</span> <span class="o">=</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">v12</span><span class="p">)</span>
 
@@ -191,7 +194,6 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hfkeys</span><span class="p">:</span>
             <span class="n">hfkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hfkeys</span>
 
-        <span class="c1"># force diagram</span>
         <span class="k">for</span> <span class="n">hfkey</span> <span class="ow">in</span> <span class="n">hfkeys</span><span class="p">:</span>
 
             <span class="n">p0</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_center</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span>
@@ -199,23 +201,22 @@
             <span class="n">v02</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p0</span><span class="p">)</span>
             <span class="n">l</span>   <span class="o">=</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">v01</span><span class="p">,</span> <span class="n">v02</span><span class="p">))</span>
 
-            <span class="c1"># dep_hfkeys = self.volmesh.volmesh_all_dependent_halffaces(hfkey)</span>
-
             <span class="k">if</span> <span class="n">l12</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">l</span> <span class="o">/</span> <span class="n">l12</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">:</span>
 
-                <span class="n">vkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span>
-                <span class="n">face_coordinates</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">vkeys</span><span class="p">]</span>
+                <span class="n">face_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span>
                 <span class="n">face_coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">polygon_xyz</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">face_coordinates</span><span class="p">]</span>
                 <span class="n">e</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">DrawPolyline</span><span class="p">(</span><span class="n">polygon_xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgecolor</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 
-                <span class="c1"># if self.dependents:</span>
-                <span class="c1">#     for key in dep_hfkeys:</span>
-                <span class="c1">#         vkeys = self.volmesh.halfface_vertices(key)</span>
-                <span class="c1">#         face_coordinates = [self.volmesh.vertex_coordinates(vkey) for vkey in vkeys]</span>
-                <span class="c1">#         face_coordinates.append(face_coordinates[0])</span>
-                <span class="c1">#         polygon_xyz = [Point3d(*xyz) for xyz in face_coordinates]</span>
-                <span class="c1">#         e.Display.DrawPolyline(polygon_xyz, self.edgecolor, 4)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dependents</span><span class="p">:</span>
+
+                    <span class="n">d_hfkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">volmesh_edge_dependents_all</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span>
+
+                    <span class="k">for</span> <span class="n">d_hfkey</span> <span class="ow">in</span> <span class="n">d_hfkeys</span><span class="p">:</span>
+                        <span class="n">face_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">d_hfkey</span><span class="p">)</span>
+                        <span class="n">face_coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="n">polygon_xyz</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">face_coordinates</span><span class="p">]</span>
+                        <span class="n">e</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">DrawPolyline</span><span class="p">(</span><span class="n">polygon_xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgecolor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
                 <span class="k">break</span></div>
 
@@ -424,15 +425,16 @@
                                 <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
                                 <ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../introduction.html">Introduction</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../getting_started.html">Getting started</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../overview.html">Overview</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../theoretical_background.html">Theoretical background</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../examples.html">Examples</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../api_reference.html">API Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../license.html">License</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../citing.html">Citing</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../../contribution.html">How to contribute</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../00_introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../01_getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../02_overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../03_theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../04_user_manual.html">User manual</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../05_api_reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../06_license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../07_citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../08_publications.html">Publications</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../09_how_to_contribute.html">How to contribute</a></li>
 </ul>
 
 
@@ -459,7 +461,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 06, 2019.
+                Last updated on Jul 10, 2019.
             
 
             
@@ -472,7 +474,7 @@
             <script type="text/javascript">
 var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.1.0',
+    VERSION           : '0.2.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

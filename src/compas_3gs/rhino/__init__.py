@@ -21,7 +21,7 @@ Various functions for selecting compas_3gs objects in Rhino.
     :nosignatures:
 
     CellSelector
-    select_boundary_halffaces
+
 
 Modifiers
 ---------

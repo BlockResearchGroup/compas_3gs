@@ -19,8 +19,7 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['CellSelector',
-           'select_boundary_halffaces']
+__all__ = ['CellSelector']
 
 
 class CellSelector(object):
@@ -55,22 +54,6 @@ class CellSelector(object):
                             key = ast.literal_eval(key)
                             keys.append(key)
         return keys
-
-
-def select_boundary_halffaces(volmesh):
-
-    hfkeys = volmesh.halffaces_on_boundary()
-
-    volmesh.clear()
-    volmesh.draw_edges()
-    volmesh.draw_faces(fkeys=hfkeys)
-    rs.EnableRedraw(True)
-
-    hfkey = volmesh_select_faces(volmesh)
-
-    volmesh.draw()
-
-    return hfkey
 
 
 # ******************************************************************************
