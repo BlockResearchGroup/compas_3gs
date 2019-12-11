@@ -11,21 +11,21 @@ import sphinx_compas_theme
 
 # -- General configuration ------------------------------------------------
 
-project          = 'compas_3gs'
-copyright        = '2018, Block Research Group - ETH Zurich'
-author           = 'Juney Lee'
-release          = 'release = '0.2.1''
-version          = '.'.join(release.split('.')[0:2])
+project = 'compas_3gs'
+copyright = '2018, Block Research Group - ETH Zurich'
+author = 'Juney Lee'
+release = '0.2.1'
+version = '.'.join(release.split('.')[0:2])
 
-master_doc       = 'index'
-source_suffix    = ['.rst', ]
-templates_path   = ['_templates', ]
+master_doc = 'index'
+source_suffix = ['.rst', ]
+templates_path = ['_templates', ]
 exclude_patterns = []
 
-pygments_style   = 'sphinx'
-show_authors     = True
+pygments_style = 'sphinx'
+show_authors = True
 add_module_names = True
-language         = None
+language = None
 
 
 # -- Extension configuration ------------------------------------------------
@@ -94,9 +94,9 @@ intersphinx_mapping = {'python': ('https://docs.python.org/', None)}
 html_theme = 'compaspkg'
 html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
-    "package_name"    : "compas_3gs",
-    "package_title"   : project,
-    "package_version" : release,
+    "package_name": "compas_3gs",
+    "package_title": project,
+    "package_version": release,
 }
 html_context = {}
 html_static_path = []

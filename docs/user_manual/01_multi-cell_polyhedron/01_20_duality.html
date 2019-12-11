@@ -1,63 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>compas_3gs</title>
+<head>
+    <title>compas_3gs</title>
 
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <meta name="author" content="" />
+    <meta name="description" content="" />
+
+    <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" /> -->
+    <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
     
-        <meta name="author" content="" />
-        <meta name="description" content="" />
+        <link rel="next" title="Reciprocation" href="01_30_reciprocation.html" />
+    
+    
+    
+        <link rel="prev" title="Constructor" href="01_10_constructor.html" />
+    
 
-        <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+</head>
 
-        <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" />
-        <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+<body data-spy="scroll" data-target="#compas-localnav">
 
-        
-            <link rel="next" title="Reciprocation" href="01_30_reciprocation.html" />
-        
-        
-        
-            <link rel="prev" title="Constructor" href="01_10_constructor.html" />
-        
+    <nav class="navbar navbar-expand compas-navbar">
+        <a class="navbar-brand" href="/">
+            <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
+        </a>
 
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="../../index.html">compas_3gs</a></li>
+        </ul>
 
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a class="nav-link" target="_blank" href="">Github</a></li>
+            <li class="nav-item"><a class="nav-link" target="_blank" href="https://compas-dev.github.io">COMPAS framework</a></li>
+        </ul>
+    </nav>    
 
-        <header class="navbar navbar-expand compas-navbar justify-content-between">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="../../index.html">
-                    compas_3gs 0.2.0
-                </a>
-            </div>
+    <div class="container-fluid">
+        <div class="row flex-xl-nowrap">
 
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://compas-dev.github.io">
-                        <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
-                    </a>
-                </li>
-            </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <!-- main content -->
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+            <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+                <div class="container">
+                
 
                     
 
-                        
-
-                        <div class="section" id="duality">
+                    <div class="section" id="duality">
 <h1>Duality</h1>
 <p>James Clerk Maxwell used the principle of duality in projective geometry to express the
 reciprocal relationship between the form and force diagrams in the context
@@ -68,7 +67,7 @@ The mapping of one geometric object in one diagram to a different geometric obje
 force diagrams: n-dimensional reciprocal diagrams are projections of <span class="math notranslate nohighlight">\((n+1)\)</span>-dimensional stress functions (<a class="footnote-reference brackets" href="#id10" id="id4">4</a>, <a class="footnote-reference brackets" href="#id11" id="id5">5</a>)
 Based on this principle, three-dimensional form and force diagrams can be defined as projections of four-dimensional stress functions.
 The duality relationships between the elements of <span class="math notranslate nohighlight">\(n\)</span>-dimensional structures and the <span class="math notranslate nohighlight">\((n+1)\)</span>-dimension of the corresponding stress functions are summarised in the figure below.</p>
-<div class="figure" id="id13">
+<div class="figure align-default" id="id13">
 <a class="reference internal image-reference" href="../../_images/04_duality_relationships_simple.jpg"><img alt="../../_images/04_duality_relationships_simple.jpg" src="../../_images/04_duality_relationships_simple.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">Summary of the duality relationships between the elements of <span class="math notranslate nohighlight">\(n\)</span>-dimensional structures and the <span class="math notranslate nohighlight">\((n+1)\)</span>-dimension of the corresponding stress functions (force diagrams) (after Figure 1 of <a class="footnote-reference brackets" href="#id12" id="id6">6</a>).</span></p>
 </div>
@@ -81,7 +80,7 @@ The steps of the “face_dual” constructor is graphically summarised below.</p
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure">
+<div class="figure align-default">
 <a class="reference internal image-reference" href="../../_images/dual_mesh.jpg"><img alt="../../_images/dual_mesh.jpg" src="../../_images/dual_mesh.jpg" style="width: 100%;" /></a>
 </div>
 </div>
@@ -95,7 +94,7 @@ The steps of the “cell_dual” constructor is graphically summarised below.</p
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure">
+<div class="figure align-default">
 <a class="reference internal image-reference" href="../../_images/dual_volmesh.jpg"><img alt="../../_images/dual_volmesh.jpg" src="../../_images/dual_volmesh.jpg" style="width: 100%;" /></a>
 </div>
 </div>
@@ -103,13 +102,13 @@ The steps of the “cell_dual” constructor is graphically summarised below.</p
 <div class="section" id="from-volmesh-to-volmesh">
 <h2>From volmesh to volmesh</h2>
 <p>Using the “cell dual” relationship, a dual volmesh can be constructed from an existing volmesh.</p>
-<div class="figure">
+<div class="figure align-default">
 <a class="reference internal image-reference" href="../../_images/02_20_duality_volmesh_volmesh_screenshot_2.jpg"><img alt="../../_images/02_20_duality_volmesh_volmesh_screenshot_2.jpg" src="../../_images/02_20_duality_volmesh_volmesh_screenshot_2.jpg" style="width: 100%;" /></a>
 </div>
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Downloads</div><ul class="simple">
-<li><p><a class="reference download internal" href="../../_downloads/volmesh_cubes_4x4.3dm" download=""><code class="xref download docutils literal notranslate"><span class="pre">volmesh_cubes_4x4.3dm</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/e3d7dce0d0f38803ed7592fee382d2a0/volmesh_cubes_4x4.3dm"><code class="xref download docutils literal notranslate"><span class="pre">volmesh_cubes_4x4.3dm</span></code></a></p></li>
 </ul>
 </div>
 </div><div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -215,13 +214,13 @@ For example, the face and cell information of the network can be computed from t
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure">
+<div class="figure align-default">
 <a class="reference internal image-reference" href="../../_images/02_20_duality_volmesh_network_screenshot.jpg"><img alt="../../_images/02_20_duality_volmesh_network_screenshot.jpg" src="../../_images/02_20_duality_volmesh_network_screenshot.jpg" style="width: 100%;" /></a>
 </div>
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Downloads</div><ul class="simple">
-<li><p><a class="reference download internal" href="../../_downloads/volmesh_cubes_4x4.3dm" download=""><code class="xref download docutils literal notranslate"><span class="pre">volmesh_cubes_4x4.3dm</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/e3d7dce0d0f38803ed7592fee382d2a0/volmesh_cubes_4x4.3dm"><code class="xref download docutils literal notranslate"><span class="pre">volmesh_cubes_4x4.3dm</span></code></a></p></li>
 </ul>
 </div>
 </div><div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -333,33 +332,33 @@ For example, the face and cell information of the network can be computed from t
 </div>
 </div>
 
-                        
+                    
+                
+                </div>
+            </main>
+
+            <!-- site navigation sidebar -->
+
+            <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                <div class="navbar-light">
+
+                    <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                        <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                        <input type="hidden" name="check_keywords" value="yes" />
+                        <input type="hidden" name="area" value="default" />
+
+                        <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </form>
+
+                    
                     
 
-                </main>
+                        <div class="navbar-expand-md">
+                            <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
-                <!-- site navigation sidebar -->
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column active">
+                            <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../00_introduction.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../01_getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../02_overview.html">Overview</a></li>
@@ -392,21 +391,21 @@ For example, the face and cell information of the network can be computed from t
 </ul>
 
 
-                                </div>
                             </div>
-
-                        
-
-                    </div>
-                </div>
-
-                <!-- table of contents of main content -->
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+                        </div>
 
                     
 
-                    <ul class="nav flex-column" id="compas-localnav">
+                </div>
+            </div>
+
+            <!-- table of contents of main content -->
+            
+            <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                
+
+                <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Duality</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#face-dual">Face dual</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#cell-dual">Cell dual</a></li>
@@ -418,86 +417,60 @@ For example, the face and cell information of the network can be computed from t
 </ul>
 
 
-                </div>
-
             </div>
+
         </div>
+    </div>
 
-        <footer class="compas-footer">
+    <footer class="bg-dark pb-5">
+        <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Jul 10, 2019.
+                Last updated on Dec 11, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
             
-        </footer>
+        </div>
+    </footer>
 
-        
+    
+        <script type="text/javascript">
+            var DOCUMENTATION_OPTIONS = {
+            URL_ROOT          : '',
+            VERSION           : '0.2.1',
+            COLLAPSE_INDEX    : false,
+            FILE_SUFFIX       : '.html',
+            HAS_SOURCE        : 'false',
+            SOURCELINK_SUFFIX : '.txt'
+            };
+        </script>
 
-            <script type="text/javascript">
-var DOCUMENTATION_OPTIONS = {
-    URL_ROOT          : '',
-    VERSION           : '0.2.0',
-    COLLAPSE_INDEX    : false,
-    FILE_SUFFIX       : '.html',
-    HAS_SOURCE        : 'false',
-    SOURCELINK_SUFFIX : '.txt'
-};
-            </script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js"></script>
 
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/js/searchtools_.js"></script>
+        <!-- <script src="../../_static/js/prism.js"></script> -->
 
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+        <script>
+        $(document).ready(function() {
+        $(".language-default code").addClass("python");
+        $(".language-python code").addClass("python");
+        $(".language-bash code").addClass("bash");
+        $(".language-cpp code").addClass("cpp");
+        $(".language-json code").addClass("json");
+        $(".language-none code").addClass("plaintext");
 
-            <script src="../../_static/underscore.js"></script>
-            <script src="../../_static/doctools.js"></script>
-            <script src="../../_static/js/searchtools_.js"></script>
-            <script src="../../_static/js/prism.js"></script>
-
-            <script>
-$(document).ready(function() {
-
-    // $(".language-default pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-bash pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-python pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-c pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-cpp pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-fortran pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-markdown pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-rest pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    anchors.add();
-});
-            </script>
-
-        
-    </body>
+        hljs.initHighlighting();
+        anchors.add();
+        });
+        </script>
+    
+</body>
 </html>

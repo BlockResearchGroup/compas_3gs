@@ -1,77 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>compas_3gs</title>
+<head>
+    <title>compas_3gs</title>
 
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <meta name="author" content="" />
+    <meta name="description" content="" />
+
+    <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" /> -->
+    <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
     
-        <meta name="author" content="" />
-        <meta name="description" content="" />
+        <link rel="next" title="compas_3gs.diagrams.ForceVolMesh" href="compas_3gs.diagrams.ForceVolMesh.html" />
+    
+    
+    
+        <link rel="prev" title="compas_3gs.diagrams.EGI" href="compas_3gs.diagrams.EGI.html" />
+    
 
-        <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+</head>
 
-        <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" />
-        <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+<body data-spy="scroll" data-target="#compas-localnav">
 
-        
-            <link rel="next" title="compas_3gs.diagrams.ForceVolMesh" href="compas_3gs.diagrams.ForceVolMesh.html" />
-        
-        
-        
-            <link rel="prev" title="compas_3gs.diagrams.EGI" href="compas_3gs.diagrams.EGI.html" />
-        
+    <nav class="navbar navbar-expand compas-navbar">
+        <a class="navbar-brand" href="/">
+            <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
+        </a>
 
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="../../index.html">compas_3gs</a></li>
+        </ul>
 
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a class="nav-link" target="_blank" href="">Github</a></li>
+            <li class="nav-item"><a class="nav-link" target="_blank" href="https://compas-dev.github.io">COMPAS framework</a></li>
+        </ul>
+    </nav>    
 
-        <header class="navbar navbar-expand compas-navbar justify-content-between">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="../../index.html">
-                    compas_3gs 0.2.0
-                </a>
-            </div>
+    <div class="container-fluid">
+        <div class="row flex-xl-nowrap">
 
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://compas-dev.github.io">
-                        <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
-                    </a>
-                </li>
-            </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <!-- main content -->
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+            <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+                <div class="container">
+                
 
                     
 
-                        
-
-                        <div class="section" id="compas-3gs-diagrams-cell">
+                    <div class="section" id="compas-3gs-diagrams-cell">
 <h1>compas_3gs.diagrams.Cell</h1>
 <dl class="class">
 <dt id="compas_3gs.diagrams.Cell">
-<em class="property">class </em><code class="descclassname">compas_3gs.diagrams.</code><code class="descname">Cell</code><a class="reference internal" href="../../_modules/compas_3gs/diagrams/cell.html#Cell"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_3gs.diagrams.</code><code class="sig-name descname">Cell</code><a class="reference internal" href="../../_modules/compas_3gs/diagrams/cell.html#Cell"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_3gs.datastructures.mesh3gs.Mesh3gs</span></code></p>
 <p>A single polyhedral cell, represented as a mesh object.</p>
 <dl class="method">
 <dt id="compas_3gs.diagrams.Cell.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/diagrams/cell.html#Cell.__init__"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/diagrams/cell.html#Cell.__init__"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -113,7 +112,7 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexdict</span></code>()</p></td>
 <td><p>Clear only the vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>([cls])</p></td>
 <td><p>Make an independent copy of the mesh object.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_edges</span></code>()</p></td>
@@ -188,7 +187,7 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code>([data])</p></td>
 <td><p>Iterate over the edges of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges_on_boundary</span></code>([oriented])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges_on_boundary</span></code>([chained])</p></td>
 <td><p>Find the edges on the boundary.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges_where</span></code>(conditions[, data])</p></td>
@@ -248,107 +247,119 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_name</span></code>(fkey)</p></td>
 <td><p>Get the name of a face.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_neighbors</span></code>(fkey)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_neighborhood</span></code>(key[, ring])</p></td>
+<td><p>Return the faces in the neighborhood of a face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_neighbors</span></code>(fkey)</p></td>
 <td><p>Return the neighbors of a face across its edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_normal</span></code>(fkey[, unitized])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_normal</span></code>(fkey[, unitized])</p></td>
 <td><p>Compute the normal of a face.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_skewness</span></code>(fkey)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_skewness</span></code>(fkey)</p></td>
 <td><p>Face skewness as the maximum absolute angular deviation from the ideal polygon angle.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_ancestor</span></code>(fkey, key)</p></td>
-<td><p>Return the vertex before the specified vertex in a specific face.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_ancestor</span></code>(fkey, key[, n])</p></td>
+<td><p>Return the n-th vertex before the specified vertex in a specific face.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_descendant</span></code>(fkey, key)</p></td>
-<td><p>Return the vertex after the specified vertex in a specific face.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_descendant</span></code>(fkey, key[, n])</p></td>
+<td><p>Return the n-th vertex after the specified vertex in a specific face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertices</span></code>(fkey)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertices</span></code>(fkey)</p></td>
 <td><p>The vertices of a face.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces</span></code>([data])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces</span></code>([data])</p></td>
 <td><p>Iterate over the faces of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_on_boundary</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_on_boundary</span></code>()</p></td>
 <td><p>Find the faces on the boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_where</span></code>(conditions[, data])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_where</span></code>(conditions[, data])</p></td>
 <td><p>Get faces for which a certain condition or set of conditions is true.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_where_predicate</span></code>(predicate[, data])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_where_predicate</span></code>(predicate[, data])</p></td>
 <td><p>Get faces for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code>(data)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code>(data)</p></td>
 <td><p>Construct a datastructure from structured data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code>(filepath)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code>(filepath)</p></td>
 <td><p>Construct a datastructure from structured data contained in a json file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_lines</span></code>(lines[, delete_boundary_face, …])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_lines</span></code>(lines[, delete_boundary_face, …])</p></td>
 <td><p>Construct a mesh object from a list of lines described by start and end point coordinates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code>(filepath[, precision])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code>(filepath[, precision])</p></td>
 <td><p>Construct a mesh object from the data described in an OBJ file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_off</span></code>(filepath)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_off</span></code>(filepath)</p></td>
 <td><p>Construct a mesh object from the data described in a STL file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pickle</span></code>(filepath)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pickle</span></code>(filepath)</p></td>
 <td><p>Construct a datastructure from serialised data contained in a pickle file.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ply</span></code>(filepath)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ply</span></code>(filepath)</p></td>
 <td><p>Construct a mesh object from the data described in a PLY file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code>(points[, boundary, holes])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code>(points[, boundary, holes])</p></td>
 <td><p>Construct a mesh from a delaunay triangulation of a set of points.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code>(polygons[, precision])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code>(polygons[, precision])</p></td>
 <td><p>Construct a mesh from a series of polygons.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polyhedron</span></code>(f)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polyhedron</span></code>(f)</p></td>
 <td><p>Construct a mesh from a platonic solid.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_stl</span></code>(filepath)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polylines</span></code>(boundary_polylines, …)</p></td>
+<td><p>Construct mesh from polylines.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_shape</span></code>(shape, **kwargs)</p></td>
+<td><p>Construct a mesh from a primitive shape.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_stl</span></code>(filepath)</p></td>
 <td><p>Construct a mesh object from the data described in a STL file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code>(vertices, faces)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code>(vertices, faces)</p></td>
 <td><p>Construct a mesh object from a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">genus</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">genus</span></code>()</p></td>
 <td><p>Calculate the genus.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_edge</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_edge</span></code>()</p></td>
 <td><p>Get the identifier of a random edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face</span></code>()</p></td>
 <td><p>Get the identifier of a random face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face_vertex</span></code>(fkey)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face_vertex</span></code>(fkey)</p></td>
 <td><p>Get the identifier of a random vertex of a specific face.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertex</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertex</span></code>()</p></td>
 <td><p>Get the identifier of a random vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertices</span></code>(n[, exclude_leaves])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertices</span></code>(n[, exclude_leaves])</p></td>
 <td><p>Get a list of identifiers of a random set of n vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_attribute</span></code>(key, name[, value])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_attribute</span></code>(key, name[, value])</p></td>
 <td><p>Get the value of a named attribute of one edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_attributes</span></code>(key, names[, values])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_attributes</span></code>(key, names[, values])</p></td>
 <td><p>Get the value of a named attribute of one edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_attribute</span></code>(name[, value, keys])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_attribute</span></code>(name[, value, keys])</p></td>
 <td><p>Get the value of a named attribute of multiple edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_attributes</span></code>(names[, values, keys])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_attributes</span></code>(names[, values, keys])</p></td>
 <td><p>Get the values of multiple named attribute of multiple edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_attribute</span></code>(key, name[, value])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_attribute</span></code>(key, name[, value])</p></td>
 <td><p>Get the value of a named attribute of one face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_attributes</span></code>(key, names[, values])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_attributes</span></code>(key, names[, values])</p></td>
 <td><p>Get the value of a named attribute of one face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_attributes_all</span></code>(key[, data])</p></td>
+<td><p>Get all attributes of one face.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_attribute</span></code>(keys, name[, value])</p></td>
 <td><p>Get the value of a named attribute of multiple faces.</p></td>
@@ -356,101 +367,101 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_attributes</span></code>(keys, names[, values])</p></td>
 <td><p>Get the values of multiple named attribute of multiple faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_attribute</span></code>(key, name[, value])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_attributes_all</span></code>(keys[, data])</p></td>
+<td><p>Get all attributes of multiple faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_attribute</span></code>(key, name[, value])</p></td>
 <td><p>Get the value of a named attribute of one vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_attributes</span></code>(key, names[, values])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_attributes</span></code>(key, names[, values])</p></td>
 <td><p>Get the value of a named attribute of one vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_attribute</span></code>(name[, value, keys])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_attribute</span></code>(name[, value, keys])</p></td>
 <td><p>Get the value of a named attribute of multiple vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_attributes</span></code>(names[, values, keys])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_attributes</span></code>(names[, values, keys])</p></td>
 <td><p>Get the values of multiple named attribute of multiple vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_key</span></code>([precision])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_key</span></code>([precision])</p></td>
 <td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code>(u, v[, directed])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code>(u, v[, directed])</p></td>
 <td><p>Verify that the mesh contains a specific edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code>(key)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code>(key)</p></td>
 <td><p>Verify that a vertex is in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code>()</p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_uv</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_uv</span></code>()</p></td>
 <td><p>Returns a dictionary that maps edges in a list to the corresponding vertex key pairs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code>(fkey[, key, xyz, return_fkeys])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code>(fkey[, key, xyz, return_fkeys])</p></td>
 <td><p>Insert a vertex in the specified face.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code>(u, v)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code>(u, v)</p></td>
 <td><p>Verify that an edge is on the boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_empty</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_empty</span></code>()</p></td>
 <td><p>Boolean whether the mesh is empty.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_on_boundary</span></code>(key)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_on_boundary</span></code>(key)</p></td>
 <td><p>Verify that a face is on a boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_manifold</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_manifold</span></code>()</p></td>
 <td><p>Verify that the mesh is manifold.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_orientable</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_orientable</span></code>()</p></td>
 <td><p>Verify that the mesh is orientable.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_quadmesh</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_quadmesh</span></code>()</p></td>
 <td><p>Verify that the mesh consists of only quads.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_regular</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_regular</span></code>()</p></td>
 <td><p>Verify that the mesh is regular.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_trimesh</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_trimesh</span></code>()</p></td>
 <td><p>Verify that the mesh consists of only triangles.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code>()</p></td>
 <td><p>Verify that the mesh is valid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_connected</span></code>(key)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_connected</span></code>(key)</p></td>
 <td><p>Verify that a vertex is connected.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code>(key)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code>(key)</p></td>
 <td><p>Verify that a vertex is on a boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_gkey</span></code>([precision])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_gkey</span></code>([precision])</p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code>()</p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding index in a vertex list or array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">leaves</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">leaves</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(filepath)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(filepath)</p></td>
 <td><p>Load serialised mesh data from a pickle file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">loads</span></code>(s)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">loads</span></code>(s)</p></td>
 <td><p>Load serialised mesh data from a pickle string.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_split_face</span></code>(fkey, u, v)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_split_face</span></code>(fkey, u, v)</p></td>
 <td><p>Split a face by inserting an edge between two specified vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal</span></code>()</p></td>
 <td><p>Calculate the average mesh normal.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code>()</p></td>
 <td><p>Count the number of edges in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code>()</p></td>
 <td><p>Count the number of faces in the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code>()</p></td>
 <td><p>Count the number of vertices in the mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code>([vertexcolor, edgecolor, facecolor, …])</p></td>
-<td><p>Plot a 2D representation of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_edge_attribute</span></code>(key, name, value)</p></td>
 <td><p>Set one attribute of one edge.</p></td>
@@ -581,7 +592,7 @@
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -591,10 +602,10 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p><em>dict</em> – A data dict representing the mesh data structure for serialisation.</p></td>
+<td><p>A data dict representing the mesh data structure for serialisation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p><em>str</em> – The name of the data structure.</p></td>
+<td><p>The name of the data structure.</p></td>
 </tr>
 </tbody>
 </table>
@@ -602,33 +613,33 @@
 
 </div>
 
-                        
+                    
+                
+                </div>
+            </main>
+
+            <!-- site navigation sidebar -->
+
+            <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                <div class="navbar-light">
+
+                    <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                        <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                        <input type="hidden" name="check_keywords" value="yes" />
+                        <input type="hidden" name="area" value="default" />
+
+                        <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </form>
+
+                    
                     
 
-                </main>
+                        <div class="navbar-expand-md">
+                            <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
-                <!-- site navigation sidebar -->
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column active">
+                            <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../00_introduction.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../01_getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../02_overview.html">Overview</a></li>
@@ -653,105 +664,79 @@
 </ul>
 
 
-                                </div>
                             </div>
-
-                        
-
-                    </div>
-                </div>
-
-                <!-- table of contents of main content -->
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+                        </div>
 
                     
 
-                    <ul class="nav flex-column" id="compas-localnav">
+                </div>
+            </div>
+
+            <!-- table of contents of main content -->
+            
+            <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                
+
+                <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">compas_3gs.diagrams.Cell</a></li>
 </ul>
 
 
-                </div>
-
             </div>
+
         </div>
+    </div>
 
-        <footer class="compas-footer">
+    <footer class="bg-dark pb-5">
+        <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Jul 10, 2019.
+                Last updated on Dec 11, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
             
-        </footer>
+        </div>
+    </footer>
 
-        
+    
+        <script type="text/javascript">
+            var DOCUMENTATION_OPTIONS = {
+            URL_ROOT          : '',
+            VERSION           : '0.2.1',
+            COLLAPSE_INDEX    : false,
+            FILE_SUFFIX       : '.html',
+            HAS_SOURCE        : 'false',
+            SOURCELINK_SUFFIX : '.txt'
+            };
+        </script>
 
-            <script type="text/javascript">
-var DOCUMENTATION_OPTIONS = {
-    URL_ROOT          : '',
-    VERSION           : '0.2.0',
-    COLLAPSE_INDEX    : false,
-    FILE_SUFFIX       : '.html',
-    HAS_SOURCE        : 'false',
-    SOURCELINK_SUFFIX : '.txt'
-};
-            </script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js"></script>
 
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/js/searchtools_.js"></script>
+        <!-- <script src="../../_static/js/prism.js"></script> -->
 
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+        <script>
+        $(document).ready(function() {
+        $(".language-default code").addClass("python");
+        $(".language-python code").addClass("python");
+        $(".language-bash code").addClass("bash");
+        $(".language-cpp code").addClass("cpp");
+        $(".language-json code").addClass("json");
+        $(".language-none code").addClass("plaintext");
 
-            <script src="../../_static/underscore.js"></script>
-            <script src="../../_static/doctools.js"></script>
-            <script src="../../_static/js/searchtools_.js"></script>
-            <script src="../../_static/js/prism.js"></script>
-
-            <script>
-$(document).ready(function() {
-
-    // $(".language-default pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-bash pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-python pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-c pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-cpp pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-fortran pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-markdown pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-rest pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    anchors.add();
-});
-            </script>
-
-        
-    </body>
+        hljs.initHighlighting();
+        anchors.add();
+        });
+        </script>
+    
+</body>
 </html>
