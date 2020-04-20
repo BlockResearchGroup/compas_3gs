@@ -36,8 +36,8 @@ def cell_arearise_face(cell,
 
     cell_split_indet_face_vertices(cell, fkey)
 
-    area   = cell.face_oriented_area(fkey)
-    normal = cell.face_oriented_normal(fkey)
+    area   = cell.face_area(fkey)
+    normal = cell.face_normal(fkey)
     center = cell.face_centroid(fkey)
 
     # --------------------------------------------------------------------------
@@ -94,8 +94,8 @@ def cell_arearise_face(cell,
 
 def _get_move_direction(cell, fkey):
 
-    normal     = cell.face_oriented_normal(fkey)
-    area       = cell.face_oriented_area(fkey)
+    normal     = cell.face_normal(fkey)
+    area       = cell.face_area(fkey)
     center     = cell.face_center(fkey)
 
     new_center = add_vectors(center, normal)
@@ -123,8 +123,8 @@ def _evaluate_new_face_area(cell, fkey, xyz, init_normal=None):
 
     cell_relocate_face(cell, fkey, xyz, init_normal)
 
-    new_area   = cell.face_oriented_area(fkey)
-    new_normal = cell.face_oriented_normal(fkey)
+    new_area   = cell.face_area(fkey)
+    new_normal = cell.face_normal(fkey)
 
     if dot_vectors(init_normal, new_normal) < 0:
         new_area *= -1

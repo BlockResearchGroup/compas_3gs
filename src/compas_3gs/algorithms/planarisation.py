@@ -353,7 +353,7 @@ def volmesh_planarise(volmesh,
             f_v_xyz  = volmesh.halfface_coordinates(fkey)
             f_center = volmesh.halfface_center(fkey)
             f_normal = volmesh.halfface_oriented_normal(fkey)
-            f_area   = volmesh.halfface_oriented_area(fkey)
+            f_area   = volmesh.halfface_area(fkey)
 
             # override with manual target values -------------------------------
             if _pair_membership(fkey, fkey_pair, target_centers):

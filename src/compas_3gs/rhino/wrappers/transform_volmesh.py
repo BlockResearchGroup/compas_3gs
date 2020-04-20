@@ -14,10 +14,10 @@ from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
 from compas.utilities import i_to_rgb
 
-from compas_rhino.helpers import volmesh_select_vertex
-from compas_rhino.helpers import volmesh_select_vertices
-from compas_rhino.helpers import volmesh_select_face
-from compas_rhino.helpers import volmesh_select_faces
+from compas_rhino.selectors import volmesh_select_vertex
+from compas_rhino.selectors import volmesh_select_vertices
+from compas_rhino.selectors import volmesh_select_face
+from compas_rhino.selectors import volmesh_select_faces
 
 from compas_3gs.operations import volmesh_vertex_merge
 from compas_3gs.operations import volmesh_vertex_lift

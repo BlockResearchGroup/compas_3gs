@@ -5,20 +5,15 @@ from __future__ import division
 import time
 
 import compas
-
 from compas.geometry import dot_vectors
-
 from compas.utilities import i_to_blue
 
-from compas_rhino.helpers import mesh_from_surface
-from compas_rhino.helpers import mesh_select_face
+from compas_rhino.geometry._constructors import mesh_from_surface
+from compas_rhino.selectors import mesh_select_face
 
 from compas_3gs.algorithms import cell_arearise_face
-
 from compas_3gs.diagrams import Cell
-
 from compas_3gs.operations import cell_relocate_face
-
 from compas_3gs.rhino import MeshConduit
 
 try:
@@ -37,26 +32,22 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 #   1. make cell from rhino polysurfaces
 # ------------------------------------------------------------------------------
-layer = 'cell'
+layer = 'cell'  # unused variable
 
 guid = rs.GetObject("select a closed polysurface", filter=rs.filter.polysurface)
-rs.HideObjects(guid)
-
 cell = mesh_from_surface(Cell, guid)
 cell.draw()
+rs.HideObjects(guid)
 
 # ------------------------------------------------------------------------------
 #   2. Target area
 # ------------------------------------------------------------------------------
 fkey   = mesh_select_face(cell)
-
 area   = cell.face_area(fkey)
 center = cell.face_centroid(fkey)
 normal = cell.face_normal(fkey)
 
 target_area = rs.GetReal("Enter target area", number=area)
-
-
 # ------------------------------------------------------------------------------
 #   3. Arearise cell face
 # ------------------------------------------------------------------------------
