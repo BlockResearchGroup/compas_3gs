@@ -55,7 +55,7 @@ target_area = rs.GetReal("Enter target area", number=area)
 # conduit
 conduit = MeshConduit(cell)
 
-
+    
 def callback(cell, args):
 
     current_area = cell.face_area(fkey)
@@ -66,13 +66,11 @@ def callback(cell, args):
 
     conduit.redraw()
 
-
 with conduit.enabled():
     cell_arearise_face(cell,
                        fkey,
                        target_area,
                        callback=callback)
-
 
 # ------------------------------------------------------------------------------
 #   4. Check result
@@ -92,7 +90,6 @@ if abs(new_area - target_area) > 1:
     print('===================================================================')
 
     cell_relocate_face(cell, fkey, center, normal)
-
 
 # ------------------------------------------------------------------------------
 #   5. Draw result
