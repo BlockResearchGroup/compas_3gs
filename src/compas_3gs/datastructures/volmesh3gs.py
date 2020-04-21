@@ -230,8 +230,8 @@ class VolMesh3gs(VolMesh):
     # drawing
     # --------------------------------------------------------------------------
 
-    def draw(self):
-        artist = VolMeshArtist(self)
+    def draw(self, layer=None):
+        artist = VolMeshArtist(self, layer)
         artist.draw()
 
     def clear(self):
@@ -254,16 +254,16 @@ class VolMesh3gs(VolMesh):
         artist = VolMeshArtist(self)
         artist.clear_faces(**kwattr)
 
-    def draw_face_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
+    def draw_face_labels(self, layer=None, **kwattr):
+        artist = VolMeshArtist(self, layer)
         artist.draw_facelabels(**kwattr)
 
     def draw_vertices(self, **kwattr):
         artist = VolMeshArtist(self)
         artist.draw_vertices(**kwattr)
 
-    def draw_vertex_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
+    def draw_vertex_labels(self, layer=None, **kwattr):
+        artist = VolMeshArtist(self, layer)
         artist.draw_vertexlabels(**kwattr)
 
     def draw_edge_labels(self, **kwattr):

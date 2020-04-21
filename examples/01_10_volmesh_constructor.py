@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.helpers import volmesh_from_polysurfaces
+from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import ForceVolMesh
 
@@ -25,16 +25,21 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
-layer = 'force_volmesh'
 
+# select Rhino polysurfaces
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
+# the layer in which the component should be drawn
+layer = 'force_volmesh'
+
+# construct the volmesh object from Rhino polysurfaces
 forcediagram       = ForceVolMesh()
 forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer
 forcediagram.attributes['name'] = layer
 
+# draw the volmesh object
 forcediagram.draw(layer=layer)
-forcediagram.draw_vertex_labels()
+forcediagram.draw_vertex_labels(layer=layer)
 draw_cell_labels(forcediagram)
