@@ -32,14 +32,17 @@ rs.HideObjects(guids)
 
 # the layer in which the component should be drawn
 layer = 'force_volmesh'
-
 # construct the volmesh object from Rhino polysurfaces
 forcediagram       = ForceVolMesh()
 forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer
 forcediagram.attributes['name'] = layer
 
-# draw the volmesh object
+
+# ------------------------------------------------------------------------------
+# 2. visualise vomesh (force diagram)
+# ------------------------------------------------------------------------------
+
 forcediagram.draw(layer=layer)
 forcediagram.draw_vertex_labels(layer=layer)
 draw_cell_labels(forcediagram)
