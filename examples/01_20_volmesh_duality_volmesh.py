@@ -6,14 +6,9 @@ import compas
 
 from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
 
-from compas_3gs.diagrams import ForceVolMesh
-from compas_3gs.diagrams import FormVolMesh
-
+from compas_3gs.diagrams import ForceVolMesh, FormVolMesh
 from compas_3gs.algorithms import volmesh_dual_volmesh
-
-from compas_3gs.rhino import draw_cell_labels
-from compas_3gs.rhino import draw_directed_hf_and_uv
-
+from compas_3gs.rhino import draw_cell_labels, draw_directed_hf_and_uv
 from compas_3gs.utilities import get_index_colordict
 
 try:
@@ -36,7 +31,7 @@ __email__      = 'juney.lee@arch.ethz.ch'
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
-# the layer in which the vomesh should be drawn
+# the layer in which the volmesh should be drawn
 layer = 'volmesh'
 # construct the volmesh (force diagram) from Rhino polysurfaces
 volmesh       = ForceVolMesh()
@@ -79,8 +74,8 @@ dual_volmesh.draw_faces(layer=dual_layer)
 dual_volmesh.draw_vertex_labels(color=cell_c_dict)
 
 # draw directed volmesh halffaces and directed dual_volmesh edges
-# the corresponding halfface in the volmesh (force diagram) and edges 
-# in the dual_volmesh (form diagram) are of the same color
+# the corresponding halfface in the volmesh (force diagram) and
+# edges in the dual_volmesh (form diagram) are of the same color
 uv_c_dict = get_index_colordict(list(dual_volmesh.edges()))
 face_normal_scale = 1.0
 draw_directed_hf_and_uv(volmesh,

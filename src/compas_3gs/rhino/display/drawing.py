@@ -625,8 +625,8 @@ def draw_directed_uv(datastructure,
     edges = []
     for u, v in datastructure.edges():
         edges.append({
-            'start': datastructure.vertex_coordinates(u),
-            'end'  : datastructure.vertex_coordinates(v),
+            'start': datastructure.node_coordinates(u),
+            'end'  : datastructure.node_coordinates(v),
             'arrow': 'end',
             'color': uv_color[(u, v)],
             'name' : '{}.edge.{}-{}'.format(datastructure.name, u, v)})

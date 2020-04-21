@@ -7,7 +7,6 @@ import compas
 from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import ForceVolMesh
-
 from compas_3gs.rhino import draw_cell_labels
 
 try:

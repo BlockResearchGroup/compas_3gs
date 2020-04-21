@@ -4,21 +4,12 @@ from __future__ import division
 
 import compas
 
-from compas.geometry import add_vectors
-from compas.geometry import centroid_points
-from compas.geometry import midpoint_point_point
-from compas.geometry import subtract_vectors
+from compas.geometry import add_vectors, centroid_points, midpoint_point_point, subtract_vectors
 
-from compas_rhino.utilities import draw_labels
-from compas_rhino.utilities import draw_lines
+from compas_rhino.utilities import draw_labels, draw_lines
 
-from compas_3gs.algorithms import egi_from_vectors
-from compas_3gs.algorithms import cell_planarise
-from compas_3gs.algorithms import cell_from_egi
-
-from compas_3gs.rhino import draw_egi_arcs
-from compas_3gs.rhino import MeshConduit
-
+from compas_3gs.algorithms import egi_from_vectors, cell_planarise, cell_from_egi
+from compas_3gs.rhino import draw_egi_arcs, MeshConduit
 from compas_3gs.utilities import get_index_colordict
 
 try:

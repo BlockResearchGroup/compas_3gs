@@ -42,7 +42,7 @@ class Network3gs(Network):
 
     def bounding_box(self):
 
-        xyz = [self.vertex_coordinates(vkey) for vkey in self.vertex]
+        xyz = [self.node_coordinates(vkey) for vkey in self.node]
 
         x_sorted = sorted(xyz, key=lambda k: k[0])
         y_sorted = sorted(xyz, key=lambda k: k[1])
@@ -99,32 +99,32 @@ class Network3gs(Network):
     # drawing
     # --------------------------------------------------------------------------
 
-    def draw(self):
-        artist = NetworkArtist(self)
+    def draw(self, layer=None):
+        artist = NetworkArtist(self, layer)
         artist.draw()
 
-    def clear(self):
-        artist = NetworkArtist(self)
+    def clear(self, layer=None):
+        artist = NetworkArtist(self, layer)
         artist.clear()
 
-    def draw_vertices(self, **kwattr):
-        artist = NetworkArtist(self)
+    def draw_vertices(self, layer=None, **kwattr):
+        artist = NetworkArtist(self, layer)
         artist.draw_nodes(**kwattr)
 
-    def draw_edges(self, **kwattr):
-        artist = NetworkArtist(self)
+    def draw_edges(self, layer=None, **kwattr):
+        artist = NetworkArtist(self, layer)
         artist.draw_edges(**kwattr)
 
-    def clear_edges(self, **kwattr):
-        artist = NetworkArtist(self)
+    def clear_edges(self, layer=None, **kwattr):
+        artist = NetworkArtist(self, layer)
         artist.clear_edges(**kwattr)
 
-    def draw_vertex_labels(self, **kwattr):
-        artist = NetworkArtist(self)
+    def draw_vertex_labels(self, layer=None, **kwattr):
+        artist = NetworkArtist(self, layer)
         artist.draw_nodelabels(**kwattr)
 
-    def draw_edge_labels(self, **kwattr):
-        artist = NetworkArtist(self)
+    def draw_edge_labels(self, layer=None, **kwattr):
+        artist = NetworkArtist(self, layer)
         artist.draw_edgelabels(**kwattr)
 
 
