@@ -32,22 +32,31 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 #   1. make cell from rhino polysurfaces
 # ------------------------------------------------------------------------------
+
 layer = 'cell'  # unused variable
 
+# select the polysurface which you create in Rhino
 guid = rs.GetObject("select a closed polysurface", filter=rs.filter.polysurface)
+# turn Rhino polysurface to a COMPAS single polyhedral cell
 cell = mesh_from_surface(Cell, guid)
+# draw the polyhedral cell
 cell.draw()
+# hide Rhino polysurface
 rs.HideObjects(guid)
 
 # ------------------------------------------------------------------------------
 #   2. Target area
 # ------------------------------------------------------------------------------
+
+# select a mesh face and get its face key, area, center point and normal vector
 fkey   = mesh_select_face(cell)
 area   = cell.face_area(fkey)
 center = cell.face_centroid(fkey)
 normal = cell.face_normal(fkey)
 
+# input target area value
 target_area = rs.GetReal("Enter target area", number=area)
+
 # ------------------------------------------------------------------------------
 #   3. Arearise cell face
 # ------------------------------------------------------------------------------
@@ -57,13 +66,10 @@ conduit = MeshConduit(cell)
 
     
 def callback(cell, args):
-
     current_area = cell.face_area(fkey)
     color  = i_to_blue(abs(current_area - target_area) / target_area)
     conduit.face_colordict = {fkey: color}
-
     time.sleep(0.05)
-
     conduit.redraw()
 
 with conduit.enabled():
@@ -75,13 +81,16 @@ with conduit.enabled():
 # ------------------------------------------------------------------------------
 #   4. Check result
 # ------------------------------------------------------------------------------
+
 new_area   = cell.face_area(fkey)
 new_normal = cell.face_normal(fkey)
+
+# WHAT IS THIS FOR? NEW AREA SHOULD ANYWAY BE BIGGER THAN 0? 
 if dot_vectors(normal, new_normal) < 0:
     new_area *= -1
 
+# check whether the arearisation succeed
 if abs(new_area - target_area) > 1:
-
     print('===================================================================')
     print('')
     print('Arearisation attempted, but did not converge...')
@@ -89,9 +98,11 @@ if abs(new_area - target_area) > 1:
     print('')
     print('===================================================================')
 
+    # retrieve the origianl mesh face
     cell_relocate_face(cell, fkey, center, normal)
 
 # ------------------------------------------------------------------------------
 #   5. Draw result
 # ------------------------------------------------------------------------------
+
 cell.draw()

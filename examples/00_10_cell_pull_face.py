@@ -28,13 +28,10 @@ layer = 'cell'    # unused variable
 
 # select the polysurface which you create in Rhino
 guid = rs.GetObject("select a closed polysurface", filter=rs.filter.polysurface)  
-
 # turn Rhino polysurface to a COMPAS single polyhedral cell
 cell = mesh_from_surface(Cell, guid)  
-
 # draw the polyhedral cell
 cell.draw()  
-
 # hide Rhino polysurface
 rs.HideObjects(guid)
 
@@ -42,5 +39,5 @@ rs.HideObjects(guid)
 ##   2. pull cell face
 ## ------------------------------------------------------------------------------
 
-# select a cell face and pull  it
+# select a cell face and pull it
 rhino_cell_face_pull(cell)  

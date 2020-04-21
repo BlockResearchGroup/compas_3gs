@@ -36,9 +36,13 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 #   1. get force vectors
 # ------------------------------------------------------------------------------
+
+# select external force vectors in equilibrium
 lines  = rs.GetObjects("Select force vectors in equilibrium", preselect=True, filter=rs.filter.curve)
+# select the origin / node of the structure
 origin = rs.GetPoint("Pick origin")
 
+# save force data in dictionaries
 midpts       = {}
 vectors      = {}
 target_areas = {}
@@ -55,30 +59,40 @@ for index, line in enumerate(lines):
 # ------------------------------------------------------------------------------
 #   2. egi
 # ------------------------------------------------------------------------------
-egi = egi_from_vectors(vectors, origin)
 
-egi_vertex_colordict = {}
-for vkey in egi.vertex:
-    color = (0, 0, 0)
-    if egi.vertex[vkey]['type'] == 'zero':
-        color = (255, 0, 0)
-    egi_vertex_colordict[vkey] = color
+# construct EGI from a set of equilibrated forces
+egi = egi_from_vectors(vectors, origin) 
 
-# draw egi vertex labels and edgees as arcs
+# create a new Rhino layer to draw egi
 rs.AddLayer('egi')
 
+# draw vertex labels
+egi_vertex_colordict = {}
+for vkey in egi.vertex:
+    # the intersection point of adjacent arcs is in red color
+    if egi.vertex[vkey]['type'] == 'zero':
+        color = (255, 0, 0)
+    # the point mass of EGI is in black color
+    else:
+        color = (0, 0, 0)
+    egi_vertex_colordict[vkey] = color
 egi.draw_vertexlabels(color=egi_vertex_colordict)
+
+# draw edgees as arcs
 draw_egi_arcs(egi)
 
 # pause
 rs.EnableRedraw(True)
 rs.GetString('EGI created ... Press Enter to generate unit cell ... ')
 
-
 # ------------------------------------------------------------------------------
 #   3. unit polyhedron
 # ------------------------------------------------------------------------------
+
+# create a new Rhino layer to draw polyhedral cell
 rs.AddLayer('cell')
+
+# generate polyhedral cell from EGI, the face colors are the same as corresponding vertex colors
 cell = cell_from_egi(egi)
 cell.draw_faces(color=egi_vertex_colordict)
 
@@ -112,9 +126,11 @@ for fkey in cell.faces():
 
 collapse_edge_length = rs.GetReal("Collapse edge length?", number=0.1)
 
+# clean the EGI and cell data
 egi.clear()
 cell.clear()
 
+# planarise cell faces
 with conduit.enabled():
     cell_planarise(cell,
                    kmax=2000,
@@ -128,6 +144,8 @@ with conduit.enabled():
 # ------------------------------------------------------------------------------
 #   5. draw results
 # ------------------------------------------------------------------------------
+
+# hide external force vectors
 rs.HideObjects(lines)
 
 # get index colors
