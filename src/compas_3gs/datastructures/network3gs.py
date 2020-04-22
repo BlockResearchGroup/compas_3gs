@@ -61,26 +61,26 @@ class Network3gs(Network):
     def vertex_update_xyz(self, vkey, new_xyz, constrained=True):
         if constrained:
             # X
-            if self.vertex[vkey]['x_fix'] is False:
-                self.vertex[vkey]['x'] = new_xyz[0]
+            if self.node[vkey]['x_fix'] is False:
+                self.node[vkey]['x'] = new_xyz[0]
             # Y
-            if self.vertex[vkey]['y_fix'] is False:
-                self.vertex[vkey]['y'] = new_xyz[1]
+            if self.node[vkey]['y_fix'] is False:
+                self.node[vkey]['y'] = new_xyz[1]
             # Z
-            if self.vertex[vkey]['z_fix'] is False:
-                self.vertex[vkey]['z'] = new_xyz[2]
+            if self.node[vkey]['z_fix'] is False:
+                self.node[vkey]['z'] = new_xyz[2]
         else:
-            self.vertex[vkey]['x'] = new_xyz[0]
-            self.vertex[vkey]['y'] = new_xyz[1]
-            self.vertex[vkey]['z'] = new_xyz[2]
+            self.node[vkey]['x'] = new_xyz[0]
+            self.node[vkey]['y'] = new_xyz[1]
+            self.node[vkey]['z'] = new_xyz[2]
 
     # --------------------------------------------------------------------------
     # helpers - edges
     # --------------------------------------------------------------------------
 
     def edge_vector(self, u, v, unitized=True):
-        u_xyz  = self.vertex_coordinates(u)
-        v_xyz  = self.vertex_coordinates(v)
+        u_xyz  = self.node_coordinates(u)
+        v_xyz  = self.node_coordinates(v)
         vector = subtract_vectors(v_xyz, u_xyz)
         if unitized:
             return normalize_vector(vector)

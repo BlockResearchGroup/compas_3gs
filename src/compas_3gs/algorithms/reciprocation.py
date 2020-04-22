@@ -41,13 +41,14 @@ def volmesh_reciprocate(volmesh,
                         callback_args=None,
 
                         print_result_info=False):
+                        
     """Perpendicularizes the faces of the polyhedral force diagram to the corresponding dual edges in the polyhedral form diagram.
 
     Parameters
     ----------
     volmesh : VolMesh
         A volmesh object representing a polyhedral force diagram.
-    formdiagram : VolMesh or Network
+    formdiagram : Network (VolMesh doesn't work...)
         A network object representing a polyhedral form diagram.
     kmax : int, optional [100]
         Maximum number of iterations.
@@ -86,7 +87,7 @@ def volmesh_reciprocate(volmesh,
         if not callable(callback):
             raise Exception('Callback is not callable.')
 
-    free_vkeys   = list(set(formdiagram.vertex) - set(fix_vkeys))
+    free_vkeys   = list(set(formdiagram.node) - set(fix_vkeys))
 
     init_normals = {fkey: volmesh.halfface_normal(fkey) for fkey in volmesh.faces()}
 
@@ -122,7 +123,7 @@ def volmesh_reciprocate(volmesh,
         # ----------------------------------------------------------------------
         if weight != 0:
 
-            new_form_xyz = {vkey: [] for vkey in formdiagram.vertex}
+            new_form_xyz = {vkey: [] for vkey in formdiagram.node}
 
             for u, v in target_vectors:
                 target_v = target_vectors[(u, v)]['target']
@@ -151,17 +152,19 @@ def volmesh_reciprocate(volmesh,
 
                 # collect new coordinates --------------------------------------
                 if u in free_vkeys:
-                    new_u_xyz = add_vectors(formdiagram.vertex_coordinates(v), scale_vector(target_v, -1 * l))
+                    new_u_xyz = add_vectors(formdiagram.node_coordinates(v), scale_vector(target_v, -1 * l))
                     new_form_xyz[u].append(new_u_xyz)
 
                 if v in free_vkeys:
-                    new_v_xyz = add_vectors(formdiagram.vertex_coordinates(u), scale_vector(target_v, l))
+                    new_v_xyz = add_vectors(formdiagram.node_coordinates(u), scale_vector(target_v, l))
                     new_form_xyz[v].append(new_v_xyz)
 
             # compute new vertex coordinates -----------------------------------
             for vkey in free_vkeys:
                 final_xyz = centroid_points(new_form_xyz[vkey])
-                formdiagram.vertex_update_xyz(vkey, final_xyz)
+                # formdiagram.node_update_xyz(vkey, final_xyz)
+                formdiagram.node[vkey]['xyz'] = final_xyz
+
 
         # ----------------------------------------------------------------------
         #   4. update force diagram

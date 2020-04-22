@@ -4,10 +4,11 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
-
 from compas_rhino import unload_modules
-unload_modules('compas')
+unload_modules("compas")
+unload_modules("compas_3gs")
+
+from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import FormNetwork, ForceVolMesh
 from compas_3gs.algorithms import volmesh_dual_network, volmesh_reciprocate
