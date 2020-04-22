@@ -22,7 +22,7 @@ __email__      = 'juney.lee@arch.ethz.ch'
 
 
 # ------------------------------------------------------------------------------
-# 1. make vomesh from rhino polysurfaces
+# 1. make volmesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
 
 # select Rhino polysurfaces
@@ -39,7 +39,7 @@ forcediagram.attributes['name'] = layer
 
 
 # ------------------------------------------------------------------------------
-# 2. visualise vomesh (force diagram)
+# 2. visualise volmesh (force diagram)
 # ------------------------------------------------------------------------------
 
 forcediagram.draw(layer=layer)

@@ -4,9 +4,6 @@ from __future__ import division
 
 import compas
 
-from compas_rhino import unload_modules
-unload_modules("compas")
-
 from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import ForceVolMesh, FormNetwork
@@ -29,7 +26,6 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces (force diagram)
 # ------------------------------------------------------------------------------
-
 
 # select Rhino polysurfaces
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)

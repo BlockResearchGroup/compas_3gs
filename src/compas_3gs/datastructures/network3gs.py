@@ -99,9 +99,11 @@ class Network3gs(Network):
     # drawing
     # --------------------------------------------------------------------------
 
-    def draw(self, layer=None):
+    def draw(self, layer=None, **kwattr):
         artist = NetworkArtist(self, layer)
-        artist.draw()
+        # artist.draw() # NetworkArtist.draw() raise NotImplementedError
+        artist.draw_edges(**kwattr)
+        artist.draw_nodes(**kwattr)
 
     def clear(self, layer=None):
         artist = NetworkArtist(self, layer)
