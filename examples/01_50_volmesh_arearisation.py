@@ -4,9 +4,6 @@ from __future__ import division
 
 import compas
 
-from compas_rhino import unload_modules
-unload_modules("compas")
-
 from compas.utilities import i_to_blue
 
 from compas_rhino.geometry._constructors  import volmesh_from_polysurfaces

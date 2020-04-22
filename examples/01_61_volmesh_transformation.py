@@ -4,10 +4,9 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.helpers import volmesh_from_polysurfaces
+from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import ForceVolMesh
-
 from compas_3gs.rhino import rhino_volmesh_pull_boundary_faces
 
 try:
@@ -25,16 +24,18 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
-layer = 'force_volmesh'
 
+# select Rhino polysurfaces
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
+# construct volmesh (force diagram) from Rhino polysurfaces
+layer = 'force_volmesh'
 forcediagram       = ForceVolMesh()
 forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer
 forcediagram.attributes['name'] = layer
-
+# visualise force_volmesh
 forcediagram.draw(layer=layer)
 
 
