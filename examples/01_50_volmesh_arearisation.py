@@ -4,18 +4,17 @@ from __future__ import division
 
 import compas
 
+from compas_rhino import unload_modules
+unload_modules("compas")
+
 from compas.utilities import i_to_blue
 
-from compas_rhino.helpers import volmesh_from_polysurfaces
-
-from compas_rhino.helpers import volmesh_select_faces
+from compas_rhino.geometry._constructors  import volmesh_from_polysurfaces
+from compas_rhino.selectors import volmesh_select_faces
 
 from compas_3gs.algorithms import volmesh_planarise
-
 from compas_3gs.diagrams import ForceVolMesh
-
 from compas_3gs.rhino import VolmeshConduit
-
 from compas_3gs.utilities import compare_initial_current
 from compas_3gs.utilities import volmesh_face_areaness
 
@@ -35,29 +34,32 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
-layer = 'force_volmesh'
 
+
+# select Rhino polysurfaces
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
+# construct volmesh (force diagram) from Rhino polysurfaces
+layer = 'force_volmesh'
 forcediagram       = ForceVolMesh()
 forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer
 forcediagram.attributes['name'] = layer
-
+# visualise force_volmesh
 forcediagram.draw(layer=layer)
 
 
 # ------------------------------------------------------------------------------
 # 2. select faces and assign target areas
 # ------------------------------------------------------------------------------
-hfkeys      = volmesh_select_faces(forcediagram)
 
+# select the face to modify
+hfkeys      = volmesh_select_faces(forcediagram)
+# input target area value
 area_dict   = {fkey: forcediagram.halfface_oriented_area(fkey) for fkey in hfkeys}
 avg         = sum(area_dict.values()) / len(area_dict)
-
 target_area = rs.GetReal("Enter target area for the chosen halffaces", avg, 0, 1000.0)
-
 target_areas = {}
 for hfkey in hfkeys:
     target_areas[hfkey] = target_area
@@ -66,8 +68,10 @@ for hfkey in hfkeys:
 # ------------------------------------------------------------------------------
 # 3. planarise
 # ------------------------------------------------------------------------------
-forcediagram.clear()
 
+# clear the original force diagram
+forcediagram.clear()
+# compute the face areaness of force volmesh
 initial_areaness = volmesh_face_areaness(forcediagram, target_areas)
 
 # conduit

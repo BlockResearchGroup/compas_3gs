@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+edfrom __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
@@ -10,6 +10,8 @@ from compas.utilities import i_to_red
 
 from compas_3gs.diagrams import ForceVolMesh
 from compas_3gs.algorithms import volmesh_planarise
+
+
 from compas_3gs.rhino import VolmeshConduit, bake_cells_as_polysurfaces
 from compas_3gs.utilities import compare_initial_current, volmesh_face_flatness
 
@@ -33,15 +35,15 @@ __email__      = 'juney.lee@arch.ethz.ch'
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
-# construct the volmesh (force diagram) from Rhino polysurfaces
-force_layer = 'force_volmesh'
+# construct volmesh (force diagram) from Rhino polysurfaces
+layer = 'force_volmesh'
 forcediagram       = ForceVolMesh()
 forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
-forcediagram.layer = force_layer
-forcediagram.attributes['name'] = force_layer
+forcediagram.layer = layer
+forcediagram.attributes['name'] = layer
 
-# visualise the force_volmesh
-forcediagram.draw(layer=force_layer) # PROBLEM! doesn't show up before select vertices
+# visualise force_volmesh
+forcediagram.draw(layer=layer) # PROBLEM! doesn't show up before select vertices
 
 
 # ------------------------------------------------------------------------------
@@ -58,7 +60,6 @@ vkeys = VertexSelector.select_vertices(forcediagram,
 
 # clear the original force diagram
 forcediagram.clear()
-
 # compute the initial face flatness of force volmesh
 initial_flatness = volmesh_face_flatness(forcediagram)
 
@@ -87,5 +88,5 @@ with conduit.enabled():
                       print_result_info=True)
 
 # update / redraw
-#forcediagram.draw()
+#forcediagram.draw() 
 bake_cells_as_polysurfaces(forcediagram)
