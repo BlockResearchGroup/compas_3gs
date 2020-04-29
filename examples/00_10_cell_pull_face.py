@@ -3,9 +3,12 @@ from __future__ import print_function
 from __future__ import division
 
 import compas
-from compas_rhino.geometry._constructors import mesh_from_surface
+
+from compas_rhino.geometry import RhinoSurface
 from compas_3gs.diagrams import Cell
 from compas_3gs.rhino import rhino_cell_face_pull
+from compas_3gs.datastructures import Mesh3gsArtist
+
 
 try:
     import rhinoscriptsyntax as rs
@@ -23,21 +26,21 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 #   1. make cell from rhino polysurfaces
 # ------------------------------------------------------------------------------
-
-layer = 'cell'    # unused variable
-
 # select the polysurface which you create in Rhino
-guid = rs.GetObject("select a closed polysurface", filter=rs.filter.polysurface)  
+guid = rs.GetObject("select a closed polysurface", filter=rs.filter.polysurface)
 # turn Rhino polysurface to a COMPAS single polyhedral cell
-cell = mesh_from_surface(Cell, guid)  
+cell = RhinoSurface.from_guid(guid).brep_to_compas(cls=Cell())
+
 # draw the polyhedral cell
-cell.draw()  
+layer = 'cell' 
+cellartist = Mesh3gsArtist(cell, layer=layer)
+cellartist.draw()  
 # hide Rhino polysurface
 rs.HideObjects(guid)
+
 
 ## ------------------------------------------------------------------------------
 ##   2. pull cell face
 ## ------------------------------------------------------------------------------
-
-# select a cell face and pull it
+# select a cell face and pull it along its normal vector
 rhino_cell_face_pull(cell)  
