@@ -26,7 +26,8 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['Mesh3gs']
+__all__ = ['Mesh3gs',
+            'Mesh3gsArtist',]
 
 
 class Mesh3gs(Mesh):
@@ -108,41 +109,13 @@ class Mesh3gs(Mesh):
             normal = normalize_vector(cross_vectors(uv, vw))
         return normal
 
-    # --------------------------------------------------------------------------
-    # drawing
-    # --------------------------------------------------------------------------
 
-    def draw(self):
-        artist = MeshArtist(self)
-        artist.draw()
+class Mesh3gsArtist(MeshArtist):
+    """Inherits the compas :class:`MeshArtist`, provides functionality for visualisation of 3D graphic statics applications.
 
-    def clear(self):
-        artist = MeshArtist(self)
-        artist.clear()
-
-    def draw_vertices(self, **kwattr):
-        artist = MeshArtist(self)
-        artist.draw_vertices(**kwattr)
-
-    def draw_edges(self, **kwattr):
-        artist = MeshArtist(self)
-        artist.draw_edges(**kwattr)
-
-    def draw_faces(self, **kwattr):
-        artist = MeshArtist(self)
-        artist.draw_faces(**kwattr)
-
-    def draw_vertexlabels(self, **kwattr):
-        artist = MeshArtist(self)
-        artist.draw_vertexlabels(**kwattr)
-
-    def draw_edgelabels(self, **kwattr):
-        artist = MeshArtist(self)
-        artist.draw_edgelabels(**kwattr)
-
-    def draw_facelabels(self, **kwattr):
-        artist = MeshArtist(self)
-        artist.draw_facelabels(**kwattr)
+    """
+    def __init__(self, cell, layer=None):
+        super(Mesh3gsArtist, self).__init__(cell, layer=layer)
 
 
 # ******************************************************************************

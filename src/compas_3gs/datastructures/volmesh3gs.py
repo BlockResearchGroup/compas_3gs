@@ -21,7 +21,8 @@ __license__   = 'MIT License'
 __email__     = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['VolMesh3gs']
+__all__ = ['VolMesh3gs',
+           'VolMesh3gsArtist',]
 
 
 class VolMesh3gs(VolMesh):
@@ -226,49 +227,13 @@ class VolMesh3gs(VolMesh):
     def clean(self):
         pass
 
-    # --------------------------------------------------------------------------
-    # drawing
-    # --------------------------------------------------------------------------
 
-    def draw(self, layer=None):
-        artist = VolMeshArtist(self, layer)
-        artist.draw()
+class VolMesh3gsArtist(VolMeshArtist):
+    """Inherits the compas :class:`VolMeshArtist`, provides functionality for visualisation of 3D graphic statics applications.
 
-    def clear(self, layer=None):
-        artist = VolMeshArtist(self, layer)
-        artist.clear()
-
-    def draw_edges(self, layer=None, **kwattr):
-        artist = VolMeshArtist(self, layer)
-        artist.draw_edges(**kwattr)
-
-    def clear_edges(self, layer=None, **kwattr):
-        artist = VolMeshArtist(self, layer)
-        artist.clear_edges(**kwattr)
-
-    def draw_faces(self, layer=None, **kwattr):
-        artist = VolMeshArtist(self, layer)
-        artist.draw_faces(**kwattr)
-
-    def clear_faces(self, layer=None, **kwattr):
-        artist = VolMeshArtist(self, layer)
-        artist.clear_faces(**kwattr)
-
-    def draw_face_labels(self, layer=None, **kwattr):
-        artist = VolMeshArtist(self, layer)
-        artist.draw_facelabels(**kwattr)
-
-    def draw_vertices(self, layer=None, **kwattr):
-        artist = VolMeshArtist(self, layer)
-        artist.draw_vertices(**kwattr)
-
-    def draw_vertex_labels(self, layer=None, **kwattr):
-        artist = VolMeshArtist(self, layer)
-        artist.draw_vertexlabels(**kwattr)
-
-    def draw_edge_labels(self, layer=None, **kwattr):
-        artist = VolMeshArtist(self, layer)
-        artist.draw_edgelabels(**kwattr)
+    """
+    def __init__(self, cells, layer=None):
+        super(VolMesh3gsArtist, self).__init__(cells, layer=layer)
 
 
 # ******************************************************************************

@@ -17,7 +17,8 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['Network3gs']
+__all__ = ['Network3gs',
+           'Network3gsArtist',]
 
 
 class Network3gs(Network):
@@ -95,40 +96,13 @@ class Network3gs(Network):
             edge_count += 1
         return sum_length / edge_count
 
-    # --------------------------------------------------------------------------
-    # drawing
-    # --------------------------------------------------------------------------
 
-    def draw(self, layer=None, **kwattr):
-        artist = NetworkArtist(self, layer)
-        # artist.draw() # NetworkArtist.draw() raise NotImplementedError
-        artist.draw_edges(**kwattr)
-        artist.draw_nodes(**kwattr)
+class Network3gsArtist(NetworkArtist):
+    """Inherits the compas :class:`NetworkArtist`, provides functionality for visualisation of 3D graphic statics applications.
 
-    def clear(self, layer=None):
-        artist = NetworkArtist(self, layer)
-        artist.clear()
-
-    def draw_vertices(self, layer=None, **kwattr):
-        artist = NetworkArtist(self, layer)
-        artist.draw_nodes(**kwattr)
-
-    def draw_edges(self, layer=None, **kwattr):
-        artist = NetworkArtist(self, layer)
-        artist.draw_edges(**kwattr)
-
-    def clear_edges(self, layer=None, **kwattr):
-        artist = NetworkArtist(self, layer)
-        artist.clear_edges(**kwattr)
-
-    def draw_vertex_labels(self, layer=None, **kwattr):
-        artist = NetworkArtist(self, layer)
-        artist.draw_nodelabels(**kwattr)
-
-    def draw_edge_labels(self, layer=None, **kwattr):
-        artist = NetworkArtist(self, layer)
-        artist.draw_edgelabels(**kwattr)
-
+    """
+    def __init__(self, network, layer=None):
+        super(Network3gsArtist, self).__init__(network, layer=layer)
 
 # ******************************************************************************
 # ******************************************************************************
