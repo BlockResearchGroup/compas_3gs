@@ -1,10 +1,13 @@
-edfrom __future__ import absolute_import
+from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
 import compas
 
-from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
+from compas_rhino import unload_modules
+unload_modules("compas")
+
+from compas_rhino.geometry import RhinoSurface
 from compas_rhino.selectors import VertexSelector
 from compas.utilities import i_to_red
 
@@ -14,6 +17,8 @@ from compas_3gs.algorithms import volmesh_planarise
 
 from compas_3gs.rhino import VolmeshConduit, bake_cells_as_polysurfaces
 from compas_3gs.utilities import compare_initial_current, volmesh_face_flatness
+from compas_3gs.datastructures import VolMesh3gsArtist
+
 
 try:
     import rhinoscriptsyntax as rs
@@ -30,21 +35,39 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
-
 # select Rhino polysurfaces
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
-rs.HideObjects(guids)
 
-# construct volmesh (force diagram) from Rhino polysurfaces
-layer = 'force_volmesh'
-forcediagram       = ForceVolMesh()
-forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
-forcediagram.layer = layer
-forcediagram.attributes['name'] = layer
 
-# visualise force_volmesh
-forcediagram.draw(layer=layer) # PROBLEM! doesn't show up before select vertices
+# make a volmesh from polysurface
+vertices = []
+cells = []
+for guid in guids:
+    vertices_dict = {}
+    polysurface= RhinoSurface.from_guid(guid) # this function doesn't work for extrusion objects
+    mesh = polysurface.brep_to_compas()
+    for key in mesh.vertices():
+        if mesh.vertex_coordinates(key) not in vertices:
+            vertices_dict[key] = len(vertices)
+            vertices.append(mesh.vertex_coordinates(key))
+        else:
+            vertices_dict[key] = vertices.index(mesh.vertex_coordinates(key))
+    cell = []
+    for fkey in mesh.faces():
+        face = [vertices_dict[vkey] for vkey in mesh.face_vertices(fkey)]
+        cell.append(face)
+    cells.append(cell)
+    
+forcediagram = ForceVolMesh.from_vertices_and_cells(vertices, cells)
 
+force_layer = 'force_volmesh'
+forcediagram.layer = force_layer
+forcediagram.attributes['name'] = force_layer
+
+# visualise the force_volmesh
+forcediagramartist = VolMesh3gsArtist(forcediagram, layer=force_layer)
+forcediagramartist.draw()
+forcediagramartist.draw_vertices()
 
 # ------------------------------------------------------------------------------
 # 2. pick vertices to fix
@@ -59,7 +82,8 @@ vkeys = VertexSelector.select_vertices(forcediagram,
 # ------------------------------------------------------------------------------
 
 # clear the original force diagram
-forcediagram.clear()
+rs.HideObjects(guids)
+forcediagramartist.clear()
 # compute the initial face flatness of force volmesh
 initial_flatness = volmesh_face_flatness(forcediagram)
 
