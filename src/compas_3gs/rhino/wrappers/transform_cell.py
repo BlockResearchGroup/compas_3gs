@@ -11,7 +11,7 @@ from compas.geometry import intersection_line_plane
 
 from compas.utilities import i_to_rgb
 
-from compas_rhino.selectors import mesh_select_face
+from compas_rhino.selectors import FaceSelector
 
 from compas_3gs.operations import cell_split_indet_face_vertices
 from compas_3gs.operations import cell_relocate_face
@@ -66,7 +66,7 @@ def rhino_cell_face_pull(cell):
     #  1. pick face
     # --------------------------------------------------------------------------
     cell.draw()
-    face = mesh_select_face(cell)
+    face = FaceSelector.select_face(cell)
     cell_split_indet_face_vertices(cell, face)
     cell.clear()
 

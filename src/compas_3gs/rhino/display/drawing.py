@@ -30,6 +30,8 @@ from compas_3gs.utilities import get_force_mags
 from compas_3gs.utilities import get_force_colors_uv
 from compas_3gs.utilities import get_force_colors_hf
 
+from compas_3gs.datastructures import VolMesh3gsArtist
+
 try:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
@@ -101,7 +103,7 @@ def draw_vertex_normal(datastructure, vkeys=None):
     pass
 
 
-def draw_vertex_fixities(diagram):
+def draw_vertex_fixities(diagram, diagramartist):
 
     text_dict  = {}
     color_dict = {}
@@ -111,13 +113,13 @@ def draw_vertex_fixities(diagram):
         r = 0
         g = 0
         b = 0
-        if diagram.vertex[vkey]['x_fix']:
+        if diagram.vertex_attribute(vkey, 'x_fix'):
             text += 'x'
             r = 255
-        if diagram.vertex[vkey]['y_fix']:
+        if diagram.vertex_attribute(vkey, 'y_fix'):
             text += 'y'
             g = 255
-        if diagram.vertex[vkey]['z_fix']:
+        if diagram.vertex_attribute(vkey, 'z_fix'):
             text += 'z'
             b = 255
 
@@ -125,8 +127,8 @@ def draw_vertex_fixities(diagram):
             text_dict[vkey]  = text
             color_dict[vkey] = (r, g, b)
 
-    diagram.draw()
-    diagram.draw_vertex_labels(text=text_dict, color=color_dict)
+    # diagramartist.draw()
+    diagramartist.draw_vertexlabels(text=text_dict, color=color_dict)
 
 
 # ******************************************************************************
@@ -625,14 +627,16 @@ def draw_directed_uv(datastructure,
     edges = []
     for u, v in datastructure.edges():
         edges.append({
-            'start': datastructure.node_coordinates(u),
-            'end'  : datastructure.node_coordinates(v),
+            'start': datastructure.vertex_coordinates(u),
+            'end'  : datastructure.vertex_coordinates(v),
             'arrow': 'end',
             'color': uv_color[(u, v)],
             'name' : '{}.edge.{}-{}'.format(datastructure.name, u, v)})
 
     # 3. draw network ----------------------------------------------------------
-    datastructure.clear_edges()
+    from compas_3gs.datastructures import VolMesh3gsArtist
+    datastructureartist = VolMesh3gsArtist(datastructure)
+    datastructureartist.clear_edges()
     compas_rhino.draw_lines(edges,
                             layer=datastructure.layer,
                             clear=False,
@@ -660,7 +664,9 @@ def draw_directed_hf_and_uv(volmesh,
     draw_directed_uv(datastructure, uv_color=uv_colordict)
 
     # 4. draw volmesh ----------------------------------------------------------
-    volmesh.draw_faces(keys=hfkeys, color=hf_colordict)
+    from compas_3gs.datastructures import VolMesh3gsArtist
+    volmeshartist = VolMesh3gsArtist(volmesh)
+    volmeshartist.draw_faces(keys=hfkeys, color=hf_colordict)
     draw_volmesh_face_normals(volmesh,
                               hfkeys,
                               color=hf_colordict,
@@ -698,6 +704,7 @@ def draw_egi_arcs(egi):
         attr.ObjectDecoration = EndArrowhead
         obj.CommitChanges()
 
+    return obj
 
 def bake_cells_as_polysurfaces(volmesh):
     for ckey in volmesh.cell:

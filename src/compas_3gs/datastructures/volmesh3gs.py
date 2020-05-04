@@ -22,7 +22,7 @@ __email__     = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['VolMesh3gs',
-           'VolMesh3gsArtist',]
+            'VolMesh3gsArtist']
 
 
 class VolMesh3gs(VolMesh):

@@ -127,8 +127,8 @@ def cell_collapse_short_edge(cell, u, v, min_length=0.1):
 
     if dist < min_length:
         mp = midpoint_point_point(sp, ep)
-        cell.vertex_update_xyz(u, mp)
-        cell.vertex_update_xyz(v, mp)
+        cell.vertex_attributes(u, 'xyz', mp)
+        cell.vertex_attributes(v, 'xyz', mp)
 
     return cell
 

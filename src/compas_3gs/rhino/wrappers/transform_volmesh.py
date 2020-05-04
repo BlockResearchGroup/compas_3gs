@@ -86,9 +86,6 @@ __all__ = ['rhino_volmesh_vertex_lift',
 def rhino_volmesh_vertex_lift(volmesh):
     """Rhino wrapper for the vertex lift operation.
     """
-
-    volmesh.draw()
-
     vkey = volmesh_select_vertex(volmesh)
 
     vertex_hfkeys = []
@@ -112,7 +109,7 @@ def rhino_volmesh_vertex_lift(volmesh):
 
     volmesh_vertex_lift(volmesh, vkey, gp, vertex_hfkeys)
 
-    volmesh.draw()
+    # volmesh.draw()
 
 
 def rhino_volmesh_vertex_merge(volmesh):
@@ -217,16 +214,16 @@ def rhino_volmesh_merge_adjacent_halffaces(volmesh):
     return volmesh
 
 
-def rhino_volmesh_pull_boundary_faces(volmesh, uniform=False):
+def rhino_volmesh_pull_boundary_faces(volmesh, volmeshartist, uniform=False):
 
     # --------------------------------------------------------------------------
     #  1. display boundary halffaces
     # --------------------------------------------------------------------------
     boundary_hfkeys = volmesh.halffaces_on_boundary()
 
-    volmesh.clear()
-    volmesh.draw_edges()
-    volmesh.draw_faces(keys=boundary_hfkeys)
+    volmeshartist.clear()
+    volmeshartist.draw_edges()
+    volmeshartist.draw_faces(keys=boundary_hfkeys)
 
     rs.EnableRedraw(True)
 
@@ -325,12 +322,15 @@ def rhino_volmesh_pull_boundary_faces(volmesh, uniform=False):
     #  5. update halfface and its dependents
     # --------------------------------------------------------------------------
     new_xyz = _volmesh_compute_dependent_face_intersections(volmesh, hfkey, gp, target_normal)
-
+    print(new_xyz)
+    
     for key in new_xyz:
         coordinates = new_xyz[key]
         volmesh.vertex_update_xyz(key, coordinates, constrained=False)
+        # volmesh.vertex_attributes(vkey, 'xyz', coordinates)
+        print(key)
 
-    volmesh.draw()
+    volmeshartist.draw()
 
 
 # ******************************************************************************
