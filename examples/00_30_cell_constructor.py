@@ -7,7 +7,6 @@ import compas
 from compas_rhino import unload_modules
 unload_modules('compas')
 
-
 from compas.geometry import add_vectors, centroid_points, midpoint_point_point, subtract_vectors
 
 from compas_rhino.geometry import RhinoSurface

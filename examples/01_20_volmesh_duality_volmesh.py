@@ -4,12 +4,16 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
+from compas_rhino import unload_modules
+unload_modules('compas')
+
+from compas_rhino.geometry import RhinoSurface
 
 from compas_3gs.diagrams import ForceVolMesh, FormVolMesh
 from compas_3gs.algorithms import volmesh_dual_volmesh
 from compas_3gs.rhino import draw_cell_labels, draw_directed_hf_and_uv
 from compas_3gs.utilities import get_index_colordict
+from compas_3gs.datastructures import VolMesh3gsArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -31,14 +35,30 @@ __email__      = 'juney.lee@arch.ethz.ch'
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
-# the layer in which the volmesh should be drawn
+# make a volmesh from polysurface
+vertices = []
+cells = []
+for guid in guids:
+    vertices_dict = {}
+    polysurface= RhinoSurface.from_guid(guid) # this function doesn't work for extrusion objects
+    mesh = polysurface.brep_to_compas()
+    for key in mesh.vertices():
+        if mesh.vertex_coordinates(key) not in vertices:
+            vertices_dict[key] = len(vertices)
+            vertices.append(mesh.vertex_coordinates(key))
+        else:
+            vertices_dict[key] = vertices.index(mesh.vertex_coordinates(key))
+    cell = []
+    for fkey in mesh.faces():
+        face = [vertices_dict[vkey] for vkey in mesh.face_vertices(fkey)]
+        cell.append(face)
+    cells.append(cell)
+    
+volmesh = ForceVolMesh.from_vertices_and_cells(vertices, cells)
+
 layer = 'volmesh'
-# construct the volmesh (force diagram) from Rhino polysurfaces
-volmesh       = ForceVolMesh()
-volmesh       = volmesh_from_polysurfaces(volmesh, guids)
 volmesh.layer = layer
 volmesh.attributes['name'] = layer
-
 
 # ------------------------------------------------------------------------------
 # 2. make dual volmesh (form diagram)
@@ -66,12 +86,14 @@ for vkey in dual_volmesh.vertex:
 cell_c_dict = get_index_colordict(list(volmesh.cell.keys()))
 
 # draw volmesh
-volmesh.draw(layer=dual_layer)
+volmeshartist = VolMesh3gsArtist(volmesh, layer=layer)
+volmeshartist.draw()
+
 draw_cell_labels(volmesh, color=cell_c_dict)
 
 # draw dual volmesh
-dual_volmesh.draw_faces(layer=dual_layer)
-dual_volmesh.draw_vertex_labels(color=cell_c_dict)
+dual_volmeshartist = VolMesh3gsArtist(dual_volmesh, layer=dual_layer)
+dual_volmeshartist.draw_vertexlabels(color=cell_c_dict)
 
 # draw directed volmesh halffaces and directed dual_volmesh edges
 # the corresponding halfface in the volmesh (force diagram) and

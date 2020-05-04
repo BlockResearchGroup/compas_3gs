@@ -3,7 +3,7 @@ from __future__ import print_function
 from __future__ import division
 
 import compas
-from compas.utilities import geometric_key
+
 from compas_rhino import unload_modules
 unload_modules('compas')
 
@@ -31,6 +31,8 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # select Rhino polysurfaces
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 
+rs.HideObjects(guids)
+
 # make a volmesh from polysurface
 vertices = []
 cells = []
@@ -52,7 +54,7 @@ for guid in guids:
     
 forcediagram = ForceVolMesh.from_vertices_and_cells(vertices, cells)
 
-rs.HideObjects(guids)
+
 
 
 # ------------------------------------------------------------------------------

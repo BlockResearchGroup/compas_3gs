@@ -67,12 +67,14 @@ forcediagram.attributes['name'] = force_layer
 # visualise the force_volmesh
 forcediagramartist = VolMesh3gsArtist(forcediagram, layer=force_layer)
 forcediagramartist.draw()
-forcediagramartist.draw_vertices()
+forcediagramartist.draw_vertices()   # PROBLEM: artist doesn't show up unitl the vertices are selected.
+forcediagramartist.draw_vertexlabels()
+
+rs.HideObjects(guids)
 
 # ------------------------------------------------------------------------------
 # 2. pick vertices to fix
 # ------------------------------------------------------------------------------
-
 vkeys = VertexSelector.select_vertices(forcediagram,
                                        message='Select vertices to fix:')
 
@@ -80,9 +82,7 @@ vkeys = VertexSelector.select_vertices(forcediagram,
 # ------------------------------------------------------------------------------
 # 3. planarise
 # ------------------------------------------------------------------------------
-
 # clear the original force diagram
-rs.HideObjects(guids)
 forcediagramartist.clear()
 # compute the initial face flatness of force volmesh
 initial_flatness = volmesh_face_flatness(forcediagram)

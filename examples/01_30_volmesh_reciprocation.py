@@ -6,13 +6,13 @@ import compas
 
 from compas_rhino import unload_modules
 unload_modules("compas")
-unload_modules("compas_3gs")
 
-from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
+from compas_rhino.geometry import RhinoSurface
 
 from compas_3gs.diagrams import FormNetwork, ForceVolMesh
 from compas_3gs.algorithms import volmesh_dual_network, volmesh_reciprocate
 from compas_3gs.rhino import ReciprocationConduit
+from compas_3gs.datastructures import VolMesh3gsArtist, Network3gsArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -29,20 +29,38 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
-
 # select Rhino polysurfaces
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
-# construct the volmesh (force diagram) from Rhino polysurfaces
+# make a volmesh from polysurface
+vertices = []
+cells = []
+for guid in guids:
+    vertices_dict = {}
+    polysurface= RhinoSurface.from_guid(guid) # this function doesn't work for extrusion objects
+    mesh = polysurface.brep_to_compas()
+    for key in mesh.vertices():
+        if mesh.vertex_coordinates(key) not in vertices:
+            vertices_dict[key] = len(vertices)
+            vertices.append(mesh.vertex_coordinates(key))
+        else:
+            vertices_dict[key] = vertices.index(mesh.vertex_coordinates(key))
+    cell = []
+    for fkey in mesh.faces():
+        face = [vertices_dict[vkey] for vkey in mesh.face_vertices(fkey)]
+        cell.append(face)
+    cells.append(cell)
+    
+forcediagram = ForceVolMesh.from_vertices_and_cells(vertices, cells)
+
 force_layer = 'force_volmesh'
-forcediagram       = ForceVolMesh()
-forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = force_layer
 forcediagram.attributes['name'] = force_layer
 
 # visualise the force_volmesh
-forcediagram.draw(layer=force_layer)
+forcediagramartist = VolMesh3gsArtist(forcediagram, layer=force_layer)
+forcediagramartist.draw()
 
 
 # ------------------------------------------------------------------------------
@@ -59,7 +77,10 @@ formdiagram.attributes['name'] = form_layer
 x_move = formdiagram.bounding_box()[0] * 2
 for vkey in formdiagram.node:
     formdiagram.node[vkey]['x'] += x_move
-formdiagram.draw(layer=form_layer)
+
+formdiagramartist = Network3gsArtist(formdiagram, layer=form_layer)
+formdiagramartist.draw_nodes()
+formdiagramartist.draw_edges()
 
 
 # ------------------------------------------------------------------------------
@@ -77,18 +98,19 @@ weight = rs.GetReal(
 # ------------------------------------------------------------------------------
 
 # clear the original force and form diagrams
-forcediagram.clear()
-formdiagram.clear()
-
+forcediagramartist.clear()
+formdiagramartist.clear()
 
 # conduit
 conduit = ReciprocationConduit(forcediagram, formdiagram)
 
 
+
+
 def callback(forcediagram, formdiagram, k, args):
+    print(k)
     if k % 2:
         conduit.redraw()
-
 
 # reciprocation
 with conduit.enabled():
@@ -103,5 +125,6 @@ with conduit.enabled():
                         print_result_info=True)
 
 # update / redraw the force and form diagrams
-forcediagram.draw()
-formdiagram.draw()
+forcediagramartist.draw()
+formdiagramartist.draw_nodes()
+formdiagramartist.draw_edges()
