@@ -6,8 +6,6 @@ from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import length_vector
 
-from compas_rhino.artists import NetworkArtist
-
 from compas_3gs.utilities import datastructure_centroid
 
 
@@ -17,8 +15,7 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['Network3gs',
-           'Network3gsArtist',]
+__all__ = ['Network3gs',]
 
 
 class Network3gs(Network):
@@ -96,13 +93,6 @@ class Network3gs(Network):
             edge_count += 1
         return sum_length / edge_count
 
-
-class Network3gsArtist(NetworkArtist):
-    """Inherits the compas :class:`NetworkArtist`, provides functionality for visualisation of 3D graphic statics applications.
-
-    """
-    def __init__(self, network, layer=None):
-        super(Network3gsArtist, self).__init__(network, layer=layer)
 
 # ******************************************************************************
 # ******************************************************************************

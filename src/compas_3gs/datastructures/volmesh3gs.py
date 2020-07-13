@@ -9,8 +9,6 @@ from compas.geometry import normalize_vector
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 
-from compas_rhino.artists import VolMeshArtist
-
 from compas_3gs.utilities import polygon_normal_oriented
 from compas_3gs.utilities import polygon_area_oriented
 
@@ -21,8 +19,7 @@ __license__   = 'MIT License'
 __email__     = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['VolMesh3gs',
-            'VolMesh3gsArtist']
+__all__ = ['VolMesh3gs',]
 
 
 class VolMesh3gs(VolMesh):
@@ -228,12 +225,7 @@ class VolMesh3gs(VolMesh):
         pass
 
 
-class VolMesh3gsArtist(VolMeshArtist):
-    """Inherits the compas :class:`VolMeshArtist`, provides functionality for visualisation of 3D graphic statics applications.
 
-    """
-    def __init__(self, cells, layer=None):
-        super(VolMesh3gsArtist, self).__init__(cells, layer=layer)
 
 
 # ******************************************************************************

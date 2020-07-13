@@ -13,8 +13,6 @@ from compas.geometry import normalize_vector
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 
-from compas_rhino.artists import MeshArtist
-
 from compas_3gs.utilities import polygon_normal_oriented
 from compas_3gs.utilities import polygon_area_oriented
 from compas_3gs.utilities import datastructure_centroid
@@ -26,8 +24,7 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['Mesh3gs',
-            'Mesh3gsArtist',]
+__all__ = ['Mesh3gs',]
 
 
 class Mesh3gs(Mesh):
@@ -108,14 +105,6 @@ class Mesh3gs(Mesh):
             vw     = subtract_vectors(points[2], points[1])
             normal = normalize_vector(cross_vectors(uv, vw))
         return normal
-
-
-class Mesh3gsArtist(MeshArtist):
-    """Inherits the compas :class:`MeshArtist`, provides functionality for visualisation of 3D graphic statics applications.
-
-    """
-    def __init__(self, cell, layer=None):
-        super(Mesh3gsArtist, self).__init__(cell, layer=layer)
 
 
 # ******************************************************************************
