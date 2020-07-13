@@ -20,6 +20,8 @@ from compas_3gs.utilities import polygon_normal_oriented
 from compas_3gs.utilities import polygon_area_oriented
 from compas_3gs.utilities import datastructure_centroid
 
+from compas_3gs.datastructures import Mesh3gsArtist
+
 from compas_3gs.rhino import get_target_point
 
 try:
@@ -65,10 +67,12 @@ def rhino_cell_face_pull(cell):
     # --------------------------------------------------------------------------
     #  1. pick face
     # --------------------------------------------------------------------------
-    cell.draw()
+    cell_artist = Mesh3gsArtist(cell)
+    cell_artist.draw()
     face = FaceSelector.select_face(cell)
     cell_split_indet_face_vertices(cell, face)
-    cell.clear()
+    cell_artist.clear()
+
 
     # --------------------------------------------------------------------------
     #  2. face data
@@ -193,7 +197,8 @@ def rhino_cell_face_pull(cell):
     # --------------------------------------------------------------------------
     cell_relocate_face(cell, face, gp, f_normal)
 
-    cell.draw()
+    cell_artist.draw()
+    # cell.draw()
 
 
 # ******************************************************************************
