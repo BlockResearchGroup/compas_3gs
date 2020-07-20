@@ -12,7 +12,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__all__ = ['Mesh3gsArtist',]
+__all__ = ['Mesh3gsArtist']
 
 
 class Mesh3gsArtist(MeshArtist):
@@ -21,3 +21,22 @@ class Mesh3gsArtist(MeshArtist):
     """
     def __init__(self, cell, layer=None):
         super(Mesh3gsArtist, self).__init__(cell, layer=layer)
+
+
+
+
+
+
+
+
+
+# ******************************************************************************
+# ******************************************************************************
+
+
+if __name__ == '__main__':
+    from compas_3gs.diagrams import ForceVolMesh
+    force_diagram = ForceVolMesh()
+    forceartist = Mesh3gsArtist(force_diagram)
+
+

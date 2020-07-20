@@ -20,7 +20,7 @@ from compas_3gs.utilities import polygon_normal_oriented
 from compas_3gs.utilities import polygon_area_oriented
 from compas_3gs.utilities import datastructure_centroid
 
-from compas_3gs.datastructures import Mesh3gsArtist
+from compas_3gs.rhino.artist import Mesh3gsArtist
 
 from compas_3gs.rhino import get_target_point
 

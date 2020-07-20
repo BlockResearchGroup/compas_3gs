@@ -12,7 +12,7 @@ from compas_rhino.geometry import RhinoSurface
 from compas_3gs.diagrams import FormNetwork, ForceVolMesh
 from compas_3gs.algorithms import volmesh_dual_network, volmesh_reciprocate
 from compas_3gs.rhino import ReciprocationConduit
-from compas_3gs.datastructures import VolMesh3gsArtist, Network3gsArtist
+from compas_3gs.rhino import VolMesh3gsArtist, Network3gsArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -33,26 +33,30 @@ __email__      = 'juney.lee@arch.ethz.ch'
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
-# make a volmesh from polysurface
-vertices = []
-cells = []
-for guid in guids:
-    vertices_dict = {}
-    polysurface= RhinoSurface.from_guid(guid) # this function doesn't work for extrusion objects
-    mesh = polysurface.brep_to_compas()
-    for key in mesh.vertices():
-        if mesh.vertex_coordinates(key) not in vertices:
-            vertices_dict[key] = len(vertices)
-            vertices.append(mesh.vertex_coordinates(key))
-        else:
-            vertices_dict[key] = vertices.index(mesh.vertex_coordinates(key))
-    cell = []
-    for fkey in mesh.faces():
-        face = [vertices_dict[vkey] for vkey in mesh.face_vertices(fkey)]
-        cell.append(face)
-    cells.append(cell)
+from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
+from compas.datastructures import VolMesh
+forcediagram = volmesh_from_polysurfaces(ForceVolMesh, guids)
+
+## make a volmesh from polysurface
+#vertices = []
+#cells = []
+#for guid in guids:
+#    vertices_dict = {}
+#    polysurface= RhinoSurface.from_guid(guid) # this function doesn't work for extrusion objects
+#    mesh = polysurface.brep_to_compas()
+#    for key in mesh.vertices():
+#        if mesh.vertex_coordinates(key) not in vertices:
+#            vertices_dict[key] = len(vertices)
+#            vertices.append(mesh.vertex_coordinates(key))
+#        else:
+#            vertices_dict[key] = vertices.index(mesh.vertex_coordinates(key))
+#    cell = []
+#    for fkey in mesh.faces():
+#        face = [vertices_dict[vkey] for vkey in mesh.face_vertices(fkey)]
+#        cell.append(face)
+#    cells.append(cell)
     
-forcediagram = ForceVolMesh.from_vertices_and_cells(vertices, cells)
+#forcediagram = ForceVolMesh.from_vertices_and_cells(vertices, cells)
 
 force_layer = 'force_volmesh'
 forcediagram.layer = force_layer
@@ -72,6 +76,8 @@ form_layer = 'form_network'
 formdiagram       = volmesh_dual_network(forcediagram, cls=FormNetwork)
 formdiagram.layer = form_layer
 formdiagram.attributes['name'] = form_layer
+
+print(formdiagram)
 
 # transform dual_network and visualise it
 x_move = formdiagram.bounding_box()[0] * 2

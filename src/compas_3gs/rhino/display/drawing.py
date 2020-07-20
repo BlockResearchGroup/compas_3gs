@@ -30,7 +30,7 @@ from compas_3gs.utilities import get_force_mags
 from compas_3gs.utilities import get_force_colors_uv
 from compas_3gs.utilities import get_force_colors_hf
 
-from compas_3gs.datastructures import VolMesh3gsArtist
+from compas_3gs.rhino.artist import VolMesh3gsArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -641,7 +641,7 @@ def draw_directed_uv(datastructure,
                             layer=datastructure.layer,
                             clear=False,
                             redraw=False)
-
+  
 
 def draw_directed_hf_and_uv(volmesh,
                             datastructure,

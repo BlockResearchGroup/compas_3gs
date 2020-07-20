@@ -3,10 +3,12 @@ unload_modules("compas")
 
 import compas
 
-from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
-
 from compas_3gs.diagrams import FormNetwork
 from compas_3gs.diagrams import ForceVolMesh
+
+
+from compas_rhino.geometry import RhinoSurface
+from compas_3gs.diagrams import Cell 
 
 from compas_3gs.algorithms import volmesh_dual_network
 from compas_3gs.algorithms import volmesh_reciprocate
@@ -17,54 +19,51 @@ from compas_3gs.rhino import draw_compression_tension
 from compas_3gs.rhino import draw_network_external_forces
 from compas_3gs.rhino import draw_network_internal_forces
 
+from compas_3gs.rhino import Mesh3gsArtist, VolMesh3gsArtist
+
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
+
+# select the polysurface which you create in Rhino
+guid = rs.GetObject("select a closed polysurface", filter=rs.filter.polysurface)
+# turn Rhino polysurface to a COMPAS single polyhedral cell
+cell = RhinoSurface.from_guid(guid).brep_to_compas(cls=Cell())
+rs.HideObjects(guid)
+
+# draw the polyhedral cell
+layer = 'cell' 
+cellartist = Mesh3gsArtist(cell, layer=layer)
+cellartist.draw()
+cellartist.redraw()
+
+from compas_3gs.operations import check_cell_convexity
+print(check_cell_convexity(cell))
+
+print(cell)
+#================== cell_cut_face_subdiv ==================
+def rhino_cell_face_subdivide_barycentric(cell):
+    from compas_rhino.selectors import volmesh_select_face
+    from compas_3gs.operations import cell_face_subdivide_barycentric
+    fkey = volmesh_select_face(cell)
+    volmesh = cell_face_subdivide_barycentric(cell, fkey)
+    return volmesh
+    
+volmesh = rhino_cell_face_subdivide_barycentric(cell)
 
 
-# ------------------------------------------------------------------------------
-# 1. make vomesh from rhino polysurfaces
-# ------------------------------------------------------------------------------
-layer = 'force_volmesh'
+cellartist.clear()
+cellsartist = VolMesh3gsArtist(volmesh, layer=layer)
+cellsartist.draw_vertexlabels()
+cellsartist.draw()
+cellsartist.redraw()
 
-guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
-rs.HideObjects(guids)
-
-forcediagram       = ForceVolMesh()
-forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
-forcediagram.layer = layer
-forcediagram.attributes['name'] = layer
-
-
-forcediagram.draw(layer=layer)
-
-
-# ------------------------------------------------------------------------------
-# 2. make dual network (form diagram)
-# ------------------------------------------------------------------------------
-layer = 'form_network'
-
-formdiagram       = volmesh_dual_network(forcediagram, cls=FormNetwork)
-formdiagram.layer = layer
-formdiagram.attributes['name'] = layer
-
-x_move = formdiagram.bounding_box()[0] * 2
-for vkey in formdiagram.node:
-    formdiagram.node[vkey]['x'] += x_move
-
-volmesh_reciprocate(forcediagram,
-                    formdiagram,
-                    kmax=1000,
-                    weight=1,
-                    edge_min=0.5,
-                    edge_max=20,
-                    tolerance=0.01)
-
-formdiagram.draw(layer=layer)
+print(list(volmesh.vertices()))
+print(list(volmesh.cells()))
+print(list(volmesh.cell_halffaces(0)))
+print(list(volmesh.cell_halffaces(1)))
+print(list(volmesh.cell_halffaces(2)))
+print(list(volmesh.cell_halffaces(3)))

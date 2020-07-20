@@ -10,6 +10,7 @@ import compas
 from compas_rhino.geometry import RhinoSurface
 from compas_3gs.diagrams import Cell
 from compas_3gs.rhino import rhino_cell_face_pull
+
 from compas_3gs.datastructures import Mesh3gsArtist
 
 
@@ -37,7 +38,7 @@ cell = RhinoSurface.from_guid(guid).brep_to_compas(cls=Cell())
 # draw the polyhedral cell
 layer = 'cell' 
 cellartist = Mesh3gsArtist(cell, layer=layer)
-cellartist.draw()  
+cellartist.draw()
 # hide Rhino polysurface
 rs.HideObjects(guid)
 
