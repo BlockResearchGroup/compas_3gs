@@ -6,7 +6,7 @@ import compas
 
 import compas_rhino
 
-from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
+from compas_rhino.utilities import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import FormNetwork
 from compas_3gs.diagrams import ForceVolMesh

@@ -56,7 +56,7 @@ for index, line in enumerate(lines):
 #   2. egi
 # ------------------------------------------------------------------------------
 # construct EGI from a set of equilibrated forces
-egi = egi_from_vectors(vectors, origin) 
+egi = egi_from_vectors(vectors, origin)
 
 # draw vertex labels
 egi_vertex_colordict = {}
@@ -87,7 +87,6 @@ rs.GetString('EGI created ... Press Enter to generate unit cell ... ')
 cell = cell_from_egi(egi)
 cellartist = Mesh3gsArtist(cell, layer='cell')
 cellartist.draw_faces(color=egi_vertex_colordict)
-print([cell.face_vertices(fkey) for fkey in cell.faces()])
 
 # pause
 rs.EnableRedraw(True)
@@ -102,7 +101,6 @@ conduit = MeshConduit(cell)
 
 
 def callback(cell, k, args):
-    print('iteration times', k)
     if k % 10:
         conduit.redraw()
 
@@ -122,10 +120,7 @@ collapse_edge_length = rs.GetReal("Collapse edge length?", number=0.1)
 # clean the EGI and cell data
 egiartist.clear()
 cellartist.clear()
-print(lines)
-print('egi', egi_arcs)
 rs.HideObject(egi_arcs)   # CANNOT HIDE??!!
-print(rs.HideObject(egi_arcs))
 
 # planarise cell faces
 with conduit.enabled():
@@ -172,10 +167,6 @@ for fkey in vectors:
                               'color': colordict[fkey]})
 draw_labels(final_face_labels)
 
-print([cell.face_vertices(fkey) for fkey in cell.faces()])
-for key in cell.vertices():
-    print(cell.vertex_coordinates(key))
-    
 # draw cell geometry
 cellartist.draw_vertices()
 #for fkey in target_areas:

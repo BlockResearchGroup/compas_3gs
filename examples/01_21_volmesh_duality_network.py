@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
+from compas_rhino.utilities import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import ForceVolMesh, FormNetwork
 from compas_3gs.algorithms import volmesh_dual_network
@@ -64,7 +64,7 @@ for vkey in dual_network.node:
 
 
 # draw directed volmesh halffaces and directed dual_volmesh edges
-# the corresponding halfface in the volmesh (force diagram) and 
+# the corresponding halfface in the volmesh (force diagram) and
 # edges in the dual_network (form diagram) are of the same color
 uv_c_dict = get_index_colordict(list(dual_network.edges()))
 face_normal_scale = 1.0
