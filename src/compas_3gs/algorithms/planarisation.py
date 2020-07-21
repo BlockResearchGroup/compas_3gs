@@ -55,7 +55,6 @@ def cell_planarise(cell,
                    callback_args=None,
 
                    print_result_info=False):
-
     """Planarise the faces of a cell.
 
     Planarisation of a cell is implemented as a three-step iterative procedure.
@@ -122,6 +121,7 @@ def cell_planarise(cell,
     #   2. loop
     # --------------------------------------------------------------------------
     for k in range(kmax):
+
         deviation_flat = 0
         deviation_area = 0
         deviation_perp = 0
@@ -202,14 +202,13 @@ def cell_planarise(cell,
             # collect new coordinates
             for i in range(len(f_vkeys)):
                 new_xyz[f_vkeys[i]].append(scaled_face[i])
-                
 
         # ----------------------------------------------------------------------
         #   5. compute new cell vertex coordinates
         # ----------------------------------------------------------------------
         for vkey in free_vkeys:
             final_xyz = centroid_points(new_xyz[vkey])
-            cell.vertex_attributes(vkey, 'xyz', final_xyz)
+            cell.vertex_update_xyz(vkey, final_xyz)
 
         for u, v in cell.edges():
             cell_collapse_short_edge(cell,
@@ -416,7 +415,7 @@ def volmesh_planarise(volmesh,
         # ----------------------------------------------------------------------
         for vkey in free_vkeys:
             final_xyz = centroid_points(new_xyz[vkey])
-            volmesh.vertex_attributes(vkey, 'xyz', final_xyz)
+            volmesh.vertex_update_xyz(vkey, final_xyz)
 
         # ----------------------------------------------------------------------
         #   6. check convergence

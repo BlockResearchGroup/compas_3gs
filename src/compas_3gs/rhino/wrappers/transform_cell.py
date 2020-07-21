@@ -11,7 +11,7 @@ from compas.geometry import intersection_line_plane
 
 from compas.utilities import i_to_rgb
 
-from compas_rhino.selectors import FaceSelector
+from compas_rhino.helpers import mesh_select_face
 
 from compas_3gs.operations import cell_split_indet_face_vertices
 from compas_3gs.operations import cell_relocate_face
@@ -19,8 +19,6 @@ from compas_3gs.operations import cell_relocate_face
 from compas_3gs.utilities import polygon_normal_oriented
 from compas_3gs.utilities import polygon_area_oriented
 from compas_3gs.utilities import datastructure_centroid
-
-from compas_3gs.rhino.artist import Mesh3gsArtist
 
 from compas_3gs.rhino import get_target_point
 
@@ -67,12 +65,10 @@ def rhino_cell_face_pull(cell):
     # --------------------------------------------------------------------------
     #  1. pick face
     # --------------------------------------------------------------------------
-    cell_artist = Mesh3gsArtist(cell)
-    cell_artist.draw()
-    face = FaceSelector.select_face(cell)
+    cell.draw()
+    face = mesh_select_face(cell)
     cell_split_indet_face_vertices(cell, face)
-    cell_artist.clear()
-
+    cell.clear()
 
     # --------------------------------------------------------------------------
     #  2. face data
@@ -197,8 +193,7 @@ def rhino_cell_face_pull(cell):
     # --------------------------------------------------------------------------
     cell_relocate_face(cell, face, gp, f_normal)
 
-    cell_artist.draw()
-    # cell.draw()
+    cell.draw()
 
 
 # ******************************************************************************

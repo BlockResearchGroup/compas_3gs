@@ -151,6 +151,5 @@ from __future__ import print_function
 from .control import *
 from .display import *
 from .wrappers import *
-from .artist import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]
