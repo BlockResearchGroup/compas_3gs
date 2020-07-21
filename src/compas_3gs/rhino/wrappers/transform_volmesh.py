@@ -14,10 +14,10 @@ from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
 from compas.utilities import i_to_rgb
 
-from compas_rhino.objects.selectors import volmesh_select_vertex
-from compas_rhino.objects.selectors import volmesh_select_vertices
-from compas_rhino.objects.selectors import volmesh_select_face
-from compas_rhino.objects.selectors import volmesh_select_faces
+from compas_rhino.selectors import volmesh_select_vertex
+from compas_rhino.selectors import volmesh_select_vertices
+from compas_rhino.selectors import volmesh_select_face
+from compas_rhino.selectors import volmesh_select_faces
 
 from compas_3gs.operations import volmesh_vertex_merge
 from compas_3gs.operations import volmesh_vertex_lift
@@ -323,7 +323,7 @@ def rhino_volmesh_pull_boundary_faces(volmesh, volmeshartist, uniform=False):
     # --------------------------------------------------------------------------
     new_xyz = _volmesh_compute_dependent_face_intersections(volmesh, hfkey, gp, target_normal)
     print(new_xyz)
-
+    
     for key in new_xyz:
         coordinates = new_xyz[key]
         volmesh.vertex_update_xyz(key, coordinates, constrained=False)

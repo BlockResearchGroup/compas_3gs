@@ -1,4 +1,4 @@
-from compas_rhino import unload_modules
+from compas_rhino import unload_modules  
 unload_modules("compas")
 
 import compas
@@ -8,7 +8,7 @@ from compas_3gs.diagrams import ForceVolMesh
 
 
 from compas_rhino.geometry import RhinoSurface
-from compas_3gs.diagrams import Cell
+from compas_3gs.diagrams import Cell 
 
 from compas_3gs.algorithms import volmesh_dual_network
 from compas_3gs.algorithms import volmesh_reciprocate
@@ -35,7 +35,7 @@ cell = RhinoSurface.from_guid(guid).brep_to_compas(cls=Cell())
 rs.HideObjects(guid)
 
 # draw the polyhedral cell
-layer = 'cell'
+layer = 'cell' 
 cellartist = Mesh3gsArtist(cell, layer=layer)
 cellartist.draw()
 cellartist.redraw()
@@ -46,12 +46,12 @@ print(check_cell_convexity(cell))
 print(cell)
 #================== cell_cut_face_subdiv ==================
 def rhino_cell_face_subdivide_barycentric(cell):
-    from compas_rhino.objects.selectors import volmesh_select_face
+    from compas_rhino.selectors import volmesh_select_face
     from compas_3gs.operations import cell_face_subdivide_barycentric
     fkey = volmesh_select_face(cell)
     volmesh = cell_face_subdivide_barycentric(cell, fkey)
     return volmesh
-
+    
 volmesh = rhino_cell_face_subdivide_barycentric(cell)
 
 

@@ -6,7 +6,7 @@ import compas
 
 from compas.geometry import add_vectors
 
-from compas_rhino.objects.selectors import VertexSelector
+from compas_rhino.selectors import VertexSelector
 
 from compas_3gs.rhino.control import get_initial_point
 

@@ -8,7 +8,7 @@ from compas_rhino import unload_modules
 unload_modules("compas")
 
 from compas_rhino.geometry import RhinoSurface
-from compas_rhino.objects.selectors import VertexSelector
+from compas_rhino.selectors import VertexSelector
 from compas.utilities import i_to_red
 
 from compas_3gs.diagrams import ForceVolMesh
@@ -57,7 +57,7 @@ for guid in guids:
         face = [vertices_dict[vkey] for vkey in mesh.face_vertices(fkey)]
         cell.append(face)
     cells.append(cell)
-
+    
 forcediagram = ForceVolMesh.from_vertices_and_cells(vertices, cells)
 
 force_layer = 'force_volmesh'
@@ -104,7 +104,7 @@ def callback(forcediagram, k, args):
 # planarise
 with conduit.enabled():
     volmesh_planarise(forcediagram,
-                      kmax=1000,
+                      kmax=2000,
                       fix_vkeys=vkeys,
                       fix_boundary_normals=False,
                       tolerance_flat=0.01,
@@ -112,5 +112,5 @@ with conduit.enabled():
                       print_result_info=True)
 
 # update / redraw
-#forcediagram.draw()
+#forcediagram.draw() 
 bake_cells_as_polysurfaces(forcediagram)

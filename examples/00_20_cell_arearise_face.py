@@ -13,7 +13,7 @@ from compas.geometry import dot_vectors
 from compas.utilities import i_to_blue
 
 from compas_rhino.geometry import RhinoSurface
-from compas_rhino.objects.selectors import FaceSelector
+from compas_rhino.selectors import FaceSelector
 
 from compas_3gs.algorithms import cell_arearise_face
 from compas_3gs.diagrams import Cell
@@ -43,7 +43,7 @@ guid = rs.GetObject("select a closed polysurface", filter=rs.filter.polysurface)
 cell = RhinoSurface.from_guid(guid).brep_to_compas(cls=Cell())
 
 # draw the polyhedral cell
-layer = 'cell'
+layer = 'cell' 
 cellartist = Mesh3gsArtist(cell, layer=layer)
 cellartist.draw()
 # hide Rhino polysurface
@@ -69,7 +69,7 @@ target_area = rs.GetReal("Enter target area", number=area)
 # conduit
 conduit = MeshConduit(cell, refreshrate=1)
 
-
+    
 def callback(cell, args=None):
     current_area = cell.face_area(fkey)
     color  = i_to_blue(abs(current_area - target_area) / target_area)
@@ -90,7 +90,7 @@ with conduit.enabled():
 new_area   = cell.face_area(fkey)
 new_normal = cell.face_normal(fkey)
 
-# WHAT IS THIS FOR? NEW AREA SHOULD ANYWAY BE BIGGER THAN 0?
+# WHAT IS THIS FOR? NEW AREA SHOULD ANYWAY BE BIGGER THAN 0? 
 if dot_vectors(normal, new_normal) < 0:
     new_area *= -1
 
@@ -110,7 +110,7 @@ if abs(new_area - target_area) > 1:
 # ------------------------------------------------------------------------------
 #   5. Draw result
 # ------------------------------------------------------------------------------
-new_layer = 'arearised_cell'
+new_layer = 'arearised_cell' 
 new_cellartist = Mesh3gsArtist(cell, layer=new_layer)
 new_cellartist.draw()
 

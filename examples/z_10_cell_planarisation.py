@@ -6,7 +6,7 @@ import compas
 
 from compas.utilities import i_to_red
 
-from compas_rhino.utilities import mesh_from_surface
+from compas_rhino.geometry._constructors import mesh_from_surface
 
 from compas_3gs.algorithms import volmesh_planarise
 

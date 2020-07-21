@@ -10,7 +10,7 @@ unload_modules("compas")
 from compas.utilities import i_to_blue
 
 from compas_rhino.geometry import RhinoSurface
-from compas_rhino.objects.selectors import volmesh_select_faces
+from compas_rhino.selectors import volmesh_select_faces
 
 from compas_3gs.algorithms import volmesh_planarise
 from compas_3gs.diagrams import ForceVolMesh
@@ -55,7 +55,7 @@ for guid in guids:
         face = [vertices_dict[vkey] for vkey in mesh.face_vertices(fkey)]
         cell.append(face)
     cells.append(cell)
-
+    
 forcediagram = ForceVolMesh.from_vertices_and_cells(vertices, cells)
 
 force_layer = 'force_volmesh'
