@@ -5,7 +5,7 @@ from __future__ import division
 import ast
 import compas
 
-from compas_rhino.helpers import volmesh_select_faces
+from compas_rhino.selectors import volmesh_select_faces
 
 try:
     import rhinoscriptsyntax as rs

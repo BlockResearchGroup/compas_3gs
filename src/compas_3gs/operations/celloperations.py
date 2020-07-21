@@ -23,7 +23,8 @@ __all__ = ['cell_split_indet_face_vertices',
 
            'cell_relocate_face',
            'cell_face_subdivide_barycentric',
-           'cell_merge_coplanar_adjacent_faces']
+           'cell_merge_coplanar_adjacent_faces',
+           'check_cell_convexity']
 
 
 # ******************************************************************************
@@ -127,8 +128,8 @@ def cell_collapse_short_edge(cell, u, v, min_length=0.1):
 
     if dist < min_length:
         mp = midpoint_point_point(sp, ep)
-        cell.vertex_update_xyz(u, mp)
-        cell.vertex_update_xyz(v, mp)
+        cell.vertex_attributes(u, 'xyz', mp)
+        cell.vertex_attributes(v, 'xyz', mp)
 
     return cell
 
@@ -237,8 +238,84 @@ def cell_merge_coplanar_adjacent_faces(cell, tol=0.001):
     return cell
 
 
-def cell_face_subdivide_barycentric(cell, fkey):
+def cell_face_subdivide_barycentric(cell, fkey, cls=None):
+    # the cell should be a tetrahedral / pyramid shape polyhedron? 
+    from compas_3gs.datastructures import VolMesh3gs
+    if cls is None:
+        cls = VolMesh3gs()
+
+    f_center = cell.face_centroid(fkey) 
+    print(f_center, 'face_center')
+    vertices_dict = {}
+    vertices = []
+    for vkey in cell.vertices():
+        if cell.vertex_coordinates(vkey) not in vertices:
+            vertices_dict[vkey] = len(vertices)
+            vertices.append(cell.vertex_coordinates(vkey))
+        else:
+            vertices_dict[vkey] = vertices.index(cell.vertex_coordinates(vkey))
+
+    f_center_key = len(vertices)  # vertex key of the face center
+    vertices.append(f_center)
+
+    print(len(vertices))
+
+    cells = []
+    descendant = {i: j for i, j in cell.face_halfedges(fkey)}
+    # ancestor = {j: i for i, j in cell.face_halfedges(fkey)}
+
+    f_vkeys = cell.face_vertices(fkey)
+    other_vkeys = [vkey for vkey in cell.vertices() if vkey not in f_vkeys]
+    print(other_vkeys)
+
+    if len(other_vkeys) == 1:
+        end_key = other_vkeys[0]
+        for vkey in f_vkeys:
+            d = descendant[vkey]
+            face_1 = [vertices_dict[vkey], vertices_dict[d], f_center_key]
+            face_2 = [vertices_dict[d], vertices_dict[vkey], vertices_dict[end_key]]
+            face_3 = [vertices_dict[vkey], f_center_key, vertices_dict[end_key]]
+            face_4 = [f_center_key, vertices_dict[d], vertices_dict[end_key]]
+            cell = [face_1, face_2, face_3, face_4]
+            cells.append(cell)
+
+    print(cells)
+    return cls.from_vertices_and_cells(vertices, cells)
+
+
+def check_cell_convexity(cell):
+    """cell: mesh / mesh3gs
+    check the convexity of the cell
+    check that all the other vertices lie on the same side of that face.
+    by calculating the face normal vector and computing the dot-product for each vector from one vertex on the face to all the others
+    The signs must be the same.
+
+    """
+    import compas.geometry as cg
+    vkeys = cell.vertices()
+    for fkey in cell.faces():
+        f_normal = cell.face_normal(fkey)
+        f_vkeys = cell.face_vertices(fkey)
+        f_v_xyz = cell.vertex_coordinates(f_vkeys[0]) # one vertex on the face
+        other_vkeys = [vkey for vkey in vkeys if vkey not in f_vkeys]
+        for i, v in enumerate(other_vkeys):
+            v_xyz = cell.vertex_coordinates(f_vkeys[v])
+            vec = cg.Vector.from_start_end(f_v_xyz, v_xyz)
+            dot = dot_vectors(f_normal, vec)
+            if i == 0:
+                dot_0 = dot
+            else:
+                if dot_0 * dot < 0:
+                    return "This is not a convex cell."
+    print("This is a convex cell.")
+    return True
+
+
+def cells_face_subdivide_barycentric(cell, fkey, cls=None):
+    """Volmesh face subdivision
+    """
     raise NotImplementedError
+
 
 
 # ******************************************************************************

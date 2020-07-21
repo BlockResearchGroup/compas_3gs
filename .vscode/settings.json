@@ -1,3 +1,4 @@
 {
-    "restructuredtext.confPath": "${workspaceFolder}/docsource/conf.py"
+    "restructuredtext.confPath": "${workspaceFolder}/docsource/conf.py",
+    "python.pythonPath": "C:\\Users\\duch\\Anaconda3\\envs\\compas-dev\\python.exe"
 }

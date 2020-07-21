@@ -41,13 +41,14 @@ def volmesh_reciprocate(volmesh,
                         callback_args=None,
 
                         print_result_info=False):
+                        
     """Perpendicularizes the faces of the polyhedral force diagram to the corresponding dual edges in the polyhedral form diagram.
 
     Parameters
     ----------
     volmesh : VolMesh
         A volmesh object representing a polyhedral force diagram.
-    formdiagram : VolMesh or Network
+    formdiagram : Network (VolMesh doesn't work...)
         A network object representing a polyhedral form diagram.
     kmax : int, optional [100]
         Maximum number of iterations.
@@ -86,12 +87,13 @@ def volmesh_reciprocate(volmesh,
         if not callable(callback):
             raise Exception('Callback is not callable.')
 
-    free_vkeys   = list(set(formdiagram.vertex) - set(fix_vkeys))
+    free_vkeys   = list(set(formdiagram.nodes()) - set(fix_vkeys))
+    print(free_vkeys)
 
     init_normals = {fkey: volmesh.halfface_normal(fkey) for fkey in volmesh.faces()}
 
     boundary_fkeys  = volmesh.halffaces_on_boundary()
-
+    print(boundary_fkeys)
     # --------------------------------------------------------------------------
     #   1. compute target vectors
     # --------------------------------------------------------------------------
@@ -114,55 +116,60 @@ def volmesh_reciprocate(volmesh,
     #   2. loop
     # --------------------------------------------------------------------------
     for k in range(kmax):
-
+        print('iter', k)
         deviation_boundary_perp = 0
 
         # ----------------------------------------------------------------------
         #   3. update form diagram
         # ----------------------------------------------------------------------
         if weight != 0:
-
-            new_form_xyz = {vkey: [] for vkey in formdiagram.vertex}
-
+            new_form_xyz = {vkey: [] for vkey in formdiagram.nodes()}
             for u, v in target_vectors:
                 target_v = target_vectors[(u, v)]['target']
-                edge_v   = formdiagram.edge_vector(u, v, unitized=False)
-
+                edge_v   = formdiagram.edge_vector(u, v)
+                print(target_v, edge_v)
+                print(formdiagram.edge_attributes([u,v]))
                 # target edge length -------------------------------------------
                 l = length_vector(edge_v)
 
                 # min edge
-                l_min = formdiagram.edge[u][v]['l_min']
+                l_min = formdiagram.edge_attribute([u, v], 'l_min')
+                print(l_min)
                 if edge_min:
                     l_min = edge_min
                 if l < l_min:
                     l = l_min
 
                 # max edge
-                l_max = formdiagram.edge[u][v]['l_max']
+                l_max = formdiagram.edge_attribute([u, v], 'l_max')
+                print(l_max)
                 if edge_max:
                     l_max = edge_max
                 if l > l_max:
                     l = l_max
-
+                print("text_-1")
                 # check edge orientation ---------------------------------------
                 direction = _get_lambda(edge_v, target_v)
                 l *= direction
-
+                print("text_0")
                 # collect new coordinates --------------------------------------
                 if u in free_vkeys:
-                    new_u_xyz = add_vectors(formdiagram.vertex_coordinates(v), scale_vector(target_v, -1 * l))
+                    new_u_xyz = add_vectors(formdiagram.node_coordinates(v), scale_vector(target_v, -1 * l))
                     new_form_xyz[u].append(new_u_xyz)
 
                 if v in free_vkeys:
-                    new_v_xyz = add_vectors(formdiagram.vertex_coordinates(u), scale_vector(target_v, l))
+                    new_v_xyz = add_vectors(formdiagram.node_coordinates(u), scale_vector(target_v, l))
                     new_form_xyz[v].append(new_v_xyz)
-
+            print("text_1")
+            print(new_form_xyz)
             # compute new vertex coordinates -----------------------------------
             for vkey in free_vkeys:
+                print(free_vkeys)
+                print(vkey)
                 final_xyz = centroid_points(new_form_xyz[vkey])
-                formdiagram.vertex_update_xyz(vkey, final_xyz)
-
+                print(final_xyz)
+                formdiagram.node_attributes(vkey, 'xyz', final_xyz)
+                print("test_2")
         # ----------------------------------------------------------------------
         #   4. update force diagram
         # ----------------------------------------------------------------------

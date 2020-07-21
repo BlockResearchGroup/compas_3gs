@@ -4,22 +4,18 @@ from __future__ import division
 
 import compas
 
-from compas.geometry import add_vectors
-from compas.geometry import centroid_points
-from compas.geometry import midpoint_point_point
-from compas.geometry import subtract_vectors
+from compas_rhino import unload_modules
+unload_modules('compas')
 
-from compas_rhino.utilities import draw_labels
-from compas_rhino.utilities import draw_lines
+from compas.geometry import add_vectors, centroid_points, midpoint_point_point, subtract_vectors
 
-from compas_3gs.algorithms import egi_from_vectors
-from compas_3gs.algorithms import cell_planarise
-from compas_3gs.algorithms import cell_from_egi
+from compas_rhino.geometry import RhinoSurface
+from compas_rhino.utilities import draw_labels, draw_lines
 
-from compas_3gs.rhino import draw_egi_arcs
-from compas_3gs.rhino import MeshConduit
-
+from compas_3gs.algorithms import egi_from_vectors, cell_planarise, cell_from_egi
+from compas_3gs.rhino import draw_egi_arcs, MeshConduit
 from compas_3gs.utilities import get_index_colordict
+from compas_3gs.datastructures import Mesh3gsArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -36,9 +32,13 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 #   1. get force vectors
 # ------------------------------------------------------------------------------
+
+# select external force vectors in equilibrium
 lines  = rs.GetObjects("Select force vectors in equilibrium", preselect=True, filter=rs.filter.curve)
+# select the origin / node of the structure
 origin = rs.GetPoint("Pick origin")
 
+# save force data in dictionaries
 midpts       = {}
 vectors      = {}
 target_areas = {}
@@ -55,20 +55,25 @@ for index, line in enumerate(lines):
 # ------------------------------------------------------------------------------
 #   2. egi
 # ------------------------------------------------------------------------------
-egi = egi_from_vectors(vectors, origin)
+# construct EGI from a set of equilibrated forces
+egi = egi_from_vectors(vectors, origin) 
 
+# draw vertex labels
 egi_vertex_colordict = {}
 for vkey in egi.vertex:
-    color = (0, 0, 0)
+    # the intersection point of adjacent arcs is in red color
     if egi.vertex[vkey]['type'] == 'zero':
         color = (255, 0, 0)
+    # the point mass of EGI is in black color
+    else:
+        color = (0, 0, 0)
     egi_vertex_colordict[vkey] = color
 
-# draw egi vertex labels and edgees as arcs
-rs.AddLayer('egi')
+egiartist = Mesh3gsArtist(egi, layer='egi')
+egiartist.draw_vertexlabels(color=egi_vertex_colordict)
 
-egi.draw_vertexlabels(color=egi_vertex_colordict)
-draw_egi_arcs(egi)
+# draw edgees as arcs
+egi_arcs = draw_egi_arcs(egi)
 
 # pause
 rs.EnableRedraw(True)
@@ -78,9 +83,11 @@ rs.GetString('EGI created ... Press Enter to generate unit cell ... ')
 # ------------------------------------------------------------------------------
 #   3. unit polyhedron
 # ------------------------------------------------------------------------------
-rs.AddLayer('cell')
+# generate polyhedral cell from EGI, the face colors are the same as corresponding vertex colors
 cell = cell_from_egi(egi)
-cell.draw_faces(color=egi_vertex_colordict)
+cellartist = Mesh3gsArtist(cell, layer='cell')
+cellartist.draw_faces(color=egi_vertex_colordict)
+print([cell.face_vertices(fkey) for fkey in cell.faces()])
 
 # pause
 rs.EnableRedraw(True)
@@ -90,12 +97,12 @@ rs.GetString('Zero faces are shown in red ... Press Enter to arearise cell faces
 # ------------------------------------------------------------------------------
 #   4. arearise cell faces
 # ------------------------------------------------------------------------------
-
 # conduit
 conduit = MeshConduit(cell)
 
 
 def callback(cell, k, args):
+    print('iteration times', k)
     if k % 10:
         conduit.redraw()
 
@@ -112,9 +119,15 @@ for fkey in cell.faces():
 
 collapse_edge_length = rs.GetReal("Collapse edge length?", number=0.1)
 
-egi.clear()
-cell.clear()
+# clean the EGI and cell data
+egiartist.clear()
+cellartist.clear()
+print(lines)
+print('egi', egi_arcs)
+rs.HideObject(egi_arcs)   # CANNOT HIDE??!!
+print(rs.HideObject(egi_arcs))
 
+# planarise cell faces
 with conduit.enabled():
     cell_planarise(cell,
                    kmax=2000,
@@ -128,6 +141,7 @@ with conduit.enabled():
 # ------------------------------------------------------------------------------
 #   5. draw results
 # ------------------------------------------------------------------------------
+# hide external force vectors
 rs.HideObjects(lines)
 
 # get index colors
@@ -158,7 +172,25 @@ for fkey in vectors:
                               'color': colordict[fkey]})
 draw_labels(final_face_labels)
 
+print([cell.face_vertices(fkey) for fkey in cell.faces()])
+for key in cell.vertices():
+    print(cell.vertex_coordinates(key))
+    
 # draw cell geometry
+cellartist.draw_vertices()
+#for fkey in target_areas:
+#    if target_areas[fkey] != 0:
+#        cellartist.draw_faces(keys=[fkey])
+
+import compas.geometry as cg
 for fkey in target_areas:
     if target_areas[fkey] != 0:
-        cell.draw_faces(keys=[fkey])
+        # delete duplicate vertex in the face
+        original_fkeys =cell.face_vertices(fkey)
+        for i, key in enumerate(cell.face_vertices(fkey)):
+            key_pre = cell.face_vertices(fkey)[i-1]
+            coor_pre = cell.vertex_coordinates(key_pre)
+            coor_now = cell.vertex_coordinates(key)
+            if cg.distance_point_point(coor_pre, coor_now) == 0:
+                del original_fkeys[i]
+        cellartist.draw_faces(keys=[fkey])

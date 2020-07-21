@@ -9,9 +9,6 @@ from compas.geometry import normalize_vector
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 
-from compas_rhino.helpers.volmesh import volmesh_draw
-from compas_rhino.artists import VolMeshArtist
-
 from compas_3gs.utilities import polygon_normal_oriented
 from compas_3gs.utilities import polygon_area_oriented
 
@@ -22,7 +19,7 @@ __license__   = 'MIT License'
 __email__     = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['VolMesh3gs']
+__all__ = ['VolMesh3gs',]
 
 
 class VolMesh3gs(VolMesh):
@@ -227,49 +224,8 @@ class VolMesh3gs(VolMesh):
     def clean(self):
         pass
 
-    # --------------------------------------------------------------------------
-    # drawing
-    # --------------------------------------------------------------------------
 
-    def draw(self, **kwattr):
-        volmesh_draw(self, layer=self.layer)
 
-    def clear(self):
-        artist = VolMeshArtist(self)
-        # self.clear_cell_labels()
-        artist.clear()
-
-    def draw_edges(self, **kwattr):
-        artist = VolMeshArtist(self, **kwattr)
-        artist.draw_edges(**kwattr)
-
-    def clear_edges(self, **kwattr):
-        artist = VolMeshArtist(self, **kwattr)
-        artist.clear_edges(**kwattr)
-
-    def draw_faces(self, **kwattr):
-        artist = VolMeshArtist(self)
-        artist.draw_faces(**kwattr)
-
-    def clear_faces(self, **kwattr):
-        artist = VolMeshArtist(self)
-        artist.clear_faces(**kwattr)
-
-    def draw_face_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
-        artist.draw_facelabels(**kwattr)
-
-    def draw_vertices(self, **kwattr):
-        artist = VolMeshArtist(self)
-        artist.draw_vertices(**kwattr)
-
-    def draw_vertex_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
-        artist.draw_vertexlabels(**kwattr)
-
-    def draw_edge_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
-        artist.draw_edgelabels(**kwattr)
 
 
 # ******************************************************************************
