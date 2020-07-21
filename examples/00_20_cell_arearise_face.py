@@ -6,20 +6,20 @@ import time
 
 import compas
 
-from compas_rhino import unload_modules
-unload_modules('compas')
-
 from compas.geometry import dot_vectors
+
 from compas.utilities import i_to_blue
 
-from compas_rhino.geometry import RhinoSurface
-from compas_rhino.selectors import FaceSelector
+from compas_rhino.helpers import mesh_from_surface
+from compas_rhino.helpers import mesh_select_face
 
 from compas_3gs.algorithms import cell_arearise_face
+
 from compas_3gs.diagrams import Cell
+
 from compas_3gs.operations import cell_relocate_face
+
 from compas_3gs.rhino import MeshConduit
-from compas_3gs.datastructures import Mesh3gsArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -37,45 +37,44 @@ __email__      = 'juney.lee@arch.ethz.ch'
 # ------------------------------------------------------------------------------
 #   1. make cell from rhino polysurfaces
 # ------------------------------------------------------------------------------
-# select the polysurface which you create in Rhino
-guid = rs.GetObject("select a closed polysurface", filter=rs.filter.polysurface)
-# turn Rhino polysurface to a COMPAS single polyhedral cell
-cell = RhinoSurface.from_guid(guid).brep_to_compas(cls=Cell())
+layer = 'cell'
 
-# draw the polyhedral cell
-layer = 'cell' 
-cellartist = Mesh3gsArtist(cell, layer=layer)
-cellartist.draw()
-# hide Rhino polysurface
+guid = rs.GetObject("select a closed polysurface", filter=rs.filter.polysurface)
 rs.HideObjects(guid)
 
+cell = mesh_from_surface(Cell, guid)
+cell.draw()
 
 # ------------------------------------------------------------------------------
 #   2. Target area
 # ------------------------------------------------------------------------------
-# select a mesh face and get its face key, area, center point and normal vector
-fkey   = FaceSelector.select_face(cell)
+fkey   = mesh_select_face(cell)
+
 area   = cell.face_area(fkey)
 center = cell.face_centroid(fkey)
 normal = cell.face_normal(fkey)
 
-# input target area value, current face area is shown as a reference
 target_area = rs.GetReal("Enter target area", number=area)
 
 
 # ------------------------------------------------------------------------------
 #   3. Arearise cell face
 # ------------------------------------------------------------------------------
-# conduit
-conduit = MeshConduit(cell, refreshrate=1)
 
-    
-def callback(cell, args=None):
+# conduit
+conduit = MeshConduit(cell)
+
+
+def callback(cell, args):
+
     current_area = cell.face_area(fkey)
     color  = i_to_blue(abs(current_area - target_area) / target_area)
     conduit.face_colordict = {fkey: color}
+
     time.sleep(0.05)
-    conduit.redraw(k=1)
+
+    conduit.redraw()
+
 
 with conduit.enabled():
     cell_arearise_face(cell,
@@ -89,13 +88,11 @@ with conduit.enabled():
 # ------------------------------------------------------------------------------
 new_area   = cell.face_area(fkey)
 new_normal = cell.face_normal(fkey)
-
-# WHAT IS THIS FOR? NEW AREA SHOULD ANYWAY BE BIGGER THAN 0? 
 if dot_vectors(normal, new_normal) < 0:
     new_area *= -1
 
-# check whether the arearisation succeed
 if abs(new_area - target_area) > 1:
+
     print('===================================================================')
     print('')
     print('Arearisation attempted, but did not converge...')
@@ -103,14 +100,10 @@ if abs(new_area - target_area) > 1:
     print('')
     print('===================================================================')
 
-    # retrieve the origianl mesh face
     cell_relocate_face(cell, fkey, center, normal)
 
 
 # ------------------------------------------------------------------------------
 #   5. Draw result
 # ------------------------------------------------------------------------------
-new_layer = 'arearised_cell' 
-new_cellartist = Mesh3gsArtist(cell, layer=new_layer)
-new_cellartist.draw()
-
+cell.draw()

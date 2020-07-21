@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.geometry._constructors import volmesh_from_polysurfaces
+from compas_rhino.helpers import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import FormNetwork
 from compas_3gs.diagrams import ForceVolMesh
@@ -56,8 +56,8 @@ formdiagram.layer = layer
 formdiagram.attributes['name'] = layer
 
 x_move = formdiagram.bounding_box()[0] * 2
-for vkey in formdiagram.node:
-    formdiagram.node[vkey]['x'] += x_move
+for vkey in formdiagram.vertex:
+    formdiagram.vertex[vkey]['x'] += x_move
 
 volmesh_reciprocate(forcediagram,
                     formdiagram,

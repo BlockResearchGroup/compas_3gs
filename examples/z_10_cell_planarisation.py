@@ -6,9 +6,9 @@ import compas
 
 from compas.utilities import i_to_red
 
-from compas_rhino.geometry._constructors import mesh_from_surface
+from compas_rhino.helpers import mesh_from_surface
 
-from compas_3gs.algorithms import volmesh_planarise
+from compas_3gs.algorithms import mesh_planarise
 
 from compas_3gs.rhino import MeshConduit
 
@@ -62,7 +62,7 @@ def callback(cell, k, args):
 
 
 with conduit.enabled():
-    volmesh_planarise(cell,
+    mesh_planarise(cell,
                    kmax=1000,
                    callback=callback,
                    print_result_info=True)

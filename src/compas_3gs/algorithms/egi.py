@@ -13,7 +13,7 @@ from compas.geometry import cross_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import subtract_vectors
 
-from compas.datastructures.network.duality import network_node_find_first_neighbor
+from compas.datastructures.network.duality import _find_first_neighbor
 
 from compas.utilities import geometric_key
 
@@ -68,14 +68,11 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
 
     Notes
     -----
-    - This algorithm is dependent on Rhinoceros objects; the adjacency arcs are 
-    implemented using Rhino.Geometry.Arc, and the cross-adjacencies (arc-arc 
-    intersections) are computed using Rhino.Geometry.Intersect.Intersection.CurveCurve.
+    This algorithm is dependent on Rhinoceros objects; the adjacency arcs are implemented using Rhino.Geometry.Arc, and the cross-adjacencies (arc-arc intersections) are computed using Rhino.Geometry.Intersect.Intersection.CurveCurve.
 
     Warning
     -------
-    - This algorithm does not address scenarios where multiple parallel (collinear) 
-    vectors are present.
+    - This algorithm does not address scenarios where multiple parallel (collinear) vectors are present.
 
     References
     ----------
@@ -99,7 +96,7 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
         normal     = normalize_vector(vectordict[vkey])
         vertex_xyz = add_vectors(normal, origin)
         vertex_geokeys[geometric_key(normal)] = vkey
-        egi.add_node(x=vertex_xyz[0],
+        egi.add_vertex(x=vertex_xyz[0],
                        y=vertex_xyz[1],
                        z=vertex_xyz[2],
                        key=vkey,
@@ -112,14 +109,15 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
     # --------------------------------------------------------------------------
     vkey_pairs = set()
 
-    for vkey in egi.node:
+    for vkey in egi.vertex:
         v_crs_dict = {}
 
-        for nbr_vkey in egi.node:
+        for nbr_vkey in egi.vertex:
 
             if nbr_vkey is not vkey:
-                n1 = egi.node[vkey]['normal']
-                n2 = egi.node[nbr_vkey]['normal']
+
+                n1 = egi.vertex[vkey]['normal']
+                n2 = egi.vertex[nbr_vkey]['normal']
 
                 # This checks if the normals are opposite ----------------------
                 dot = dot_vectors(n1, n2)
@@ -140,10 +138,10 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
 
                     # If multiple arcs are coplanar, choose the closer one
                     elif crs_gkey in v_crs_dict:
-                        this_dist = distance(egi.node_coordinates(vkey),
-                                             egi.node_coordinates(nbr_vkey))
-                        test_dist = distance(egi.node_coordinates(vkey),
-                                             egi.node_coordinates(v_crs_dict[crs_gkey]))
+                        this_dist = distance(egi.vertex_coordinates(vkey),
+                                             egi.vertex_coordinates(nbr_vkey))
+                        test_dist = distance(egi.vertex_coordinates(vkey),
+                                             egi.vertex_coordinates(v_crs_dict[crs_gkey]))
                         if this_dist < test_dist:
                             del v_crs_dict[crs_gkey]
                             v_crs_dict[crs_gkey] = nbr_vkey
@@ -161,8 +159,8 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
 
     for pair in vkey_pairs:
         u, v = list(pair)
-        arc  = _draw_arc(egi.node[u]['normal'],
-                         egi.node[v]['normal'],
+        arc  = _draw_arc(egi.vertex[u]['normal'],
+                         egi.vertex[v]['normal'],
                          origin)
 
         if len(arcs) == 0:
@@ -187,7 +185,7 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
                     arc_2 = arcs[arckey_2]['arc']
                     intersection = _curve_curve_intx(arc_1, arc_2)
                     if intersection:
-                        new_vkey   = max(int(vkey) for vkey in egi.node.keys()) + 1
+                        new_vkey   = max(int(vkey) for vkey in egi.vertex.keys()) + 1
                         new_normal = subtract_vectors(intersection, origin)
                         new_normal = normalize_vector(new_normal)
                         new_vertex_geokey = geometric_key(new_normal, precision='3f')
@@ -195,7 +193,7 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
                         # if intersection is not an endpoint -------------------
                         if new_vertex_geokey not in vertex_geokeys.keys():
                             vertex_geokeys[new_vertex_geokey] = new_vkey
-                            egi.add_node(x=intersection[0],
+                            egi.add_vertex(x=intersection[0],
                                            y=intersection[1],
                                            z=intersection[2],
                                            key=new_vkey,
@@ -225,7 +223,7 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
     for arckey in arcs:
         vkeys = arcs[arckey]['vkeys']
         if len(vkeys) > 2:
-            pt_list = [egi.node_coordinates(key) for key in vkeys]
+            pt_list = [egi.vertex_coordinates(key) for key in vkeys]
             arcs[arckey]['vkeys'] = _reorder_pts_on_arc(pt_list,
                                                         arcs[arckey]['vkeys'],
                                                         arcs[arckey]['arc'])[1]
@@ -235,8 +233,8 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
         for i in range(len(arcs[arckey]['vkeys']) - 1):
             vkey_1 = arcs[arckey]['vkeys'][i]
             vkey_2 = arcs[arckey]['vkeys'][i + 1]
-            egi.node[vkey_1]['nbrs'] += [vkey_2]
-            egi.node[vkey_2]['nbrs'] += [vkey_1]
+            egi.vertex[vkey_1]['nbrs'] += [vkey_2]
+            egi.vertex[vkey_2]['nbrs'] += [vkey_1]
             egi.add_edge(vkey_1, vkey_2)
 
     # --------------------------------------------------------------------------
@@ -248,8 +246,8 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
     #   7.  Add EGI Network faces
     # --------------------------------------------------------------------------
     egi_mesh = EGI()
-    for vkey in egi.node:
-        egi_mesh.vertex[vkey] = egi.node[vkey]
+    for vkey in egi.vertex:
+        egi_mesh.vertex[vkey] = egi.vertex[vkey]
 
     egi_mesh.attributes['name'] = 'egi'
     egi_mesh.attributes['origin'] = list(origin)
@@ -347,18 +345,18 @@ def _egi_sort_v_nbrs(egi):
     """ By default, the sorting should be ccw, since the circle is typically drawn
     ccw around the local plane's z-axis...
     """
-    xyz = dict((key, [attr[_] for _ in 'xyz']) for key, attr in egi.nodes(True))
-    for vkey in egi.node:
-        nbrs    = egi.node[vkey]['nbrs']
+    xyz = dict((key, [attr[_] for _ in 'xyz']) for key, attr in egi.vertices(True))
+    for vkey in egi.vertex:
+        nbrs    = egi.vertex[vkey]['nbrs']
         plane   = Plane(Point3d(*xyz[vkey]),
-                        Vector3d(*[axis for axis in egi.node[vkey]['normal']]))
+                        Vector3d(*[axis for axis in egi.vertex[vkey]['normal']]))
         circle  = Circle(plane, 1)
         p_list  = []
         for nbr_vkey in nbrs:
             boolean, parameter = ArcCurve(circle).ClosestPoint(Point3d(*xyz[nbr_vkey]))
             p_list.append(parameter)
         sorted_nbrs = [key for (param, key) in sorted(zip(p_list, nbrs))]
-        egi.node[vkey]['sorted_nbrs'] = sorted_nbrs
+        egi.vertex[vkey]['sorted_nbrs'] = sorted_nbrs
 
 
 def _egi_find_edge_face(u, v, egi):
@@ -367,7 +365,7 @@ def _egi_find_edge_face(u, v, egi):
     cycle = [u]
     while True:
         cycle.append(v)
-        nbrs    = egi.node[v]['sorted_nbrs']
+        nbrs    = egi.vertex[v]['sorted_nbrs']
         nbr     = nbrs[nbrs.index(u) - 1]
         u, v    = v, nbr
         if v == cycle[0]:
@@ -380,17 +378,19 @@ def _egi_find_faces(egi, egi_mesh):
     """ Modified, and simplified version of duality.algorithms.find_network_faces...
     since there are no leaves or open faces in a egi network.
     """
-    egi_mesh.halfedge = {key: {} for key in egi.nodes()}
+    egi_mesh.halfedge = {key: {} for key in egi.vertices()}
     for u, v in egi.edges():
         egi_mesh.halfedge[u][v] = None
         egi_mesh.halfedge[v][u] = None
-    u = sorted(egi.nodes(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
-    v = network_node_find_first_neighbor(egi, u)
+    u = sorted(egi.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+    v = _find_first_neighbor(u, egi)
 
     egi_mesh.add_face(_egi_find_edge_face(u, v, egi))
 
     for u, v in egi.edges():
+
         if egi_mesh.halfedge[u][v] is None:
+
             egi_mesh.add_face(_egi_find_edge_face(u, v, egi))
         if egi_mesh.halfedge[v][u] is None:
             egi_mesh.add_face(_egi_find_edge_face(v, u, egi))

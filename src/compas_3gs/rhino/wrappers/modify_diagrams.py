@@ -89,7 +89,7 @@ def rhino_vertex_modify_fixity(diagram):
             diagram.vertex[vkey]['y_fix'] = boolOptionY.CurrentValue
             diagram.vertex[vkey]['z_fix'] = boolOptionZ.CurrentValue
 
-    # diagram.draw(layer=diagram.layer)
+    diagram.draw(layer=diagram.layer)
 
 
 def rhino_vertex_move(diagram):
@@ -158,7 +158,7 @@ def rhino_vertex_move(diagram):
         new_xyz = add_vectors(diagram.vertex_coordinates(vkey), translation)
         diagram.vertex_update_xyz(vkey, new_xyz, constrained=False)
 
-    # diagram.draw()
+    diagram.draw()
 
 
 def rhino_vertex_align(diagram):
@@ -245,7 +245,7 @@ def rhino_vertex_align(diagram):
         xyz = update_point(diagram.vertex_coordinates(vkey), target)
         diagram.vertex_update_xyz(vkey, xyz, constrained=False)
 
-    # diagram.draw()
+    diagram.draw()
 
 
 # ******************************************************************************

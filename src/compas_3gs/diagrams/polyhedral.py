@@ -50,7 +50,7 @@ class FormNetwork(Network3gs):
               'target_length': None}
 
         self.attributes.update(a)
-        self.default_node_attributes.update(va)
+        self.default_vertex_attributes.update(va)
         self.default_edge_attributes.update(ea)
 
 

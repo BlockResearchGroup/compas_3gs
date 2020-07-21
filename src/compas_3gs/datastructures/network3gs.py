@@ -6,6 +6,13 @@ from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import length_vector
 
+from compas_rhino.helpers.network import network_draw
+from compas_rhino.helpers.network import network_draw_vertices
+from compas_rhino.helpers.network import network_draw_edges
+from compas_rhino.helpers.network import network_draw_edge_labels
+
+from compas_rhino.artists import NetworkArtist
+
 from compas_3gs.utilities import datastructure_centroid
 
 
@@ -15,7 +22,7 @@ __license__    = 'MIT License'
 __email__      = 'juney.lee@arch.ethz.ch'
 
 
-__all__ = ['Network3gs',]
+__all__ = ['Network3gs']
 
 
 class Network3gs(Network):
@@ -40,7 +47,7 @@ class Network3gs(Network):
 
     def bounding_box(self):
 
-        xyz = [self.node_coordinates(vkey) for vkey in self.node]
+        xyz = [self.vertex_coordinates(vkey) for vkey in self.vertex]
 
         x_sorted = sorted(xyz, key=lambda k: k[0])
         y_sorted = sorted(xyz, key=lambda k: k[1])
@@ -59,26 +66,26 @@ class Network3gs(Network):
     def vertex_update_xyz(self, vkey, new_xyz, constrained=True):
         if constrained:
             # X
-            if self.node[vkey]['x_fix'] is False:
-                self.node[vkey]['x'] = new_xyz[0]
+            if self.vertex[vkey]['x_fix'] is False:
+                self.vertex[vkey]['x'] = new_xyz[0]
             # Y
-            if self.node[vkey]['y_fix'] is False:
-                self.node[vkey]['y'] = new_xyz[1]
+            if self.vertex[vkey]['y_fix'] is False:
+                self.vertex[vkey]['y'] = new_xyz[1]
             # Z
-            if self.node[vkey]['z_fix'] is False:
-                self.node[vkey]['z'] = new_xyz[2]
+            if self.vertex[vkey]['z_fix'] is False:
+                self.vertex[vkey]['z'] = new_xyz[2]
         else:
-            self.node[vkey]['x'] = new_xyz[0]
-            self.node[vkey]['y'] = new_xyz[1]
-            self.node[vkey]['z'] = new_xyz[2]
+            self.vertex[vkey]['x'] = new_xyz[0]
+            self.vertex[vkey]['y'] = new_xyz[1]
+            self.vertex[vkey]['z'] = new_xyz[2]
 
     # --------------------------------------------------------------------------
     # helpers - edges
     # --------------------------------------------------------------------------
 
     def edge_vector(self, u, v, unitized=True):
-        u_xyz  = self.node_coordinates(u)
-        v_xyz  = self.node_coordinates(v)
+        u_xyz  = self.vertex_coordinates(u)
+        v_xyz  = self.vertex_coordinates(v)
         vector = subtract_vectors(v_xyz, u_xyz)
         if unitized:
             return normalize_vector(vector)
@@ -92,6 +99,35 @@ class Network3gs(Network):
             sum_length += length_vector(edge_vector)
             edge_count += 1
         return sum_length / edge_count
+
+    # --------------------------------------------------------------------------
+    # drawing
+    # --------------------------------------------------------------------------
+
+    def draw(self, **kwattr):
+        network_draw(self, **kwattr)
+
+    def clear(self, **kwattr):
+        artist = NetworkArtist(self)
+        artist.clear()
+        # artist.clear_layer()
+
+    def draw_vertices(self, **kwattr):
+        network_draw_vertices(self, **kwattr)
+
+    def draw_edges(self, **kwattr):
+        network_draw_edges(self, **kwattr)
+
+    def clear_edges(self, **kwattr):
+        artist = NetworkArtist(self)
+        artist.clear_edges(**kwattr)
+
+    def draw_vertex_labels(self, **kwattr):
+        artist = NetworkArtist(self)
+        artist.draw_vertexlabels(**kwattr)
+
+    def draw_edge_labels(self, **kwattr):
+        network_draw_edge_labels(self, **kwattr)
 
 
 # ******************************************************************************
