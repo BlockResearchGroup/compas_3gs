@@ -6,10 +6,6 @@ from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import length_vector
 
-from compas_rhino.helpers.network import network_draw
-from compas_rhino.helpers.network import network_draw_vertices
-from compas_rhino.helpers.network import network_draw_edges
-from compas_rhino.helpers.network import network_draw_edge_labels
 
 from compas_rhino.artists import NetworkArtist
 
@@ -105,29 +101,32 @@ class Network3gs(Network):
     # --------------------------------------------------------------------------
 
     def draw(self, **kwattr):
-        network_draw(self, **kwattr)
+        artist = NetworkArtist(self)
+        artist.draw_draw(**kwattr)
 
     def clear(self, **kwattr):
         artist = NetworkArtist(self)
         artist.clear()
-        # artist.clear_layer()
 
     def draw_vertices(self, **kwattr):
-        network_draw_vertices(self, **kwattr)
+        artist = NetworkArtist(self)
+        artist.draw_vertices(**kwattr)
 
     def draw_edges(self, **kwattr):
-        network_draw_edges(self, **kwattr)
-
-    def clear_edges(self, **kwattr):
         artist = NetworkArtist(self)
-        artist.clear_edges(**kwattr)
+        artist.draw_edges(**kwattr)
+
+    # def clear_edges(self, **kwattr):
+    #     artist = NetworkArtist(self)
+    #     artist.clear_edges(**kwattr)
 
     def draw_vertex_labels(self, **kwattr):
         artist = NetworkArtist(self)
         artist.draw_vertexlabels(**kwattr)
 
     def draw_edge_labels(self, **kwattr):
-        network_draw_edge_labels(self, **kwattr)
+        artist = NetworkArtist(self)
+        artist.draw_edgelabels(**kwattr)
 
 
 # ******************************************************************************

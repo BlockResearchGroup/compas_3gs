@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.conduits import Conduit
+from compas_rhino.conduits import BaseConduit
 
 try:
     import Rhino
@@ -53,7 +53,7 @@ __all__ = ['MeshConduit',
 # ******************************************************************************
 
 
-class MeshConduit(Conduit):
+class MeshConduit(BaseConduit):
     """Conduit for mesh algorithms.
 
     """
@@ -87,7 +87,7 @@ class MeshConduit(Conduit):
 # ******************************************************************************
 
 
-class VolmeshConduit(Conduit):
+class VolmeshConduit(BaseConduit):
     """Conduit for volmesh algorithms.
 
     """
@@ -122,7 +122,7 @@ class VolmeshConduit(Conduit):
 # ******************************************************************************
 
 
-class ReciprocationConduit(Conduit):
+class ReciprocationConduit(BaseConduit):
     """Conduit for the reciprocation algorithm.
 
     """

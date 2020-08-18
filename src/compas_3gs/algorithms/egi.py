@@ -13,7 +13,7 @@ from compas.geometry import cross_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import subtract_vectors
 
-from compas.datastructures.network.duality import _find_first_neighbor
+from compas.datastructures.network.duality import network_node_find_first_neighbor
 
 from compas.utilities import geometric_key
 
@@ -383,7 +383,7 @@ def _egi_find_faces(egi, egi_mesh):
         egi_mesh.halfedge[u][v] = None
         egi_mesh.halfedge[v][u] = None
     u = sorted(egi.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
-    v = _find_first_neighbor(u, egi)
+    v = network_node_find_first_neighbor(egi, u)
 
     egi_mesh.add_face(_egi_find_edge_face(u, v, egi))
 

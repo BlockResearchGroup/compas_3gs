@@ -35,6 +35,6 @@ forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer
 forcediagram.attributes['name'] = layer
 
-forcediagram.draw(layer=layer)
+forcediagram.draw()
 forcediagram.draw_vertex_labels()
 draw_cell_labels(forcediagram)

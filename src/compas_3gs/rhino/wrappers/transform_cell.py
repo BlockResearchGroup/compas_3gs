@@ -11,7 +11,7 @@ from compas.geometry import intersection_line_plane
 
 from compas.utilities import i_to_rgb
 
-from compas_rhino.helpers import mesh_select_face
+from compas_rhino.objects.selectors import mesh_select_face
 
 from compas_3gs.operations import cell_split_indet_face_vertices
 from compas_3gs.operations import cell_relocate_face

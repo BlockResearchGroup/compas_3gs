@@ -9,7 +9,6 @@ from compas.geometry import normalize_vector
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 
-from compas_rhino.helpers.volmesh import volmesh_draw
 from compas_rhino.artists import VolMeshArtist
 
 from compas_3gs.utilities import polygon_normal_oriented
@@ -151,33 +150,33 @@ class VolMesh3gs(VolMesh):
     #   edges
     # --------------------------------------------------------------------------
 
-    def edge_vector(self, u, v, unitized=True):
-        u_xyz  = self.vertex_coordinates(u)
-        v_xyz  = self.vertex_coordinates(v)
-        vector = subtract_vectors(v_xyz, u_xyz)
-        if unitized:
-            return normalize_vector(vector)
-        return vector
+    # def edge_vector(self, u, v, unitized=True):
+    #     u_xyz  = self.vertex_coordinates(u)
+    #     v_xyz  = self.vertex_coordinates(v)
+    #     vector = subtract_vectors(v_xyz, u_xyz)
+    #     if unitized:
+    #         return normalize_vector(vector)
+    #     return vector
 
     # --------------------------------------------------------------------------
     # halffaces and faces
     # --------------------------------------------------------------------------
 
-    def halfface_oriented_area(self, hfkey):
-        vertices = self.halfface_vertices(hfkey)
-        points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-        area     = polygon_area_oriented(points)
-        return area
+    # def halfface_oriented_area(self, hfkey):
+    #     vertices = self.halfface_vertices(hfkey)
+    #     points   = [self.vertex_coordinates(vkey) for vkey in vertices]
+    #     area     = polygon_area_oriented(points)
+    #     return area
 
-    def halfface_oriented_normal(self, hfkey, unitized=True):
-        vertices = self.halfface_vertices(hfkey)
-        points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-        normal   = polygon_normal_oriented(points, unitized)
-        if length_vector(normal) == 0 :
-            uv = subtract_vectors(points[1], points[0])
-            vw = subtract_vectors(points[2], points[1])
-            normal = normalize_vector(cross_vectors(uv, vw))
-        return normal
+    # def halfface_oriented_normal(self, hfkey, unitized=True):
+    #     vertices = self.halfface_vertices(hfkey)
+    #     points   = [self.vertex_coordinates(vkey) for vkey in vertices]
+    #     normal   = polygon_normal_oriented(points, unitized)
+    #     if length_vector(normal) == 0 :
+    #         uv = subtract_vectors(points[1], points[0])
+    #         vw = subtract_vectors(points[2], points[1])
+    #         normal = normalize_vector(cross_vectors(uv, vw))
+    #     return normal
 
     def halfface_edge_dependents(self, hfkey):
         dep_hfkeys = {}
@@ -228,11 +227,16 @@ class VolMesh3gs(VolMesh):
         pass
 
     # --------------------------------------------------------------------------
+    # cell
+    # --------------------------------------------------------------------------
+
+    # --------------------------------------------------------------------------
     # drawing
     # --------------------------------------------------------------------------
 
     def draw(self, **kwattr):
-        volmesh_draw(self, layer=self.layer)
+        artist = VolMeshArtist(self)
+        artist.draw(**kwattr)
 
     def clear(self):
         artist = VolMeshArtist(self)

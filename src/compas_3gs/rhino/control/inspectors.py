@@ -10,7 +10,7 @@ from compas.geometry import subtract_vectors
 
 from compas.utilities import i_to_rgb
 
-from compas_rhino.conduits import Conduit
+from compas_rhino.conduits import BaseConduit
 from compas_rhino.ui import Mouse
 
 try:
@@ -46,7 +46,7 @@ __all__ = ['VolmeshVertexInspector',
 # ******************************************************************************
 
 
-class VolmeshVertexInspector(Conduit):
+class VolmeshVertexInspector(BaseConduit):
 
     def __init__(self, volmesh, tol=0.1, **kwargs):
         super(VolmeshVertexInspector, self).__init__(**kwargs)
@@ -99,7 +99,7 @@ class VolmeshVertexInspector(Conduit):
 # ******************************************************************************
 
 
-class VolmeshHalffaceInspector(Conduit):
+class VolmeshHalffaceInspector(BaseConduit):
 
     def __init__(self, volmesh, hfkeys=None, dependents=False, tol=1, **kwargs):
         super(VolmeshHalffaceInspector, self).__init__(**kwargs)
@@ -176,7 +176,7 @@ class VolmeshHalffaceInspector(Conduit):
 # ******************************************************************************
 
 
-class VolmeshCellInspector(Conduit):
+class VolmeshCellInspector(BaseConduit):
 
     def __init__(self, volmesh, color_dict=None, tol=1, **kwargs):
         super(VolmeshCellInspector, self).__init__(**kwargs)
@@ -239,7 +239,7 @@ class VolmeshCellInspector(Conduit):
 # ******************************************************************************
 
 
-class BiCellInspector(Conduit):
+class BiCellInspector(BaseConduit):
 
     def __init__(self, volmesh, network, tol=2, **kwargs):
         super(BiCellInspector, self).__init__(**kwargs)
