@@ -5,10 +5,28 @@
 
 ## Installation
 
+First, create an environment with a specific version of Python.
+
+```bash
+$ conda create -n 3gs python=3.7
+```
+
+Activate the new environment.
+
+```bash
+$ conda activate 3gs
+```
+
 Released versions of ``compas_3gs`` can be installed with *pip*.
 
 ```bash
 $ pip install compas-3gs
+```
+
+Then, install compas_3gs for Rhino.
+
+```bash
+$ python -m compas_rhino.install -p compas_3gs
 ```
 
 ## First Steps
