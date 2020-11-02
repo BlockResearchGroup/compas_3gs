@@ -1,70 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>compas_3gs</title>
+<head>
+  <title>compas_3gs</title>
 
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-        <meta name="author" content="" />
-        <meta name="description" content="" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-        <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+  <meta name="author" content="" />
+  <meta name="description" content="" />
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+  <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
-        <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" />
-        <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
-        <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+  
+    <link rel="next" title="Cell network" href="../02_cell_network.html" />
+  
+  
+  
+    <link rel="prev" title="Visualisation" href="01_70_visualisation.html" />
+  
 
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+    .footer-text,
+    .footer-link,
+    .footer-title {
+      color: rgba(255, 255, 255, 0.25);
+    }
+    .footer-link:hover {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="">
+        <img src="../../_static/images/compas_icon_white.png" alt="compas_3gs" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item active"><a class="nav-link" href="">compas_3gs</a></li>
+      </ul>
+      <!-- primary -->
+      <!-- social -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+      </ul>
+      <!-- social -->
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
-            <link rel="next" title="Cell network" href="../02_cell_network.html" />
         
-        
-        
-            <link rel="prev" title="Visualisation" href="01_70_visualisation.html" />
-        
-
-        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-    </head>
-    <body data-spy="scroll" data-target="#compas-localnav">
-
-        <header class="navbar navbar-expand compas-navbar justify-content-between">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="../../index.html">
-                    compas_3gs 0.2.0
-                </a>
-            </div>
-
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://compas-dev.github.io">
-                        <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
-                    </a>
-                </li>
-            </ul>
-        </header>
-        
-        <div class="container-fluid compas-container">
-            <div class="row flex-xl-nowrap">
-
-                <!-- main content -->
-
-                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-
-                    
-
-                        
-
-                        <div class="section" id="unified-diagram">
-<h1>Unified diagram</h1>
+        <div class="section" id="unified-diagram">
+<h1 class="display-4 p-0 mb-5">Unified diagram</h1>
 <div class="section" id="background">
 <h2>Background</h2>
 <p>A <em>unified diagram</em> represents both the geometry and internal forces of a structure in a single diagram, thereby improving the legibility of reciprocal diagrams (<a class="footnote-reference brackets" href="#id8" id="id1">1</a>).
 In a unified diagram, the constituent polygons or cells of either the force diagram are scaled relative to the coordinates of the corresponding nodes in the form diagram, resulting in an “exploded view” of the force diagram.
 Each pair of neighbouring polygons of a 2D unified diagram are connected by interstitial rectangles, whereas each pair of neighbouring cells of a 3D unified diagram are connected by interstitial prisms.</p>
-<div class="figure" id="id13">
+<div class="figure align-default" id="id13">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_UD_maxwell.jpg"><img alt="../../_images/compas_3gs_UD_maxwell.jpg" src="../../_images/compas_3gs_UD_maxwell.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">Form diagram <span class="math notranslate nohighlight">\(G\)</span>, the reciprocal force diagram <span class="math notranslate nohighlight">\(G^\perp\)</span> and the unified diagram <span class="math notranslate nohighlight">\(G^{\perp}({\alpha})\)</span> for a simple truss (After <a class="footnote-reference brackets" href="#id9" id="id2">2</a>).</span></p>
 </div>
@@ -75,15 +94,15 @@ Each pair of neighbouring polygons of a 2D unified diagram are connected by inte
 <p>In contrast to traditional, side-by-side representation of form and force diagrams, the unique visualisation method of unified diagrams provide new insights and perspectives.
 Unified diagrams are not only more discernible, but also provide an interesting visual representation of the volume of material required for a uniform stress design (<a class="footnote-reference brackets" href="#id9" id="id3">2</a>).
 Furthermore, the unified diagram reveals visual insights in relation to some of the most fundamental principles of structural engineering and analysis, such as: kinematics and mechanisms (<a class="footnote-reference brackets" href="#id8" id="id4">1</a>); virtual work and displacements (<a class="footnote-reference brackets" href="#id10" id="id5">3</a>); and stress-fields and strut-and-tie models (<a class="footnote-reference brackets" href="#id11" id="id6">4</a>, <a class="footnote-reference brackets" href="#id12" id="id7">5</a>).</p>
-<div class="figure" id="id14">
+<div class="figure align-default" id="id14">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_UD_trusses.gif"><img alt="../../_images/compas_3gs_UD_trusses.gif" src="../../_images/compas_3gs_UD_trusses.gif" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">Animation of unified diagrams for 2D trusses with varying scale factor <span class="math notranslate nohighlight">\(\alpha\)</span>.</span></p>
 </div>
-<div class="figure" id="id15">
+<div class="figure align-default" id="id15">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_UD_scales.jpg"><img alt="../../_images/compas_3gs_UD_scales.jpg" src="../../_images/compas_3gs_UD_scales.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">A simple 3D truss and its unified diagram: <span class="math notranslate nohighlight">\(\Gamma\)</span> of the truss, which is equivalent to <span class="math notranslate nohighlight">\(\Gamma^{\perp}({\alpha}=1)\)</span>; and the <span class="math notranslate nohighlight">\(\Gamma^{\perp}({\alpha})\)</span> with varying scaling factor of <span class="math notranslate nohighlight">\(\alpha\)</span>.</span></p>
 </div>
-<div class="figure" id="id16">
+<div class="figure align-default" id="id16">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_UD_mycotree.gif"><img alt="../../_images/compas_3gs_UD_mycotree.gif" src="../../_images/compas_3gs_UD_mycotree.gif" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text">Animation of the unified diagram for a compression-only spatially branching structure.</span></p>
 </div>
@@ -98,7 +117,7 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Download</div><ul class="simple">
-<li><p><a class="reference download internal" href="../../_downloads/volmesh_shells.3dm" download=""><code class="xref download docutils literal notranslate"><span class="pre">volmesh_shells.3dm</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/8d05138d3f959b8724c5d3478bc37f1d/volmesh_shells.3dm"><code class="xref download docutils literal notranslate"><span class="pre">volmesh_shells.3dm</span></code></a></p></li>
 </ul>
 </div>
 </div><div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -124,7 +143,7 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 <span class="kn">from</span> <span class="nn">compas_3gs.utilities</span> <span class="kn">import</span> <span class="n">get_force_colors_hf</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
+    <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
 
@@ -185,7 +204,7 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 <span class="c1"># 1. get colors ----------------------------------------------------------------</span>
 <span class="n">hf_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-<span class="n">uv_c_dict</span> <span class="o">=</span> <span class="n">get_force_colors_uv</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">,</span> <span class="n">gradient</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">uv_c_dict</span> <span class="o">=</span> <span class="n">get_force_colors_uv</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">,</span> <span class="n">gradient</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1"># uv_c_dict = get_index_colordict(list(formdiagram.edges()))</span>
 <span class="n">hf_c_dict</span> <span class="o">=</span> <span class="n">get_force_colors_hf</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">,</span> <span class="n">uv_c_dict</span><span class="o">=</span><span class="n">uv_c_dict</span><span class="p">)</span>
 
@@ -197,7 +216,7 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 <span class="k">for</span> <span class="n">hfkey</span> <span class="ow">in</span> <span class="n">hfkeys</span><span class="p">:</span>
     <span class="n">vkeys</span>  <span class="o">=</span> <span class="n">forcediagram</span><span class="o">.</span><span class="n">halfface</span><span class="p">[</span><span class="n">hfkey</span><span class="p">]</span>
     <span class="n">hf_xyz</span> <span class="o">=</span> <span class="p">[</span><span class="n">halffaces</span><span class="p">[</span><span class="n">hfkey</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">vkeys</span><span class="p">]</span>
-    <span class="n">name</span>   <span class="o">=</span> <span class="s1">&#39;{}.face.ud.{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">forcediagram</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">)</span>
+    <span class="n">name</span>   <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.face.ud.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">forcediagram</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">)</span>
     <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="n">hf_xyz</span><span class="p">,</span>
                   <span class="s1">&#39;name&#39;</span>  <span class="p">:</span> <span class="n">name</span><span class="p">,</span>
                   <span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">hf_color</span><span class="p">})</span>
@@ -205,7 +224,7 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 <span class="n">forces</span> <span class="o">=</span> <span class="n">get_force_mags</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">uv</span> <span class="ow">in</span> <span class="n">prism_faces</span><span class="p">:</span>
-    <span class="n">name</span>  <span class="o">=</span> <span class="s1">&#39;{}.face.ud.prism.{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">forcediagram</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">uv</span><span class="p">)</span>
+    <span class="n">name</span>  <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.face.ud.prism.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">forcediagram</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">uv</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">prism_faces</span><span class="p">[</span><span class="n">uv</span><span class="p">]:</span>
         <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="n">face</span><span class="p">,</span>
@@ -217,8 +236,8 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 
 <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span>
                         <span class="n">layer</span><span class="o">=</span><span class="n">forcediagram</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span>
-                        <span class="n">clear</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                        <span class="n">redraw</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                        <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="line-block">
@@ -248,40 +267,30 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 </div>
 </div>
 
-                        
-                    
-
-                </main>
-
-                <!-- site navigation sidebar -->
-
-                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                    <div class="navbar-light">
-
-                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
-                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                            <input type="hidden" name="check_keywords" value="yes" />
-                            <input type="hidden" name="area" value="default" />
-
-                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                        </form>
-
-                        
-                        
-
-                            <div class="navbar-expand-md">
-                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                                <ul class="nav flex-column active">
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+          <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../00_introduction.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../01_getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../02_overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../03_theoretical_background.html">Theoretical background</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../04_user_manual.html">User manual</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../../04_user_manual.html">User manual</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../00_polyhedral_cell.html">Polyhedral cell</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../01_multi-cell_polyhedron.html">Multi-cell polyhedron</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../01_multi-cell_polyhedron.html">Multi-cell polyhedron</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="01_00_datastructure.html">Datastructure</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_01_interpretation.html">Interpreting diagrams</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_10_constructor.html">Constructor</a></li>
@@ -306,23 +315,15 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 <li class="nav-item"><a class="nav-link reference internal" href="../../09_how_to_contribute.html">How to contribute</a></li>
 </ul>
 
-
-                                </div>
-                            </div>
-
-                        
-
-                    </div>
-                </div>
-
-                <!-- table of contents of main content -->
-                
-                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                    
-
-                    <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Unified diagram</a><ul class="nav">
+          </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Unified diagram</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#background">Background</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#example">Example</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#references">References</a></li>
@@ -330,87 +331,79 @@ Furthermore, the unified diagram reveals visual insights in relation to some of 
 </li>
 </ul>
 
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <!-- footer -->
+  <div class="below py-5" style="background-color: #222;">
+    <div class="container">
+      <div class="row flex-column">
+      <div class="col-12 col-md-6 mx-md-auto text-center">
+        <h4 class="pb-3 footer-text">COMPAS</h4>
+        <p class="footer-text">
+          A computational framework for collaboration and research
+          in Architecture, Engineering, Fabrication, and Construction.
+        </p>
+        <nav class="nav justify-content-center pb-3">
+          <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </nav>
+      </div>
+      </div>
+      <div class="row">
+      <div class="col text-center">
+        <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+      </div>
+      </div>
+    </div>
+  </div>
 
-                </div>
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+  URL_ROOT          : '',
+  VERSION           : 'release = 0.2.4',
+  COLLAPSE_INDEX    : false,
+  FILE_SUFFIX       : '.html',
+  HAS_SOURCE        : 'false',
+  SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
 
-            </div>
-        </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 
-        <footer class="compas-footer">
-            
-                Last updated on Jul 10, 2019.
-            
+  <script src="../../_static/underscore.js"></script>
+  <script src="../../_static/doctools.js"></script>
+  <script src="../../_static/js/searchtools_.js"></script>
 
-            
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
-            
-        </footer>
+  <script>
+  $(document).ready(function() {
+    $(".language-default code").addClass("python");
+    $(".language-python code").addClass("python");
+    $(".language-bash code").addClass("bash");
+    $(".language-cpp code").addClass("cpp");
+    $(".language-json code").addClass("json");
+    $(".language-none code").addClass("plaintext");
 
-        
-
-            <script type="text/javascript">
-var DOCUMENTATION_OPTIONS = {
-    URL_ROOT          : '',
-    VERSION           : '0.2.0',
-    COLLAPSE_INDEX    : false,
-    FILE_SUFFIX       : '.html',
-    HAS_SOURCE        : 'false',
-    SOURCELINK_SUFFIX : '.txt'
-};
-            </script>
-
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-            
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
-
-            <script src="../../_static/underscore.js"></script>
-            <script src="../../_static/doctools.js"></script>
-            <script src="../../_static/js/searchtools_.js"></script>
-            <script src="../../_static/js/prism.js"></script>
-
-            <script>
-$(document).ready(function() {
-
-    // $(".language-default pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-bash pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-python pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-c pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-cpp pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-fortran pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-markdown pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
-    // $(".language-rest pre").each(function(i, element) {
-    //     Prism.highlightElement(element);
-    // });
-
+    hljs.initHighlighting();
     anchors.add();
-});
-            </script>
-
-        
-    </body>
+  });
+  </script>
+  
+  
+</body>
 </html>
