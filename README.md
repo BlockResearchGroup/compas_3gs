@@ -5,7 +5,7 @@
 
 ## Installation
 
-First, create an environment with a specific versino of Python.
+First, create an environment with a specific version of Python.
 
 ```bash
 $ conda create -n 3gs python=3.7
