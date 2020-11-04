@@ -50,15 +50,15 @@ def volmesh_dual_volmesh(volmesh, cls=None):
     dual_volmesh.attributes['name'] = 'volmesh_dual_volmesh'
 
     # 2. add vertex for each cell ----------------------------------------------
-    for ckey in volmesh.cell:
+    for ckey in volmesh.cells():
         x, y, z = volmesh.cell_centroid(ckey)
         dual_volmesh.add_vertex(vkey=ckey, x=x, y=y, z=z)
 
     # 3. find interior vertices ------------------------------------------------
     ext_vkeys = []
-    boundary_hfkeys = volmesh.halffaces_on_boundary()
+    boundary_hfkeys = volmesh.halffaces_on_boundaries()
     for hfkey in boundary_hfkeys:
-        for vkey in volmesh.halfface[hfkey]:
+        for vkey in volmesh.halfface_vertices(hfkey):
             ext_vkeys.append(vkey)
     int_vkeys = list(set(volmesh.vertices()) - set(ext_vkeys))
 
@@ -69,7 +69,7 @@ def volmesh_dual_volmesh(volmesh, cls=None):
     for u in int_vkeys:
         cell_halffaces = []
         for v in volmesh.vertex_neighbors(u):
-            halfface = volmesh.edge_cells(u, v)
+            halfface = volmesh.edge_cells((u, v))
             # edge_ckeys = volmesh.plane[u][v].values()
             # ckey       = edge_ckeys[0]
             # halfface   = [ckey]

@@ -178,50 +178,50 @@ class VolMesh3gs(VolMesh):
     #         normal = normalize_vector(cross_vectors(uv, vw))
     #     return normal
 
-    def halfface_edge_dependents(self, hfkey):
-        dep_hfkeys = {}
-        ckey       = self.halfface_cell(hfkey)
-        hf_edges   = self.halfface_halfedges(hfkey)
-        for edge in hf_edges:
-            u = edge[0]
-            v = edge[1]
-            adj_hfkey = self.cell[ckey][v][u]
-            w         = self.halfface_vertex_ancestor(adj_hfkey, v)
-            nbr_ckey  = self.plane[u][v][w]
-            if nbr_ckey is not None:
-                dep_hfkey = self.cell[nbr_ckey][v][u]
-                dep_hfkeys[dep_hfkey] = u
-        return dep_hfkeys
+    # def halfface_edge_dependents(self, hfkey):
+    #     dep_hfkeys = {}
+    #     ckey       = self.halfface_cell(hfkey)
+    #     hf_edges   = self.halfface_halfedges(hfkey)
+    #     for edge in hf_edges:
+    #         u = edge[0]
+    #         v = edge[1]
+    #         adj_hfkey = self.cell[ckey][v][u]
+    #         w         = self.halfface_vertex_ancestor(adj_hfkey, v)
+    #         nbr_ckey  = self.plane[u][v][w]
+    #         if nbr_ckey is not None:
+    #             dep_hfkey = self.cell[nbr_ckey][v][u]
+    #             dep_hfkeys[dep_hfkey] = u
+    #     return dep_hfkeys
 
-    def volmesh_edge_dependents_all(self, hfkey):
-        dependents = set(self.halfface_edge_dependents(hfkey).keys())
-        seen = set()
-        i = 0
+    # def volmesh_edge_dependents_all(self, hfkey):
+    #     dependents = set(self.halfface_edge_dependents(hfkey).keys())
+    #     seen = set()
+    #     i = 0
 
-        while True:
+    #     while True:
 
-            if i == 100:
-                break
+    #         if i == 100:
+    #             break
 
-            if i != 0 and len(seen) == 0:
-                break
+    #         if i != 0 and len(seen) == 0:
+    #             break
 
-            temp = []
-            for dep_hfkey in dependents:
+    #         temp = []
+    #         for dep_hfkey in dependents:
 
-                if dep_hfkey not in seen:
-                    hfkeys = self.halfface_edge_dependents(dep_hfkey).keys()
-                    temp += hfkeys
-                    seen.add(dep_hfkey)
+    #             if dep_hfkey not in seen:
+    #                 hfkeys = self.halfface_edge_dependents(dep_hfkey).keys()
+    #                 temp += hfkeys
+    #                 seen.add(dep_hfkey)
 
-            dependents.update(temp)
+    #         dependents.update(temp)
 
-            i += 1
+    #         i += 1
 
-        if hfkey in dependents:
-            dependents.remove(hfkey)
+    #     if hfkey in dependents:
+    #         dependents.remove(hfkey)
 
-        return list(dependents)
+    #     return list(dependents)
 
     def clean(self):
         pass
@@ -229,6 +229,30 @@ class VolMesh3gs(VolMesh):
     # --------------------------------------------------------------------------
     # cell
     # --------------------------------------------------------------------------
+
+    def cell_pair_halffaces(self, cell_1, cell_2):
+        """Given 2 ckeys, returns the interfacing halffaces, respectively.
+        Parameters
+        ----------
+        ckey_1 : hashable
+            Identifier of the cell 1.
+        ckey_2 : hashable
+            Identifier of the cell 2.
+        Returns
+        -------
+        hfkey_1
+            The identifier of the halfface belonging to cell 1 .
+        hfkey_2
+            The identifier of the halfface belonging to cell 2.
+        """
+        for halfface in self.cell_faces(cell_1):
+            u, v, w = self.halfface_vertices(halfface)[0:3]
+            nbr = self._plane[w][v][u]
+
+            if nbr == cell_2:
+                return halfface, self.halfface_opposite_halfface(halfface)
+
+        return
 
     # --------------------------------------------------------------------------
     # drawing
@@ -247,9 +271,9 @@ class VolMesh3gs(VolMesh):
         artist = VolMeshArtist(self, **kwattr)
         artist.draw_edges(**kwattr)
 
-    def clear_edges(self, **kwattr):
-        artist = VolMeshArtist(self, **kwattr)
-        artist.clear_edges(**kwattr)
+    # def clear_edges(self, **kwattr):
+    #     artist = VolMeshArtist(self, **kwattr)
+    #     artist.clear_edges(**kwattr)
 
     def draw_faces(self, **kwattr):
         artist = VolMeshArtist(self)
