@@ -6,7 +6,7 @@ import compas
 
 from compas.geometry import add_vectors
 
-from compas_rhino.objects.selectors import VertexSelector
+from compas_rhino.objects.select import mesh_select_vertices
 
 from compas_3gs.rhino.control import get_initial_point
 
@@ -53,7 +53,7 @@ def rhino_vertex_modify_fixity(diagram):
 
     """
 
-    vkeys = VertexSelector.select_vertices(diagram)
+    vkeys = mesh_select_vertices(diagram)
 
     go = Rhino.Input.Custom.GetOption()
     go.SetCommandPrompt('Set axes Constraints')
@@ -97,7 +97,7 @@ def rhino_vertex_move(diagram):
 
     """
 
-    vkeys = VertexSelector.select_vertices(diagram)
+    vkeys = mesh_select_vertices(diagram)
 
     nbr_vkeys = {}
     edges = set()
@@ -178,7 +178,7 @@ def rhino_vertex_align(diagram):
     # --------------------------------------------------------------------------
     # get vkeys to align
     # --------------------------------------------------------------------------
-    vkeys = VertexSelector.select_vertices(diagram)
+    vkeys = mesh_select_vertices(diagram)
     nbr_vkeys = {}
     edges = set()
     for vkey in vkeys:
@@ -261,7 +261,7 @@ def rhino_vertex_align(diagram):
 
 # def network_vertex_fixity(network):
 
-#     vkeys = VertexSelector.select_vertices(network)
+#     vkeys = mesh_select_vertices(network)
 
 #     go = Rhino.Input.Custom.GetOption()
 #     go.SetCommandPrompt('Set axes Constraints')
@@ -303,7 +303,7 @@ def rhino_vertex_align(diagram):
 
 # def network_vertex_move(network):
 
-#     vkeys = VertexSelector.select_vertices(network)
+#     vkeys = mesh_select_vertices(network)
 
 #     nbr_vkeys = {}
 #     edges = set()

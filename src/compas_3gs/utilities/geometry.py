@@ -9,7 +9,7 @@ from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
-from compas.geometry import weighted_centroid_points
+from compas.geometry import centroid_points_weighted
 from compas.geometry import centroid_points
 from compas.geometry import midpoint_point_point
 from compas.geometry import bestfit_plane
@@ -90,7 +90,7 @@ def resultant_vector(vectors, locations):
         points.append(vectors[vkey])
         weights.append(length_vector(vectors[vkey]))
 
-    resultant_xyz = weighted_centroid_points(points, weights)
+    resultant_xyz = centroid_points_weighted(points, weights)
     x, y, z = zip(*vectors.values())
     resultant_vector = [sum(x), sum(y), sum(z)]
 

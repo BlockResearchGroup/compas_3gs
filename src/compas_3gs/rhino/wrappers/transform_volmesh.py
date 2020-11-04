@@ -14,10 +14,10 @@ from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
 from compas.utilities import i_to_rgb
 
-from compas_rhino.objects.selectors import volmesh_select_vertex
-from compas_rhino.objects.selectors import volmesh_select_vertices
-from compas_rhino.objects.selectors import volmesh_select_face
-from compas_rhino.objects.selectors import volmesh_select_faces
+from compas_rhino.objects.select import mesh_select_vertex
+from compas_rhino.objects.select import mesh_select_vertices
+from compas_rhino.objects.select import mesh_select_face
+from compas_rhino.objects.select import mesh_select_faces
 
 from compas_3gs.operations import volmesh_vertex_merge
 from compas_3gs.operations import volmesh_vertex_lift
@@ -89,7 +89,7 @@ def rhino_volmesh_vertex_lift(volmesh):
 
     volmesh.draw()
 
-    vkey = volmesh_select_vertex(volmesh)
+    vkey = mesh_select_vertex(volmesh)
 
     vertex_hfkeys = []
     for hfkey in volmesh.vertex_halffaces(vkey):
@@ -121,7 +121,7 @@ def rhino_volmesh_vertex_merge(volmesh):
 
     volmesh.draw()
 
-    keys = volmesh_select_vertices(volmesh)
+    keys = mesh_select_vertices(volmesh)
     xyz  = centroid_points([volmesh.vertex_coordinates(key) for key in keys])
 
     volmesh_vertex_merge(volmesh, keys, xyz)
@@ -238,7 +238,7 @@ def rhino_volmesh_pull_boundary_faces(volmesh, uniform=False):
                                             dependents=True)
     hf_inspector.enable()
 
-    hfkey = volmesh_select_face(volmesh)
+    hfkey = mesh_select_face(volmesh)
 
     hf_inspector.disable()
 
@@ -518,7 +518,7 @@ def _select_boundary_halffaces(volmesh):
     volmesh.draw_faces(fkeys=hfkeys)
     rs.EnableRedraw(True)
 
-    hfkey = volmesh_select_faces(volmesh)
+    hfkey = mesh_select_faces(volmesh)
 
     volmesh.draw()
 

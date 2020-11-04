@@ -4,22 +4,17 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.helpers import volmesh_from_polysurfaces
+from compas_rhino.utilities import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import ForceVolMesh
 
-from compas_3gs.rhino import draw_cell_labels
+from compas_rhino.artists import VolMeshArtist
+
 
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
     compas.raise_if_ironpython()
-
-
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
 
 
 # ------------------------------------------------------------------------------
@@ -30,11 +25,13 @@ layer = 'force_volmesh'
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
-forcediagram       = ForceVolMesh()
-forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
+forcediagram = ForceVolMesh()
+forcediagram = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer
 forcediagram.attributes['name'] = layer
 
-forcediagram.draw()
-forcediagram.draw_vertex_labels()
-draw_cell_labels(forcediagram)
+artist = VolMeshArtist(forcediagram)
+
+artist.draw_vertices()
+artist.draw_faces()
+artist.draw_vertexlabels()
