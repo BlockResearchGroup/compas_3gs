@@ -55,6 +55,7 @@ for vkey in dual_volmesh.vertices():
     x = dual_volmesh.vertex_attribute(vkey, 'x')
     dual_volmesh.vertex_attribute(vkey, 'x', x + x_move)
 
+
 # ------------------------------------------------------------------------------
 # 3. visualise diagrams
 # ------------------------------------------------------------------------------
@@ -62,19 +63,16 @@ for vkey in dual_volmesh.vertices():
 # draw volmesh cell labels and dual_volmesh vertex labels
 cell_c_dict = get_index_colordict(list(volmesh.cells()))
 
-
 force_artist = VolMeshArtist(volmesh)
 form_artist = VolMeshArtist(dual_volmesh)
-
 
 # draw volmesh
 force_artist.draw_edges()
 force_artist.draw_celllabels(color=cell_c_dict)
 
 # draw dual volmesh
-
-dual_volmesh.draw_faces()
-dual_volmesh.draw_vertex_labels(color=cell_c_dict)
+form_artist.draw_faces()
+form_artist.draw_vertexlabels(color=cell_c_dict)
 
 # draw directed volmesh halffaces and directed dual_volmesh edges
 uv_c_dict = get_index_colordict(list(dual_volmesh.edges()))
