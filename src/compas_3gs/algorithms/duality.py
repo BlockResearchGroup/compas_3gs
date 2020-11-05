@@ -6,12 +6,6 @@ from compas_3gs.datastructures import Network3gs as Network
 from compas_3gs.datastructures import VolMesh3gs as VolMesh
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['volmesh_dual_volmesh',
            'volmesh_dual_network']
 
@@ -50,16 +44,16 @@ def volmesh_dual_volmesh(volmesh, cls=None):
     dual_volmesh.attributes['name'] = 'volmesh_dual_volmesh'
 
     # 2. add vertex for each cell ----------------------------------------------
-    for ckey in volmesh.cells():
-        x, y, z = volmesh.cell_centroid(ckey)
-        dual_volmesh.add_vertex(vkey=ckey, x=x, y=y, z=z)
+    for cell in volmesh.cells():
+        x, y, z = volmesh.cell_centroid(cell)
+        dual_volmesh.add_vertex(vkey=cell, x=x, y=y, z=z)
 
     # 3. find interior vertices ------------------------------------------------
     ext_vkeys = []
     boundary_hfkeys = volmesh.halffaces_on_boundaries()
-    for hfkey in boundary_hfkeys:
-        for vkey in volmesh.halfface_vertices(hfkey):
-            ext_vkeys.append(vkey)
+    for halfface in boundary_hfkeys:
+        for vertex in volmesh.halfface_vertices(halfface):
+            ext_vkeys.append(vertex)
     int_vkeys = list(set(volmesh.vertices()) - set(ext_vkeys))
 
     if len(int_vkeys) < 1:
@@ -115,16 +109,16 @@ def volmesh_dual_network(volmesh, cls=None):
 
     dual_network = cls()
 
-    for ckey in volmesh.cell:
-        x, y, z = volmesh.cell_centroid(ckey)
-        dual_network.add_vertex(key=ckey, x=x, y=y, z=z)
+    for cell in volmesh.cells():
+        x, y, z = volmesh.cell_centroid(cell)
+        dual_network.add_node(key=cell, x=x, y=y, z=z)
 
-        for nbr in volmesh.cell_neighbors(ckey):
-            if nbr in dual_network.edge[ckey]:
+        for nbr in volmesh.cell_neighbors(cell):
+            if nbr in dual_network.edge[cell]:
                 continue
-            if nbr in dual_network.edge and ckey in dual_network.edge[nbr]:
+            if nbr in dual_network.edge and cell in dual_network.edge[nbr]:
                 continue
-            dual_network.add_edge(ckey, nbr)
+            dual_network.add_edge(cell, nbr)
 
     return dual_network
 

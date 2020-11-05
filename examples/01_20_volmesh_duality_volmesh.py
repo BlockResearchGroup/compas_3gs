@@ -49,7 +49,6 @@ dual_volmesh.attributes['name'] = dual_layer
 
 # move dual_network
 offset = 5
-
 x_move = dual_volmesh.bounding_box()[0][0] * offset
 for vkey in dual_volmesh.vertices():
     x = dual_volmesh.vertex_attribute(vkey, 'x')
@@ -59,12 +58,11 @@ for vkey in dual_volmesh.vertices():
 # ------------------------------------------------------------------------------
 # 3. visualise diagrams
 # ------------------------------------------------------------------------------
+force_artist = VolMeshArtist(volmesh)
+form_artist = VolMeshArtist(dual_volmesh)
 
 # draw volmesh cell labels and dual_volmesh vertex labels
 cell_c_dict = get_index_colordict(list(volmesh.cells()))
-
-force_artist = VolMeshArtist(volmesh)
-form_artist = VolMeshArtist(dual_volmesh)
 
 # draw volmesh
 force_artist.draw_edges()

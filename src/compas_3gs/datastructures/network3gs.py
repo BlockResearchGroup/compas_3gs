@@ -2,20 +2,15 @@ from __future__ import print_function
 
 from compas.datastructures import Network
 
+from compas.geometry import bounding_box
+
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import length_vector
 
-
 from compas_rhino.artists import NetworkArtist
 
 from compas_3gs.utilities import datastructure_centroid
-
-
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['Network3gs']
@@ -36,6 +31,7 @@ class Network3gs(Network):
     # --------------------------------------------------------------------------
 
     datastructure_centroid = datastructure_centroid
+    vertex_coordinates = Network.node_coordinates
 
     # --------------------------------------------------------------------------
     # misc
@@ -43,17 +39,17 @@ class Network3gs(Network):
 
     def bounding_box(self):
 
-        xyz = [self.vertex_coordinates(vkey) for vkey in self.vertex]
+        xyz = self.nodes_attributes('xyz', keys=list(self.nodes()))
 
-        x_sorted = sorted(xyz, key=lambda k: k[0])
-        y_sorted = sorted(xyz, key=lambda k: k[1])
-        z_sorted = sorted(xyz, key=lambda k: k[2])
+        # x_sorted = sorted(xyz, key=lambda k: k[0])
+        # y_sorted = sorted(xyz, key=lambda k: k[1])
+        # z_sorted = sorted(xyz, key=lambda k: k[2])
 
-        x = abs(x_sorted[0][0] - x_sorted[-1][0])
-        y = abs(y_sorted[0][1] - y_sorted[-1][1])
-        z = abs(z_sorted[0][2] - z_sorted[-1][2])
+        # x = abs(x_sorted[0][0] - x_sorted[-1][0])
+        # y = abs(y_sorted[0][1] - y_sorted[-1][1])
+        # z = abs(z_sorted[0][2] - z_sorted[-1][2])
 
-        return x, y, z
+        return bounding_box(xyz)
 
     # --------------------------------------------------------------------------
     # helpers - vertices
