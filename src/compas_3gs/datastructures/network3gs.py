@@ -32,6 +32,7 @@ class Network3gs(Network):
 
     datastructure_centroid = datastructure_centroid
     vertex_coordinates = Network.node_coordinates
+    vertices = Network.nodes
 
     # --------------------------------------------------------------------------
     # misc
@@ -55,21 +56,17 @@ class Network3gs(Network):
     # helpers - vertices
     # --------------------------------------------------------------------------
 
-    def vertex_update_xyz(self, vkey, new_xyz, constrained=True):
-        if constrained:
-            # X
-            if self.vertex[vkey]['x_fix'] is False:
-                self.vertex[vkey]['x'] = new_xyz[0]
-            # Y
-            if self.vertex[vkey]['y_fix'] is False:
-                self.vertex[vkey]['y'] = new_xyz[1]
-            # Z
-            if self.vertex[vkey]['z_fix'] is False:
-                self.vertex[vkey]['z'] = new_xyz[2]
-        else:
-            self.vertex[vkey]['x'] = new_xyz[0]
-            self.vertex[vkey]['y'] = new_xyz[1]
-            self.vertex[vkey]['z'] = new_xyz[2]
+    def vertex_update_xyz(self, node, new_xyz):
+
+        # X
+        if self.node_attribute(node, 'x_fix') is False:
+            self.node_attribute(node, 'x', new_xyz[0])
+        # Y
+        if self.node_attribute(node, 'y_fix') is False:
+            self.node_attribute(node, 'y', new_xyz[1])
+        # Z
+        if self.node_attribute(node, 'z_fix') is False:
+            self.node_attribute(node, 'z', new_xyz[2])
 
     # --------------------------------------------------------------------------
     # helpers - edges
