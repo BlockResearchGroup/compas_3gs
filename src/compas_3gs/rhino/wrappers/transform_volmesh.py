@@ -25,6 +25,7 @@ from compas_3gs.operations import volmesh_halfface_pinch
 from compas_3gs.operations import volmesh_merge_adjacent_halffaces
 from compas_3gs.operations import volmesh_cell_subdivide_barycentric
 
+from compas_3gs.rhino import VertexSelector
 from compas_3gs.rhino import CellSelector
 from compas_3gs.rhino import VolmeshHalffaceInspector
 from compas_3gs.rhino import VolmeshCellInspector
@@ -87,30 +88,28 @@ def rhino_volmesh_vertex_lift(volmesh):
     """Rhino wrapper for the vertex lift operation.
     """
 
-    volmesh.draw()
-
-    vkey = mesh_select_vertex(volmesh)
+    vertex = VertexSelector.select_vertex(volmesh)
 
     vertex_hfkeys = []
-    for hfkey in volmesh.vertex_halffaces(vkey):
+    for hfkey in volmesh.vertex_halffaces(vertex):
         if volmesh.is_halfface_on_boundary(hfkey):
             vertex_hfkeys.append(hfkey)
 
-    xyz    = volmesh.vertex_coordinates(vkey)
-    normal = volmesh.vertex_normal(vkey)
+    xyz = volmesh.vertex_coordinates(vertex)
+    normal = volmesh.vertex_normal(vertex)
 
     def OnDynamicDraw(sender, e):
         cp = e.CurrentPoint
         for hfkey in vertex_hfkeys:
-            for vkey in volmesh.halfface_vertices(hfkey):
-                sp = volmesh.vertex_coordinates(vkey)
+            for vertex in volmesh.halfface_vertices(hfkey):
+                sp = volmesh.vertex_coordinates(vertex)
                 e.Display.DrawLine(Point3d(*sp), cp, black, 2)
 
-    ip   = Point3d(*xyz)
+    ip = Point3d(*xyz)
     axis = Rhino.Geometry.Line(ip, ip + Vector3d(*normal))
-    gp   = get_target_point(axis, OnDynamicDraw)
+    gp = get_target_point(axis, OnDynamicDraw)
 
-    volmesh_vertex_lift(volmesh, vkey, gp, vertex_hfkeys)
+    volmesh_vertex_lift(volmesh, vertex, gp, vertex_hfkeys)
 
     volmesh.draw()
 

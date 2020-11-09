@@ -4,6 +4,7 @@ from __future__ import division
 
 from compas.datastructures import VolMesh
 
+from compas.geometry import centroid_points
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import length_vector
@@ -130,21 +131,47 @@ class VolMesh3gs(VolMesh):
     #   vertices
     # --------------------------------------------------------------------------
 
-    def vertex_update_xyz(self, vkey, xyz, constrained=True):
+    def vertex_normal(self, vertex):
+        """Return the normal vector at the vertex as the weighted average of the
+        normals of the neighboring faces.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        list
+            The components of the normal vector.
+        """
+        if not self.is_vertex_on_boundary(vertex):
+            return
+
+        halffaces = []
+        for halfface in self.vertex_halffaces(vertex):
+            if self.is_halfface_on_boundary(halfface):
+                halffaces.append(halfface)
+
+        vectors = [self.face_normal(halfface, False) for halfface in halffaces if halfface is not None]
+        return normalize_vector(centroid_points(vectors))
+
+    def vertex_update_xyz(self, vertex, new_xyz, constrained=True):
+
         if constrained:
             # X
-            if self.vertex[vkey]['x_fix'] is False:
-                self.vertex[vkey]['x'] = xyz[0]
+            if self.vertex_attribute(vertex, 'x_fix') is False:
+                self.vertex_attribute(vertex, 'x', new_xyz[0])
             # Y
-            if self.vertex[vkey]['y_fix'] is False:
-                self.vertex[vkey]['y'] = xyz[1]
+            if self.vertex_attribute(vertex, 'y_fix') is False:
+                self.vertex_attribute(vertex, 'y', new_xyz[1])
             # Z
-            if self.vertex[vkey]['z_fix'] is False:
-                self.vertex[vkey]['z'] = xyz[2]
+            if self.vertex_attribute(vertex, 'z_fix') is False:
+                self.vertex_attribute(vertex, 'z', new_xyz[2])
         else:
-            self.vertex[vkey]['x'] = xyz[0]
-            self.vertex[vkey]['y'] = xyz[1]
-            self.vertex[vkey]['z'] = xyz[2]
+            self.vertex_attribute(vertex, 'x', new_xyz[0])
+            self.vertex_attribute(vertex, 'y', new_xyz[1])
+            self.vertex_attribute(vertex, 'z', new_xyz[2])
 
     # --------------------------------------------------------------------------
     #   edges
@@ -258,14 +285,16 @@ class VolMesh3gs(VolMesh):
     # drawing
     # --------------------------------------------------------------------------
 
-    # def draw(self, **kwattr):
-    #     artist = VolMeshArtist(self)
-    #     artist.draw(**kwattr)
+    def draw(self, **kwattr):
+        artist = VolMeshArtist(self, layer=self.layer)
+        artist.clear_by_name(**kwattr)
+        artist.draw_faces(**kwattr)
+        artist.draw_vertices(**kwattr)
 
     def clear(self):
-        artist = VolMeshArtist(self)
+        artist = VolMeshArtist(self, layer=self.layer)
         # self.clear_cell_labels()
-        artist.clear()
+        artist.clear_by_name()
 
     def draw_edges(self, **kwattr):
         artist = VolMeshArtist(self, **kwattr)
@@ -276,27 +305,27 @@ class VolMesh3gs(VolMesh):
     #     artist.clear_edges(**kwattr)
 
     def draw_faces(self, **kwattr):
-        artist = VolMeshArtist(self)
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.draw_faces(**kwattr)
 
     def clear_faces(self, **kwattr):
-        artist = VolMeshArtist(self)
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.clear_faces(**kwattr)
 
-    def draw_face_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
+    def draw_facelabels(self, **kwattr):
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.draw_facelabels(**kwattr)
 
     def draw_vertices(self, **kwattr):
-        artist = VolMeshArtist(self)
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.draw_vertices(**kwattr)
 
-    def draw_vertex_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
+    def draw_vertexlabels(self, **kwattr):
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.draw_vertexlabels(**kwattr)
 
-    def draw_edge_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
+    def draw_edgelabels(self, **kwattr):
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.draw_edgelabels(**kwattr)
 
 

@@ -56,16 +56,21 @@ class Network3gs(Network):
     # helpers - vertices
     # --------------------------------------------------------------------------
 
-    def vertex_update_xyz(self, node, new_xyz):
+    def vertex_update_xyz(self, node, new_xyz, constrained=True):
 
-        # X
-        if self.node_attribute(node, 'x_fix') is False:
+        if constrained:
+            # X
+            if self.node_attribute(node, 'x_fix') is False:
+                self.node_attribute(node, 'x', new_xyz[0])
+            # Y
+            if self.node_attribute(node, 'y_fix') is False:
+                self.node_attribute(node, 'y', new_xyz[1])
+            # Z
+            if self.node_attribute(node, 'z_fix') is False:
+                self.node_attribute(node, 'z', new_xyz[2])
+        else:
             self.node_attribute(node, 'x', new_xyz[0])
-        # Y
-        if self.node_attribute(node, 'y_fix') is False:
             self.node_attribute(node, 'y', new_xyz[1])
-        # Z
-        if self.node_attribute(node, 'z_fix') is False:
             self.node_attribute(node, 'z', new_xyz[2])
 
     # --------------------------------------------------------------------------
@@ -73,8 +78,8 @@ class Network3gs(Network):
     # --------------------------------------------------------------------------
 
     def edge_vector(self, u, v, unitized=True):
-        u_xyz  = self.vertex_coordinates(u)
-        v_xyz  = self.vertex_coordinates(v)
+        u_xyz = self.vertex_coordinates(u)
+        v_xyz = self.vertex_coordinates(v)
         vector = subtract_vectors(v_xyz, u_xyz)
         if unitized:
             return normalize_vector(vector)
@@ -95,11 +100,12 @@ class Network3gs(Network):
 
     def draw(self, **kwattr):
         artist = NetworkArtist(self)
-        artist.draw_draw(**kwattr)
+        artist.draw_edges(**kwattr)
+        artist.draw_vertices(**kwattr)
 
     def clear(self, **kwattr):
         artist = NetworkArtist(self)
-        artist.clear()
+        artist.clear_by_name()
 
     def draw_vertices(self, **kwattr):
         artist = NetworkArtist(self)
@@ -113,11 +119,11 @@ class Network3gs(Network):
     #     artist = NetworkArtist(self)
     #     artist.clear_edges(**kwattr)
 
-    def draw_vertex_labels(self, **kwattr):
+    def draw_vertexlabels(self, **kwattr):
         artist = NetworkArtist(self)
         artist.draw_vertexlabels(**kwattr)
 
-    def draw_edge_labels(self, **kwattr):
+    def draw_edgelabels(self, **kwattr):
         artist = NetworkArtist(self)
         artist.draw_edgelabels(**kwattr)
 

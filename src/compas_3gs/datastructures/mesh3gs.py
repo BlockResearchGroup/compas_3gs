@@ -119,7 +119,7 @@ class Mesh3gs(Mesh):
 
     def clear(self, **kwattr):
         artist = MeshArtist(self)
-        artist.clear()
+        artist.clear_by_name()
 
     def draw_vertices(self, **kwattr):
         artist = MeshArtist(self)
