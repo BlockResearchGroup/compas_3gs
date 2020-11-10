@@ -15,9 +15,6 @@ from compas_3gs.rhino import rhino_volmesh_vertex_lift
 
 from compas_3gs.rhino import draw_vertex_fixities
 
-from compas_rhino.artists import VolMeshArtist
-
-
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
@@ -36,11 +33,6 @@ forcediagram = ForceVolMesh()
 forcediagram = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer_force
 forcediagram.attributes['name'] = layer_force
-
-force_artist = VolMeshArtist(forcediagram, layer=layer_force)
-
-# force_artist.draw_faces()
-# force_artist.draw_vertices()
 
 forcediagram.draw()
 

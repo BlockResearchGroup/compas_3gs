@@ -23,12 +23,6 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['VolmeshVertexInspector',
            'VolmeshHalffaceInspector',
            'VolmeshCellInspector',
@@ -154,7 +148,7 @@ class VolmeshHalffaceInspector(BaseConduit):
 
                 if self.dependents:
 
-                    d_hfkeys = self.volmesh.volmesh_edge_dependents_all(hfkey)
+                    d_hfkeys = self.volmesh.halfface_manifold_neighborhood(hfkey, ring=50)
 
                     for d_hfkey in d_hfkeys:
                         face_coordinates = self.volmesh.halfface_coordinates(d_hfkey)
