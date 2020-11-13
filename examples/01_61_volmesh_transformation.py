@@ -15,6 +15,7 @@ try:
 except ImportError:
     compas.raise_if_ironpython()
 
+
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
 forcediagram = ForceVolMesh()
-forcediagram = volmesh_from_polysurfaces(forcediagram, guids)
+forcediagram = volmesh_from_polysurfaces(forcediagram, guids, '2f')
 forcediagram.layer = layer_force
 forcediagram.attributes['name'] = layer_force
 
