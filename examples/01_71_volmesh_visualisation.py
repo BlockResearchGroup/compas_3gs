@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.helpers import volmesh_from_polysurfaces
+from compas_rhino.utilities import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import FormNetwork
 from compas_3gs.diagrams import ForceVolMesh
@@ -24,12 +24,6 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
@@ -38,12 +32,12 @@ layer = 'force_volmesh'
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
-forcediagram       = ForceVolMesh()
-forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
+forcediagram = ForceVolMesh()
+forcediagram = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer
 forcediagram.attributes['name'] = layer
 
-forcediagram.draw(layer=layer)
+forcediagram.draw()
 
 
 # ------------------------------------------------------------------------------
@@ -51,13 +45,16 @@ forcediagram.draw(layer=layer)
 # ------------------------------------------------------------------------------
 layer = 'form_network'
 
-formdiagram       = volmesh_dual_network(forcediagram, cls=FormNetwork)
+formdiagram = volmesh_dual_network(forcediagram, cls=FormNetwork)
 formdiagram.layer = layer
 formdiagram.attributes['name'] = layer
 
-x_move = formdiagram.bounding_box()[0] * 2
-for vkey in formdiagram.vertex:
-    formdiagram.vertex[vkey]['x'] += x_move
+# move dual_network
+offset = 2
+width = formdiagram.bounding_box()[1][0] - formdiagram.bounding_box()[0][0]
+for vkey in formdiagram.nodes():
+    x = formdiagram.node_attribute(vkey, 'x')
+    formdiagram.node_attribute(vkey, 'x', x + width * offset)
 
 volmesh_reciprocate(forcediagram,
                     formdiagram,
@@ -67,13 +64,15 @@ volmesh_reciprocate(forcediagram,
                     edge_max=20,
                     tolerance=0.01)
 
-formdiagram.draw(layer=layer)
+formdiagram.draw()
 
 # ------------------------------------------------------------------------------
 # 3. visualisation types
 # ------------------------------------------------------------------------------
 
 while True:
+
+    rs.EnableRedraw(True)
 
     display = rs.GetString('pick visualisation type',
                            strings=['id',
@@ -82,8 +81,6 @@ while True:
                                     'external_forces',
                                     'internal_forces',
                                     'exit'])
-
-    rs.EnableRedraw(True)
 
     if display is None or display == 'exit':
         break
@@ -104,6 +101,7 @@ while True:
 
     elif display == 'external_forces':
         scale = rs.GetReal('scale', 1, 0.01, 10.0)
+        formdiagram.clear()
         formdiagram.draw()
         draw_network_external_forces(forcediagram, formdiagram, gradient=True, scale=scale)
 
@@ -112,8 +110,9 @@ while True:
         formdiagram.clear()
         draw_network_internal_forces(forcediagram, formdiagram, scale=scale)
 
-    rs.EnableRedraw(True)
 
-rs.EnableRedraw(False)
+forcediagram.clear()
+formdiagram.clear()
+
 forcediagram.draw()
 formdiagram.draw()
