@@ -65,9 +65,9 @@ def get_index_colordict(key_list, color_scheme=i_to_rgb):
             if len(key_list) == 1:
                 value = 1
             else:
-                value  = float(index) / (len(key_list) - 1)
+                value = float(index) / (len(key_list) - 1)
 
-            color  = color_scheme(value)
+            color = color_scheme(value)
             c_dict[key] = color
 
     return c_dict

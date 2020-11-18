@@ -281,11 +281,11 @@ class VolMesh3gs(VolMesh):
 
     def draw(self, **kwattr):
         artist = VolMeshArtist(self, layer=self.layer)
-        artist.clear_by_name(**kwattr)
+        artist.clear_by_name()
         artist.draw_faces(**kwattr)
         artist.draw_vertices(**kwattr)
 
-    def clear(self):
+    def clear(self, **kwattr):
         artist = VolMeshArtist(self, layer=self.layer)
         # self.clear_cell_labels()
         artist.clear_by_name()

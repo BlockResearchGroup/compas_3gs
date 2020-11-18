@@ -82,8 +82,8 @@ form_artist.clear_by_name()
 conduit = ReciprocationConduit(forcediagram, formdiagram)
 
 
-def callback(forcediagram, formdiagram, k, args):
-    if k % 5:
+def callback(forcediagram, formdiagram, k, args, refreshrate=10):
+    if k % refreshrate:
         conduit.redraw()
 
 
@@ -91,7 +91,7 @@ def callback(forcediagram, formdiagram, k, args):
 with conduit.enabled():
     volmesh_reciprocate(forcediagram,
                         formdiagram,
-                        kmax=1000,
+                        kmax=500,
                         weight=weight,
                         edge_min=0.5,
                         edge_max=20,

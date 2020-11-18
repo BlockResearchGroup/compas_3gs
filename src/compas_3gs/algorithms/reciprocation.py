@@ -2,9 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.datastructures import Network
-from compas.datastructures import VolMesh
-
 from compas.geometry import normalize_vector
 from compas.geometry import scale_vector
 from compas.geometry import add_vectors

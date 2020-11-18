@@ -14,12 +14,6 @@ from compas_3gs.operations import cell_collapse_short_edge
 from compas_3gs.utilities import print_result
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['cell_planarise',
            'volmesh_planarise']
 
@@ -135,10 +129,10 @@ def cell_planarise(cell,
         for fkey in cell.faces():
 
             # evaluate current face --------------------------------------------
-            f_vkeys  = cell.face_vertices(fkey)
-            f_v_xyz  = cell.face_coordinates(fkey)
+            f_vkeys = cell.face_vertices(fkey)
+            f_v_xyz = cell.face_coordinates(fkey)
             f_normal = cell.face_normal(fkey)
-            f_area   = cell.face_area(fkey)
+            f_area = cell.face_area(fkey)
             f_center = cell.face_centroid(fkey)
 
             if fkey in target_centers:
@@ -195,7 +189,7 @@ def cell_planarise(cell,
             scaled_face = scale_polygon(projected_face, scale)
 
             # arearisation deviation
-            areaness  = abs(f_area - target_area)
+            areaness = abs(f_area - target_area)
             if areaness > deviation_area:
                 deviation_area = areaness
 
@@ -223,11 +217,11 @@ def cell_planarise(cell,
 
             if print_result_info:
 
-                name      = "Cell planarisation"
+                name = "Cell planarisation"
                 deviation = deviation_flat
 
                 if target_areas:
-                    name      = "Cell arearisation"
+                    name = "Cell arearisation"
                     deviation = deviation_area
 
                 print_result(name, k, deviation)
@@ -329,9 +323,9 @@ def volmesh_planarise(volmesh,
     # --------------------------------------------------------------------------
     #   1. initialise
     # --------------------------------------------------------------------------
-    free_vkeys      = list(set(volmesh.vertex) - set(fix_vkeys))
+    free_vkeys = list(set(volmesh.vertices()) - set(fix_vkeys))
     initial_normals = _get_current_volmesh_normals(volmesh)
-    boundary_fkeys  = volmesh.halffaces_on_boundary()
+    boundary_fkeys = volmesh.halffaces_on_boundaries()
 
     # --------------------------------------------------------------------------
     #   2. loop
@@ -342,18 +336,18 @@ def volmesh_planarise(volmesh,
         deviation_area = 0
         deviation_perp = 0
 
-        new_xyz = {vkey: [] for vkey in volmesh.vertex}
+        new_xyz = {vkey: [] for vkey in volmesh.vertices()}
 
         for fkey in volmesh.faces():
 
             fkey_pair = volmesh.halfface_opposite_halfface(fkey)
 
             # evaluate current face --------------------------------------------
-            f_vkeys  = volmesh.halfface_vertices(fkey)
-            f_v_xyz  = volmesh.halfface_coordinates(fkey)
+            f_vkeys = volmesh.halfface_vertices(fkey)
+            f_v_xyz = volmesh.halfface_coordinates(fkey)
             f_center = volmesh.halfface_center(fkey)
-            f_normal = volmesh.halfface_oriented_normal(fkey)
-            f_area   = volmesh.halfface_oriented_area(fkey)
+            f_normal = volmesh.halfface_normal(fkey)
+            f_area = volmesh.halfface_area(fkey)
 
             # override with manual target values -------------------------------
             if _pair_membership(fkey, fkey_pair, target_centers):
@@ -396,13 +390,13 @@ def volmesh_planarise(volmesh,
             # ------------------------------------------------------------------
             if fkey in target_areas:
                 target_area = target_areas[fkey]
-                scale       = (target_area / f_area) ** 0.5
+                scale = (target_area / f_area) ** 0.5
 
                 # scale
                 new_face = scale_polygon(new_face, scale)
 
                 # arearisation deviation
-                areaness  = abs(f_area - target_area)
+                areaness = abs(f_area - target_area)
                 if areaness > deviation_area:
                     deviation_area = areaness
 
@@ -424,11 +418,11 @@ def volmesh_planarise(volmesh,
 
             if print_result_info:
 
-                name      = "Volmesh planarisation"
+                name = "Volmesh planarisation"
                 deviation = deviation_flat
 
                 if target_areas:
-                    name      = "Volmesh arearisation"
+                    name = "Volmesh arearisation"
                     deviation = deviation_area
 
                 print_result(name, k, deviation)
@@ -460,7 +454,7 @@ def _pair_membership(item1, item2, container):
 
 def _get_current_mesh_normals(mesh):
     normal_dict = {}
-    for fkey in mesh.face:
+    for fkey in mesh.face():
         center = mesh.face_center(fkey)
         normal = mesh.face_normal(fkey)
         normal_dict[fkey] = {'normal': normal, 'center': center}
@@ -469,9 +463,9 @@ def _get_current_mesh_normals(mesh):
 
 def _get_current_volmesh_normals(volmesh):
     normal_dict = {}
-    for hfkey in volmesh.halfface:
+    for hfkey in volmesh.halffaces():
         center = volmesh.halfface_center(hfkey)
-        normal = volmesh.halfface_oriented_normal(hfkey)
+        normal = volmesh.halfface_normal(hfkey)
         normal_dict[hfkey] = {'normal': normal, 'center': center}
     return normal_dict
 
