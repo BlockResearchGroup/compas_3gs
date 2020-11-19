@@ -58,7 +58,7 @@ for vkey in formdiagram.nodes():
 
 volmesh_reciprocate(forcediagram,
                     formdiagram,
-                    kmax=1000,
+                    kmax=500,
                     weight=1,
                     edge_min=0.5,
                     edge_max=20,

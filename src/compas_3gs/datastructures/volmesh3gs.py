@@ -201,16 +201,12 @@ class VolMesh3gs(VolMesh):
 
     def clear(self, **kwattr):
         artist = VolMeshArtist(self, layer=self.layer)
-        # self.clear_cell_labels()
         artist.clear_by_name()
+        artist.clear_layer()
 
     def draw_edges(self, **kwattr):
         artist = VolMeshArtist(self, **kwattr)
         artist.draw_edges(**kwattr)
-
-    # def clear_edges(self, **kwattr):
-    #     artist = VolMeshArtist(self, **kwattr)
-    #     artist.clear_edges(**kwattr)
 
     def draw_faces(self, **kwattr):
         artist = VolMeshArtist(self, layer=self.layer)

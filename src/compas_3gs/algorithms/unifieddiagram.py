@@ -70,8 +70,8 @@ def volmesh_ud(volmesh,
     # --------------------------------------------------------------------------
     base_xyz = {}
 
-    for vkey in network.vertex:
-        init_xyz = network.vertex_coordinates(vkey)
+    for vkey in network.nodes():
+        init_xyz = network.node_coordinates(vkey)
         base_xyz[vkey] = add_vectors(init_xyz, translation)
 
     # --------------------------------------------------------------------------
@@ -79,8 +79,8 @@ def volmesh_ud(volmesh,
     # --------------------------------------------------------------------------
     halffaces = {}
 
-    for ckey in volmesh.cell:
-        cell_hfs = volmesh.cell_halffaces(ckey)
+    for ckey in volmesh.cells():
+        cell_hfs = volmesh.cell_faces(ckey)
         for hfkey in cell_hfs:
             hf_vertices = {}
             for vkey in volmesh.halfface_vertices(hfkey):

@@ -495,7 +495,7 @@ def datastructure_centroid(datastructure):
         The coordinates of the centroid.
 
     """
-    points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertex]
+    points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertices()]
 
     return centroid_points(points)
 

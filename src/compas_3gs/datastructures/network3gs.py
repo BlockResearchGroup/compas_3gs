@@ -106,6 +106,7 @@ class Network3gs(Network):
     def clear(self, **kwattr):
         artist = NetworkArtist(self)
         artist.clear_by_name()
+        artist.clear_layer()
 
     def draw_nodes(self, **kwattr):
         artist = NetworkArtist(self)
@@ -114,10 +115,6 @@ class Network3gs(Network):
     def draw_edges(self, **kwattr):
         artist = NetworkArtist(self)
         artist.draw_edges(**kwattr)
-
-    # def clear_edges(self, **kwattr):
-    #     artist = NetworkArtist(self)
-    #     artist.clear_edges(**kwattr)
 
     def draw_vertexlabels(self, **kwattr):
         artist = NetworkArtist(self)
