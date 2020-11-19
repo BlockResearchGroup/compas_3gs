@@ -6,7 +6,7 @@ import compas
 
 from compas_rhino.utilities import volmesh_from_polysurfaces
 
-from compas_3gs.rhino import VertexSelector
+from compas_3gs.rhino import VolMeshSelector
 
 from compas.utilities import i_to_red
 
@@ -19,7 +19,7 @@ from compas_3gs.rhino import VolmeshConduit
 from compas_3gs.utilities import compare_initial_current
 from compas_3gs.utilities import volmesh_face_flatness
 
-# from compas_3gs.rhino import bake_cells_as_polysurfaces
+from compas_3gs.rhino import bake_cells_as_polysurfaces
 
 try:
     import rhinoscriptsyntax as rs
@@ -49,8 +49,8 @@ forcediagram.draw()
 # ------------------------------------------------------------------------------
 rs.EnableRedraw(True)
 
-vkeys = VertexSelector.select_vertices(forcediagram,
-                                       message='Select vertices to fix:')
+vkeys = VolMeshSelector.select_vertices(forcediagram,
+                                        message='Select vertices to fix:')
 
 
 # ------------------------------------------------------------------------------
@@ -66,12 +66,13 @@ conduit = VolmeshConduit(forcediagram)
 
 def callback(forcediagram, k, args, refreshrate=10):
     if k % refreshrate:
-        current_flatness = volmesh_face_flatness(forcediagram)
-        face_colordict = compare_initial_current(current_flatness,
-                                                 initial_flatness,
-                                                 color_scheme=i_to_red)
-        conduit.face_colordict = face_colordict
-        conduit.redraw()
+        return
+    current_flatness = volmesh_face_flatness(forcediagram)
+    face_colordict = compare_initial_current(current_flatness,
+                                             initial_flatness,
+                                             color_scheme=i_to_red)
+    conduit.face_colordict = face_colordict
+    conduit.redraw()
 
 
 # planarise
@@ -85,6 +86,6 @@ with conduit.enabled():
                       print_result_info=True)
 
 # update / redraw
-forcediagram.draw()
+# forcediagram.draw()
 
-# bake_cells_as_polysurfaces(forcediagram)
+bake_cells_as_polysurfaces(forcediagram)

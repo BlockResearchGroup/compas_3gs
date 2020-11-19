@@ -22,12 +22,6 @@ from compas_3gs.utilities import polygon_area_oriented
 from compas_3gs.utilities import datastructure_centroid
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['Mesh3gs']
 
 
@@ -45,7 +39,7 @@ class Mesh3gs(Mesh):
     #   inherited
     # --------------------------------------------------------------------------
 
-    mesh_split_face        = mesh_split_face
+    mesh_split_face = mesh_split_face
     datastructure_centroid = datastructure_centroid
 
     def add_edge(self, u, v, attr_dict=None, **kwattr):
@@ -98,15 +92,15 @@ class Mesh3gs(Mesh):
 
     def face_area(self, fkey):
         points = self.face_coordinates(fkey)
-        area   = polygon_area_oriented(points)
+        area = polygon_area_oriented(points)
         return area
 
     def face_normal(self, fkey, unitized=True):
         points = self.face_coordinates(fkey)
         normal = polygon_normal_oriented(points, unitized)
         if length_vector(normal) == 0 :
-            uv     = subtract_vectors(points[1], points[0])
-            vw     = subtract_vectors(points[2], points[1])
+            uv = subtract_vectors(points[1], points[0])
+            vw = subtract_vectors(points[2], points[1])
             normal = normalize_vector(cross_vectors(uv, vw))
         return normal
 

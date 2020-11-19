@@ -14,7 +14,6 @@ from compas.geometry import distance_point_point
 from compas.geometry import centroid_points
 from compas.utilities import i_to_rgb
 
-from compas_rhino.objects.select import mesh_select_vertex
 from compas_rhino.objects.select import mesh_select_vertices
 from compas_rhino.objects.select import mesh_select_face
 from compas_rhino.objects.select import mesh_select_faces
@@ -25,7 +24,7 @@ from compas_3gs.operations import volmesh_halfface_pinch
 from compas_3gs.operations import volmesh_merge_adjacent_halffaces
 from compas_3gs.operations import volmesh_cell_subdivide_barycentric
 
-from compas_3gs.rhino import VertexSelector
+from compas_3gs.rhino import VolMeshSelector
 from compas_3gs.rhino import CellSelector
 from compas_3gs.rhino import VolmeshHalffaceInspector
 from compas_3gs.rhino import VolmeshCellInspector
@@ -82,7 +81,7 @@ def rhino_volmesh_vertex_lift(volmesh):
     """Rhino wrapper for the vertex lift operation.
     """
 
-    vertex = VertexSelector.select_vertex(volmesh)
+    vertex = VolMeshSelector.select_vertex(volmesh)
 
     vertex_hfkeys = []
     for hfkey in volmesh.vertex_halffaces(vertex):

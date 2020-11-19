@@ -8,12 +8,6 @@ from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['volmesh_ud',
            'cellnetwork_ud']
 
@@ -69,7 +63,7 @@ def volmesh_ud(volmesh,
     # --------------------------------------------------------------------------
     volmesh_center = volmesh.centroid()
     network_center = network.datastructure_centroid()
-    translation    = subtract_vectors(volmesh_center, network_center)
+    translation = subtract_vectors(volmesh_center, network_center)
 
     # --------------------------------------------------------------------------
     #   2. get base points
@@ -77,7 +71,7 @@ def volmesh_ud(volmesh,
     base_xyz = {}
 
     for vkey in network.vertex:
-        init_xyz       = network.vertex_coordinates(vkey)
+        init_xyz = network.vertex_coordinates(vkey)
         base_xyz[vkey] = add_vectors(init_xyz, translation)
 
     # --------------------------------------------------------------------------
@@ -102,10 +96,10 @@ def volmesh_ud(volmesh,
 
     for u, v in network.edges():
         u_hfkey, v_hfkey = volmesh.cell_pair_halffaces(u, v)
-        u_pts   = halffaces[u_hfkey].values()
-        v_pts   = halffaces[v_hfkey].values()
+        u_pts = halffaces[u_hfkey].values()
+        v_pts = halffaces[v_hfkey].values()
         pt_list = u_pts + v_pts
-        prism   = convex_hull(u_pts + v_pts)  # face as indices of pt_list
+        prism = convex_hull(u_pts + v_pts)  # face as indices of pt_list
         face_list = []
         for face in prism:
             face_xyz = [pt_list[i] for i in face]  # get face xyz in order

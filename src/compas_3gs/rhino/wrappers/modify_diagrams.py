@@ -4,29 +4,23 @@ from __future__ import division
 
 import compas
 
-import compas_rhino
-
 from compas.geometry import add_vectors
 
-from compas_rhino.objects import VolMeshObject
-
-
-from compas_3gs.rhino.control import VertexSelector
+from compas_3gs.rhino import VolMeshSelector
 from compas_3gs.rhino.control import get_initial_point
 
 
 try:
     import Rhino
 
-    from Rhino.ApplicationSettings import *
     from Rhino.ApplicationSettings import ModelAidSettings
     from Rhino.Geometry import Point3d
 
     from System.Drawing.Color import FromArgb
 
     dotted_color = FromArgb(0, 0, 0)
-    arrow_color  = FromArgb(255, 0, 79)
-    edge_color   = FromArgb(0, 0, 0)
+    arrow_color = FromArgb(255, 0, 79)
+    edge_color = FromArgb(0, 0, 0)
 
 except ImportError:
     compas.raise_if_ironpython()
@@ -53,7 +47,7 @@ def rhino_vertex_modify_fixity(diagram):
 
     """
 
-    vertices = VertexSelector.select_vertices(diagram)
+    vertices = VolMeshSelector.select_vertices(diagram)
 
     go = Rhino.Input.Custom.GetOption()
     go.SetCommandPrompt('Set axes Constraints')
@@ -96,7 +90,7 @@ def rhino_vertex_move(diagram):
 
     """
 
-    vertices = VertexSelector.select_vertices(diagram)
+    vertices = VolMeshSelector.select_vertices(diagram)
 
     nbr_vkeys = {}
     edges = set()
@@ -172,7 +166,7 @@ def rhino_vertex_align(diagram):
     # --------------------------------------------------------------------------
     # get vkeys to align
     # --------------------------------------------------------------------------
-    vertices = VertexSelector.select_vertices(diagram)
+    vertices = VolMeshSelector.select_vertices(diagram)
 
     nbr_vkeys = {}
     edges = set()

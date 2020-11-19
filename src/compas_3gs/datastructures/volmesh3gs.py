@@ -5,15 +5,9 @@ from __future__ import division
 from compas.datastructures import VolMesh
 
 from compas.geometry import centroid_points
-from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
-from compas.geometry import length_vector
-from compas.geometry import cross_vectors
 
 from compas_rhino.artists import VolMeshArtist
-
-from compas_3gs.utilities import polygon_normal_oriented
-from compas_3gs.utilities import polygon_area_oriented
 
 
 __all__ = ['VolMesh3gs']
@@ -166,86 +160,6 @@ class VolMesh3gs(VolMesh):
             self.vertex_attribute(vertex, 'x', new_xyz[0])
             self.vertex_attribute(vertex, 'y', new_xyz[1])
             self.vertex_attribute(vertex, 'z', new_xyz[2])
-
-    # --------------------------------------------------------------------------
-    #   edges
-    # --------------------------------------------------------------------------
-
-    # def edge_vector(self, u, v, unitized=True):
-    #     u_xyz  = self.vertex_coordinates(u)
-    #     v_xyz  = self.vertex_coordinates(v)
-    #     vector = subtract_vectors(v_xyz, u_xyz)
-    #     if unitized:
-    #         return normalize_vector(vector)
-    #     return vector
-
-    # --------------------------------------------------------------------------
-    # halffaces and faces
-    # --------------------------------------------------------------------------
-
-    # def halfface_oriented_area(self, hfkey):
-    #     vertices = self.halfface_vertices(hfkey)
-    #     points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-    #     area     = polygon_area_oriented(points)
-    #     return area
-
-    # def halfface_oriented_normal(self, hfkey, unitized=True):
-    #     vertices = self.halfface_vertices(hfkey)
-    #     points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-    #     normal   = polygon_normal_oriented(points, unitized)
-    #     if length_vector(normal) == 0 :
-    #         uv = subtract_vectors(points[1], points[0])
-    #         vw = subtract_vectors(points[2], points[1])
-    #         normal = normalize_vector(cross_vectors(uv, vw))
-    #     return normal
-
-    # def halfface_edge_dependents(self, hfkey):
-    #     dep_hfkeys = {}
-    #     ckey       = self.halfface_cell(hfkey)
-    #     hf_edges   = self.halfface_halfedges(hfkey)
-    #     for edge in hf_edges:
-    #         u = edge[0]
-    #         v = edge[1]
-    #         adj_hfkey = self.cell[ckey][v][u]
-    #         w         = self.halfface_vertex_ancestor(adj_hfkey, v)
-    #         nbr_ckey  = self.plane[u][v][w]
-    #         if nbr_ckey is not None:
-    #             dep_hfkey = self.cell[nbr_ckey][v][u]
-    #             dep_hfkeys[dep_hfkey] = u
-    #     return dep_hfkeys
-
-    # def volmesh_edge_dependents_all(self, hfkey):
-    #     dependents = set(self.halfface_edge_dependents(hfkey).keys())
-    #     seen = set()
-    #     i = 0
-
-    #     while True:
-
-    #         if i == 100:
-    #             break
-
-    #         if i != 0 and len(seen) == 0:
-    #             break
-
-    #         temp = []
-    #         for dep_hfkey in dependents:
-
-    #             if dep_hfkey not in seen:
-    #                 hfkeys = self.halfface_edge_dependents(dep_hfkey).keys()
-    #                 temp += hfkeys
-    #                 seen.add(dep_hfkey)
-
-    #         dependents.update(temp)
-
-    #         i += 1
-
-    #     if hfkey in dependents:
-    #         dependents.remove(hfkey)
-
-    #     return list(dependents)
-
-    def clean(self):
-        pass
 
     # --------------------------------------------------------------------------
     # cell

@@ -12,12 +12,6 @@ from compas.utilities import i_to_red
 from compas_3gs.utilities.topology import pair_uv_to_hf
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['get_index_colordict',
            'valuedict_to_colordict',
            'compare_initial_current',

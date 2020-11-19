@@ -7,12 +7,6 @@ from compas_3gs.datastructures import Mesh3gs
 from compas.geometry import add_vectors
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['EGI']
 
 
@@ -26,11 +20,11 @@ class EGI(Mesh3gs):
     def __init__(self):
         super(EGI, self).__init__()
 
-        a  = {'origin': (0, 0, 0)}
-        va = {'x_fix' : False,
-              'y_fix' : False,
-              'z_fix' : False,
-              'type'  : None,
+        a = {'origin': (0, 0, 0)}
+        va = {'x_fix': False,
+              'y_fix': False,
+              'z_fix': False,
+              'type': None,
               'normal': None,
               'target_area': None}
         ea = {}
@@ -47,16 +41,16 @@ class EGI(Mesh3gs):
 
     @classmethod
     def from_volmesh_cell(cls, ckey, volmesh):
-        egi    = cls()
+        egi = cls()
         origin = volmesh.cell_centroid(ckey)
-        egi.attributes['name']   = ckey
+        egi.attributes['name'] = ckey
         egi.attributes['origin'] = origin
 
         halffaces = volmesh.cell_halffaces(ckey)
-        vertices  = volmesh.cell_vertices(ckey)
+        vertices = volmesh.cell_vertices(ckey)
 
         for hfkey in halffaces:
-            normal  = volmesh.halfface_oriented_normal(hfkey)
+            normal = volmesh.halfface_oriented_normal(hfkey)
             x, y, z = add_vectors(origin, normal)
             egi.add_vertex(key=hfkey, x=x, y=y, z=z)
 

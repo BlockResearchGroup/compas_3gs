@@ -48,11 +48,11 @@ dual_volmesh.layer = dual_layer
 dual_volmesh.attributes['name'] = dual_layer
 
 # move dual_network
-offset = 2
+offset = 3
 width = dual_volmesh.bounding_box()[1][0] - dual_volmesh.bounding_box()[0][0]
-for vkey in dual_volmesh.nodes():
-    x = dual_volmesh.node_attribute(vkey, 'x')
-    dual_volmesh.node_attribute(vkey, 'x', x + width * offset)
+for vkey in dual_volmesh.vertices():
+    x = dual_volmesh.vertex_attribute(vkey, 'x')
+    dual_volmesh.vertex_attribute(vkey, 'x', x + width * offset)
 
 
 # ------------------------------------------------------------------------------

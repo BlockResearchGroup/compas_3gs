@@ -12,12 +12,6 @@ from compas_3gs.operations import cell_split_indet_face_vertices
 from compas_3gs.operations import cell_relocate_face
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['cell_arearise_face']
 
 
@@ -36,7 +30,7 @@ def cell_arearise_face(cell,
 
     cell_split_indet_face_vertices(cell, fkey)
 
-    area   = cell.face_oriented_area(fkey)
+    area = cell.face_oriented_area(fkey)
     normal = cell.face_oriented_normal(fkey)
     center = cell.face_centroid(fkey)
 
@@ -47,7 +41,7 @@ def cell_arearise_face(cell,
     if area - target_area > 0:
         sign = -1  # if it needs to be smaller...
 
-    if area * target_area < 0 :  # if it needs to flip...
+    if area * target_area < 0:  # if it needs to flip...
         sign = -1
 
     move_dir = _get_move_direction(cell, fkey) * sign
@@ -57,7 +51,7 @@ def cell_arearise_face(cell,
     # --------------------------------------------------------------------------
 
     def evaluation(x):
-        xyz      = add_vectors(center, scale_vector(normal, x * move_dir))
+        xyz = add_vectors(center, scale_vector(normal, x * move_dir))
         new_area = _evaluate_new_face_area(cell, fkey, xyz, normal)
 
         # callback / conduit ---------------------------------------------------
@@ -94,13 +88,13 @@ def cell_arearise_face(cell,
 
 def _get_move_direction(cell, fkey):
 
-    normal     = cell.face_oriented_normal(fkey)
-    area       = cell.face_oriented_area(fkey)
-    center     = cell.face_center(fkey)
+    normal = cell.face_oriented_normal(fkey)
+    area = cell.face_oriented_area(fkey)
+    center = cell.face_center(fkey)
 
     new_center = add_vectors(center, normal)
 
-    new_area   = _evaluate_new_face_area(cell, fkey, new_center)
+    new_area = _evaluate_new_face_area(cell, fkey, new_center)
 
     if new_area > area:
         move_dir = 1
@@ -123,7 +117,7 @@ def _evaluate_new_face_area(cell, fkey, xyz, init_normal=None):
 
     cell_relocate_face(cell, fkey, xyz, init_normal)
 
-    new_area   = cell.face_oriented_area(fkey)
+    new_area = cell.face_oriented_area(fkey)
     new_normal = cell.face_oriented_normal(fkey)
 
     if dot_vectors(init_normal, new_normal) < 0:

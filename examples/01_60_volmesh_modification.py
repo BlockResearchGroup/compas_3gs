@@ -34,7 +34,9 @@ forcediagram = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer_force
 forcediagram.attributes['name'] = layer_force
 
-forcediagram.draw()
+forcediagram.draw_faces()
+forcediagram.draw_edges()
+forcediagram.draw_vertices()
 
 # ------------------------------------------------------------------------------
 # 2. modify volmesh vertices
@@ -48,7 +50,6 @@ while True:
                           'move', 'align', 'lift', 'fixity', 'exit'])
 
     if modify is None or modify == 'exit':
-        rs.EnableRedraw(False)
         break
 
     if modify == 'move':
@@ -63,5 +64,7 @@ while True:
     elif modify == 'fixity':
         rhino_vertex_modify_fixity(forcediagram)
 
-    forcediagram.draw()
+    forcediagram.draw_faces()
+    forcediagram.draw_edges()
+    forcediagram.draw_vertices()
     draw_vertex_fixities(forcediagram)

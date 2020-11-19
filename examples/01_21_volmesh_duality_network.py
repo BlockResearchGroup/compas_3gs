@@ -49,7 +49,7 @@ dual_network.layer = dual_layer
 dual_network.attributes['name'] = dual_layer
 
 # move dual_network
-offset = 2
+offset = 3
 width = dual_network.bounding_box()[1][0] - dual_network.bounding_box()[0][0]
 for vkey in dual_network.nodes():
     x = dual_network.node_attribute(vkey, 'x')

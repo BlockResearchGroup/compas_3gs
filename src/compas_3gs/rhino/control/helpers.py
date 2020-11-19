@@ -13,12 +13,6 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['get_initial_point',
            'get_target_point',
 
@@ -55,10 +49,10 @@ def set_target_areas(area_dict):
     go.SetCommandPrompt("Enter target areas")
 
     # face key -----------------------------------------------------------------
-    sortedkeys  = sorted(area_dict.keys())
+    sortedkeys = sorted(area_dict.keys())
     key_strings = [str("key_" + str(key)) for key in sortedkeys]
-    fkey_index  = 0
-    key_list    = go.AddOptionList("pick_face", ["All"] + key_strings, fkey_index)
+    fkey_index = 0
+    key_list = go.AddOptionList("pick_face", ["All"] + key_strings, fkey_index)
 
     # assign new target areas --------------------------------------------------
     new_area_dict = deepcopy(area_dict)

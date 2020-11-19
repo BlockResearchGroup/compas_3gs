@@ -15,16 +15,16 @@ try:
 
     from System.Drawing.Color import FromArgb
 
-    find_object    = sc.doc.Objects.Find
+    find_object = sc.doc.Objects.Find
     feedback_color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
 
     arrow_color = FromArgb(255, 0, 79)
-    jl_blue     = FromArgb(0, 113, 188)
-    black       = FromArgb(0, 0, 0)
-    gray        = FromArgb(200, 200, 200)
-    green       = FromArgb(0, 255, 0)
-    white       = FromArgb(255, 255, 255)
-    form_color  = FromArgb(255, 255, 255)
+    jl_blue = FromArgb(0, 113, 188)
+    black = FromArgb(0, 0, 0)
+    gray = FromArgb(200, 200, 200)
+    green = FromArgb(0, 255, 0)
+    white = FromArgb(255, 255, 255)
+    form_color = FromArgb(255, 255, 255)
     force_color = FromArgb(0, 0, 0)
 
 except ImportError:

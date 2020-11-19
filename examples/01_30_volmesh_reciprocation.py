@@ -22,7 +22,6 @@ try:
 except ImportError:
     compas.raise_if_ironpython()
 
-rs.EnableRedraw(True)
 
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
@@ -63,6 +62,8 @@ form_artist = NetworkArtist(formdiagram, layer=layer_form)
 form_artist.draw_edges()
 
 
+rs.EnableRedraw(True)
+
 # ------------------------------------------------------------------------------
 # 3. get reciprocation weight factor
 # ------------------------------------------------------------------------------
@@ -82,9 +83,10 @@ form_artist.clear_by_name()
 conduit = ReciprocationConduit(forcediagram, formdiagram)
 
 
-def callback(forcediagram, formdiagram, k, args, refreshrate=10):
+def callback(forcediagram, formdiagram, k, args, refreshrate=2):
     if k % refreshrate:
-        conduit.redraw()
+        return
+    conduit.redraw()
 
 
 # reciprocation

@@ -6,12 +6,6 @@ from compas_3gs.datastructures import Network3gs
 from compas_3gs.datastructures import VolMesh3gs
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['FormNetwork',
            'FormVolMesh',
            'ForceVolMesh']
@@ -38,7 +32,7 @@ class FormNetwork(Network3gs):
     def __init__(self):
         super(FormNetwork, self).__init__()
 
-        a  = {'scale': 1}
+        a = {'scale': 1}
 
         va = {'x_fix': False,
               'y_fix': False,
@@ -75,7 +69,7 @@ class FormVolMesh(VolMesh3gs):
     def __init__(self):
         super(FormVolMesh, self).__init__()
 
-        a  = {'scale': 1}
+        a = {'scale': 1}
 
         va = {'x_fix': False,
               'y_fix': False,
@@ -87,7 +81,7 @@ class FormVolMesh(VolMesh3gs):
               'target_length': None}
 
         fa = {'a_max': 1000,
-              'target_area'  : None,
+              'target_area': None,
               'target_normal': None}
 
         ca = {}
@@ -120,7 +114,7 @@ class ForceVolMesh(VolMesh3gs):
     def __init__(self):
         super(ForceVolMesh, self).__init__()
 
-        a  = {'scale': 1}
+        a = {'scale': 1}
 
         va = {'x_fix': False,
               'y_fix': False,
@@ -131,7 +125,7 @@ class ForceVolMesh(VolMesh3gs):
               'target_vector': None,
               'target_length': None}
 
-        fa = {'target_area'  : None,
+        fa = {'target_area': None,
               'target_normal': None}
 
         ca = {'dir': None}
