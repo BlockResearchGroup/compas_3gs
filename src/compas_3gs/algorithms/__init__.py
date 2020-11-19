@@ -86,13 +86,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .arearisation import *
-from .duality import *
-from .egi import *
-from .other import *
-from .planarisation import *
-from .reciprocation import *
-from .unifieddiagram import *
+from .arearisation import *  # noqa: F401 F403
+from .duality import *  # noqa: F401 F403
+from .egi import *  # noqa: F401 F403
+from .other import *  # noqa: F401 F403
+from .planarisation import *  # noqa: F401 F403
+from .reciprocation import *  # noqa: F401 F403
+from .unifieddiagram import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

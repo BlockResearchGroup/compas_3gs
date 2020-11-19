@@ -4,9 +4,6 @@
 #
 # needs_sphinx = '1.0'
 
-import sys
-import os
-
 import sphinx_compas_theme
 
 # -- General configuration ------------------------------------------------
@@ -14,7 +11,8 @@ import sphinx_compas_theme
 project = 'compas_3gs'
 copyright = '2018, Block Research Group - ETH Zurich'
 author = 'Juney Lee'
-release = '0.2.1'
+release = '0.2.4'
+
 version = '.'.join(release.split('.')[0:2])
 
 master_doc = 'index'
@@ -43,18 +41,21 @@ extensions = [
 
 # autodoc options
 
-autodoc_default_flags = [
-    'undoc-members',
-    'private-members',
-    'special-members',
-    'show-inheritance',
-]
+autodoc_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy"]
 
-autodoc_member_order = 'alphabetical'
+autodoc_default_options = {
+    'undoc-members': True,
+    'show-inheritance': True,
+}
+
+autodoc_member_order = 'groupwise'
+
+autoclass_content = "class"
 
 # autosummary options
 
 autosummary_generate = True
+autosummary_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy"]
 
 # napoleon options
 

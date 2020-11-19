@@ -1,63 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>compas_3gs</title>
+  <title>compas_3gs</title>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <meta name="author" content="" />
-    <meta name="description" content="" />
+  <meta name="author" content="" />
+  <meta name="description" content="" />
 
-    <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  
+    <link rel="next" title="Planarisation" href="01_40_planarisation.html" />
+  
+  
+  
+    <link rel="prev" title="Duality" href="01_20_duality.html" />
+  
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
-    <!-- <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" /> -->
-    <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
-    
-        <link rel="next" title="Planarisation" href="01_40_planarisation.html" />
-    
-    
-    
-        <link rel="prev" title="Duality" href="01_20_duality.html" />
-    
-
-    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
+  <style>
+    .footer-text,
+    .footer-link,
+    .footer-title {
+      color: rgba(255, 255, 255, 0.25);
+    }
+    .footer-link:hover {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    </style>
 </head>
 
-<body data-spy="scroll" data-target="#compas-localnav">
-
-    <nav class="navbar navbar-expand compas-navbar">
-        <a class="navbar-brand" href="/">
-            <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
-        </a>
-
-        <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="../../index.html">compas_3gs</a></li>
-        </ul>
-
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" target="_blank" href="">Github</a></li>
-            <li class="nav-item"><a class="nav-link" target="_blank" href="https://compas-dev.github.io">COMPAS framework</a></li>
-        </ul>
-    </nav>    
-
-    <div class="container-fluid">
-        <div class="row flex-xl-nowrap">
-
-            <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
-                <div class="container">
-                
-
-                    
-
-                    <div class="section" id="reciprocation">
-<h1>Reciprocation</h1>
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="">
+        <img src="../../_static/images/compas_icon_white.png" alt="compas_3gs" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item active"><a class="nav-link" href="">compas_3gs</a></li>
+      </ul>
+      <!-- primary -->
+      <!-- social -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+      </ul>
+      <!-- social -->
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+        
+        <div class="section" id="reciprocation">
+<h1 class="display-4 p-0 mb-5">Reciprocation</h1>
 <p>In 3D graphic statics, every edge of the form diagram is perpendicular to the corresponding faces in the polyhedral force diagram.
 This perpendicularity constraint is imposed through an iterative procedure, similar to the method implemented for graphic statics applications in 2.5D (<a class="footnote-reference brackets" href="#id4" id="id1">1</a>) and 3D (<a class="footnote-reference brackets" href="#id5" id="id2">2</a>).
 The procedure is implemented as the “reciprocation” algorithm, which iteratively parallel-ises the edges of the form diagram towards the normal vectors of their corresponding faces in the polyhedral force diagram.
@@ -83,7 +103,7 @@ If <span class="math notranslate nohighlight">\(\gamma = 0\)</span>, the form di
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Download</div><ul class="simple">
-<li><p><a class="reference download internal" download="" href="../../_downloads/aec20a9353d440447ed853fc34a6fa6b/volmesh_shells.3dm"><code class="xref download docutils literal notranslate"><span class="pre">volmesh_shells.3dm</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/8d05138d3f959b8724c5d3478bc37f1d/volmesh_shells.3dm"><code class="xref download docutils literal notranslate"><span class="pre">volmesh_shells.3dm</span></code></a></p></li>
 </ul>
 </div>
 </div><div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -91,8 +111,6 @@ If <span class="math notranslate nohighlight">\(\gamma = 0\)</span>, the form di
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
-
-<span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="kn">import</span> <span class="n">volmesh_from_polysurfaces</span>
 
 <span class="kn">from</span> <span class="nn">compas_3gs.diagrams</span> <span class="kn">import</span> <span class="n">FormNetwork</span>
 <span class="kn">from</span> <span class="nn">compas_3gs.diagrams</span> <span class="kn">import</span> <span class="n">ForceVolMesh</span>
@@ -102,49 +120,57 @@ If <span class="math notranslate nohighlight">\(\gamma = 0\)</span>, the form di
 
 <span class="kn">from</span> <span class="nn">compas_3gs.rhino</span> <span class="kn">import</span> <span class="n">ReciprocationConduit</span>
 
+<span class="kn">from</span> <span class="nn">compas_rhino.utilities</span> <span class="kn">import</span> <span class="n">volmesh_from_polysurfaces</span>
+
+<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">NetworkArtist</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">VolMeshArtist</span>
+
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="kn">as</span> <span class="nn">rs</span>
+    <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
-
-
-<span class="n">__author__</span>     <span class="o">=</span> <span class="s1">&#39;Juney Lee&#39;</span>
-<span class="n">__copyright__</span>  <span class="o">=</span> <span class="s1">&#39;Copyright 2019, BLOCK Research Group - ETH Zurich&#39;</span>
-<span class="n">__license__</span>    <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
-<span class="n">__email__</span>      <span class="o">=</span> <span class="s1">&#39;juney.lee@arch.ethz.ch&#39;</span>
 
 
 <span class="c1"># ------------------------------------------------------------------------------</span>
 <span class="c1"># 1. make vomesh from rhino polysurfaces</span>
 <span class="c1"># ------------------------------------------------------------------------------</span>
-<span class="n">layer</span> <span class="o">=</span> <span class="s1">&#39;force_volmesh&#39;</span>
+<span class="n">layer_force</span> <span class="o">=</span> <span class="s1">&#39;force_volmesh&#39;</span>
 
 <span class="n">guids</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="s2">&quot;select polysurfaces&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">polysurface</span><span class="p">)</span>
 <span class="n">rs</span><span class="o">.</span><span class="n">HideObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
 
-<span class="n">forcediagram</span>       <span class="o">=</span> <span class="n">ForceVolMesh</span><span class="p">()</span>
-<span class="n">forcediagram</span>       <span class="o">=</span> <span class="n">volmesh_from_polysurfaces</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
-<span class="n">forcediagram</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
-<span class="n">forcediagram</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span>
+<span class="n">forcediagram</span> <span class="o">=</span> <span class="n">ForceVolMesh</span><span class="p">()</span>
+<span class="n">forcediagram</span> <span class="o">=</span> <span class="n">volmesh_from_polysurfaces</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
+<span class="n">forcediagram</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer_force</span>
+<span class="n">forcediagram</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer_force</span>
 
-<span class="n">forcediagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
+<span class="n">force_artist</span> <span class="o">=</span> <span class="n">VolMeshArtist</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer_force</span><span class="p">)</span>
+
+<span class="n">force_artist</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
 
 
 <span class="c1"># ------------------------------------------------------------------------------</span>
 <span class="c1"># 2. make dual network (form diagram)</span>
 <span class="c1"># ------------------------------------------------------------------------------</span>
-<span class="n">layer</span> <span class="o">=</span> <span class="s1">&#39;form_network&#39;</span>
+<span class="n">layer_form</span> <span class="o">=</span> <span class="s1">&#39;form_network&#39;</span>
 
-<span class="n">formdiagram</span>       <span class="o">=</span> <span class="n">volmesh_dual_network</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">FormNetwork</span><span class="p">)</span>
-<span class="n">formdiagram</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
-<span class="n">formdiagram</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span>
+<span class="n">formdiagram</span> <span class="o">=</span> <span class="n">volmesh_dual_network</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">FormNetwork</span><span class="p">)</span>
+<span class="n">formdiagram</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer_form</span>
+<span class="n">formdiagram</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer_form</span>
 
-<span class="n">x_move</span> <span class="o">=</span> <span class="n">formdiagram</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
-<span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">formdiagram</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
-    <span class="n">formdiagram</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">vkey</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x_move</span>
+<span class="c1"># move dual_network</span>
+<span class="n">offset</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">width</span> <span class="o">=</span> <span class="n">formdiagram</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">formdiagram</span><span class="o">.</span><span class="n">bounding_box</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">formdiagram</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">formdiagram</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">vkey</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">formdiagram</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">vkey</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">width</span> <span class="o">*</span> <span class="n">offset</span><span class="p">)</span>
 
-<span class="n">formdiagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
+<span class="n">form_artist</span> <span class="o">=</span> <span class="n">NetworkArtist</span><span class="p">(</span><span class="n">formdiagram</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer_form</span><span class="p">)</span>
 
+<span class="n">form_artist</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+
+
+<span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># ------------------------------------------------------------------------------</span>
 <span class="c1"># 3. get reciprocation weight factor</span>
@@ -156,34 +182,36 @@ If <span class="math notranslate nohighlight">\(\gamma = 0\)</span>, the form di
 <span class="c1"># ------------------------------------------------------------------------------</span>
 <span class="c1"># 4. reciprocate</span>
 <span class="c1"># ------------------------------------------------------------------------------</span>
-<span class="n">forcediagram</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-<span class="n">formdiagram</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+<span class="n">force_artist</span><span class="o">.</span><span class="n">clear_by_name</span><span class="p">()</span>
+<span class="n">form_artist</span><span class="o">.</span><span class="n">clear_by_name</span><span class="p">()</span>
 
 
 <span class="c1"># conduit</span>
 <span class="n">conduit</span> <span class="o">=</span> <span class="n">ReciprocationConduit</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">conduit</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">refreshrate</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="n">refreshrate</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">conduit</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
 
 
 <span class="c1"># reciprocation</span>
 <span class="k">with</span> <span class="n">conduit</span><span class="o">.</span><span class="n">enabled</span><span class="p">():</span>
     <span class="n">volmesh_reciprocate</span><span class="p">(</span><span class="n">forcediagram</span><span class="p">,</span>
                         <span class="n">formdiagram</span><span class="p">,</span>
-                        <span class="n">kmax</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                        <span class="n">kmax</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
                         <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
                         <span class="n">edge_min</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
                         <span class="n">edge_max</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
                         <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
                         <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
-                        <span class="n">print_result_info</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                        <span class="n">print_result_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># update / redraw</span>
-<span class="n">forcediagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-<span class="n">formdiagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<span class="n">force_artist</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+<span class="n">form_artist</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
 </code></pre></div>
 </div>
 <div class="line-block">
@@ -207,40 +235,30 @@ If <span class="math notranslate nohighlight">\(\gamma = 0\)</span>, the form di
 </div>
 </div>
 
-                    
-                
-                </div>
-            </main>
-
-            <!-- site navigation sidebar -->
-
-            <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
-                <div class="navbar-light">
-
-                    <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
-                        <input class="form-control" type="text" name="q" placeholder="Search docs" />
-                        <input type="hidden" name="check_keywords" value="yes" />
-                        <input type="hidden" name="area" value="default" />
-
-                        <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                    </form>
-
-                    
-                    
-
-                        <div class="navbar-expand-md">
-                            <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
-
-                            <ul class="nav flex-column active">
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+          <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../00_introduction.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../01_getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../02_overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../03_theoretical_background.html">Theoretical background</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../04_user_manual.html">User manual</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../../04_user_manual.html">User manual</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../00_polyhedral_cell.html">Polyhedral cell</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../01_multi-cell_polyhedron.html">Multi-cell polyhedron</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../01_multi-cell_polyhedron.html">Multi-cell polyhedron</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="01_00_datastructure.html">Datastructure</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_01_interpretation.html">Interpreting diagrams</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="01_10_constructor.html">Constructor</a></li>
@@ -265,84 +283,94 @@ If <span class="math notranslate nohighlight">\(\gamma = 0\)</span>, the form di
 <li class="nav-item"><a class="nav-link reference internal" href="../../09_how_to_contribute.html">How to contribute</a></li>
 </ul>
 
-
-                            </div>
-                        </div>
-
-                    
-
-                </div>
-            </div>
-
-            <!-- table of contents of main content -->
-            
-            <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
-
-                
-
-                <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Reciprocation</a><ul class="nav">
+          </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Reciprocation</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#example">Example</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#references">References</a></li>
 </ul>
 </li>
 </ul>
 
-
-            </div>
-
-        </div>
+      </div>
+      <!-- toc -->
     </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <!-- footer -->
+  <div class="below py-5" style="background-color: #222;">
+    <div class="container">
+      <div class="row flex-column">
+      <div class="col-12 col-md-6 mx-md-auto text-center">
+        <h4 class="pb-3 footer-text">COMPAS</h4>
+        <p class="footer-text">
+          A computational framework for collaboration and research
+          in Architecture, Engineering, Fabrication, and Construction.
+        </p>
+        <nav class="nav justify-content-center pb-3">
+          <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </nav>
+      </div>
+      </div>
+      <div class="row">
+      <div class="col text-center">
+        <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+      </div>
+      </div>
+    </div>
+  </div>
 
-    <footer class="bg-dark pb-5">
-        <div class="container text-center pt-5 pb-5 text-muted">
-            
-                Last updated on Dec 11, 2019.
-            
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+  URL_ROOT          : '',
+  VERSION           : '0.2.1',
+  COLLAPSE_INDEX    : false,
+  FILE_SUFFIX       : '.html',
+  HAS_SOURCE        : 'false',
+  SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
 
-            
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
-            
-        </div>
-    </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 
-    
-        <script type="text/javascript">
-            var DOCUMENTATION_OPTIONS = {
-            URL_ROOT          : '',
-            VERSION           : '0.2.1',
-            COLLAPSE_INDEX    : false,
-            FILE_SUFFIX       : '.html',
-            HAS_SOURCE        : 'false',
-            SOURCELINK_SUFFIX : '.txt'
-            };
-        </script>
+  <script src="../../_static/underscore.js"></script>
+  <script src="../../_static/doctools.js"></script>
+  <script src="../../_static/js/searchtools_.js"></script>
 
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js"></script>
+  <script>
+  $(document).ready(function() {
+    $(".language-default code").addClass("python");
+    $(".language-python code").addClass("python");
+    $(".language-bash code").addClass("bash");
+    $(".language-cpp code").addClass("cpp");
+    $(".language-json code").addClass("json");
+    $(".language-none code").addClass("plaintext");
 
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/js/searchtools_.js"></script>
-        <!-- <script src="../../_static/js/prism.js"></script> -->
-
-        <script>
-        $(document).ready(function() {
-        $(".language-default code").addClass("python");
-        $(".language-python code").addClass("python");
-        $(".language-bash code").addClass("bash");
-        $(".language-cpp code").addClass("cpp");
-        $(".language-json code").addClass("json");
-        $(".language-none code").addClass("plaintext");
-
-        hljs.initHighlighting();
-        anchors.add();
-        });
-        </script>
-    
+    hljs.initHighlighting();
+    anchors.add();
+  });
+  </script>
+  
+  
 </body>
 </html>

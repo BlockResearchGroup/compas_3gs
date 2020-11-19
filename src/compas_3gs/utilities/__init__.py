@@ -33,8 +33,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .geometry import *
-from .other import *
-from .topology import *
+from .geometry import *  # noqa: F401 F403
+from .other import *  # noqa: F401 F403
+from .topology import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

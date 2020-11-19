@@ -52,9 +52,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .egi import *
-from .cell import *
-from .polyhedral import *
-from .disjointed import *
+from .egi import *  # noqa: F401 F403
+from .cell import *  # noqa: F401 F403
+from .polyhedral import *  # noqa: F401 F403
+from .disjointed import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]
