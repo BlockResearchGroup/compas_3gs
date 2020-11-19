@@ -5,7 +5,9 @@ from __future__ import division
 from uuid import uuid4
 
 import compas_rhino
-from compas_ags.rhino.diagramobject import DiagramObject
+from compas_3gs.rhino.objects import VolMeshObject
+from compas_3gs.rhino.objects import NetworkObject
+
 import scriptcontext as sc
 
 __all__ = ['Scene']
@@ -49,7 +51,7 @@ class Scene(object):
         self.objects = {}
         self.settings = settings or {}
 
-    def add(self, item, name=None, layer=None, visible=True, settings=None):
+    def add_forcevolmesh(self, item, name=None, layer=None, visible=True, settings=None):
         """Add an object to the scene matching the provided item.
 
         Parameters
@@ -65,7 +67,27 @@ class Scene(object):
         GUID
         """
         guid = uuid4()
-        obj = DiagramObject.build(item, scene=self, name=name, layer=layer, visible=visible, settings=settings)
+        obj = VolMeshObject.build(item, scene=self, name=name, layer=layer, visible=visible, settings=settings)
+        self.objects[guid] = obj
+        return guid
+
+    def add_formnetwork(self, item, name=None, layer=None, visible=True, settings=None):
+        """Add an object to the scene matching the provided item.
+
+        Parameters
+        ----------
+        item : :class:`compas_ags.diagrams.Diagram`
+        name : str, optional
+        layer : str, optional
+        visible : bool, optional
+        settings : dict, optional
+
+        Returns
+        -------
+        GUID
+        """
+        guid = uuid4()
+        obj = NetworkObject.build(item, scene=self, name=name, layer=layer, visible=visible, settings=settings)
         self.objects[guid] = obj
         return guid
 
@@ -186,11 +208,11 @@ class Scene(object):
         # Insert custom undo/redo event
         def undo_redo(sender, e):
             if e.Tag == "undo":
-                print("running ags undo")
+                print("running 3gs undo")
                 if self.undo():
                     sc.doc.AddCustomUndoEvent("Custom_undo_redo", undo_redo, "redo")
             if e.Tag == "redo":
-                print("running ags redo")
+                print("running 3gs redo")
                 if self.redo():
                     sc.doc.AddCustomUndoEvent("Custom_undo_redo", undo_redo, "undo")
         sc.doc.AddCustomUndoEvent("Custom_undo_redo", undo_redo, "undo")

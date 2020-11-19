@@ -193,44 +193,44 @@ class VolMesh3gs(VolMesh):
     # drawing
     # --------------------------------------------------------------------------
 
-    def draw(self, **kwattr):
-        artist = VolMeshArtist(self, layer=self.layer)
-        artist.clear_by_name()
-        artist.draw_faces(**kwattr)
-        artist.draw_vertices(**kwattr)
+    # def draw(self, **kwattr):
+    #     artist = VolMeshArtist(self, layer=self.layer)
+    #     artist.clear_by_name()
+    #     artist.draw_faces(**kwattr)
+    #     artist.draw_vertices(**kwattr)
 
-    def clear(self, **kwattr):
-        artist = VolMeshArtist(self, layer=self.layer)
-        artist.clear_by_name()
-        artist.clear_layer()
+    # def clear(self, **kwattr):
+    #     artist = VolMeshArtist(self, layer=self.layer)
+    #     artist.clear_by_name()
+    #     artist.clear_layer()
 
-    def draw_edges(self, **kwattr):
-        artist = VolMeshArtist(self, **kwattr)
-        artist.draw_edges(**kwattr)
+    # def draw_edges(self, **kwattr):
+    #     artist = VolMeshArtist(self, **kwattr)
+    #     artist.draw_edges(**kwattr)
 
-    def draw_faces(self, **kwattr):
-        artist = VolMeshArtist(self, layer=self.layer)
-        artist.draw_faces(**kwattr)
+    # def draw_faces(self, **kwattr):
+    #     artist = VolMeshArtist(self, layer=self.layer)
+    #     artist.draw_faces(**kwattr)
 
-    def clear_faces(self, **kwattr):
-        artist = VolMeshArtist(self, layer=self.layer)
-        artist.clear_faces(**kwattr)
+    # def clear_faces(self, **kwattr):
+    #     artist = VolMeshArtist(self, layer=self.layer)
+    #     artist.clear_faces(**kwattr)
 
-    def draw_facelabels(self, **kwattr):
-        artist = VolMeshArtist(self, layer=self.layer)
-        artist.draw_facelabels(**kwattr)
+    # def draw_facelabels(self, **kwattr):
+    #     artist = VolMeshArtist(self, layer=self.layer)
+    #     artist.draw_facelabels(**kwattr)
 
-    def draw_vertices(self, **kwattr):
-        artist = VolMeshArtist(self, layer=self.layer)
-        artist.draw_vertices(**kwattr)
+    # def draw_vertices(self, **kwattr):
+    #     artist = VolMeshArtist(self, layer=self.layer)
+    #     artist.draw_vertices(**kwattr)
 
-    def draw_vertexlabels(self, **kwattr):
-        artist = VolMeshArtist(self, layer=self.layer)
-        artist.draw_vertexlabels(**kwattr)
+    # def draw_vertexlabels(self, **kwattr):
+    #     artist = VolMeshArtist(self, layer=self.layer)
+    #     artist.draw_vertexlabels(**kwattr)
 
-    def draw_edgelabels(self, **kwattr):
-        artist = VolMeshArtist(self, layer=self.layer)
-        artist.draw_edgelabels(**kwattr)
+    # def draw_edgelabels(self, **kwattr):
+    #     artist = VolMeshArtist(self, layer=self.layer)
+    #     artist.draw_edgelabels(**kwattr)
 
 
 # ******************************************************************************

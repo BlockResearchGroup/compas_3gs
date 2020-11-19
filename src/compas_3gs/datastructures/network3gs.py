@@ -98,31 +98,31 @@ class Network3gs(Network):
     # drawing
     # --------------------------------------------------------------------------
 
-    def draw(self, **kwattr):
-        artist = NetworkArtist(self)
-        artist.draw_edges(**kwattr)
-        artist.draw_nodes(**kwattr)
+    # def draw(self, **kwattr):
+    #     artist = NetworkArtist(self)
+    #     artist.draw_edges(**kwattr)
+    #     artist.draw_nodes(**kwattr)
 
-    def clear(self, **kwattr):
-        artist = NetworkArtist(self)
-        artist.clear_by_name()
-        artist.clear_layer()
+    # def clear(self, **kwattr):
+    #     artist = NetworkArtist(self)
+    #     artist.clear_by_name()
+    #     artist.clear_layer()
 
-    def draw_nodes(self, **kwattr):
-        artist = NetworkArtist(self)
-        artist.draw_nodes(**kwattr)
+    # def draw_nodes(self, **kwattr):
+    #     artist = NetworkArtist(self)
+    #     artist.draw_nodes(**kwattr)
 
-    def draw_edges(self, **kwattr):
-        artist = NetworkArtist(self)
-        artist.draw_edges(**kwattr)
+    # def draw_edges(self, **kwattr):
+    #     artist = NetworkArtist(self)
+    #     artist.draw_edges(**kwattr)
 
-    def draw_vertexlabels(self, **kwattr):
-        artist = NetworkArtist(self)
-        artist.draw_vertexlabels(**kwattr)
+    # def draw_vertexlabels(self, **kwattr):
+    #     artist = NetworkArtist(self)
+    #     artist.draw_vertexlabels(**kwattr)
 
-    def draw_edgelabels(self, **kwattr):
-        artist = NetworkArtist(self)
-        artist.draw_edgelabels(**kwattr)
+    # def draw_edgelabels(self, **kwattr):
+    #     artist = NetworkArtist(self)
+    #     artist.draw_edgelabels(**kwattr)
 
 
 # ******************************************************************************

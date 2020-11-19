@@ -1,0 +1,103 @@
+{
+    "plugin":
+    {
+        "id": "{7ce56e93-79c1-44ac-9716-1a53ca42ac9c}",
+        "version": "0.2.4",
+        "title": "3GS"
+    },
+    "ui":
+    {
+        "icons":
+        {
+            "bitmap": "grid.png",
+            "images":
+            [
+                "0_init",
+
+                "1_open",
+                "2_save",
+
+                "3_form",
+                "4_form_loads",
+
+                "5_form_check_dof",
+
+                "6_force",
+
+                "7_form_move_nodes",
+                "8_form_fix_nodes",
+                "9_force_move_nodes",
+
+                "10_inspect",
+                "11_loadpath",
+
+                "12_display_settings",
+                "13_redraw",
+                "14_clear"
+
+            ]
+        },
+
+        "commands":
+        [
+            {"name": "TGS_init",
+             "menu_text": "Initialise 3GS",
+             "icon":1,
+             "tooltip": "Initialise3GS"},
+
+            {"name": "TGS_undo",
+             "menu_text": "3GS undo",
+             "icon":2,
+             "tooltip": "3GS undo"},
+
+            {"name": "TGS_redo",
+             "menu_text": "3GS redo",
+             "icon":3,
+             "tooltip": "3GS redo"},
+
+            {"name": "TGS_force_from_polysurfaces",
+             "menu_text": "Create force diagram",
+             "icon":4,
+             "tooltip": "Create force diagram"}
+        ],
+
+        "menus":
+        [
+            {
+                "name" : "3GS",
+                "items":
+                [
+                    {"command": "TGS_init"}
+
+                ]
+            }
+        ],
+        "toolbars":
+        [
+            {
+                "name": "3GS",
+                "items":
+                [
+                    {"left": "TGS_init"},
+                    {"left": "TGS_undo"},
+                    {"left": "TGS_redo"},
+                    {"left": "TGS_force_from_polysurfaces"}
+
+                ]
+            }
+        ],
+        "toolbargroups":
+        [
+            {
+                "name": "3GS",
+                "toolbars":
+                [
+                    "3GS"
+                ]
+            }
+        ]
+    },
+    "settings":
+    {
+    }
+}

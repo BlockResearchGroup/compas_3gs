@@ -34,7 +34,8 @@ class FormNetwork(Network3gs):
 
         a = {'scale': 1}
 
-        va = {'x_fix': False,
+        va = {'is_fixed': False,
+              'x_fix': False,
               'y_fix': False,
               'z_fix': False}
 
