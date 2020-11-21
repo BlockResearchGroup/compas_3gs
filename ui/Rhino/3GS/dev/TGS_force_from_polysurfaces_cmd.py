@@ -37,6 +37,18 @@ def RunCommand(is_interactive):
 
     scene.purge()
     scene.add_forcevolmesh(force, name='force', layer='3GS::ForceDiagram')
+
+    objects = scene.find_by_name('force')
+    if not objects:
+        compas_rhino.display_message("There is no ForceDiagram in the scene.")
+        return
+    force = objects[0]
+
+    force.settings['show.vertexlabels'] = True
+    force.settings['show.edgelabels'] = True
+    force.settings['show.facelabels'] = True
+    force.settings['show.celllabels'] = True
+
     scene.update()
     scene.save()
 

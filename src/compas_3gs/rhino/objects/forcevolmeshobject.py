@@ -9,6 +9,7 @@ from compas.geometry import Translation
 from compas.geometry import Rotation
 
 import compas_rhino
+
 from compas_rhino.objects import mesh_update_vertex_attributes
 from compas_rhino.objects import mesh_update_edge_attributes
 from compas_rhino.objects import mesh_update_face_attributes
@@ -24,22 +25,25 @@ class ForceVolMeshObject(VolMeshObject):
     """
 
     SETTINGS = {
+        'layer': "3GS::ForceDiagram",
+
         'show.vertices': True,
         'show.edges': True,
         'show.faces': True,
         'show.vertexlabels': False,
         'show.edgelabels': False,
+        'show.facelabels': False,
         'show.celllabels': False,
 
-        'color.vertices': (255, 0, 0),
+        'color.vertices': (255, 255, 255),
         'color.vertexlabels': (255, 255, 255),
         'color.vertices:is_fixed': (0, 0, 255),
 
         'color.edges': (0, 0, 0),
         'color.edgelabels': (0, 0, 0),
 
-        'color.faces': (125, 125, 125),
-        'color.facelabels': (125, 125, 125),
+        'color.faces': (200, 200, 200),
+        'color.facelabels': (200, 200, 200),
 
         'color.celllabels': (0, 0, 255)
     }
@@ -172,100 +176,163 @@ class ForceVolMeshObject(VolMeshObject):
     def draw(self):
         """Draw the objects representing the force diagram.
         """
-
+        layer = self.settings["layer"]
+        self.artist.layer = layer
+        self.artist.clear_layer()
         self.clear()
         if not self.visible:
             return
 
         self.artist.vertex_xyz = self.vertex_xyz
 
+        # ======================================================================
+        # Groups
+        # ======================================================================
+
+        group_vertices = "{}::vertices".format(layer)
+        group_vertices_labels = "{}::vertices_labels".format(layer)
+        group_edges = "{}::edges".format(layer)
+        group_edges_labels = "{}::edges_labels".format(layer)
+        group_halffaces = "{}::halffaces".format(layer)
+        group_halffaces_labels = "{}::halffaces_labels".format(layer)
+        group_cells_labels = "{}::cells_labels".format(layer)
+
+        if not compas_rhino.rs.IsGroup(group_vertices):
+            compas_rhino.rs.AddGroup(group_vertices)
+
+        if not compas_rhino.rs.IsGroup(group_vertices_labels):
+            compas_rhino.rs.AddGroup(group_vertices_labels)
+
+        if not compas_rhino.rs.IsGroup(group_edges):
+            compas_rhino.rs.AddGroup(group_edges)
+
+        if not compas_rhino.rs.IsGroup(group_edges_labels):
+            compas_rhino.rs.AddGroup(group_edges_labels)
+
+        if not compas_rhino.rs.IsGroup(group_halffaces):
+            compas_rhino.rs.AddGroup(group_halffaces)
+
+        if not compas_rhino.rs.IsGroup(group_halffaces_labels):
+            compas_rhino.rs.AddGroup(group_halffaces_labels)
+
+        if not compas_rhino.rs.IsGroup(group_cells_labels):
+            compas_rhino.rs.AddGroup(group_cells_labels)
+
+        # ======================================================================
         # vertices
-        if self.settings['show.vertices']:
+        # ======================================================================
 
-            vertices = list(self.diagram.vertices())
-            vertices_color = {}
-            vertices_label_color = {}
+        # vertices -------------------------------------------------------------
+        vertices = list(self.diagram.vertices())
+        vertices_color = {}
+        vertices_labels_color = {}
 
-            for vertex in vertices:
+        for vertex in vertices:
+            if self.diagram.vertex_attribute(vertex, 'is_fixed'):
+                vertices_color[vertex] = self.settings['color.vertices:is_fixed']
+                vertices_labels_color[vertex] = self.settings['color.vertices:is_fixed']
+            else:
+                vertices_color[vertex] = self.settings['color.vertices']
+                vertices_labels_color[vertex] = self.settings['color.vertexlabels']
 
-                if self.diagram.vertex_attribute(vertex, 'is_fixed'):
-                    vertices_color[vertex] = self.settings['color.vertices:is_fixed']
-                    vertices_label_color[vertex] = self.settings['color.vertices:is_fixed']
-                else:
-                    vertices_color[vertex] = self.settings['color.vertices']
-                    vertices_label_color[vertex] = self.settings['color.vertexlabels']
+        guids = self.artist.draw_vertices(color=vertices_color)
+        self.guid_vertex = zip(guids, vertices)
+        compas_rhino.rs.AddObjectsToGroup(guids, group_vertices)
 
-            guids = self.artist.draw_vertices(color=vertices_color)
-            self.guid_vertex = zip(guids, vertices)
+        if self.settings["show.vertices"]:
+            compas_rhino.rs.ShowGroup(group_vertices)
+        else:
+            compas_rhino.rs.HideGroup(group_vertices)
 
-            # vertex labels
-            if self.settings['show.vertexlabels']:
-                text = {vertex: index for index, vertex in enumerate(vertices)}
-                guids = self.artist.draw_vertexlabels(text=text, color=vertices_label_color)
-                self.guid_vertexlabel = zip(guids, vertices)
+        # vertices labels ------------------------------------------------------
+        text = {vertex: index for index, vertex in enumerate(vertices)}
+        guids = self.artist.draw_vertexlabels(text=text, color=vertices_labels_color)
+        self.guid_vertexlabel = zip(guids, vertices)
+        compas_rhino.rs.AddObjectsToGroup(guids, group_vertices_labels)
 
+        if self.settings["show.vertexlabels"]:
+            compas_rhino.rs.ShowGroup(group_vertices_labels)
+        else:
+            compas_rhino.rs.HideGroup(group_vertices_labels)
+
+        # ======================================================================
         # edges
-        if self.settings['show.edges']:
-            edges = list(self.diagram.edges())
-            color = {}
-            color.update({edge: self.settings['color.edges'] for edge in edges})
+        # ======================================================================
 
-            guids = self.artist.draw_edges(color=color)
-            self.guid_edge = zip(guids, edges)
+        # edges ----------------------------------------------------------------
+        edges = list(self.diagram.edges())
+        edges_color = {}
+        edges_labels_color = {}
+
+        edges_color.update({edge: self.settings['color.edges'] for edge in edges})
+
+        guids = self.artist.draw_edges(color=edges_color)
+        self.guid_edge = zip(guids, edges)
+        compas_rhino.rs.AddObjectsToGroup(guids, group_edges)
+
+        if self.settings["show.edges"]:
+            compas_rhino.rs.ShowGroup(group_edges)
+        else:
+            compas_rhino.rs.HideGroup(group_edges)
+
+        # edge labels ----------------------------------------------------------
+        text = {edge: index for index, edge in enumerate(edges)}
+        guids = self.artist.draw_edgelabels(text=text, color=edges_labels_color)
+        self.guid_edgelabel = zip(guids, edges)
+        compas_rhino.rs.AddObjectsToGroup(guids, group_edges_labels)
+
+        if self.settings["show.edgelabels"]:
+            compas_rhino.rs.ShowGroup(group_edges_labels)
+        else:
+            compas_rhino.rs.HideGroup(group_edges_labels)
+
+        # ======================================================================
+        # halffaces
+        # ======================================================================
+
+        # halffaces ------------------------------------------------------------
+        halffaces = list(self.diagram.faces())
+        halffaces_color = {}
+        halffaces_labels_color = {}
+
+        halffaces_color.update({halfface: self.settings['color.faces'] for halfface in halffaces})
+
+        guids = self.artist.draw_faces(color=halffaces_color)
+        self.guid_face = zip(guids, halffaces)
+        compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces)
+
+        if self.settings['show.faces']:
+            compas_rhino.rs.ShowGroup(group_halffaces)
+        else:
+            compas_rhino.rs.HideGroup(group_halffaces)
+
+        # halfface labels ------------------------------------------------------
+        text = {halfface: index for index, halfface in enumerate(halffaces)}
+        guids = self.artist.draw_facelabels(text=text, color=halffaces_labels_color)
+        self.guid_facelabel = zip(guids, halffaces)
+        compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces_labels)
+
+        if self.settings["show.vertexlabels"]:
+            compas_rhino.rs.ShowGroup(group_halffaces_labels)
+        else:
+            compas_rhino.rs.HideGroup(group_halffaces_labels)
+
+        # ======================================================================
+        # cell labels
+        # ======================================================================
+
+        cells = list(self.diagram.cells())
+        cells_labels_color = {}
+
+        cells_labels_color.update({cell: self.settings['color.celllabels'] for cell in cells})
+
+        guids = self.artist.draw_celllabels(color=cells_labels_color)
+        self.guid_celllabel = zip(guids, cells)
+        compas_rhino.rs.AddObjectsToGroup(guids, group_cells_labels)
+
+        if self.settings["show.celllabels"]:
+            compas_rhino.rs.ShowGroup(group_cells_labels)
+        else:
+            compas_rhino.rs.HideGroup(group_cells_labels)
 
         self.redraw()
-
-        # # ======================================================================
-        # # Groups
-        # # ------
-        # # Create groups for vertices and edges.
-        # # These groups will be turned on/off based on the visibility settings of the diagram
-        # # ======================================================================
-
-        # group_vertices = "{}::vertices".format(layer)
-        # group_edges = "{}::edges".format(layer)
-
-        # if not compas_rhino.rs.IsGroup(group_vertices):
-        #     compas_rhino.rs.AddGroup(group_vertices)
-
-        # if not compas_rhino.rs.IsGroup(group_edges):
-        #     compas_rhino.rs.AddGroup(group_edges)
-
-        # # ======================================================================
-        # # Vertices
-        # # --------
-        # # Draw the vertices and add them to the vertex group.
-        # # ======================================================================
-
-        # vertices = list(self.volmesh.vertices())
-        # color = {vertex: self.settings['color.vertices'] for vertex in vertices}
-        # color_fixed = self.settings['color.vertices:is_fixed']
-        # color.update({vertex: color_fixed for vertex in self.volmesh.vertices_where({'is_fixed': True}) if vertex in vertices})
-
-        # guids = self.artist.draw_vertices(vertices, color)
-        # self.guid_vertex = zip(guids, vertices)
-        # compas_rhino.rs.AddObjectsToGroup(guids, group_vertices)
-
-        # if self.settings['show.vertices']:
-        #     compas_rhino.rs.ShowGroup(group_vertices)
-        # else:
-        #     compas_rhino.rs.HideGroup(group_vertices)
-
-        # # ======================================================================
-        # # Edges
-        # # --------
-        # # Draw the edges and add them to the edge group.
-        # # ======================================================================
-
-        # edges = list(self.volmesh.edges())
-        # color = {edge: self.settings['color.edges'] for edge in edges}
-
-        # guids = self.artist.draw_edges(edges, color)
-        # self.guid_edge = zip(guids, edges)
-        # compas_rhino.rs.AddObjectsToGroup(guids, group_edges)
-
-        # if self.settings['show.edges']:
-        #     compas_rhino.rs.ShowGroup(group_edges)
-        # else:
-        #     compas_rhino.rs.HideGroup(group_edges)
-
