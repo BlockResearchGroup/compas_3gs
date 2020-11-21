@@ -60,10 +60,10 @@
              "icon":4,
              "tooltip": "Create force diagram"},
 
-            {"name": "TGS_dual",
-             "menu_text": "Create dual diagram",
+            {"name": "TGS_primal",
+             "menu_text": "Create primal diagram",
              "icon":5,
-             "tooltip": "Create dual diagram"},
+             "tooltip": "Create primal diagram"},
 
             {"name": "TGS_reciprocate",
              "menu_text": "Reciprocate diagrams",
@@ -88,7 +88,7 @@
                     {"type": "separator"},
 
                     {"left": "TGS_force_from_polysurfaces"},
-                    {"left": "TGS_dual"},
+                    {"left": "TGS_primal"},
 
                     {"type": "separator"},
 
@@ -113,7 +113,7 @@
                     {"type": "separator"},
 
                     {"left": "TGS_force_from_polysurfaces"},
-                    {"left": "TGS_dual"},
+                    {"left": "TGS_primal"},
 
                     {"type": "separator"},
 

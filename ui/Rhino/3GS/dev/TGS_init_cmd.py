@@ -18,19 +18,18 @@ from compas_3gs.rhino import Scene
 __commandname__ = "TGS_init"
 
 
-HERE = compas_rhino.get_document_dirname()
-HOME = os.path.expanduser('~')
-CWD = HERE or HOME
-
-
 SETTINGS = {
 
     "3GS": {
+        "show.angles": True,
         "show.forces": False,
+        "tol.angles": 1.0,
+        "tol.flatness": 0.1
     },
 
     "Solvers": {
         "reciprocation.kmax": 500,
+        "reciprocation.alpha": 1.0,
         "reciprocation.tol": 0.01,
         "reciprocation.refreshrate": 10,
 
@@ -43,6 +42,11 @@ SETTINGS = {
         "arearisation.refreshrate": 10,
     }
 }
+
+
+HERE = compas_rhino.get_document_dirname()
+HOME = os.path.expanduser('~')
+CWD = HERE or HOME
 
 
 def RunCommand(is_interactive):

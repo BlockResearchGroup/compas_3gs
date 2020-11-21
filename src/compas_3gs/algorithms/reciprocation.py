@@ -6,6 +6,7 @@ from compas.geometry import normalize_vector
 from compas.geometry import scale_vector
 from compas.geometry import add_vectors
 from compas.geometry import dot_vectors
+from compas.geometry import angle_vectors
 from compas.geometry import length_vector
 from compas.geometry import centroid_points
 
@@ -25,11 +26,11 @@ def volmesh_reciprocate(volmesh,
 
                         fix_vkeys=[],
 
-                        edge_min=None,
-                        edge_max=None,
+                        edge_min=0.1,
+                        edge_max=10000,
 
-                        tolerance=0.001,
-                        tolerance_boundary=0.0001,
+                        tolerance=1.0,
+                        tolerance_boundary=1.0,
 
                         callback=None,
                         callback_args=None,
@@ -171,7 +172,8 @@ def volmesh_reciprocate(volmesh,
         for fkey in boundary_fkeys:
             f_normal = volmesh.halfface_normal(fkey)
             target_normal = target_normals[fkey]
-            b_perpness = 1 - abs(dot_vectors(f_normal, target_normal))
+            b_perpness = angle_vectors(f_normal, target_normal, deg=True)
+            # 1 - abs(dot_vectors(f_normal, target_normal))
 
             if b_perpness > deviation_boundary_perp:
                 deviation_boundary_perp = b_perpness
@@ -222,8 +224,9 @@ def _check_deviation(volmesh, network):
         u_hf, v_hf = volmesh.cell_pair_halffaces(u, v)
         normal = volmesh.halfface_normal(u_hf)
         edge = network.edge_vector(u, v, unitized=True)
-        dot = dot_vectors(normal, edge)
-        perp_check = 1 - abs(dot)
+        perp_check = angle_vectors(normal, edge, deg=True)
+        # dot = dot_vectors(normal, edge)
+        # perp_check = 1 - abs(dot)
         if perp_check > deviation:
             deviation = perp_check
     return deviation

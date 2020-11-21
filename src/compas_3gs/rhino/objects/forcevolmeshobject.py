@@ -3,16 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.utilities import i_to_rgb
-from compas.geometry import Point
-from compas.geometry import Scale
-from compas.geometry import Translation
-from compas.geometry import Rotation
 
 import compas_rhino
-
-from compas_rhino.objects import mesh_update_vertex_attributes
-from compas_rhino.objects import mesh_update_edge_attributes
-from compas_rhino.objects import mesh_update_face_attributes
 
 from compas_3gs.rhino.objects.volmeshobject import VolMeshObject
 
@@ -28,10 +20,9 @@ class ForceVolMeshObject(VolMeshObject):
         'layer': "3GS::ForceDiagram",
 
         'show.vertices': True,
-        'show.edges': True,
+        'show.edges': False,
         'show.faces': True,
         'show.vertexlabels': False,
-        'show.edgelabels': False,
         'show.facelabels': False,
         'show.celllabels': False,
 
@@ -196,6 +187,7 @@ class ForceVolMeshObject(VolMeshObject):
         group_halffaces = "{}::halffaces".format(layer)
         group_halffaces_labels = "{}::halffaces_labels".format(layer)
         group_cells_labels = "{}::cells_labels".format(layer)
+        group_angles = "{}::angles".format(layer)
 
         if not compas_rhino.rs.IsGroup(group_vertices):
             compas_rhino.rs.AddGroup(group_vertices)
@@ -217,6 +209,9 @@ class ForceVolMeshObject(VolMeshObject):
 
         if not compas_rhino.rs.IsGroup(group_cells_labels):
             compas_rhino.rs.AddGroup(group_cells_labels)
+
+        if not compas_rhino.rs.IsGroup(group_angles):
+            compas_rhino.rs.AddGroup(group_angles)
 
         # ======================================================================
         # vertices
@@ -262,7 +257,7 @@ class ForceVolMeshObject(VolMeshObject):
         # edges ----------------------------------------------------------------
         edges = list(self.diagram.edges())
         edges_color = {}
-        edges_labels_color = {}
+        # edges_labels_color = {}
 
         edges_color.update({edge: self.settings['color.edges'] for edge in edges})
 
@@ -275,16 +270,16 @@ class ForceVolMeshObject(VolMeshObject):
         else:
             compas_rhino.rs.HideGroup(group_edges)
 
-        # edge labels ----------------------------------------------------------
-        text = {edge: index for index, edge in enumerate(edges)}
-        guids = self.artist.draw_edgelabels(text=text, color=edges_labels_color)
-        self.guid_edgelabel = zip(guids, edges)
-        compas_rhino.rs.AddObjectsToGroup(guids, group_edges_labels)
+        # # edge labels ----------------------------------------------------------
+        # text = {edge: index for index, edge in enumerate(edges)}
+        # guids = self.artist.draw_edgelabels(text=text, color=edges_labels_color)
+        # self.guid_edgelabel = zip(guids, edges)
+        # compas_rhino.rs.AddObjectsToGroup(guids, group_edges_labels)
 
-        if self.settings["show.edgelabels"]:
-            compas_rhino.rs.ShowGroup(group_edges_labels)
-        else:
-            compas_rhino.rs.HideGroup(group_edges_labels)
+        # if self.settings["show.edgelabels"]:
+        #     compas_rhino.rs.ShowGroup(group_edges_labels)
+        # else:
+        #     compas_rhino.rs.HideGroup(group_edges_labels)
 
         # ======================================================================
         # halffaces
@@ -293,7 +288,7 @@ class ForceVolMeshObject(VolMeshObject):
         # halffaces ------------------------------------------------------------
         halffaces = list(self.diagram.faces())
         halffaces_color = {}
-        halffaces_labels_color = {}
+        # halffaces_labels_color = {}
 
         halffaces_color.update({halfface: self.settings['color.faces'] for halfface in halffaces})
 
@@ -306,16 +301,16 @@ class ForceVolMeshObject(VolMeshObject):
         else:
             compas_rhino.rs.HideGroup(group_halffaces)
 
-        # halfface labels ------------------------------------------------------
-        text = {halfface: index for index, halfface in enumerate(halffaces)}
-        guids = self.artist.draw_facelabels(text=text, color=halffaces_labels_color)
-        self.guid_facelabel = zip(guids, halffaces)
-        compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces_labels)
+        # # halfface labels ------------------------------------------------------
+        # text = {halfface: index for index, halfface in enumerate(halffaces)}
+        # guids = self.artist.draw_facelabels(text=text, color=halffaces_labels_color)
+        # self.guid_facelabel = zip(guids, halffaces)
+        # compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces_labels)
 
-        if self.settings["show.vertexlabels"]:
-            compas_rhino.rs.ShowGroup(group_halffaces_labels)
-        else:
-            compas_rhino.rs.HideGroup(group_halffaces_labels)
+        # if self.settings["show.facelabels"]:
+        #     compas_rhino.rs.ShowGroup(group_halffaces_labels)
+        # else:
+        #     compas_rhino.rs.HideGroup(group_halffaces_labels)
 
         # ======================================================================
         # cell labels
@@ -334,5 +329,30 @@ class ForceVolMeshObject(VolMeshObject):
             compas_rhino.rs.ShowGroup(group_cells_labels)
         else:
             compas_rhino.rs.HideGroup(group_cells_labels)
+
+        # ======================================================================
+        # angle deviations
+        # ======================================================================
+
+        if self.scene.settings['3GS']['show.angles']:
+            tol = self.scene.settings['3GS']['tol.angles']
+            halffaces = [halfface for halfface in self.diagram.faces() if not self.diagram.is_halfface_on_boundary(halfface)]
+            angles = self.diagram.faces_attribute('_a', faces=halffaces)
+            amin = min(angles)
+            amax = max(angles)
+            if (amax - amin)**2 > 0.001**2:
+                text = {}
+                color = {}
+                for halfface, angle in zip(halffaces, angles):
+                    if angle > tol:
+                        text[halfface] = "{:.0f}".format(angle)
+                        color[halfface] = i_to_rgb((angle - amin) / (amax - amin))
+                if text:
+                    guids = self.artist.draw_facelabels(text, color)
+                    self.guid_facelabel = zip(guids, halffaces)
+                    compas_rhino.rs.AddObjectsToGroup(guids, group_angles)
+                    compas_rhino.rs.ShowGroup(group_angles)
+        else:
+            compas_rhino.rs.HideGroup(group_angles)
 
         self.redraw()

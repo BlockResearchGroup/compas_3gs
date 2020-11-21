@@ -7,8 +7,6 @@ from compas.datastructures import VolMesh
 from compas.geometry import centroid_points
 from compas.geometry import normalize_vector
 
-from compas_rhino.artists import VolMeshArtist
-
 
 __all__ = ['VolMesh3gs']
 
@@ -187,7 +185,7 @@ class VolMesh3gs(VolMesh):
             if nbr == cell_2:
                 return halfface, self.halfface_opposite_halfface(halfface)
 
-        return
+        raise KeyError
 
     # --------------------------------------------------------------------------
     # drawing

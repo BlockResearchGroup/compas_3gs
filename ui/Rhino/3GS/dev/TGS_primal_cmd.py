@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
 import scriptcontext as sc
 
 import compas_rhino
@@ -12,19 +10,12 @@ from compas_3gs.diagrams import FormNetwork
 
 from compas.geometry import Translation
 
-from compas_rhino.utilities import volmesh_from_polysurfaces
-
 from compas_3gs.algorithms import volmesh_dual_network
 
 from compas_3gs.rhino import relocate_formdiagram
 
-try:
-    import rhinoscriptsyntax as rs
-except ImportError:
-    compas.raise_if_ironpython()
 
-
-__commandname__ = "TGS_dual"
+__commandname__ = "TGS_primal"
 
 
 def RunCommand(is_interactive):
@@ -35,23 +26,31 @@ def RunCommand(is_interactive):
 
     scene = sc.sticky['3GS']['scene']
 
+    # get ForceVolMeshObject from scene
     objects = scene.find_by_name('force')
     if not objects:
         compas_rhino.display_message("There is no ForceDiagram in the scene.")
         return
     force = objects[0]
 
+    # make FormNetwork
     form = volmesh_dual_network(force.diagram, cls=FormNetwork)
 
+    # set dual/primal
+    form.dual = force.diagram
+    force.diagram.primal = form
+
+    # add FormNetworkObject
     translation = relocate_formdiagram(force.diagram, form)
-
     form.transform(Translation.from_vector(translation))
-
-    print('Dual diagram successfully created.')
-
+    form.update_angle_deviations()
     scene.add_formnetwork(form, name='form', layer='3GS::FormDiagram')
+
+    # update
     scene.update()
     scene.save()
+
+    print('Dual diagram successfully created.')
 
 
 # ==============================================================================

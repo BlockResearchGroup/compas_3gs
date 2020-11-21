@@ -239,18 +239,24 @@ class Scene(object):
         force = None
         for data in state:
             diagram = data['diagram']['type'].from_data(data['diagram']['data'])
-            guid = self.add(diagram, name=data['object']['name'], layer=data['object']['layer'], visible=data['object']['visible'], settings=data['object']['settings'])
+            if data['object']['name'] == 'form':
+                guid = self.add_formnetwork(diagram, name=data['object']['name'], layer=data['object']['layer'], visible=data['object']['visible'], settings=data['object']['settings'])
+            if data['object']['name'] == 'force':
+                guid = self.add_forcevolmesh(diagram, name=data['object']['name'], layer=data['object']['layer'], visible=data['object']['visible'], settings=data['object']['settings'])
+
             obj = self.find(guid)
             obj.anchor = data['object']['anchor']
             obj.location = data['object']['location']
             obj.scale = data['object']['scale']
-            if obj.name == 'Form':
+
+            if obj.name == 'form':
                 form = obj
-            elif obj.name == 'Force':
+            elif obj.name == 'force':
                 force = obj
+
         if form and force:
             form.diagram.dual = force.diagram
-            force.diagram.dual = form.diagram
+            force.diagram.primal = form.diagram
         self.redraw()
         return True
 
@@ -276,17 +282,20 @@ class Scene(object):
         force = None
         for data in state:
             diagram = data['diagram']['type'].from_data(data['diagram']['data'])
-            guid = self.add(diagram, name=data['object']['name'], layer=data['object']['layer'], visible=data['object']['visible'], settings=data['object']['settings'])
+            if data['object']['name'] == 'form':
+                guid = self.add_formnetwork(diagram, name=data['object']['name'], layer=data['object']['layer'], visible=data['object']['visible'], settings=data['object']['settings'])
+            if data['object']['name'] == 'force':
+                guid = self.add_forcevolmesh(diagram, name=data['object']['name'], layer=data['object']['layer'], visible=data['object']['visible'], settings=data['object']['settings'])
             obj = self.find(guid)
             obj.anchor = data['object']['anchor']
             obj.location = data['object']['location']
             obj.scale = data['object']['scale']
-            if obj.name == 'Form':
+            if obj.name == 'form':
                 form = obj
-            elif obj.name == 'Force':
+            elif obj.name == 'force':
                 force = obj
         if form and force:
             form.diagram.dual = force.diagram
-            force.diagram.dual = form.diagram
+            force.diagram.primal = form.diagram
         self.redraw()
         return True

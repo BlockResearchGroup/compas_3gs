@@ -7,10 +7,9 @@ from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
 
-import compas_rhino
+from compas.utilities import i_to_rgb
 
-from compas_rhino.objects import network_update_node_attributes
-from compas_rhino.objects import network_update_edge_attributes
+import compas_rhino
 
 from compas_3gs.rhino.objects.networkobject import NetworkObject
 
@@ -29,7 +28,6 @@ class FormNetworkObject(NetworkObject):
         'show.edges': True,
 
         'show.nodelabels': False,
-        'show.edgelabels': False,
 
         'color.node': (0, 0, 0),
         'color.nodelabels': (0, 0, 0),
@@ -150,12 +148,16 @@ class FormNetworkObject(NetworkObject):
 
         group_nodes = "{}::nodes".format(layer)
         group_edges = "{}::edges".format(layer)
+        group_angles = "{}::angles".format(layer)
 
         if not compas_rhino.rs.IsGroup(group_nodes):
             compas_rhino.rs.AddGroup(group_nodes)
 
         if not compas_rhino.rs.IsGroup(group_edges):
             compas_rhino.rs.AddGroup(group_edges)
+
+        if not compas_rhino.rs.IsGroup(group_angles):
+            compas_rhino.rs.AddGroup(group_angles)
 
         # ======================================================================
         # nodes
@@ -194,3 +196,31 @@ class FormNetworkObject(NetworkObject):
             compas_rhino.rs.ShowGroup(group_edges)
         else:
             compas_rhino.rs.HideGroup(group_edges)
+
+        # ======================================================================
+        # Angle deviations
+        # --------
+        # Draw angle deviatinos as FormNetwork edge labels.
+        # ======================================================================
+
+        if self.scene.settings['3GS']['show.angles']:
+            tol = self.scene.settings['3GS']['tol.angles']
+            edges = list(self.diagram.edges())
+            angles = self.diagram.edges_attribute('_a', keys=edges)
+            amin = min(angles)
+            amax = max(angles)
+            if (amax - amin)**2 > 0.001**2:
+                text = {}
+                color = {}
+                for edge, angle in zip(edges, angles):
+                    if angle > tol:
+                        text[edge] = "{:.0f}".format(angle)
+                        color[edge] = i_to_rgb((angle - amin) / (amax - amin))
+                guids = self.artist.draw_edgelabels(text, color)
+                self.guid_edgelabel = zip(guids, edges)
+                compas_rhino.rs.AddObjectsToGroup(guids, group_angles)
+                compas_rhino.rs.ShowGroup(group_angles)
+        else:
+            compas_rhino.rs.HideGroup(group_angles)
+
+        self.redraw()
