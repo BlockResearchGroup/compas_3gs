@@ -12,11 +12,6 @@ from compas_3gs.utilities import datastructure_centroid
 
 from compas_3gs.operations import cell_merge_coplanar_adjacent_faces
 
-__author__    = 'Juney Lee'
-__copyright__ = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'juney.lee@arch.ethz.ch'
-
 
 __all__ = ['point_reflection',
 
@@ -63,8 +58,8 @@ def point_reflection(datastructure):
     center = datastructure_centroid(datastructure)
 
     for vkey in datastructure.vertex:
-        xyz     = datastructure.vertex_coordinates(vkey)
-        vector  = scale_vector(subtract_vectors(center, xyz), 2)
+        xyz = datastructure.vertex_coordinates(vkey)
+        vector = scale_vector(subtract_vectors(center, xyz), 2)
         new_xyz = add_vectors(xyz, vector)
         datastructure.vertex_update_xyz(vkey, new_xyz, constrained=False)
 
@@ -114,7 +109,7 @@ def volmesh_vertex_lift(volmesh, vkey, target_xyz, hfkeys):
 
     # add new, lifted vertex ---------------------------------------------------
     x, y, z = target_xyz
-    w       = volmesh.add_vertex(x=x, y=y, z=z)
+    w = volmesh.add_vertex(x=x, y=y, z=z)
 
     # add cells ----------------------------------------------------------------
     for hfkey in hfkeys:
@@ -280,11 +275,11 @@ def volmesh_halfface_pinch(volmesh, hfkey, xyz):
 
     """
 
-    x, y, z        = xyz
-    w              = volmesh.add_vertex(x=x, y=y, z=z)
-    hf_vkeys       = volmesh.halfface_vertices(hfkey)
+    x, y, z = xyz
+    w = volmesh.add_vertex(x=x, y=y, z=z)
+    hf_vkeys = volmesh.halfface_vertices(hfkey)
     cell_halffaces = [hf_vkeys[::-1]]
-    halfedges      = volmesh.halfface_halfedges(hfkey)
+    halfedges = volmesh.halfface_halfedges(hfkey)
     for u, v in halfedges:
         cell_halffaces.append([u, v, w])
     volmesh.add_cell(cell_halffaces)
@@ -307,7 +302,7 @@ def volmesh_merge_adjacent_halffaces(volmesh, hfkeys):
         for key in volmesh.halfface_vertices(hfkey):
             vkeys.add(key)
 
-    vkeys  = list(vkeys)
+    vkeys = list(vkeys)
     points = [volmesh.vertex_coordinates(vkey) for vkey in vkeys]
 
     faces_by_index = convex_hull(points)
@@ -318,7 +313,7 @@ def volmesh_merge_adjacent_halffaces(volmesh, hfkeys):
     # make temp cell mesh ------------------------------------------------------
     cell = Mesh()
     for i in range(len(vkeys)):
-        key     = vkeys[i]
+        key = vkeys[i]
         x, y, z = points[i]
         cell.add_vertex(key=key, x=x, y=y, z=z)
     for face in faces_by_vkeys:
@@ -387,8 +382,8 @@ def volmesh_cell_subdivide_barycentric(volmesh, ckey):
 
     """
     new_ckeys = []
-    x, y, z   = volmesh.cell_center(ckey)
-    w         = volmesh.add_vertex(x=x, y=y, z=z)
+    x, y, z = volmesh.cell_center(ckey)
+    w = volmesh.add_vertex(x=x, y=y, z=z)
 
     halffaces = volmesh.cell_halffaces(ckey)
 

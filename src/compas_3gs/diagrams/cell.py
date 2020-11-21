@@ -7,12 +7,6 @@ from compas.geometry import centroid_polyhedron
 from compas_3gs.datastructures import Mesh3gs
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['Cell']
 
 
@@ -25,15 +19,15 @@ class Cell(Mesh3gs):
         super(Cell, self).__init__()
 
         self.cell = Mesh3gs()
-        self.egi  = Mesh3gs()
+        self.egi = Mesh3gs()
 
-        a  = {}
+        a = {}
         va = {'x_fix': False,
               'y_fix': False,
               'z_fix': False}
         ea = {'target_vector': None,
               'target_length': None}
-        fa = {'target_area'  : None,
+        fa = {'target_area': None,
               'target_normal': None}
 
         self.attributes.update(a)

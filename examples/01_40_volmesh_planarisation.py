@@ -4,9 +4,9 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.helpers import volmesh_from_polysurfaces
+from compas_rhino.utilities import volmesh_from_polysurfaces
 
-from compas_rhino.selectors import VertexSelector
+from compas_3gs.rhino import VolMeshSelector
 
 from compas.utilities import i_to_red
 
@@ -28,12 +28,6 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
@@ -42,20 +36,21 @@ layer = 'force_volmesh'
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
-forcediagram       = ForceVolMesh()
-forcediagram       = volmesh_from_polysurfaces(forcediagram,
-    guids)
+forcediagram = ForceVolMesh()
+forcediagram = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer
 forcediagram.attributes['name'] = layer
 
-forcediagram.draw(layer=layer)
+forcediagram.draw()
 
 
 # ------------------------------------------------------------------------------
 # 2. pick vertices to fix
 # ------------------------------------------------------------------------------
-vkeys = VertexSelector.select_vertices(forcediagram,
-                                       message='Select vertices to fix:')
+rs.EnableRedraw(True)
+
+vkeys = VolMeshSelector.select_vertices(forcediagram,
+                                        message='Select vertices to fix:')
 
 
 # ------------------------------------------------------------------------------
@@ -69,23 +64,24 @@ initial_flatness = volmesh_face_flatness(forcediagram)
 conduit = VolmeshConduit(forcediagram)
 
 
-def callback(forcediagram, k, args):
-    if k % 5:
-        current_flatness = volmesh_face_flatness(forcediagram)
-        face_colordict   = compare_initial_current(current_flatness,
-                                                   initial_flatness,
-                                                   color_scheme=i_to_red)
-        conduit.face_colordict = face_colordict
-        conduit.redraw()
+def callback(forcediagram, k, args, refreshrate=10):
+    if k % refreshrate:
+        return
+    current_flatness = volmesh_face_flatness(forcediagram)
+    face_colordict = compare_initial_current(current_flatness,
+                                             initial_flatness,
+                                             color_scheme=i_to_red)
+    conduit.face_colordict = face_colordict
+    conduit.redraw()
 
 
 # planarise
 with conduit.enabled():
     volmesh_planarise(forcediagram,
-                      kmax=2000,
+                      kmax=500,
                       fix_vkeys=vkeys,
                       fix_boundary_normals=False,
-                      tolerance_flat=0.01,
+                      tolerance_flat=0.05,
                       callback=callback,
                       print_result_info=True)
 

@@ -6,7 +6,7 @@ from copy import deepcopy
 
 from compas.datastructures import Mesh
 
-from compas.datastructures.mesh.operations import mesh_split_face
+from compas.datastructures.mesh import mesh_split_face
 
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
@@ -15,19 +15,11 @@ from compas.geometry import cross_vectors
 
 from compas_rhino.artists import MeshArtist
 
-from compas_rhino.helpers.mesh import mesh_draw
-from compas_rhino.helpers.mesh import mesh_draw_vertices
-from compas_rhino.helpers.mesh import mesh_draw_edges
+from compas_rhino.utilities import draw_mesh
 
 from compas_3gs.utilities import polygon_normal_oriented
 from compas_3gs.utilities import polygon_area_oriented
 from compas_3gs.utilities import datastructure_centroid
-
-
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['Mesh3gs']
@@ -47,7 +39,7 @@ class Mesh3gs(Mesh):
     #   inherited
     # --------------------------------------------------------------------------
 
-    mesh_split_face        = mesh_split_face
+    mesh_split_face = mesh_split_face
     datastructure_centroid = datastructure_centroid
 
     def add_edge(self, u, v, attr_dict=None, **kwattr):
@@ -100,15 +92,15 @@ class Mesh3gs(Mesh):
 
     def face_area(self, fkey):
         points = self.face_coordinates(fkey)
-        area   = polygon_area_oriented(points)
+        area = polygon_area_oriented(points)
         return area
 
     def face_normal(self, fkey, unitized=True):
         points = self.face_coordinates(fkey)
         normal = polygon_normal_oriented(points, unitized)
         if length_vector(normal) == 0 :
-            uv     = subtract_vectors(points[1], points[0])
-            vw     = subtract_vectors(points[2], points[1])
+            uv = subtract_vectors(points[1], points[0])
+            vw = subtract_vectors(points[2], points[1])
             normal = normalize_vector(cross_vectors(uv, vw))
         return normal
 
@@ -117,17 +109,19 @@ class Mesh3gs(Mesh):
     # --------------------------------------------------------------------------
 
     def draw(self, **kwattr):
-        mesh_draw(self, clear_vertices=True, clear_faces=True, clear_edges=True, **kwattr)
+        draw_mesh(self, clear_vertices=True, clear_faces=True, clear_edges=True, **kwattr)
 
     def clear(self, **kwattr):
         artist = MeshArtist(self)
-        artist.clear()
+        artist.clear_by_name()
 
     def draw_vertices(self, **kwattr):
-        mesh_draw_vertices(self, **kwattr)
+        artist = MeshArtist(self)
+        artist.draw_vertices(**kwattr)
 
     def draw_edges(self, **kwattr):
-        mesh_draw_edges(self, **kwattr)
+        artist = MeshArtist(self)
+        artist.draw_edges(**kwattr)
 
     def draw_faces(self, **kwattr):
         artist = MeshArtist(self)

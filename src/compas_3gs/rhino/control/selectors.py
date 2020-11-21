@@ -5,21 +5,75 @@ from __future__ import division
 import ast
 import compas
 
-from compas_rhino.helpers import volmesh_select_faces
-
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
+__all__ = ['VolMeshSelector',
+           'CellSelector']
 
 
-__all__ = ['CellSelector']
+class VolMeshSelector(object):
+
+    @staticmethod
+    def select_vertex(self, message="Select a vertex."):
+        guid = rs.GetObject(message, preselect=True, filter=rs.filter.point | rs.filter.textdot)
+        if guid:
+            prefix = self.attributes['name']
+            name = rs.ObjectName(guid).split('.')
+            if 'vertex' in name:
+                if not prefix or prefix in name:
+                    key = name[-1]
+                    return ast.literal_eval(key)
+        return None
+
+    @staticmethod
+    def select_vertices(self, message="Select vertices."):
+        keys = []
+        guids = rs.GetObjects(message, preselect=True, filter=rs.filter.point | rs.filter.textdot)
+        if guids:
+            prefix = self.attributes['name']
+            seen = set()
+            for guid in guids:
+                name = rs.ObjectName(guid).split('.')
+                if 'vertex' in name:
+                    if not prefix or prefix in name:
+                        key = name[-1]
+                        if not seen.add(key):
+                            key = ast.literal_eval(key)
+                            keys.append(key)
+        return keys
+
+    @staticmethod
+    def select_halfface(self, message="Select a halfface."):
+        guid = rs.GetObject(message, preselect=True, filter=rs.filter.mesh)
+        if guid:
+            prefix = self.attributes['name']
+            name = rs.ObjectName(guid).split('.')
+            if 'face' in name:
+                if not prefix or prefix in name:
+                    key = name[-1]
+                    return ast.literal_eval(key)
+        return None
+
+    @staticmethod
+    def select_halffaces(self, message="Select halffaces."):
+        keys = []
+        guids = rs.GetObjects(message, preselect=True, filter=rs.filter.mesh)
+        if guids:
+            prefix = self.attributes['name']
+            seen = set()
+            for guid in guids:
+                name = rs.ObjectName(guid).split('.')
+                if 'face' in name:
+                    if not prefix or prefix in name:
+                        key = name[-1]
+                        if not seen.add(key):
+                            key = ast.literal_eval(key)
+                            keys.append(key)
+        return keys
 
 
 class CellSelector(object):

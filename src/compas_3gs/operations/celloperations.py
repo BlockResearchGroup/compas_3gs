@@ -12,12 +12,6 @@ from compas.geometry import intersection_line_plane
 from compas_3gs.diagrams import EGI
 
 
-__author__    = 'Juney Lee'
-__copyright__ = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['cell_split_indet_face_vertices',
            'cell_collapse_short_edge',
 
@@ -59,19 +53,19 @@ def cell_split_indet_face_vertices(cell, fkey):
     """
     egi = mesh_dual(cell, EGI)
 
-    f_vkeys      = cell.face_vertices(fkey)
+    f_vkeys = cell.face_vertices(fkey)
     egi_nbr_vkeys = egi.vertex_neighbors(fkey)
 
     for egi_fkey in f_vkeys:
 
         fkeys = egi.face_vertices(egi_fkey)
-        i     = fkeys.index(fkey)
+        i = fkeys.index(fkey)
         fkeys = fkeys[i:] + fkeys[:i]
 
         egi_face_vertices = [key for key in fkeys if key not in egi_nbr_vkeys + [fkey]]
 
         vkey_del = egi_fkey
-        x, y, z  = cell.vertex_coordinates(vkey_del)
+        x, y, z = cell.vertex_coordinates(vkey_del)
 
         for vkey in egi_face_vertices:
 
@@ -121,8 +115,8 @@ def cell_collapse_short_edge(cell, u, v, min_length=0.1):
         Updated cell.
 
     """
-    sp   = cell.vertex_coordinates(u)
-    ep   = cell.vertex_coordinates(v)
+    sp = cell.vertex_coordinates(u)
+    ep = cell.vertex_coordinates(v)
     dist = distance_point_point(sp, ep)
 
     if dist < min_length:
@@ -184,7 +178,7 @@ def cell_relocate_face(cell, fkey, xyz, normal):
 
     for u in edges:
         line = cell.edge_coordinates(u, edges[u])
-        it   = intersection_line_plane(line, plane)
+        it = intersection_line_plane(line, plane)
         cell.vertex_update_xyz(u, it, constrained=False)
 
     return cell

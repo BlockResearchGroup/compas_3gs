@@ -10,23 +10,16 @@ from compas.geometry import subtract_vectors
 
 from compas.utilities import i_to_rgb
 
-from compas_rhino.conduits import Conduit
+from compas_rhino.conduits import BaseConduit
 from compas_rhino.ui import Mouse
 
 try:
-    from Rhino.Geometry import Line
     from Rhino.Geometry import Point3d
 
     from System.Drawing.Color import FromArgb
 
 except ImportError:
     compas.raise_if_ironpython()
-
-
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['VolmeshVertexInspector',
@@ -46,18 +39,18 @@ __all__ = ['VolmeshVertexInspector',
 # ******************************************************************************
 
 
-class VolmeshVertexInspector(Conduit):
+class VolmeshVertexInspector(BaseConduit):
 
     def __init__(self, volmesh, tol=0.1, **kwargs):
         super(VolmeshVertexInspector, self).__init__(**kwargs)
 
-        dotcolor       = (255, 0, 0)
-        textcolor      = (255, 255, 255)
+        dotcolor = (255, 0, 0)
+        textcolor = (255, 255, 255)
 
-        self.volmesh   = volmesh
-        self.tol       = tol
-        self.mouse     = Mouse()
-        self.dotcolor  = FromArgb(*dotcolor)
+        self.volmesh = volmesh
+        self.tol = tol
+        self.mouse = Mouse()
+        self.dotcolor = FromArgb(*dotcolor)
         self.textcolor = FromArgb(*textcolor)
 
     def enable(self):
@@ -69,17 +62,17 @@ class VolmeshVertexInspector(Conduit):
         self.Enabled = False
 
     def DrawForeground(self, e):
-        p1  = self.mouse.p1
-        p2  = self.mouse.p2
+        p1 = self.mouse.p1
+        p2 = self.mouse.p2
         v12 = subtract_vectors(p2, p1)
         l12 = length_vector(v12)
 
         for index, (key, attr) in enumerate(self.volmesh.vertices(True)):
-            p0   = attr['x'], attr['y'], attr['z']
+            p0 = attr['x'], attr['y'], attr['z']
             text = str(index)
-            v01  = subtract_vectors(p1, p0)
-            v02  = subtract_vectors(p2, p0)
-            l    = length_vector(cross_vectors(v01, v02))
+            v01 = subtract_vectors(p1, p0)
+            v02 = subtract_vectors(p2, p0)
+            l = length_vector(cross_vectors(v01, v02))
 
             if l12 == 0.0 or (l / l12) < self.tol:
                 point = Point3d(*p0)
@@ -99,25 +92,25 @@ class VolmeshVertexInspector(Conduit):
 # ******************************************************************************
 
 
-class VolmeshHalffaceInspector(Conduit):
+class VolmeshHalffaceInspector(BaseConduit):
 
     def __init__(self, volmesh, hfkeys=None, dependents=False, tol=1, **kwargs):
         super(VolmeshHalffaceInspector, self).__init__(**kwargs)
 
-        dotcolor        = (0, 0, 0)
-        textcolor       = (255, 255, 255)
-        edgecolor       = (255, 255, 0)
-        facecolor       = (255, 0, 0)
+        dotcolor = (0, 0, 0)
+        textcolor = (255, 255, 255)
+        edgecolor = (255, 255, 0)
+        facecolor = (255, 0, 0)
 
-        self.volmesh    = volmesh
-        self.hfkeys     = hfkeys
+        self.volmesh = volmesh
+        self.hfkeys = hfkeys
         self.dependents = dependents
-        self.tol        = tol
-        self.mouse      = Mouse()
-        self.dotcolor   = FromArgb(*dotcolor)
-        self.textcolor  = FromArgb(*textcolor)
-        self.edgecolor  = FromArgb(*edgecolor)
-        self.facecolor  = FromArgb(*facecolor)
+        self.tol = tol
+        self.mouse = Mouse()
+        self.dotcolor = FromArgb(*dotcolor)
+        self.textcolor = FromArgb(*textcolor)
+        self.edgecolor = FromArgb(*edgecolor)
+        self.facecolor = FromArgb(*facecolor)
 
     def enable(self):
         self.mouse.Enabled = True
@@ -128,8 +121,8 @@ class VolmeshHalffaceInspector(Conduit):
         self.Enabled = False
 
     def DrawForeground(self, e):
-        p1  = self.mouse.p1
-        p2  = self.mouse.p2
+        p1 = self.mouse.p1
+        p2 = self.mouse.p2
 
         v12 = subtract_vectors(p2, p1)
         l12 = length_vector(v12)
@@ -140,10 +133,10 @@ class VolmeshHalffaceInspector(Conduit):
 
         for hfkey in hfkeys:
 
-            p0  = self.volmesh.halfface_center(hfkey)
+            p0 = self.volmesh.halfface_center(hfkey)
             v01 = subtract_vectors(p1, p0)
             v02 = subtract_vectors(p2, p0)
-            l   = length_vector(cross_vectors(v01, v02))
+            l = length_vector(cross_vectors(v01, v02))
 
             if l12 == 0.0 or (l / l12) < self.tol:
 
@@ -154,7 +147,7 @@ class VolmeshHalffaceInspector(Conduit):
 
                 if self.dependents:
 
-                    d_hfkeys = self.volmesh.volmesh_edge_dependents_all(hfkey)
+                    d_hfkeys = self.volmesh.halfface_manifold_neighborhood(hfkey, ring=50)
 
                     for d_hfkey in d_hfkeys:
                         face_coordinates = self.volmesh.halfface_coordinates(d_hfkey)
@@ -176,24 +169,24 @@ class VolmeshHalffaceInspector(Conduit):
 # ******************************************************************************
 
 
-class VolmeshCellInspector(Conduit):
+class VolmeshCellInspector(BaseConduit):
 
     def __init__(self, volmesh, color_dict=None, tol=1, **kwargs):
         super(VolmeshCellInspector, self).__init__(**kwargs)
 
-        dotcolor        = (0, 0, 0)
-        textcolor       = (255, 255, 255)
-        edgecolor       = (0, 0, 0)
-        facecolor       = (255, 0, 0)
+        dotcolor = (0, 0, 0)
+        textcolor = (255, 255, 255)
+        edgecolor = (0, 0, 0)
+        facecolor = (255, 0, 0)
 
-        self.volmesh    = volmesh
+        self.volmesh = volmesh
         self.color_dict = color_dict
-        self.tol        = tol
-        self.mouse      = Mouse()
-        self.dotcolor   = FromArgb(*dotcolor)
-        self.textcolor  = FromArgb(*textcolor)
-        self.edgecolor  = FromArgb(*edgecolor)
-        self.facecolor  = FromArgb(*facecolor)
+        self.tol = tol
+        self.mouse = Mouse()
+        self.dotcolor = FromArgb(*dotcolor)
+        self.textcolor = FromArgb(*textcolor)
+        self.edgecolor = FromArgb(*edgecolor)
+        self.facecolor = FromArgb(*facecolor)
 
     def enable(self):
         self.mouse.Enabled = True
@@ -204,17 +197,17 @@ class VolmeshCellInspector(Conduit):
         self.Enabled = False
 
     def DrawForeground(self, e):
-        p1  = self.mouse.p1
-        p2  = self.mouse.p2
+        p1 = self.mouse.p1
+        p2 = self.mouse.p2
         v12 = subtract_vectors(p2, p1)
         l12 = length_vector(v12)
 
         # force diagram
         for ckey in self.volmesh.cell:
-            p0      = self.volmesh.cell_center(ckey)
+            p0 = self.volmesh.cell_center(ckey)
             v01 = subtract_vectors(p1, p0)
             v02 = subtract_vectors(p2, p0)
-            l   = length_vector(cross_vectors(v01, v02))
+            l = length_vector(cross_vectors(v01, v02))
             color = self.edgecolor
             if self.color_dict:
                 color = FromArgb(*self.color_dict[ckey])
@@ -239,21 +232,21 @@ class VolmeshCellInspector(Conduit):
 # ******************************************************************************
 
 
-class BiCellInspector(Conduit):
+class BiCellInspector(BaseConduit):
 
     def __init__(self, volmesh, network, tol=2, **kwargs):
         super(BiCellInspector, self).__init__(**kwargs)
 
-        dotcolor       = (0, 0, 0)
-        textcolor      = (255, 255, 255)
-        edgecolor      = (0, 0, 0)
-        facecolor      = (255, 0, 0)
+        dotcolor = (0, 0, 0)
+        textcolor = (255, 255, 255)
+        edgecolor = (0, 0, 0)
+        facecolor = (255, 0, 0)
 
-        self.volmesh   = volmesh
-        self.network   = network
-        self.tol       = tol
-        self.mouse     = Mouse()
-        self.dotcolor  = FromArgb(*dotcolor)
+        self.volmesh = volmesh
+        self.network = network
+        self.tol = tol
+        self.mouse = Mouse()
+        self.dotcolor = FromArgb(*dotcolor)
         self.textcolor = FromArgb(*textcolor)
         self.edgecolor = FromArgb(*edgecolor)
         self.facecolor = FromArgb(*facecolor)
@@ -275,20 +268,19 @@ class BiCellInspector(Conduit):
         self.Enabled = False
 
     def DrawForeground(self, e):
-        p1  = self.mouse.p1
-        p2  = self.mouse.p2
+        p1 = self.mouse.p1
+        p2 = self.mouse.p2
         v12 = subtract_vectors(p2, p1)
         l12 = length_vector(v12)
 
         # force diagram
 
         for ckey in self.volmesh.cell:
-            p0      = self.volmesh.cell_center(ckey)
+            p0 = self.volmesh.cell_center(ckey)
             dual_p0 = self.network.vertex_coordinates(ckey)
             v01 = subtract_vectors(p1, p0)
             v02 = subtract_vectors(p2, p0)
-            l   = length_vector(cross_vectors(v01, v02))
-
+            l = length_vector(cross_vectors(v01, v02))
 
             if l12 == 0.0 or (l / l12) < self.tol:
 
@@ -297,19 +289,14 @@ class BiCellInspector(Conduit):
                 nbr_vkeys = self.network.vertex_neighbours(ckey)
 
                 for index, nbr_vkey in enumerate(nbr_vkeys):
-                    value  = float(index) / (len(nbr_vkeys) - 1)
-
-                    print('boo', value)
-
-                    color  = i_to_rgb(value)
-                    color  = System.Drawing.Color.FromArgb(*color)
+                    value = float(index) / (len(nbr_vkeys) - 1)
+                    color = i_to_rgb(value)
+                    color = FromArgb(*color)
                     nbr_xyz = self.network.vertex_coordinates(nbr_vkey)
                     e.Display.DrawLine(Point3d(*dual_p0), Point3d(*nbr_xyz), color, 4)
 
                     hfkey = self.volmesh.cell_pair_halffaces(ckey, nbr_vkey)[0]
                     hf_colors[hfkey] = color
-
-
 
                 for hfkey in self.volmesh.cell_halffaces(ckey):
                     vkeys = self.volmesh.halfface_vertices(hfkey)

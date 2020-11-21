@@ -3,12 +3,6 @@ from __future__ import print_function
 from __future__ import division
 
 
-__author__    = 'Juney Lee'
-__copyright__ = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['pair_hf_to_uv',
            'pair_uv_to_hf']
 

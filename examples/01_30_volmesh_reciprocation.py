@@ -4,8 +4,6 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.helpers import volmesh_from_polysurfaces
-
 from compas_3gs.diagrams import FormNetwork
 from compas_3gs.diagrams import ForceVolMesh
 
@@ -14,49 +12,57 @@ from compas_3gs.algorithms import volmesh_reciprocate
 
 from compas_3gs.rhino import ReciprocationConduit
 
+from compas_rhino.utilities import volmesh_from_polysurfaces
+
+from compas_rhino.artists import NetworkArtist
+from compas_rhino.artists import VolMeshArtist
+
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
-layer = 'force_volmesh'
+layer_force = 'force_volmesh'
 
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
-forcediagram       = ForceVolMesh()
-forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
-forcediagram.layer = layer
-forcediagram.attributes['name'] = layer
+forcediagram = ForceVolMesh()
+forcediagram = volmesh_from_polysurfaces(forcediagram, guids)
+forcediagram.layer = layer_force
+forcediagram.attributes['name'] = layer_force
 
-forcediagram.draw(layer=layer)
+force_artist = VolMeshArtist(forcediagram, layer=layer_force)
+
+force_artist.draw_faces()
 
 
 # ------------------------------------------------------------------------------
 # 2. make dual network (form diagram)
 # ------------------------------------------------------------------------------
-layer = 'form_network'
+layer_form = 'form_network'
 
-formdiagram       = volmesh_dual_network(forcediagram, cls=FormNetwork)
-formdiagram.layer = layer
-formdiagram.attributes['name'] = layer
+formdiagram = volmesh_dual_network(forcediagram, cls=FormNetwork)
+formdiagram.layer = layer_form
+formdiagram.attributes['name'] = layer_form
 
-x_move = formdiagram.bounding_box()[0] * 2
-for vkey in formdiagram.vertex:
-    formdiagram.vertex[vkey]['x'] += x_move
+# move dual_network
+offset = 2
+width = formdiagram.bounding_box()[1][0] - formdiagram.bounding_box()[0][0]
+for vkey in formdiagram.nodes():
+    x = formdiagram.node_attribute(vkey, 'x')
+    formdiagram.node_attribute(vkey, 'x', x + width * offset)
 
-formdiagram.draw(layer=layer)
+form_artist = NetworkArtist(formdiagram, layer=layer_form)
 
+form_artist.draw_edges()
+
+
+rs.EnableRedraw(True)
 
 # ------------------------------------------------------------------------------
 # 3. get reciprocation weight factor
@@ -68,24 +74,26 @@ weight = rs.GetReal(
 # ------------------------------------------------------------------------------
 # 4. reciprocate
 # ------------------------------------------------------------------------------
-forcediagram.clear()
-formdiagram.clear()
+
+force_artist.clear_by_name()
+form_artist.clear_by_name()
 
 
 # conduit
 conduit = ReciprocationConduit(forcediagram, formdiagram)
 
 
-def callback(forcediagram, formdiagram, k, args):
-    if k % 2:
-        conduit.redraw()
+def callback(forcediagram, formdiagram, k, args, refreshrate=2):
+    if k % refreshrate:
+        return
+    conduit.redraw()
 
 
 # reciprocation
 with conduit.enabled():
     volmesh_reciprocate(forcediagram,
                         formdiagram,
-                        kmax=1000,
+                        kmax=500,
                         weight=weight,
                         edge_min=0.5,
                         edge_max=20,
@@ -94,5 +102,5 @@ with conduit.enabled():
                         print_result_info=True)
 
 # update / redraw
-forcediagram.draw()
-formdiagram.draw()
+force_artist.draw_faces()
+form_artist.draw_edges()

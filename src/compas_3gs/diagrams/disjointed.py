@@ -7,12 +7,6 @@ from compas_3gs.datastructures import Network3gs
 from compas_3gs.diagrams import Cell
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['CellNetwork']
 
 
@@ -24,11 +18,11 @@ class CellNetwork(Network3gs):
     def __init__(self):
         super(CellNetwork, self).__init__()
 
-        a  = {'gfp'  : Cell()}
+        a = {'gfp': Cell()}
         va = {'x_fix': False,
               'y_fix': False,
               'z_fix': False,
-              'cell' : Cell()}
+              'cell': Cell()}
         ea = {'target_vector': None,
               'target_length': None}
 

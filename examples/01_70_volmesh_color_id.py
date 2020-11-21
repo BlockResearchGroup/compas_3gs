@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas
 
-from compas_rhino.helpers import volmesh_from_polysurfaces
+from compas_rhino.utilities import volmesh_from_polysurfaces
 
 from compas_3gs.diagrams import FormNetwork
 from compas_3gs.diagrams import ForceVolMesh
@@ -21,12 +21,6 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
@@ -35,8 +29,8 @@ layer = 'force_volmesh'
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
-forcediagram       = ForceVolMesh()
-forcediagram       = volmesh_from_polysurfaces(forcediagram, guids)
+forcediagram = ForceVolMesh()
+forcediagram = volmesh_from_polysurfaces(forcediagram, guids)
 forcediagram.layer = layer
 forcediagram.attributes['name'] = layer
 
@@ -46,13 +40,16 @@ forcediagram.attributes['name'] = layer
 # ------------------------------------------------------------------------------
 layer = 'form_network'
 
-formdiagram       = volmesh_dual_network(forcediagram, cls=FormNetwork)
+formdiagram = volmesh_dual_network(forcediagram, cls=FormNetwork)
 formdiagram.layer = layer
 formdiagram.attributes['name'] = layer
 
-x_move = formdiagram.bounding_box()[0] * 2
-for vkey in formdiagram.vertex:
-    formdiagram.vertex[vkey]['x'] += x_move
+# move dual_network
+offset = 2
+width = formdiagram.bounding_box()[1][0] - formdiagram.bounding_box()[0][0]
+for vkey in formdiagram.nodes():
+    x = formdiagram.node_attribute(vkey, 'x')
+    formdiagram.node_attribute(vkey, 'x', x + width * offset)
 
 
 # ------------------------------------------------------------------------------
@@ -73,11 +70,11 @@ volmesh_reciprocate(forcediagram,
 uv_c_dict = get_index_colordict(list(formdiagram.edges()))
 hf_c_dict = get_force_colors_hf(forcediagram, formdiagram, uv_c_dict=uv_c_dict)
 
-faces_to_draw = [fkey for fkey in forcediagram.faces() if fkey in forcediagram.halffaces_interior()]
+faces_to_draw = [fkey for fkey in forcediagram.faces() if not forcediagram.is_halfface_on_boundary(fkey)]
 
 forcediagram.clear()
 forcediagram.draw_edges()
-forcediagram.draw_faces(keys=faces_to_draw, color=hf_c_dict)
+forcediagram.draw_faces(faces=faces_to_draw, color=hf_c_dict)
 
 formdiagram.clear()
 formdiagram.draw_edges(color=uv_c_dict)

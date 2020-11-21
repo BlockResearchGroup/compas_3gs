@@ -4,22 +4,10 @@ from __future__ import division
 
 from compas.datastructures import VolMesh
 
-from compas.geometry import subtract_vectors
+from compas.geometry import centroid_points
 from compas.geometry import normalize_vector
-from compas.geometry import length_vector
-from compas.geometry import cross_vectors
 
-from compas_rhino.helpers.volmesh import volmesh_draw
 from compas_rhino.artists import VolMeshArtist
-
-from compas_3gs.utilities import polygon_normal_oriented
-from compas_3gs.utilities import polygon_area_oriented
-
-
-__author__    = 'Juney Lee'
-__copyright__ = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['VolMesh3gs']
@@ -131,144 +119,117 @@ class VolMesh3gs(VolMesh):
     #   vertices
     # --------------------------------------------------------------------------
 
-    def vertex_update_xyz(self, vkey, xyz, constrained=True):
+    def vertex_normal(self, vertex):
+        """Return the normal vector at the vertex as the weighted average of the
+        normals of the neighboring faces.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        list
+            The components of the normal vector.
+        """
+        if not self.is_vertex_on_boundary(vertex):
+            return
+
+        halffaces = []
+        for halfface in self.vertex_halffaces(vertex):
+            if self.is_halfface_on_boundary(halfface):
+                halffaces.append(halfface)
+
+        vectors = [self.face_normal(halfface, False) for halfface in halffaces if halfface is not None]
+        return normalize_vector(centroid_points(vectors))
+
+    def vertex_update_xyz(self, vertex, new_xyz, constrained=True):
+
         if constrained:
             # X
-            if self.vertex[vkey]['x_fix'] is False:
-                self.vertex[vkey]['x'] = xyz[0]
+            if self.vertex_attribute(vertex, 'x_fix') is False:
+                self.vertex_attribute(vertex, 'x', new_xyz[0])
             # Y
-            if self.vertex[vkey]['y_fix'] is False:
-                self.vertex[vkey]['y'] = xyz[1]
+            if self.vertex_attribute(vertex, 'y_fix') is False:
+                self.vertex_attribute(vertex, 'y', new_xyz[1])
             # Z
-            if self.vertex[vkey]['z_fix'] is False:
-                self.vertex[vkey]['z'] = xyz[2]
+            if self.vertex_attribute(vertex, 'z_fix') is False:
+                self.vertex_attribute(vertex, 'z', new_xyz[2])
         else:
-            self.vertex[vkey]['x'] = xyz[0]
-            self.vertex[vkey]['y'] = xyz[1]
-            self.vertex[vkey]['z'] = xyz[2]
+            self.vertex_attribute(vertex, 'x', new_xyz[0])
+            self.vertex_attribute(vertex, 'y', new_xyz[1])
+            self.vertex_attribute(vertex, 'z', new_xyz[2])
 
     # --------------------------------------------------------------------------
-    #   edges
+    # cell
     # --------------------------------------------------------------------------
 
-    def edge_vector(self, u, v, unitized=True):
-        u_xyz  = self.vertex_coordinates(u)
-        v_xyz  = self.vertex_coordinates(v)
-        vector = subtract_vectors(v_xyz, u_xyz)
-        if unitized:
-            return normalize_vector(vector)
-        return vector
+    def cell_pair_halffaces(self, cell_1, cell_2):
+        """Given 2 ckeys, returns the interfacing halffaces, respectively.
+        Parameters
+        ----------
+        ckey_1 : hashable
+            Identifier of the cell 1.
+        ckey_2 : hashable
+            Identifier of the cell 2.
+        Returns
+        -------
+        hfkey_1
+            The identifier of the halfface belonging to cell 1 .
+        hfkey_2
+            The identifier of the halfface belonging to cell 2.
+        """
+        for halfface in self.cell_faces(cell_1):
+            u, v, w = self.halfface_vertices(halfface)[0:3]
+            nbr = self._plane[w][v][u]
 
-    # --------------------------------------------------------------------------
-    # halffaces and faces
-    # --------------------------------------------------------------------------
+            if nbr == cell_2:
+                return halfface, self.halfface_opposite_halfface(halfface)
 
-    def halfface_oriented_area(self, hfkey):
-        vertices = self.halfface_vertices(hfkey)
-        points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-        area     = polygon_area_oriented(points)
-        return area
-
-    def halfface_oriented_normal(self, hfkey, unitized=True):
-        vertices = self.halfface_vertices(hfkey)
-        points   = [self.vertex_coordinates(vkey) for vkey in vertices]
-        normal   = polygon_normal_oriented(points, unitized)
-        if length_vector(normal) == 0 :
-            uv = subtract_vectors(points[1], points[0])
-            vw = subtract_vectors(points[2], points[1])
-            normal = normalize_vector(cross_vectors(uv, vw))
-        return normal
-
-    def halfface_edge_dependents(self, hfkey):
-        dep_hfkeys = {}
-        ckey       = self.halfface_cell(hfkey)
-        hf_edges   = self.halfface_halfedges(hfkey)
-        for edge in hf_edges:
-            u = edge[0]
-            v = edge[1]
-            adj_hfkey = self.cell[ckey][v][u]
-            w         = self.halfface_vertex_ancestor(adj_hfkey, v)
-            nbr_ckey  = self.plane[u][v][w]
-            if nbr_ckey is not None:
-                dep_hfkey = self.cell[nbr_ckey][v][u]
-                dep_hfkeys[dep_hfkey] = u
-        return dep_hfkeys
-
-    def volmesh_edge_dependents_all(self, hfkey):
-        dependents = set(self.halfface_edge_dependents(hfkey).keys())
-        seen = set()
-        i = 0
-
-        while True:
-
-            if i == 100:
-                break
-
-            if i != 0 and len(seen) == 0:
-                break
-
-            temp = []
-            for dep_hfkey in dependents:
-
-                if dep_hfkey not in seen:
-                    hfkeys = self.halfface_edge_dependents(dep_hfkey).keys()
-                    temp += hfkeys
-                    seen.add(dep_hfkey)
-
-            dependents.update(temp)
-
-            i += 1
-
-        if hfkey in dependents:
-            dependents.remove(hfkey)
-
-        return list(dependents)
-
-    def clean(self):
-        pass
+        return
 
     # --------------------------------------------------------------------------
     # drawing
     # --------------------------------------------------------------------------
 
     def draw(self, **kwattr):
-        volmesh_draw(self, layer=self.layer)
+        artist = VolMeshArtist(self, layer=self.layer)
+        artist.clear_by_name()
+        artist.draw_faces(**kwattr)
+        artist.draw_vertices(**kwattr)
 
-    def clear(self):
-        artist = VolMeshArtist(self)
-        # self.clear_cell_labels()
-        artist.clear()
+    def clear(self, **kwattr):
+        artist = VolMeshArtist(self, layer=self.layer)
+        artist.clear_by_name()
+        artist.clear_layer()
 
     def draw_edges(self, **kwattr):
         artist = VolMeshArtist(self, **kwattr)
         artist.draw_edges(**kwattr)
 
-    def clear_edges(self, **kwattr):
-        artist = VolMeshArtist(self, **kwattr)
-        artist.clear_edges(**kwattr)
-
     def draw_faces(self, **kwattr):
-        artist = VolMeshArtist(self)
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.draw_faces(**kwattr)
 
     def clear_faces(self, **kwattr):
-        artist = VolMeshArtist(self)
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.clear_faces(**kwattr)
 
-    def draw_face_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
+    def draw_facelabels(self, **kwattr):
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.draw_facelabels(**kwattr)
 
     def draw_vertices(self, **kwattr):
-        artist = VolMeshArtist(self)
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.draw_vertices(**kwattr)
 
-    def draw_vertex_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
+    def draw_vertexlabels(self, **kwattr):
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.draw_vertexlabels(**kwattr)
 
-    def draw_edge_labels(self, **kwattr):
-        artist = VolMeshArtist(self)
+    def draw_edgelabels(self, **kwattr):
+        artist = VolMeshArtist(self, layer=self.layer)
         artist.draw_edgelabels(**kwattr)
 
 

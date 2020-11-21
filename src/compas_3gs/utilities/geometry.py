@@ -9,7 +9,7 @@ from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
-from compas.geometry import weighted_centroid_points
+from compas.geometry import centroid_points_weighted
 from compas.geometry import centroid_points
 from compas.geometry import midpoint_point_point
 from compas.geometry import bestfit_plane
@@ -19,26 +19,20 @@ from compas.geometry import is_point_on_segment
 from compas.geometry import project_point_plane
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
+__all__ = ['resultant_vector',
 
+           'polygon_normal_oriented',
+           'polygon_area_oriented',
+           'polygon_area_footprint',
+           'scale_polygon',
 
-__all__  = ['resultant_vector',
+           'cell_face_flatness',
+           'cell_face_areaness',
 
-            'polygon_normal_oriented',
-            'polygon_area_oriented',
-            'polygon_area_footprint',
-            'scale_polygon',
+           'volmesh_face_flatness',
+           'volmesh_face_areaness',
 
-            'cell_face_flatness',
-            'cell_face_areaness',
-
-            'volmesh_face_flatness',
-            'volmesh_face_areaness',
-
-            'datastructure_centroid']
+           'datastructure_centroid']
 
 
 # ******************************************************************************
@@ -83,14 +77,14 @@ def resultant_vector(vectors, locations):
     [0.78129727344020572, 0.78043477156745522, 0.7360930822393742],
 
     """
-    points  = []
+    points = []
     weights = []
 
     for vkey in vectors:
         points.append(vectors[vkey])
         weights.append(length_vector(vectors[vkey]))
 
-    resultant_xyz = weighted_centroid_points(points, weights)
+    resultant_xyz = centroid_points_weighted(points, weights)
     x, y, z = zip(*vectors.values())
     resultant_vector = [sum(x), sum(y), sum(z)]
 
@@ -127,15 +121,15 @@ def polygon_normal_oriented(polygon, unitized=True):
     """
     p = len(polygon)
     assert p > 2, "At least three points required"
-    w          = centroid_points(polygon)
+    w = centroid_points(polygon)
     normal_sum = (0, 0, 0)
 
     for i in range(-1, len(polygon) - 1):
-        u          = polygon[i]
-        v          = polygon[i + 1]
-        uv         = subtract_vectors(v, u)
-        vw         = subtract_vectors(w, v)
-        normal     = scale_vector(cross_vectors(uv, vw), 0.5)
+        u = polygon[i]
+        v = polygon[i + 1]
+        uv = subtract_vectors(v, u)
+        vw = subtract_vectors(w, v)
+        normal = scale_vector(cross_vectors(uv, vw), 0.5)
         normal_sum = add_vectors(normal_sum, normal)
 
     if not unitized:
@@ -179,15 +173,15 @@ def polygon_area_footprint(polygon):
 
     """
     area = 0
-    w    = centroid_points(polygon)
+    w = centroid_points(polygon)
 
     for i in range(-1, len(polygon) - 1):
-        u      = polygon[i]
-        v      = polygon[i + 1]
-        uv     = subtract_vectors(v, u)
-        vw     = subtract_vectors(w, v)
+        u = polygon[i]
+        v = polygon[i + 1]
+        uv = subtract_vectors(v, u)
+        vw = subtract_vectors(w, v)
         normal = scale_vector(cross_vectors(uv, vw), 0.5)
-        area   += length_vector(normal)
+        area += length_vector(normal)
 
     return area
 
@@ -233,14 +227,14 @@ def untangle_polygon(polygon):
 
     """
     def _cross_edges(edge1, edge2):
-        a, b      = edge1
-        c, d      = edge2
+        a, b = edge1
+        c, d = edge2
         edge1_vec = normalize_vector(subtract_vectors(b, a))
         edge2_vec = normalize_vector(subtract_vectors(d, c))
-        cross     = cross_vectors(edge1_vec, edge2_vec)
+        cross = cross_vectors(edge1_vec, edge2_vec)
         return cross
 
-    xyz   = {i: polygon[i] for i in range(len(polygon))}
+    xyz = {i: polygon[i] for i in range(len(polygon))}
     vkeys = range(len(polygon))
 
     count = 20
@@ -249,10 +243,10 @@ def untangle_polygon(polygon):
         moved = []
 
         for i in range(-1, len(polygon) - 1):
-            t       = xyz[vkeys[i - 2]]
-            u       = xyz[vkeys[i - 1]]
-            v       = xyz[vkeys[i]]
-            w       = xyz[vkeys[i + 1]]
+            t = xyz[vkeys[i - 2]]
+            u = xyz[vkeys[i - 1]]
+            v = xyz[vkeys[i]]
+            w = xyz[vkeys[i + 1]]
 
             u_cross = _cross_edges((t, u), (u, v))
             v_cross = _cross_edges((u, v), (v, w))
@@ -266,7 +260,7 @@ def untangle_polygon(polygon):
                 xyz[vkeys[i]] = add_vectors(v, vec)
                 moved.append([vkeys[i]])
 
-        if len(moved) == 0 :
+        if len(moved) == 0:
             break
 
     return [xyz[i] for i in vkeys]
@@ -293,11 +287,11 @@ def polygon_flatness(polygon):
     """
     deviation = 0
 
-    plane     = bestfit_plane(polygon)
+    plane = bestfit_plane(polygon)
 
     for pt in polygon:
         pt_proj = project_point_plane(pt, plane)
-        dev     = distance_point_point(pt, pt_proj)
+        dev = distance_point_point(pt, pt_proj)
         if dev > deviation:
             deviation = dev
 
@@ -372,12 +366,12 @@ def cell_face_flatness(cell):
 
     """
 
-    flatness_dict = {fkey : 0 for fkey in cell.face}
+    flatness_dict = {fkey: 0 for fkey in cell.face}
 
     for fkey in cell.face:
         f_vkeys = cell.face_vertices(fkey)
-        f_pts   = [cell.vertex_coordinates(vkey) for vkey in f_vkeys]
-        dev     = polygon_flatness(f_pts)
+        f_pts = [cell.vertex_coordinates(vkey) for vkey in f_vkeys]
+        dev = polygon_flatness(f_pts)
 
         flatness_dict[fkey] = dev
 
@@ -433,12 +427,12 @@ def volmesh_face_flatness(volmesh):
         A dictionary of flatness deviation for every face of the volmesh.
 
     """
-    flatness_dict = {fkey : 0 for fkey in volmesh.faces()}
+    flatness_dict = {fkey: 0 for fkey in volmesh.faces()}
 
     for fkey in volmesh.faces():
         f_vkeys = volmesh.halfface_vertices(fkey)
-        f_pts   = [volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
-        dev     = polygon_flatness(f_pts)
+        f_pts = [volmesh.vertex_coordinates(vkey) for vkey in f_vkeys]
+        dev = polygon_flatness(f_pts)
 
         flatness_dict[fkey] = dev
 
@@ -461,7 +455,7 @@ def volmesh_face_areaness(volmesh, target_areas):
     areaness_dict = {}
 
     for hfkey in target_areas:
-        area = volmesh.halfface_oriented_area(hfkey)
+        area = volmesh.halfface_area(hfkey)
         areaness_dict[hfkey] = abs(target_areas[hfkey] - area)
 
     return areaness_dict
@@ -471,7 +465,7 @@ def _get_current_volmesh_normals(volmesh):
     normal_dict = {}
     for hfkey in volmesh.halfface:
         center = volmesh.halfface_center(hfkey)
-        normal = volmesh.halfface_oriented_normal(hfkey)
+        normal = volmesh.halfface_normal(hfkey)
         normal_dict[hfkey] = {'normal': normal, 'center': center}
     return normal_dict
 
@@ -501,7 +495,7 @@ def datastructure_centroid(datastructure):
         The coordinates of the centroid.
 
     """
-    points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertex]
+    points = [datastructure.vertex_coordinates(vkey) for vkey in datastructure.vertices()]
 
     return centroid_points(points)
 

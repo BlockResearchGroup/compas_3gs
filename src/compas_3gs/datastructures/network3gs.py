@@ -2,24 +2,15 @@ from __future__ import print_function
 
 from compas.datastructures import Network
 
+from compas.geometry import bounding_box
+
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import length_vector
 
-from compas_rhino.helpers.network import network_draw
-from compas_rhino.helpers.network import network_draw_vertices
-from compas_rhino.helpers.network import network_draw_edges
-from compas_rhino.helpers.network import network_draw_edge_labels
-
 from compas_rhino.artists import NetworkArtist
 
 from compas_3gs.utilities import datastructure_centroid
-
-
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['Network3gs']
@@ -40,6 +31,8 @@ class Network3gs(Network):
     # --------------------------------------------------------------------------
 
     datastructure_centroid = datastructure_centroid
+    vertex_coordinates = Network.node_coordinates
+    vertices = Network.nodes
 
     # --------------------------------------------------------------------------
     # misc
@@ -47,45 +40,46 @@ class Network3gs(Network):
 
     def bounding_box(self):
 
-        xyz = [self.vertex_coordinates(vkey) for vkey in self.vertex]
+        xyz = self.nodes_attributes('xyz', keys=list(self.nodes()))
 
-        x_sorted = sorted(xyz, key=lambda k: k[0])
-        y_sorted = sorted(xyz, key=lambda k: k[1])
-        z_sorted = sorted(xyz, key=lambda k: k[2])
+        # x_sorted = sorted(xyz, key=lambda k: k[0])
+        # y_sorted = sorted(xyz, key=lambda k: k[1])
+        # z_sorted = sorted(xyz, key=lambda k: k[2])
 
-        x = abs(x_sorted[0][0] - x_sorted[-1][0])
-        y = abs(y_sorted[0][1] - y_sorted[-1][1])
-        z = abs(z_sorted[0][2] - z_sorted[-1][2])
+        # x = abs(x_sorted[0][0] - x_sorted[-1][0])
+        # y = abs(y_sorted[0][1] - y_sorted[-1][1])
+        # z = abs(z_sorted[0][2] - z_sorted[-1][2])
 
-        return x, y, z
+        return bounding_box(xyz)
 
     # --------------------------------------------------------------------------
     # helpers - vertices
     # --------------------------------------------------------------------------
 
-    def vertex_update_xyz(self, vkey, new_xyz, constrained=True):
+    def vertex_update_xyz(self, node, new_xyz, constrained=True):
+
         if constrained:
             # X
-            if self.vertex[vkey]['x_fix'] is False:
-                self.vertex[vkey]['x'] = new_xyz[0]
+            if self.node_attribute(node, 'x_fix') is False:
+                self.node_attribute(node, 'x', new_xyz[0])
             # Y
-            if self.vertex[vkey]['y_fix'] is False:
-                self.vertex[vkey]['y'] = new_xyz[1]
+            if self.node_attribute(node, 'y_fix') is False:
+                self.node_attribute(node, 'y', new_xyz[1])
             # Z
-            if self.vertex[vkey]['z_fix'] is False:
-                self.vertex[vkey]['z'] = new_xyz[2]
+            if self.node_attribute(node, 'z_fix') is False:
+                self.node_attribute(node, 'z', new_xyz[2])
         else:
-            self.vertex[vkey]['x'] = new_xyz[0]
-            self.vertex[vkey]['y'] = new_xyz[1]
-            self.vertex[vkey]['z'] = new_xyz[2]
+            self.node_attribute(node, 'x', new_xyz[0])
+            self.node_attribute(node, 'y', new_xyz[1])
+            self.node_attribute(node, 'z', new_xyz[2])
 
     # --------------------------------------------------------------------------
     # helpers - edges
     # --------------------------------------------------------------------------
 
     def edge_vector(self, u, v, unitized=True):
-        u_xyz  = self.vertex_coordinates(u)
-        v_xyz  = self.vertex_coordinates(v)
+        u_xyz = self.vertex_coordinates(u)
+        v_xyz = self.vertex_coordinates(v)
         vector = subtract_vectors(v_xyz, u_xyz)
         if unitized:
             return normalize_vector(vector)
@@ -105,29 +99,30 @@ class Network3gs(Network):
     # --------------------------------------------------------------------------
 
     def draw(self, **kwattr):
-        network_draw(self, **kwattr)
+        artist = NetworkArtist(self)
+        artist.draw_edges(**kwattr)
+        artist.draw_nodes(**kwattr)
 
     def clear(self, **kwattr):
         artist = NetworkArtist(self)
-        artist.clear()
-        # artist.clear_layer()
+        artist.clear_by_name()
+        artist.clear_layer()
 
-    def draw_vertices(self, **kwattr):
-        network_draw_vertices(self, **kwattr)
+    def draw_nodes(self, **kwattr):
+        artist = NetworkArtist(self)
+        artist.draw_nodes(**kwattr)
 
     def draw_edges(self, **kwattr):
-        network_draw_edges(self, **kwattr)
-
-    def clear_edges(self, **kwattr):
         artist = NetworkArtist(self)
-        artist.clear_edges(**kwattr)
+        artist.draw_edges(**kwattr)
 
-    def draw_vertex_labels(self, **kwattr):
+    def draw_vertexlabels(self, **kwattr):
         artist = NetworkArtist(self)
         artist.draw_vertexlabels(**kwattr)
 
-    def draw_edge_labels(self, **kwattr):
-        network_draw_edge_labels(self, **kwattr)
+    def draw_edgelabels(self, **kwattr):
+        artist = NetworkArtist(self)
+        artist.draw_edgelabels(**kwattr)
 
 
 # ******************************************************************************

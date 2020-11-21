@@ -14,12 +14,6 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
-
-
 __all__ = ['volmesh3gs_select_cell']
 
 
@@ -30,8 +24,8 @@ def volmesh3gs_select_cell(volmesh):
     for index, ckey in enumerate(ckeys):
         value = 0
         if len(ckeys) > 1:
-            value  = float(index) / (len(ckeys) - 1)
-        color  = i_to_rgb(value)
+            value = float(index) / (len(ckeys) - 1)
+        color = i_to_rgb(value)
         cell_colors[ckey] = color
 
     volmesh.draw_cell_labels(color_dict=cell_colors)

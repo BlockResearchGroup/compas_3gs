@@ -13,7 +13,7 @@ from compas.geometry import cross_vectors
 from compas.geometry import normalize_vector
 from compas.geometry import subtract_vectors
 
-from compas.datastructures.network.duality import _find_first_neighbor
+from compas.datastructures.network.duality import network_node_find_first_neighbor
 
 from compas.utilities import geometric_key
 
@@ -32,12 +32,6 @@ try:
 
 except ImportError:
     compas.raise_if_ironpython()
-
-
-__author__     = 'Juney Lee'
-__copyright__  = 'Copyright 2019, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'juney.lee@arch.ethz.ch'
 
 
 __all__ = ['egi_from_vectors',
@@ -93,16 +87,16 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
     vertex_geokeys = {}
 
     for vkey in vectordict:
-        normal     = normalize_vector(vectordict[vkey])
+        normal = normalize_vector(vectordict[vkey])
         vertex_xyz = add_vectors(normal, origin)
         vertex_geokeys[geometric_key(normal)] = vkey
         egi.add_vertex(x=vertex_xyz[0],
                        y=vertex_xyz[1],
                        z=vertex_xyz[2],
                        key=vkey,
-                       attr_dict={'type'  : 'face',
+                       attr_dict={'type': 'face',
                                   'normal': normal,
-                                  'nbrs'  : []})
+                                  'nbrs': []})
 
     # --------------------------------------------------------------------------
     #   2.  Identify main adjacencies
@@ -149,7 +143,7 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
         # Add to overall connectivity dict -------------------------------------
         for crs_gkey in v_crs_dict:
             nbr_vkey = v_crs_dict[crs_gkey]
-            pair     = frozenset([vkey, nbr_vkey])
+            pair = frozenset([vkey, nbr_vkey])
             vkey_pairs.add(pair)
 
     # --------------------------------------------------------------------------
@@ -159,16 +153,16 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
 
     for pair in vkey_pairs:
         u, v = list(pair)
-        arc  = _draw_arc(egi.vertex[u]['normal'],
-                         egi.vertex[v]['normal'],
-                         origin)
+        arc = _draw_arc(egi.vertex[u]['normal'],
+                        egi.vertex[v]['normal'],
+                        origin)
 
         if len(arcs) == 0:
             arc_key = 0
         else:
             arc_key = max(int(x) for x in arcs.keys()) + 1
-        arcs[arc_key] = {'arc'      : arc,
-                         'vkeys'    : [u, v],
+        arcs[arc_key] = {'arc': arc,
+                         'vkeys': [u, v],
                          'end_vkeys': [u, v],
                          'int_vkeys': {}, }
 
@@ -185,7 +179,7 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
                     arc_2 = arcs[arckey_2]['arc']
                     intersection = _curve_curve_intx(arc_1, arc_2)
                     if intersection:
-                        new_vkey   = max(int(vkey) for vkey in egi.vertex.keys()) + 1
+                        new_vkey = max(int(vkey) for vkey in egi.vertex.keys()) + 1
                         new_normal = subtract_vectors(intersection, origin)
                         new_normal = normalize_vector(new_normal)
                         new_vertex_geokey = geometric_key(new_normal, precision='3f')
@@ -197,10 +191,10 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
                                            y=intersection[1],
                                            z=intersection[2],
                                            key=new_vkey,
-                                           attr_dict={'type'      : 'zero',
-                                                      'normal'    : new_normal,
-                                                      'magnitude' : 0,
-                                                      'nbrs'      : []})
+                                           attr_dict={'type': 'zero',
+                                                      'normal': new_normal,
+                                                      'magnitude': 0,
+                                                      'nbrs': []})
                             arcs[arckey_1]['vkeys'].append(new_vkey)
                             arcs[arckey_2]['vkeys'].append(new_vkey)
                             arcs[arckey_1]['int_vkeys'][new_vkey] = arckey_2
@@ -281,7 +275,7 @@ def cell_from_egi(egi):
         A mesh object representing the unit polyhedron.
 
     """
-    cell      = Cell()
+    cell = Cell()
     cell.name = 'cell'
 
     for fkey in egi.face:
@@ -310,9 +304,9 @@ def cell_from_egi(egi):
 
 def _draw_arc(normal_1, normal_2, origin):
     mid_pt = normalize_vector(add_vectors(normal_1, normal_2))
-    arc    = Arc(Point3d(*[sum(axis) for axis in zip(normal_1, origin)]),
-                 Point3d(*[sum(axis) for axis in zip(mid_pt, origin)]),
-                 Point3d(*[sum(axis) for axis in zip(normal_2, origin)]))
+    arc = Arc(Point3d(*[sum(axis) for axis in zip(normal_1, origin)]),
+              Point3d(*[sum(axis) for axis in zip(mid_pt, origin)]),
+              Point3d(*[sum(axis) for axis in zip(normal_2, origin)]))
     arc_as_curve = ArcCurve(arc)
     return arc_as_curve
 
@@ -323,18 +317,18 @@ def _reorder_pts_on_arc(pt_list, pt_key_list, arc_curve):
     sp = arc_curve.PointAtStart
     for pt in pt_list:
         dist_list.append(distance(sp, pt))
-    ordered_pt_list     = [x for (y, x) in sorted(zip(dist_list, pt_list))]
+    ordered_pt_list = [x for (y, x) in sorted(zip(dist_list, pt_list))]
     ordered_pt_key_list = [x for (y, x) in sorted(zip(dist_list, pt_key_list))]
     return ordered_pt_list, ordered_pt_key_list
 
 
 def _curve_curve_intx(curve_1, curve_2):
-    intersection_tolerance  = 0.01
-    overlap_tolerance       = 0.0
-    intersection            = CCX(curve_1,
-                                  curve_2,
-                                  intersection_tolerance,
-                                  overlap_tolerance)
+    intersection_tolerance = 0.01
+    overlap_tolerance = 0.0
+    intersection = CCX(curve_1,
+                       curve_2,
+                       intersection_tolerance,
+                       overlap_tolerance)
     if not intersection:
         return None
     for instance in intersection:
@@ -383,7 +377,7 @@ def _egi_find_faces(egi, egi_mesh):
         egi_mesh.halfedge[u][v] = None
         egi_mesh.halfedge[v][u] = None
     u = sorted(egi.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
-    v = _find_first_neighbor(u, egi)
+    v = network_node_find_first_neighbor(egi, u)
 
     egi_mesh.add_face(_egi_find_edge_face(u, v, egi))
 
