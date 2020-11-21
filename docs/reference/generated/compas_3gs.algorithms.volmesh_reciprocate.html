@@ -17,11 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas_3gs.algorithms.volmesh_planarise" href="compas_3gs.algorithms.volmesh_planarise.html" />
   
-  
-  
-    <link rel="prev" title="compas_3gs.algorithms.volmesh_dual_network" href="compas_3gs.algorithms.volmesh_dual_network.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -78,38 +74,6 @@
         
         <div class="section" id="compas-3gs-algorithms-volmesh-reciprocate">
 <h1 class="display-4 p-0 mb-5">compas_3gs.algorithms.volmesh_reciprocate</h1>
-<dl class="function">
-<dt id="compas_3gs.algorithms.volmesh_reciprocate">
-<code class="sig-prename descclassname">compas_3gs.algorithms.</code><code class="sig-name descname">volmesh_reciprocate</code><span class="sig-paren">(</span><em class="sig-param">volmesh</em>, <em class="sig-param">formdiagram</em>, <em class="sig-param">kmax=100</em>, <em class="sig-param">weight=1.0</em>, <em class="sig-param">fix_vkeys=[]</em>, <em class="sig-param">edge_min=None</em>, <em class="sig-param">edge_max=None</em>, <em class="sig-param">tolerance=0.001</em>, <em class="sig-param">tolerance_boundary=0.0001</em>, <em class="sig-param">callback=None</em>, <em class="sig-param">callback_args=None</em>, <em class="sig-param">print_result_info=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/reciprocation.html#volmesh_reciprocate"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Perpendicularizes the faces of the polyhedral force diagram to the corresponding dual edges in the polyhedral form diagram.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>volmesh</strong> (<em>VolMesh</em>) – A volmesh object representing a polyhedral force diagram.</p></li>
-<li><p><strong>formdiagram</strong> (<em>VolMesh or Network</em>) – A network object representing a polyhedral form diagram.</p></li>
-<li><p><strong>kmax</strong> (<em>int, optional [100]</em>) – Maximum number of iterations.</p></li>
-<li><p><strong>weight</strong> (<em>float, optional [1.0]</em>) – A float, between 0 and 1, which determines how much each diagram changes. 1 changes the form diagram only, while 0 changes the force diagram only. Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
-<li><p><strong>fix_vkeys</strong> (<em>list, optional []</em>) – List of vkeys to fix.</p></li>
-<li><p><strong>edge_min</strong> (<em>float, optional [None]</em>) – Value for minimum edge length to be imposed.</p></li>
-<li><p><strong>edge_max</strong> (<em>float, optional [None]</em>) – Value for maximum edge length allowed.</p></li>
-<li><p><strong>tolerance</strong> (<em>float, optional [0.001]</em>) – Value for convergence tolerance. Deviation is measured by the the dot product of the input and target vectors.</p></li>
-<li><p><strong>callback</strong> (<em>callable, optional [None]</em>) – A user-defined callback function to be executed after every iteration.</p></li>
-<li><p><strong>callback_args</strong> (<em>tuple, optional [None]</em>) – Additional parameters to be passed to the callback.</p></li>
-<li><p><strong>print_result_info</strong> (<em>bool, optional</em>) – If True, print the result of the algorithm.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><strong>Exception</strong></a> – If a callback is provided, but it is not callable.</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The orientations of the boundary faces of the polyhedral force diagram are always fixed by default.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>compas.geometry.network_parallelise_edges</p>
-</div>
-</dd></dl>
-
 </div>
 
         
@@ -128,24 +92,13 @@
         
         
           <div id="compas-navigation" class="collapse compas-navigation">
-          <ul class="nav flex-column active">
+          <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../00_introduction.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../01_getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../02_overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../03_theoretical_background.html">Theoretical background</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../04_user_manual.html">User manual</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../05_api_reference.html">API Reference</a><ul class="nav flex-column active">
-<li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.html">compas_3gs</a><ul class="nav flex-column active">
-<li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.algorithms.html">compas_3gs.algorithms</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.datastructures.html">compas_3gs.datastructures</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.diagrams.html">compas_3gs.diagrams</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.operations.html">compas_3gs.operations</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.rhino.html">compas_3gs.rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.utilities.html">compas_3gs.utilities</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../05_api_reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../06_license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../07_citing.html">Citing</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../08_publications.html">Publications</a></li>

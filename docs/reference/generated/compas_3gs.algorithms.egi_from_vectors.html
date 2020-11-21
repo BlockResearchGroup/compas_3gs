@@ -17,11 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas_3gs.algorithms.volmesh_dual_volmesh" href="compas_3gs.algorithms.volmesh_dual_volmesh.html" />
   
-  
-  
-    <link rel="prev" title="compas_3gs.algorithms" href="../compas_3gs.algorithms.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -78,42 +74,6 @@
         
         <div class="section" id="compas-3gs-algorithms-egi-from-vectors">
 <h1 class="display-4 p-0 mb-5">compas_3gs.algorithms.egi_from_vectors</h1>
-<dl class="function">
-<dt id="compas_3gs.algorithms.egi_from_vectors">
-<code class="sig-prename descclassname">compas_3gs.algorithms.</code><code class="sig-name descname">egi_from_vectors</code><span class="sig-paren">(</span><em class="sig-param">vectordict</em>, <em class="sig-param">origin</em>, <em class="sig-param">tol=0.001</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_3gs/algorithms/egi.html#egi_from_vectors"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Construct an egi from a set of vectors.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>vectordict</strong> (<em>dict</em>) – A dectionary of key-vector pairs.</p></li>
-<li><p><strong>origin</strong> (<em>list</em>) – The coordinates of the centroid.</p></li>
-<li><p><strong>tol</strong> (<em>float, optional</em>) – Tolerance for evaluating antipodal.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>egi</strong> (<em>mesh</em>) – A mesh object representing the egi.</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><strong>Exception</strong></a> – If there are less than four vectors.</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This algorithm is dependent on Rhinoceros objects; the adjacency arcs are implemented using Rhino.Geometry.Arc, and the cross-adjacencies (arc-arc intersections) are computed using Rhino.Geometry.Intersect.Intersection.CurveCurve.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<ul class="simple">
-<li><p>This algorithm does not address scenarios where multiple parallel (collinear) vectors are present.</p></li>
-</ul>
-</div>
-<p class="rubric">References</p>
-<ul class="simple">
-<li><p>Horn, B.K.P. (1984). <em>Extended Gaussian images</em>.</p></li>
-<li><p>Moni, S. (1990, June). <a href="#id1"><span class="problematic" id="id2">*</span></a>A closed-form solution for the reconstruction</p></li>
-</ul>
-<p>of a convex polyhedron from its extended gaussian image.*
-- Lee, J., T. Van Mele, and P. Block (2018). <em>Disjointed force polyhedra.</em></p>
-</dd></dl>
-
 </div>
 
         
@@ -132,24 +92,13 @@
         
         
           <div id="compas-navigation" class="collapse compas-navigation">
-          <ul class="nav flex-column active">
+          <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../../00_introduction.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../01_getting_started.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../02_overview.html">Overview</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../03_theoretical_background.html">Theoretical background</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../04_user_manual.html">User manual</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../../05_api_reference.html">API Reference</a><ul class="nav flex-column active">
-<li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.html">compas_3gs</a><ul class="nav flex-column active">
-<li class="nav-item active"><a class="nav-link reference internal" href="../compas_3gs.algorithms.html">compas_3gs.algorithms</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.datastructures.html">compas_3gs.datastructures</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.diagrams.html">compas_3gs.diagrams</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.operations.html">compas_3gs.operations</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.rhino.html">compas_3gs.rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_3gs.utilities.html">compas_3gs.utilities</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../05_api_reference.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../06_license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../07_citing.html">Citing</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../08_publications.html">Publications</a></li>
