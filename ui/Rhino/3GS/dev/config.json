@@ -58,7 +58,18 @@
             {"name": "TGS_force_from_polysurfaces",
              "menu_text": "Create force diagram",
              "icon":4,
-             "tooltip": "Create force diagram"}
+             "tooltip": "Create force diagram"},
+
+            {"name": "TGS_dual",
+             "menu_text": "Create dual diagram",
+             "icon":5,
+             "tooltip": "Create dual diagram"},
+
+            {"name": "TGS_reciprocate",
+             "menu_text": "Reciprocate diagrams",
+             "icon":6,
+             "tooltip": "Reciprocate diagrams"}
+
         ],
 
         "menus":
@@ -67,7 +78,21 @@
                 "name" : "3GS",
                 "items":
                 [
-                    {"command": "TGS_init"}
+                    {"left": "TGS_init"},
+
+                    {"type": "separator"},
+
+                    {"left": "TGS_undo"},
+                    {"left": "TGS_redo"},
+
+                    {"type": "separator"},
+
+                    {"left": "TGS_force_from_polysurfaces"},
+                    {"left": "TGS_dual"},
+
+                    {"type": "separator"},
+
+                    {"left": "TGS_reciprocate"}
 
                 ]
             }
@@ -79,9 +104,20 @@
                 "items":
                 [
                     {"left": "TGS_init"},
+
+                    {"type": "separator"},
+
                     {"left": "TGS_undo"},
                     {"left": "TGS_redo"},
-                    {"left": "TGS_force_from_polysurfaces"}
+
+                    {"type": "separator"},
+
+                    {"left": "TGS_force_from_polysurfaces"},
+                    {"left": "TGS_dual"},
+
+                    {"type": "separator"},
+
+                    {"left": "TGS_reciprocate"}
 
                 ]
             }

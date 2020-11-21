@@ -27,7 +27,9 @@ __all__ = [
     "select_vertices",
     "select_edges",
     "select_faces",
-    "tgs_undo"
+    "tgs_undo",
+    "relocate_formdiagram"
+
 ]
 
 
@@ -284,3 +286,19 @@ def tgs_undo(command):
         if undoRecord > 0:
             sc.doc.EndUndoRecord(undoRecord)
     return wrapper
+
+
+def relocate_formdiagram(force, form):
+
+    bbox_force = force.bounding_box()
+    bbox_form = form.bounding_box()
+    xmin_force, xmax_force = bbox_force[0][0], bbox_force[1][0]
+    xmin_form, _ = bbox_form[0][0], bbox_form[1][0]
+    ymin_force, ymax_force = bbox_force[0][1], bbox_force[3][1]
+    ymin_form, ymax_form = bbox_form[0][1], bbox_form[3][1]
+    y_force = ymin_force + 0.5 * (ymax_force - ymin_force)
+    y_form = ymin_form + 0.5 * (ymax_form - ymin_form)
+    dx = 1.5 * (xmax_force - xmin_force) + (xmin_force - xmin_form)
+    dy = y_force - y_form
+
+    return (dx, dy, 0)

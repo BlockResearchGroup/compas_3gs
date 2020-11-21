@@ -8,9 +8,15 @@ import scriptcontext as sc
 
 import compas_rhino
 
-from compas_3gs.diagrams.polyhedral import ForceVolMesh
+from compas_3gs.diagrams import FormNetwork
+
+from compas.geometry import Translation
 
 from compas_rhino.utilities import volmesh_from_polysurfaces
+
+from compas_3gs.algorithms import volmesh_dual_network
+
+from compas_3gs.rhino import relocate_formdiagram
 
 try:
     import rhinoscriptsyntax as rs
@@ -18,7 +24,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__commandname__ = "TGS_force_from_polysurfaces"
+__commandname__ = "TGS_dual"
 
 
 def RunCommand(is_interactive):
@@ -29,17 +35,23 @@ def RunCommand(is_interactive):
 
     scene = sc.sticky['3GS']['scene']
 
-    guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
-    compas_rhino.rs.HideObjects(guids)
+    objects = scene.find_by_name('force')
+    if not objects:
+        compas_rhino.display_message("There is no ForceDiagram in the scene.")
+        return
+    force = objects[0]
 
-    force = volmesh_from_polysurfaces(ForceVolMesh, guids)
+    form = volmesh_dual_network(force.diagram, cls=FormNetwork)
 
-    scene.purge()
-    scene.add_forcevolmesh(force, name='force', layer='3GS::ForceDiagram')
+    translation = relocate_formdiagram(force.diagram, form)
+
+    form.transform(Translation.from_vector(translation))
+
+    print('Dual diagram successfully created.')
+
+    scene.add_formnetwork(form, name='form', layer='3GS::FormDiagram')
     scene.update()
     scene.save()
-
-    print('Polyhedral force diagram successfully created.')
 
 
 # ==============================================================================

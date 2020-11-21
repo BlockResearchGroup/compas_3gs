@@ -8,7 +8,7 @@ import scriptcontext as sc
 
 import compas_rhino
 
-from compas_3gs.diagrams.polyhedral import ForceVolMesh
+from compas_3gs.diagrams.polyhedral import formVolMesh
 
 from compas_rhino.utilities import volmesh_from_polysurfaces
 
@@ -18,7 +18,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__commandname__ = "TGS_force_from_polysurfaces"
+__commandname__ = "TGS_reciprocate"
 
 
 def RunCommand(is_interactive):
@@ -29,19 +29,6 @@ def RunCommand(is_interactive):
 
     scene = sc.sticky['3GS']['scene']
 
-    guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
-    compas_rhino.rs.HideObjects(guids)
-
-    force = volmesh_from_polysurfaces(ForceVolMesh, guids)
-
-    scene.purge()
-    scene.add_forcevolmesh(force, name='force', layer='3GS::ForceDiagram')
-    scene.update()
-    scene.save()
-
-    print('Polyhedral force diagram successfully created.')
-
-
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -49,3 +36,5 @@ def RunCommand(is_interactive):
 if __name__ == "__main__":
 
     RunCommand(True)
+
+

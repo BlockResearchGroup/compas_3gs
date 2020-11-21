@@ -35,7 +35,7 @@ class FormNetworkObject(NetworkObject):
         'color.nodelabels': (0, 0, 0),
         'color.nodes:is_fixed': (0, 0, 255),
 
-        'color.edges': (255, 255, 255),
+        'color.edges': (0, 0, 0),
         'color.edgelabels': (255, 255, 255),
     }
 
