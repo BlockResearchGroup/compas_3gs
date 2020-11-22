@@ -32,6 +32,7 @@ class Network3gs(Network):
 
     datastructure_centroid = datastructure_centroid
     vertex_coordinates = Network.node_coordinates
+    vertex_neighbors = Network.neighbors
     vertices = Network.nodes
 
     # --------------------------------------------------------------------------

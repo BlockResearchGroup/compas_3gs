@@ -4,6 +4,8 @@ from __future__ import division
 
 import compas
 
+import compas_rhino
+
 from compas.geometry import add_vectors
 
 from compas_3gs.rhino import VolMeshSelector
@@ -42,12 +44,10 @@ __all__ = ['rhino_vertex_modify_fixity',
 # ******************************************************************************
 
 
-def rhino_vertex_modify_fixity(diagram):
+def rhino_vertex_modify_fixity(diagram, vertices):
     """Modifies the fixity attribute(s) of selected vertices.
 
     """
-
-    vertices = VolMeshSelector.select_vertices(diagram)
 
     go = Rhino.Input.Custom.GetOption()
     go.SetCommandPrompt('Set axes Constraints')
@@ -85,12 +85,10 @@ def rhino_vertex_modify_fixity(diagram):
             diagram.vertex_attribute(vertex, 'z_fix', boolOptionZ.CurrentValue)
 
 
-def rhino_vertex_move(diagram):
+def rhino_vertex_move(diagram, vertices):
     """Moves the selected vertices.
 
     """
-
-    vertices = VolMeshSelector.select_vertices(diagram)
 
     nbr_vkeys = {}
     edges = set()
@@ -131,11 +129,12 @@ def rhino_vertex_move(diagram):
     gp = Rhino.Input.Custom.GetPoint()
     gp.DynamicDraw += OnDynamicDraw
     gp.SetCommandPrompt('Point to move to')
-    ortho_option = Rhino.Input.Custom.OptionToggle(True, 'Off', 'On')
+    ortho_option = Rhino.Input.Custom.OptionToggle(False, 'Off', 'On')
     gp.AddOptionToggle('ortho_snap', ortho_option)
 
     while True:
-        # ModelAidSettings.Ortho = ortho_option.CurrentValue
+        ModelAidSettings.Ortho = ortho_option.CurrentValue
+        print(ModelAidSettings.Ortho)
         get_rc = gp.Get()
         gp.SetBasePoint(ip, False)
         if gp.CommandResult() != Rhino.Commands.Result.Success:
@@ -152,7 +151,7 @@ def rhino_vertex_move(diagram):
         diagram.vertex_update_xyz(vertex, new_xyz, constrained=False)
 
 
-def rhino_vertex_align(diagram):
+def rhino_vertex_align(diagram, vertices):
 
     def update_point(old, new):
         if boolOptionX.CurrentValue is True:
@@ -166,7 +165,6 @@ def rhino_vertex_align(diagram):
     # --------------------------------------------------------------------------
     # get vkeys to align
     # --------------------------------------------------------------------------
-    vertices = VolMeshSelector.select_vertices(diagram)
 
     nbr_vkeys = {}
     edges = set()

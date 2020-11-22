@@ -68,7 +68,17 @@
             {"name": "TGS_reciprocate",
              "menu_text": "Reciprocate diagrams",
              "icon":6,
-             "tooltip": "Reciprocate diagrams"}
+             "tooltip": "Reciprocate diagrams"},
+
+            {"name": "TGS_force_move_vertices",
+             "menu_text": "Move force diagram vertices",
+             "icon":7,
+             "tooltip": "Move force diagram vertices"},
+
+            {"name": "TGS_form_move_vertices",
+             "menu_text": "Move form diagram vertices",
+             "icon":8,
+             "tooltip": "Move form diagram vertices"}
 
         ],
 
@@ -78,21 +88,26 @@
                 "name" : "3GS",
                 "items":
                 [
-                    {"left": "TGS_init"},
+                    {"command": "TGS_init"},
 
                     {"type": "separator"},
 
-                    {"left": "TGS_undo"},
-                    {"left": "TGS_redo"},
+                    {"command": "TGS_undo"},
+                    {"command": "TGS_redo"},
 
                     {"type": "separator"},
 
-                    {"left": "TGS_force_from_polysurfaces"},
-                    {"left": "TGS_primal"},
+                    {"command": "TGS_force_from_polysurfaces"},
+                    {"command": "TGS_primal"},
 
                     {"type": "separator"},
 
-                    {"left": "TGS_reciprocate"}
+                    {"command": "TGS_reciprocate"},
+
+                    {"type": "separator"},
+
+                    {"command": "TGS_force_move_vertices"},
+                    {"command": "TGS_form_move_vertices"}
 
                 ]
             }
@@ -117,7 +132,12 @@
 
                     {"type": "separator"},
 
-                    {"left": "TGS_reciprocate"}
+                    {"left": "TGS_reciprocate"},
+
+                    {"type": "separator"},
+
+                    {"left": "TGS_force_move_vertices"},
+                    {"left": "TGS_form_move_vertices"}
 
                 ]
             }

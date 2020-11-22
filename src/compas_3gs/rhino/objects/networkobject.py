@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas_rhino
+
 from compas_rhino.objects import NetworkObject
 
 
@@ -19,3 +21,18 @@ class NetworkObject(NetworkObject):
     @diagram.setter
     def diagram(self, diagram):
         self.network = diagram
+
+    def select_node(self, message="Select vertices."):
+        """Select vertices of the volmesh.
+
+        Returns
+        -------
+        list
+            A list of vertex identifiers.
+        """
+        guid = compas_rhino.select_point(message=message)
+        if guid and guid in self.guid_node:
+            return self.guid_node[guid]
+
+    select_vertex = select_node
+    select_vertices = NetworkObject.select_nodes
