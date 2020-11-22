@@ -14,7 +14,7 @@ import sphinx_compas_theme
 project = 'compas_3gs'
 copyright = '2018, Block Research Group - ETH Zurich'
 author = 'Juney Lee'
-release = '0.2.4'
+release = '0.3.0'
 version = '.'.join(release.split('.')[0:2])
 
 master_doc = 'index'
