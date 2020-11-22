@@ -12,8 +12,9 @@ include LICENSE
 include README.md
 include AUTHORS.md
 include requirements.txt
+include .vscode/settings.json
 
-exclude requirements-dev.txt 
+exclude requirements-dev.txt
 exclude pytest.ini .bumpversion.cfg .editorconfig
 exclude tasks.py
 
