@@ -27,7 +27,7 @@ __copyright__ = 'Copyright 2018 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'juney.lee@arch.ethz.ch'
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 
 
 HERE = os.path.dirname(__file__)
