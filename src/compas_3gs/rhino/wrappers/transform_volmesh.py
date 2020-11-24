@@ -238,7 +238,7 @@ def rhino_volmesh_pull_halffaces(volmesh, hfkey, uniform=False):
 
     # hf dependent hfs
 
-    dep_hfkeys = volmesh.boundary_halfface_manifold_neighborhood(hfkey, ring=50)
+    dep_hfkeys = volmesh.halfface_manifold_neighborhood(hfkey, ring=50)
 
     # --------------------------------------------------------------------------
     #  3. move face
@@ -496,24 +496,24 @@ def _volmesh_current_halfface_centers(volmesh):
 
 def _boundary_halfface_edge_dependents(volmesh, halfface):
     dep_hfkeys = {}
-    cell = volmesh.halfface_cell(halfface)
-    for halfedge in volmesh.halfface_halfedges(halfface):
-        for face in volmesh.edge_halffaces(halfedge):
-            if volmesh.is_halfface_on_boundary(face):
-                if volmesh.halfface_cell(face) != cell:
-                    dep_hfkeys[face] = halfedge[0]
+    # cell = volmesh.halfface_cell(halfface)
+    # for halfedge in volmesh.halfface_halfedges(halfface):
+    #     for face in volmesh.edge_halffaces(halfedge):
+    #         if volmesh.is_halfface_on_boundary(face):
+    #             if volmesh.halfface_cell(face) != cell:
+    #                 dep_hfkeys[face] = halfedge[0]
 
-    # ckey = volmesh.halfface_cell(hfkey)
-    # hf_edges = volmesh.halfface_halfedges(hfkey)
-    # for edge in hf_edges:
-    #     u = edge[0]
-    #     v = edge[1]
-    #     adj_hfkey = volmesh._cell[ckey][v][u]
-    #     w = volmesh.halfface_vertex_ancestor(adj_hfkey, v)
-    #     nbr_ckey = volmesh._plane[u][v][w]
-    #     if nbr_ckey is not None:
-    #         dep_hfkey = volmesh._cell[nbr_ckey][v][u]
-    #         dep_hfkeys[dep_hfkey] = u
+    ckey = volmesh.halfface_cell(halfface)
+    hf_edges = volmesh.halfface_halfedges(halfface)
+    for edge in hf_edges:
+        u = edge[0]
+        v = edge[1]
+        adj_hfkey = volmesh._cell[ckey][v][u]
+        w = volmesh.halfface_vertex_ancestor(adj_hfkey, v)
+        nbr_ckey = volmesh._plane[u][v][w]
+        if nbr_ckey is not None:
+            dep_hfkey = volmesh._cell[nbr_ckey][v][u]
+            dep_hfkeys[dep_hfkey] = u
     return dep_hfkeys
 
 

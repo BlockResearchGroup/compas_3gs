@@ -17,23 +17,25 @@
                 "1_open",
                 "2_save",
 
-                "3_form",
-                "4_form_loads",
+                "3_force",
+                "4_primal",
 
-                "5_form_check_dof",
+                "5_reciprocate",
 
-                "6_force",
+                "6_force_move_vertices",
+                "7_force_pull_halffaces",
+                "8_force_planarize",
+                "9_force_modify",
 
-                "7_form_move_nodes",
-                "8_form_fix_nodes",
-                "9_force_move_nodes",
+                "10_form_move_vertices",
+                "11_form_modify",
 
-                "10_inspect",
-                "11_loadpath",
+                "12_unified_diagram",
+                "13_skeleton",
 
-                "12_display_settings",
-                "13_redraw",
-                "14_clear"
+                "14_settings",
+                "15_redraw",
+                "16_clear"
 
             ]
         },
@@ -42,60 +44,58 @@
         [
             {"name": "TGS__init",
              "menu_text": "Initialise 3GS",
-             "icon":1,
+             "icon":0,
              "tooltip": "Initialise 3GS"},
 
             {"name": "TGS__undo",
              "menu_text": "3GS undo",
-             "icon":2,
              "tooltip": "3GS undo"},
 
             {"name": "TGS__redo",
              "menu_text": "3GS redo",
-             "icon":3,
              "tooltip": "3GS redo"},
 
             {"name": "TGS__session_load",
              "menu_text": "3GS load session",
-             "icon":4,
+             "icon":1,
              "tooltip": "3GS load session"},
 
             {"name": "TGS__session_save",
              "menu_text": "3GS save session",
-             "icon":5,
+             "icon":2,
              "tooltip": "3GS save session"},
 
             {"name": "TGS__scene_clear",
              "menu_text": "3GS clear scene",
-             "icon":6,
+             "icon":16,
              "tooltip": "3GS clear scene"},
 
             {"name": "TGS__scene_redraw",
              "menu_text": "3GS redraw scene",
-             "icon":7,
+             "icon":15,
              "tooltip": "3GS redraw scene"},
 
 
             {"name": "TGS_force_from_polysurfaces",
              "menu_text": "3GS create force diagram",
-             "icon":8,
+             "icon":3,
              "tooltip": "3GS create force diagram"},
 
             {"name": "TGS_primal",
              "menu_text": "3GS create primal diagram",
-             "icon":9,
+             "icon":4,
              "tooltip": "3GS create primal diagram"},
 
 
             {"name": "TGS_reciprocate",
              "menu_text": "3GS reciprocate diagrams",
-             "icon":10,
+             "icon":5,
              "tooltip": "3GS reciprocate diagrams"},
 
 
             {"name": "TGS_force_move_vertices",
              "menu_text": "3GS force diagram move vertices",
-             "icon":7,
+             "icon":6,
              "tooltip": "3GS force diagram move vertices"},
 
             {"name": "TGS_force_pull_halffaces",
@@ -105,35 +105,40 @@
 
             {"name": "TGS_force_planarize",
              "menu_text": "3GS force diagram planarize",
-             "icon":7,
+             "icon":8,
              "tooltip": "3GS force diagram planarize"},
+
+            {"name": "TGS_force_modify",
+             "menu_text": "3GS force diagram modify",
+             "icon":9,
+             "tooltip": "3GS force diagram modify"},
 
 
             {"name": "TGS_form_move_vertices",
              "menu_text": "3GS form diagram move vertices",
-             "icon":8,
+             "icon":10,
              "tooltip": "3GS form diagram move vertices"},
 
             {"name": "TGS_form_modify",
              "menu_text": "3GS form diagram modify",
-             "icon":8,
+             "icon":11,
              "tooltip": "3GS form diagram modify"},
 
 
             {"name": "TGS_unified_diagram",
              "menu_text": "3GS draw unified diagram",
-             "icon":8,
+             "icon":12,
              "tooltip": "3GS draw unified diagram"},
 
             {"name": "TGS_skeleton",
              "menu_text": "3GS draw skeleton",
-             "icon":8,
+             "icon":13,
              "tooltip": "3GS draw skeleton"},
 
 
             {"name": "TGS_settings",
              "menu_text": "3GS settings",
-             "icon":8,
+             "icon":14,
              "tooltip": "3GS settings"}
 
         ],
@@ -165,6 +170,7 @@
                     {"command": "TGS_force_move_vertices"},
                     {"command": "TGS_force_pull_halffaces"},
                     {"command": "TGS_force_planarize"},
+                    {"command": "TGS_force_modify"},
 
                     {"type": "separator"},
 
@@ -195,8 +201,8 @@
 
                     {"type": "separator"},
 
-                    {"type": "TGS__session_load"},
-                    {"type": "TGS__session_save"},
+                    {"left": "TGS__session_load"},
+                    {"left": "TGS__session_save"},
 
                     {"type": "separator"},
 
@@ -212,6 +218,7 @@
                     {"left": "TGS_force_move_vertices"},
                     {"left": "TGS_force_pull_halffaces"},
                     {"left": "TGS_force_planarize"},
+                    {"left": "TGS_force_modify"},
 
                     {"type": "separator"},
 

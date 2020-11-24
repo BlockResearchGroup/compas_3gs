@@ -164,21 +164,37 @@ class VolMesh3gs(VolMesh):
     # --------------------------------------------------------------------------
 
     def boundary_halfface_manifold_neighbors(self, halfface):
+        if not self.is_halfface_on_boundary(halfface):
+            return
+
         nbrs = []
         cell = self.halfface_cell(halfface)
-        for halfedge in self.halfface_halfedges(halfface):
-            print('halfedge', halfedge)
-            for face in self.edge_halffaces(halfedge):
-                print('face -------------------------', face)
-                if self.is_halfface_on_boundary(face):
-                    print('cell', cell)
-                    print('nbr_ckey', self.halfface_cell(face))
-
-                    if self.halfface_cell(face) is not cell:
-                        print('add face')
-                        nbrs.append(face)
-        print('nbrs', nbrs)
+        for u, v in self.halfface_halfedges(halfface):
+            nbr_halfface = self._cell[cell][v][u]
+            w = self.halfface_vertex_ancestor(nbr_halfface, v)
+            nbr_cell = self._plane[u][v][w]
+            if nbr_cell is not None:
+                nbr = self._cell[nbr_cell][v][u]
+                nbrs.append(nbr)
         return nbrs
+
+        # nbrs = []
+        # cell = self.halfface_cell(halfface)
+        # for halfedge in self.halfface_halfedges(halfface):
+        #     print('halfedge', halfedge)
+        #     print('edge halffaces', self.edge_halffaces(halfedge))
+
+        #     for face in self.edge_halffaces(halfedge):
+        #         print('face -------------------------', face)
+        #         if self.is_halfface_on_boundary(face):
+        #             print('cell', cell)
+        #             print('nbr_ckey', self.halfface_cell(face))
+
+        #             if self.halfface_cell(face) is not cell:
+        #                 print('add face')
+        #                 nbrs.append(face)
+        # print('nbrs', nbrs)
+        # return nbrs
 
     def boundary_halfface_manifold_neighborhood(self, hfkey, ring=1):
         nbrs = set(self.boundary_halfface_manifold_neighbors(hfkey))

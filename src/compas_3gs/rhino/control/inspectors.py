@@ -148,7 +148,7 @@ class VolmeshHalffaceInspector(BaseConduit):
 
                 if self.dependents:
 
-                    d_hfkeys = self.boundary_halfface_manifold_neighborhood(hfkey, ring=100)
+                    d_hfkeys = self.volmesh.halfface_manifold_neighborhood(hfkey, ring=50)
 
                     for d_hfkey in d_hfkeys:
                         face_coordinates = self.volmesh.halfface_coordinates(d_hfkey)

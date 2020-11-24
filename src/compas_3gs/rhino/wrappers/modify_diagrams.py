@@ -122,16 +122,15 @@ def rhino_vertex_move(diagram, vertices):
             ep = Point3d(*v) + translation
             e.Display.DrawLine(sp, ep, edge_color, 3)
 
+    ModelAidSettings.Ortho = True
     gp = Rhino.Input.Custom.GetPoint()
     gp.DynamicDraw += OnDynamicDraw
     gp.SetCommandPrompt('Point to move to')
-    ModelAidSettings.Ortho = True
     ortho_option = Rhino.Input.Custom.OptionToggle(False, 'Off', 'On')
     gp.AddOptionToggle('ortho_snap', ortho_option)
 
     while True:
         ModelAidSettings.Ortho = ortho_option.CurrentValue
-        print(ModelAidSettings.Ortho)
         get_rc = gp.Get()
         gp.SetBasePoint(ip, False)
         if gp.CommandResult() != Rhino.Commands.Result.Success:
