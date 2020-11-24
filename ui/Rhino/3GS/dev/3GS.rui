@@ -73,7 +73,7 @@
     </menu>
   </menus>
   <tool_bar_groups>
-    <tool_bar_group guid="ac7d8323-fd5f-41ed-8430-2796058bb1ad" dock_bar_guid32="00000000-0000-0000-0000-000000000000" dock_bar_guid64="3ca8b1b9-c2f7-422b-928a-f6983ab7a8a1" active_tool_bar_group="3f0c78c9-d90d-4b95-8587-f560036d42d2" single_file="False" hide_single_tab="False" point_floating="461,790">
+    <tool_bar_group guid="ac7d8323-fd5f-41ed-8430-2796058bb1ad" dock_bar_guid32="00000000-0000-0000-0000-000000000000" dock_bar_guid64="3ca8b1b9-c2f7-422b-928a-f6983ab7a8a1" active_tool_bar_group="3f0c78c9-d90d-4b95-8587-f560036d42d2" single_file="False" hide_single_tab="False" point_floating="95,730">
       <text>
         <locale_1033>3GS</locale_1033>
       </text>
@@ -83,7 +83,7 @@
         </text>
         <tool_bar_id>4dda90d5-fff9-4a7f-88c7-85ca92eb7beb</tool_bar_id>
       </tool_bar_group_item>
-      <dock_bar_info dpi_scale="200" dock_bar="False" docking="True" horz="False" visible="True" floating="True" mru_float_style="8192" bar_id="59479" mru_width="868" point_pos="-2,-2" float_point="461,790" rect_mru_dock_pos="0,0,63,1413" dock_location_u="59420" dock_location="left" float_size="1057,110" />
+      <dock_bar_info dpi_scale="200" dock_bar="False" docking="True" horz="False" visible="True" floating="True" mru_float_style="8192" bar_id="59479" mru_width="868" point_pos="-2,-2" float_point="95,730" rect_mru_dock_pos="0,0,63,1413" dock_location_u="59420" dock_location="left" float_size="1007,112" />
     </tool_bar_group>
   </tool_bar_groups>
   <tool_bars>
@@ -563,7 +563,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
       <bitmap_item guid="7880f482-a810-45bf-a1a3-b27a8964b533" index="15" />
       <bitmap_item guid="32806742-30d7-4a83-afda-2c9fac83fa86" index="16" />
       <bitmap>iVBORw0KGgoAAAANSUhEUgAAAiAAAAAgCAYAAAArFsM1AAAABGdBTUEAALGPC/xhBQAAAAlwSFlz
-AAALDwAACw8BkvkDpQAAVElJREFUeF7tvQd8FcXX/3/pvbdACAkBAgmhCkpvCkhRuqAiCEoRRVFE
+AAALDQAACw0B7QfALAAAVElJREFUeF7tvQd8FcXX/3/pvbdACAkBAgmhCkpvCkhRuqAiCEoRRVFE
 pEoVkKIiRUCkCUjoTToBCR2kiRBAeq+igAXI+Z/3Zue6udyEJMD3+T7/3zOv1yd3d+bMObOzM2c+
 OzO7cYnI/+F/EBqSKJIqkitSKlIr0ijSPmagE93YwBY2k3grkzcga4N8IJkHTLwl503Ho8DWi50U
 Cq4ngyKLIrMio4Lr49oSdF3/h/9DQkH78gZvsv8b4bim2Pp6fPFQn2DSFE5b5tidF3jL7w3OPAqn

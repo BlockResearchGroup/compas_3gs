@@ -20,6 +20,9 @@ from compas_3gs.utilities import get_force_mags
 from compas_3gs.utilities import get_force_colors_uv
 from compas_3gs.utilities import get_force_colors_hf
 
+from compas_rhino.artists import VolMeshArtist
+from compas_rhino.artists import NetworkArtist
+
 try:
     import rhinoscriptsyntax as rs
 except ImportError:
@@ -29,24 +32,24 @@ except ImportError:
 # ------------------------------------------------------------------------------
 # 1. make vomesh from rhino polysurfaces
 # ------------------------------------------------------------------------------
-layer = 'force_volmesh'
+force_layer = 'force_volmesh'
 
 guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
 rs.HideObjects(guids)
 
 forcediagram = ForceVolMesh()
 forcediagram = volmesh_from_polysurfaces(forcediagram, guids)
-forcediagram.layer = layer
-forcediagram.attributes['name'] = layer
+forcediagram.layer = force_layer
+forcediagram.attributes['name'] = force_layer
 
 # ------------------------------------------------------------------------------
 # 2. make dual network from volmesh (form diagram)
 # ------------------------------------------------------------------------------
-layer = 'form_network'
+form_layer = 'form_network'
 
 formdiagram = volmesh_dual_network(forcediagram, cls=FormNetwork)
-formdiagram.layer = layer
-formdiagram.attributes['name'] = layer
+formdiagram.layer = form_layer
+formdiagram.attributes['name'] = form_layer
 
 # move dual_network
 offset = 2
@@ -68,8 +71,11 @@ volmesh_reciprocate(forcediagram,
                     tolerance=0.01)
 
 
-forcediagram.draw_faces()
-formdiagram.draw_edges()
+force_artist = VolMeshArtist(forcediagram, layer=force_layer)
+form_artist = NetworkArtist(formdiagram, layer=form_layer)
+
+force_artist.draw_faces()
+form_artist.draw_edges()
 
 # ------------------------------------------------------------------------------
 # 4. draw unified diagram
@@ -118,12 +124,12 @@ while True:
                           'color': uv_c_dict[uv]})
 
     # 4. draw ----------------------------------------------------------------------
-    forcediagram.clear()
-    formdiagram.clear()
+    force_artist.clear_layer()
+    form_artist.clear_layer()
 
-    formdiagram.draw_edges(color=uv_c_dict)
+    form_artist.draw_edges(color=uv_c_dict)
 
     compas_rhino.draw_faces(faces,
-                            layer=forcediagram.layer,
+                            layer=force_layer,
                             clear=False,
                             redraw=False)

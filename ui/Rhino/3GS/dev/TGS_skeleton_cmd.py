@@ -21,7 +21,7 @@ def RunCommand(is_interactive):
     # get ForceVolMeshObject from scene
     objects = scene.find_by_name('form')
     if not objects:
-        compas_rhino.display_message("There is no ForceDiagram in the scene.")
+        compas_rhino.display_message("There is no FormDiagram in the scene.")
         return
     form = objects[0]
 
