@@ -20,8 +20,8 @@ def RunCommand(is_interactive):
         compas_rhino.display_message('3GS has not been initialised yet.')
         return
 
-    system = sc.sticky['AGS']['system']
-    scene = sc.sticky['AGS']['scene']
+    system = sc.sticky['3GS']['system']
+    scene = sc.sticky['3GS']['scene']
 
     filepath = compas_rhino.rs.SaveFileName('save', filter=system['session.extension'], folder=system['session.dirname'])
 
@@ -69,7 +69,7 @@ def RunCommand(is_interactive):
             }
 
     with open(filepath, 'w+') as f:
-        json.dump(session, f, cls=DataEncoder)
+        json.dump(session, f, cls=DataEncoder, indent=4)
 
 
 # ==============================================================================
