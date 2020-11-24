@@ -16,12 +16,12 @@ from compas_3gs.algorithms import volmesh_reciprocate
 
 from compas_3gs.algorithms import volmesh_ud
 
-from compas_3gs.utilities import get_force_mags
 from compas_3gs.utilities import get_force_colors_uv
 from compas_3gs.utilities import get_force_colors_hf
 
 from compas_rhino.artists import VolMeshArtist
 from compas_rhino.artists import NetworkArtist
+from compas_rhino.artists import MeshArtist
 
 try:
     import rhinoscriptsyntax as rs
@@ -74,6 +74,9 @@ volmesh_reciprocate(forcediagram,
 force_artist = VolMeshArtist(forcediagram, layer=force_layer)
 form_artist = NetworkArtist(formdiagram, layer=form_layer)
 
+scaled_cell_artist = MeshArtist(None, layer=force_layer)
+prism_artist = MeshArtist(None, layer=force_layer)
+
 force_artist.draw_faces()
 form_artist.draw_edges()
 
@@ -93,43 +96,30 @@ while True:
     if not alpha:
         break
 
-    # 1. get colors ----------------------------------------------------------------
+    force_artist.clear_layer()
+    form_artist.clear_layer()
+
+    # 1. get colors ------------------------------------------------------------
     hf_color = (0, 0, 0)
 
     uv_c_dict = get_force_colors_uv(forcediagram, formdiagram, gradient=True)
     hf_c_dict = get_force_colors_hf(forcediagram, formdiagram, uv_c_dict=uv_c_dict)
 
-    # 2. compute unified diagram geometries ----------------------------------------
-    halffaces, prism_faces = volmesh_ud(forcediagram, formdiagram, scale=alpha)
+    # 2. compute unified diagram geometries ------------------------------------
+    # halffaces, prism_faces = volmesh_ud(forcediagram, formdiagram, scale=alpha)
+    cells, prisms = volmesh_ud(forcediagram, formdiagram, scale=alpha)
 
-    # 3. halffaces and prisms ------------------------------------------------------
-    faces = []
-    face_colors = {}
-    for hfkey in forcediagram.halffaces():
-        vkeys = forcediagram.halfface_vertices(hfkey)
-        hf_xyz = [halffaces[hfkey][i] for i in vkeys]
-        name = '{}.face.ud.{}'.format(forcediagram.name, hfkey)
-        faces.append({'points': hf_xyz,
-                      'name': name,
-                      'color': hf_color})
+    # 3. draw ------------------------------------------------------------------
+    for cell in cells:
+        vertices = cells[cell]['vertices']
+        faces = cells[cell]['faces']
+        compas_rhino.draw_mesh(vertices, faces, layer=force_layer, name=str(cell), color=hf_color, redraw=False)
 
-    forces = get_force_mags(forcediagram, formdiagram)
+    # forces = get_force_mags(forcediagram, formdiagram)
 
-    for uv in prism_faces:
-        name = '{}.face.ud.prism.{}'.format(forcediagram.name, uv)
-
-        for face in prism_faces[uv]:
-            faces.append({'points': face,
-                          'name': name,
-                          'color': uv_c_dict[uv]})
-
-    # 4. draw ----------------------------------------------------------------------
-    force_artist.clear_layer()
-    form_artist.clear_layer()
+    for edge in prisms:
+        vertices = prisms[edge]['vertices']
+        faces = prisms[edge]['faces']
+        compas_rhino.draw_mesh(vertices, faces, layer=force_layer, name=str(edge), color=uv_c_dict[edge], redraw=False)
 
     form_artist.draw_edges(color=uv_c_dict)
-
-    compas_rhino.draw_faces(faces,
-                            layer=force_layer,
-                            clear=False,
-                            redraw=False)

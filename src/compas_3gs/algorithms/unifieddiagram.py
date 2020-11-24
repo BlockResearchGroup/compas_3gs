@@ -7,6 +7,8 @@ from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 
+from compas.utilities import geometric_key
+
 
 __all__ = ['volmesh_ud',
            'cellnetwork_ud']
@@ -89,26 +91,81 @@ def volmesh_ud(volmesh,
                 hf_vertices[vkey] = add_vectors(base_xyz[ckey], arm)
             halffaces[hfkey] = hf_vertices
 
+    scaled_halffaces = {}
+    cells = {}
+
+    for cell in volmesh.cells():
+        gkey_xyz = {}
+        faces = []
+
+        for face in volmesh.cell_faces(cell):
+            new_face = []
+            scaled_face_xyz = []
+            for vertex in volmesh.face_vertices(face):
+                xyz = volmesh.vertex_coordinates(vertex)
+                arm = scale_vector(subtract_vectors(xyz, base_xyz[cell]), scale)
+                scaled_xyz = add_vectors(base_xyz[cell], arm)
+                gkey = geometric_key(scaled_xyz)
+                gkey_xyz[gkey] = scaled_xyz
+                new_face.append(gkey)
+                scaled_face_xyz.append(scaled_xyz)
+            scaled_halffaces[face] = scaled_face_xyz
+            faces.append(new_face)
+
+        gkey_index = dict((gkey, index) for index, gkey in enumerate(gkey_xyz))
+        vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
+        scaled_faces = [[gkey_index[gkey] for gkey in face] for face in faces]
+
+
+
+
+        cells[cell] = {'vertices': vertices, 'faces': scaled_faces}
+
+    # cells = {}
+    # for cell in volmesh.cells():
+    #     vertices = volmesh.cell_vertices(cell)
+    #     faces = volmesh.cell_faces(cell)
+    #     vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
+    #     scaled_vertices = []
+    #     for vertex in vertices:
+    #         xyz = volmesh.vertex_coordinates(vertex)
+    #         arm = scale_vector(subtract_vectors(xyz, base_xyz[cell]), scale)
+    #         scaled_vertices.append(add_vectors(base_xyz[cell], arm))
+    #     faces = [[vertex_index[vertex] for vertex in volmesh.halfface_vertices(face)] for face in faces]
+    #     cells[cell] = {'vertices': scaled_vertices, 'faces': faces}
+
     # --------------------------------------------------------------------------
     #   4. compute prism faces
     # --------------------------------------------------------------------------
-    prism_faces = {}
+    # prism_faces = {}
+
+    prism_cells = {}
 
     for u, v in network.edges():
         u_hfkey, v_hfkey = volmesh.cell_pair_halffaces(u, v)
-        u_pts = halffaces[u_hfkey].values()
-        v_pts = halffaces[v_hfkey].values()
-        pt_list = u_pts + v_pts
-        prism = convex_hull(u_pts + v_pts)  # face as indices of pt_list
-        face_list = []
-        for face in prism:
-            face_xyz = [pt_list[i] for i in face]  # get face xyz in order
-            face_list.append(face_xyz)
-        prism_faces[(u, v)] = face_list
+        u_pts = scaled_halffaces[u_hfkey]
+        v_pts = scaled_halffaces[v_hfkey]
+        pts = u_pts + v_pts
+        prism = convex_hull(pts)  # face as indices of pt_list
+        prism_cells[(u, v)] = {'vertices': pts, 'faces': prism}
+
+    # for u, v in network.edges():
+    #     u_hfkey, v_hfkey = volmesh.cell_pair_halffaces(u, v)
+    #     u_pts = halffaces[u_hfkey].values()
+    #     v_pts = halffaces[v_hfkey].values()
+    #     pt_list = u_pts + v_pts
+    #     prism = convex_hull(u_pts + v_pts)  # face as indices of pt_list
+    #     face_list = []
+    #     for face in prism:
+    #         face_xyz = [pt_list[i] for i in face]  # get face xyz in order
+    #         face_list.append(face_xyz)
+    #     prism_faces[(u, v)] = face_list
+    #     prism_cells[(u, v)] = {'vertices': pt_list, 'faces': face_list}
 
     # --------------------------------------------------------------------------
 
-    return halffaces, prism_faces
+    # return halffaces, prism_faces
+    return cells, prism_cells
 
 
 def cellnetwork_ud(cellnetwork):

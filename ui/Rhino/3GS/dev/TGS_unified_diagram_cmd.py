@@ -10,9 +10,7 @@ import compas_rhino
 
 from compas_3gs.algorithms import volmesh_ud
 
-from compas_3gs.utilities import get_force_mags
 from compas_3gs.utilities import get_force_colors_uv
-from compas_3gs.utilities import get_force_colors_hf
 
 try:
     import rhinoscriptsyntax as rs
@@ -45,9 +43,7 @@ def RunCommand(is_interactive):
         return
     form = objects[0]
 
-
     # unified diagram ----------------------------------------------------------
-
     while True:
 
         rs.EnableRedraw(True)
@@ -60,59 +56,35 @@ def RunCommand(is_interactive):
         if not alpha:
             break
 
-        # 1. get colors ----------------------------------------------------------------
+        compas_rhino.clear_layer(force.layer)
+        compas_rhino.clear_layer(form.layer)
+
+        # 1. get colors --------------------------------------------------------
         hf_color = (0, 0, 0)
 
         uv_c_dict = get_force_colors_uv(force.diagram, form.diagram, gradient=True)
-        hf_c_dict = get_force_colors_hf(force.diagram, form.diagram, uv_c_dict=uv_c_dict)
 
-        # 2. compute unified diagram geometries ----------------------------------------
-        halffaces, prism_faces = volmesh_ud(force.diagram, form.diagram, scale=alpha)
+        # 2. compute unified diagram geometries --------------------------------
+        cells, prisms = volmesh_ud(force.diagram, form.diagram, scale=alpha)
 
-        # 3. halffaces and prisms ------------------------------------------------------
-        faces = []
-        face_colors = {}
-        for hfkey in force.diagram.halffaces():
-            vkeys = force.diagram.halfface_vertices(hfkey)
-            hf_xyz = [halffaces[hfkey][i] for i in vkeys]
-            name = '{}.face.ud.{}'.format(force.diagram.name, hfkey)
-            faces.append({'points': hf_xyz,
-                          'name': name,
-                          'color': hf_color})
+        # 3. draw --------------------------------------------------------------
+        for cell in cells:
+            vertices = cells[cell]['vertices']
+            faces = cells[cell]['faces']
+            compas_rhino.draw_mesh(vertices, faces, layer=force.layer, name=str(cell), color=hf_color, redraw=False)
 
-        forces = get_force_mags(force.diagram, form.diagram)
+        for edge in prisms:
+            vertices = prisms[edge]['vertices']
+            faces = prisms[edge]['faces']
+            compas_rhino.draw_mesh(vertices, faces, layer=force.layer, name=str(edge), color=uv_c_dict[edge], redraw=False)
 
-        for uv in prism_faces:
-            name = '{}.face.ud.prism.{}'.format(force.diagram.name, uv)
-
-            for face in prism_faces[uv]:
-                faces.append({'points': face,
-                              'name': name,
-                              'color': uv_c_dict[uv]})
-
-        # 4. draw ----------------------------------------------------------------------
-        force.diagram.clear()
-        form.diagram.clear()
-
-        form.diagram.draw_edges(color=uv_c_dict)
-
-        compas_rhino.draw_faces(faces,
-                                layer=force.diagram.layer,
-                                clear=False,
-                                redraw=False)
-
-
-
-
-
-
-
-    scene.update()
+        form.artist.draw_edges(color=uv_c_dict)
 
 
 # ==============================================================================
 # Main
 # ==============================================================================
+
 
 if __name__ == '__main__':
 
