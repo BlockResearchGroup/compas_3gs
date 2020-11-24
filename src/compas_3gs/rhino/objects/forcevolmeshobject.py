@@ -22,8 +22,8 @@ class ForceVolMeshObject(VolMeshObject):
         'show.vertices': False,
         'show.edges': True,
         'show.faces': True,
-        'show.vertexlabels': False,
-        'show.facelabels': False,
+        'show.vertexlabels': True,
+        'show.facelabels': True,
         'show.celllabels': False,
 
         'color.vertices': (255, 255, 255),
