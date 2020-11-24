@@ -63,7 +63,7 @@ __all__ = ['rhino_volmesh_vertex_lift',
            'rhino_volmesh_merge_adjacent_halffaces',
 
            'rhino_volmesh_cell_subdivide_barycentric',
-           'rhino_volmesh_pull_boundary_faces']
+           'rhino_volmesh_pull_halffaces']
 
 
 # ******************************************************************************
@@ -209,32 +209,32 @@ def rhino_volmesh_merge_adjacent_halffaces(volmesh):
     return volmesh
 
 
-def rhino_volmesh_pull_boundary_faces(volmesh, uniform=False):
+def rhino_volmesh_pull_halffaces(volmesh, hfkey, uniform=False):
 
-    # --------------------------------------------------------------------------
-    #  1. display boundary halffaces
-    # --------------------------------------------------------------------------
-    boundary_halffaces = volmesh.halffaces_on_boundaries()
+    # # --------------------------------------------------------------------------
+    # #  1. display boundary halffaces
+    # # --------------------------------------------------------------------------
+    # boundary_halffaces = volmesh.halffaces_on_boundaries()
 
-    volmesh.clear()
-    volmesh.draw_edges()
-    volmesh.draw_faces(faces=boundary_halffaces)
+    # volmesh.clear()
+    # volmesh.draw_edges()
+    # volmesh.draw_faces(faces=boundary_halffaces)
 
-    rs.EnableRedraw(True)
+    # rs.EnableRedraw(True)
 
-    # --------------------------------------------------------------------------
-    #  2. select halfface and its dependents
-    # --------------------------------------------------------------------------
-    hf_inspector = VolmeshHalffaceInspector(volmesh,
-                                            hfkeys=boundary_halffaces,
-                                            dependents=True)
-    hf_inspector.enable()
+    # # --------------------------------------------------------------------------
+    # #  2. select halfface and its dependents
+    # # --------------------------------------------------------------------------
+    # hf_inspector = VolmeshHalffaceInspector(volmesh,
+    #                                         hfkeys=boundary_halffaces,
+    #                                         dependents=True)
+    # hf_inspector.enable()
 
-    hfkey = mesh_select_face(volmesh)
+    # hfkey = mesh_select_face(volmesh)
 
-    hf_inspector.disable()
+    # hf_inspector.disable()
 
-    del hf_inspector
+    # del hf_inspector
 
     # hf dependent hfs
 
@@ -323,8 +323,6 @@ def rhino_volmesh_pull_boundary_faces(volmesh, uniform=False):
         coordinates = new_xyz[key]
         volmesh.vertex_update_xyz(key, coordinates, constrained=False)
 
-    volmesh.draw()
-
 
 # ******************************************************************************
 # ******************************************************************************
@@ -385,6 +383,7 @@ def rhino_volmesh_cell_subdivide_barycentric(volmesh, formdiagram=None):
 def _volmesh_compute_dependent_face_intersections(volmesh,
                                                   hfkey,
                                                   xyz,
+                                                  wrap_self,
                                                   normal=None):
 
     if not normal:
@@ -392,7 +391,8 @@ def _volmesh_compute_dependent_face_intersections(volmesh,
 
     vertex_xyz = _cell_update_halfface(volmesh, hfkey, xyz, normal)
 
-    dep_hfkeys = _halfface_edge_dependents(volmesh, hfkey)
+    dep_hfkeys = _boundary_halfface_edge_dependents(volmesh, hfkey, wrap_self)
+    # dep_hfkeys = volmesh.halfface_manifold_neighbors(hfkey)
     hf_centers = {}
 
     for nbr_hfkey in dep_hfkeys:
@@ -400,7 +400,8 @@ def _volmesh_compute_dependent_face_intersections(volmesh,
         center_xyz = vertex_xyz[center_key]
         hf_centers[nbr_hfkey] = center_xyz
 
-    dependents = set(_halfface_edge_dependents(volmesh, hfkey).keys())
+    dependents = set(_boundary_halfface_edge_dependents(volmesh, hfkey, wrap_self).keys())
+    # dependents = set(volmesh.halfface_manifold_neighbors(hfkey))
     seen = set()
 
     i = 0
@@ -425,7 +426,7 @@ def _volmesh_compute_dependent_face_intersections(volmesh,
                     if vkey not in vertex_xyz:
                         vertex_xyz[vkey] = next_xyz[vkey]
 
-                next_d_hfkeys = _halfface_edge_dependents(volmesh, d_hfkey)
+                next_d_hfkeys = _boundary_halfface_edge_dependents(volmesh, d_hfkey, wrap_self)
 
                 for fkey in next_d_hfkeys:
                     if fkey not in hf_centers:
@@ -493,20 +494,75 @@ def _volmesh_current_halfface_centers(volmesh):
     return centers
 
 
-def _halfface_edge_dependents(volmesh, hfkey):
+def _boundary_halfface_edge_dependents(volmesh, halfface):
     dep_hfkeys = {}
-    ckey = volmesh.halfface_cell(hfkey)
-    hf_edges = volmesh.halfface_halfedges(hfkey)
-    for edge in hf_edges:
-        u = edge[0]
-        v = edge[1]
-        adj_hfkey = volmesh._cell[ckey][v][u]
-        w = volmesh.halfface_vertex_ancestor(adj_hfkey, v)
-        nbr_ckey = volmesh._plane[u][v][w]
-        if nbr_ckey is not None:
-            dep_hfkey = volmesh._cell[nbr_ckey][v][u]
-            dep_hfkeys[dep_hfkey] = u
+    cell = volmesh.halfface_cell(halfface)
+    for halfedge in volmesh.halfface_halfedges(halfface):
+        for face in volmesh.edge_halffaces(halfedge):
+            if volmesh.is_halfface_on_boundary(face):
+                if face != halfface:
+                    if volmesh.halfface_cell(face) != cell:
+                        dep_hfkeys[face] = halfedge[0]
+
+    # ckey = volmesh.halfface_cell(hfkey)
+    # hf_edges = volmesh.halfface_halfedges(hfkey)
+    # for edge in hf_edges:
+    #     u = edge[0]
+    #     v = edge[1]
+    #     adj_hfkey = volmesh._cell[ckey][v][u]
+    #     w = volmesh.halfface_vertex_ancestor(adj_hfkey, v)
+    #     nbr_ckey = volmesh._plane[u][v][w]
+    #     if nbr_ckey is not None:
+    #         dep_hfkey = volmesh._cell[nbr_ckey][v][u]
+    #         dep_hfkeys[dep_hfkey] = u
     return dep_hfkeys
+
+
+def _boundary_halfface_manifold_neighbors(volmesh, halfface):
+    '''intended for boundary faces only'''
+    nbrs = []
+    cell = volmesh.halfface_cell(halfface)
+    for halfedge in volmesh.halfface_halfedges(halfface):
+        for face in volmesh.edge_halffaces(halfedge):
+            if volmesh.is_halfface_on_boundary(face):
+                if face != halfface:
+                    if volmesh.halfface_cell(face) != cell:
+                        nbrs.append(face)
+    # for u, v in volmesh.halfface_halfedges(halfface):
+    #     nbr_halfface = volmesh._cell[cell][v][u]
+    #     w = volmesh.halfface_vertex_ancestor(nbr_halfface, v)
+    #     nbr_cell = volmesh._plane[u][v][w]
+    #     if nbr_cell is not None:
+    #         nbr = volmesh._cell[nbr_cell][v][u]
+    #         nbrs.append(nbr)
+    return nbrs
+
+
+def _boundary_halfface_manifold_neighborhood(volmesh, hfkey, ring=1):
+    """Return the halfface neighborhood of a halfface across their edges.
+    Parameters
+    ----------
+    key : hashable
+        The identifier of the halfface.
+    Returns
+    -------
+    list
+        The list of neighboring halffaces.
+    Notes
+    -----
+    Neighboring halffaces on the same cell are not included.
+    """
+    nbrs = set(_boundary_halfface_manifold_neighbors(volmesh, hfkey))
+    i = 1
+    while True:
+        if i == ring:
+            break
+        temp = []
+        for nbr_hfkey in nbrs:
+            temp += _boundary_halfface_manifold_neighbors(volmesh, hfkey)
+        nbrs.update(temp)
+        i += 1
+    return list(nbrs - set([hfkey]))
 
 
 def _halffaces_avg_normals(volmesh, hfkeys):

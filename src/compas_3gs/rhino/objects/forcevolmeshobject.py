@@ -19,7 +19,7 @@ class ForceVolMeshObject(VolMeshObject):
     SETTINGS = {
         'layer': "3GS::ForceDiagram",
 
-        'show.vertices': True,
+        'show.vertices': False,
         'show.edges': True,
         'show.faces': True,
         'show.vertexlabels': False,

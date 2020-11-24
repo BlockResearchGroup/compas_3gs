@@ -2,29 +2,36 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import scriptcontext as sc
 
-from compas_3gs.rhino import get_scene
 import compas_rhino
-from compas_3gs.rhino import tgs_undo
 
 
-__commandname__ = "TGS_clear_all"
+__commandname__ = "TGS_force_planarize"
 
 
-@tgs_undo
 def RunCommand(is_interactive):
 
-    scene = get_scene()
+    sc.doc.EndUndoRecord(sc.doc.CurrentUndoRecordSerialNumber)
+
+    if '3GS' not in sc.sticky:
+        compas_rhino.display_message('3GS has not been initialised yet.')
+        return
+
+    scene = sc.sticky['3GS']['scene']
     if not scene:
         return
 
-    options = ["Yes", "No"]
-    option = compas_rhino.rs.GetString("Clear all 3GS objects?", strings=options, defaultString="No")
-    if not option:
-        return
 
-    if option == "Yes":
-        scene.clear()
+
+
+
+
+
+
+
+
+    scene.update()
 
 
 # ==============================================================================

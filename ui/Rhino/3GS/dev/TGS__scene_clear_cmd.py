@@ -7,21 +7,22 @@ import scriptcontext as sc
 import compas_rhino
 
 
-__commandname__ = "3GS__undo"
+__commandname__ = "TGS__scene_clear"
 
 
 def RunCommand(is_interactive):
-
-    if '3GS' not in sc.sticky:
-        compas_rhino.display_message('3GS has not been initialised yet.')
-        return
 
     scene = sc.sticky['3GS']['scene']
     if not scene:
         return
 
-    if not scene.undo():
-        compas_rhino.display_message("Nothing left to undo.")
+    options = ["Yes", "No"]
+    option = compas_rhino.rs.GetString("Clear all 3GS objects?", strings=options, defaultString="No")
+    if not option:
+        return
+
+    if option == "Yes":
+        scene.purge()
 
 
 # ==============================================================================

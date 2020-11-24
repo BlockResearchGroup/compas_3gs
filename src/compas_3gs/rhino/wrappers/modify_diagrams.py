@@ -4,11 +4,8 @@ from __future__ import division
 
 import compas
 
-import compas_rhino
-
 from compas.geometry import add_vectors
 
-from compas_3gs.rhino import VolMeshSelector
 from compas_3gs.rhino.control import get_initial_point
 
 
@@ -125,10 +122,10 @@ def rhino_vertex_move(diagram, vertices):
             ep = Point3d(*v) + translation
             e.Display.DrawLine(sp, ep, edge_color, 3)
 
-    ModelAidSettings.Ortho = True
     gp = Rhino.Input.Custom.GetPoint()
     gp.DynamicDraw += OnDynamicDraw
     gp.SetCommandPrompt('Point to move to')
+    ModelAidSettings.Ortho = True
     ortho_option = Rhino.Input.Custom.OptionToggle(False, 'Off', 'On')
     gp.AddOptionToggle('ortho_snap', ortho_option)
 

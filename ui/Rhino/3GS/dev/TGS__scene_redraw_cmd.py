@@ -7,7 +7,7 @@ import scriptcontext as sc
 import compas_rhino
 
 
-__commandname__ = "TGS_redraw"
+__commandname__ = "TGS__scene_redraw"
 
 
 def RunCommand(is_interactive):

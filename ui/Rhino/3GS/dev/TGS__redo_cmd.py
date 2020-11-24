@@ -7,12 +7,10 @@ import scriptcontext as sc
 import compas_rhino
 
 
-__commandname__ = "TGS_form_modify"
+__commandname__ = "TGS__redo"
 
 
 def RunCommand(is_interactive):
-
-    sc.doc.EndUndoRecord(sc.doc.CurrentUndoRecordSerialNumber)
 
     if '3GS' not in sc.sticky:
         compas_rhino.display_message('3GS has not been initialised yet.')
@@ -22,16 +20,8 @@ def RunCommand(is_interactive):
     if not scene:
         return
 
-
-
-
-
-
-
-
-
-
-    scene.update()
+    if not scene.redo():
+        compas_rhino.display_message("Nothing left to redo.")
 
 
 # ==============================================================================

@@ -15,7 +15,7 @@ from compas_3gs.rhino import Scene
 # from compas_3gs.web import Browser
 
 
-__commandname__ = "TGS_init"
+__commandname__ = "TGS__init"
 
 
 SETTINGS = {

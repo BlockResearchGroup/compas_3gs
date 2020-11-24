@@ -24,7 +24,7 @@ class FormNetworkObject(NetworkObject):
     SETTINGS = {
         'layer': "3GS::FormDiagram",
 
-        'show.nodes': True,
+        'show.nodes': False,
         'show.edges': True,
 
         'show.nodelabels': False,

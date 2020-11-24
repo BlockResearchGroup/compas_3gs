@@ -13,6 +13,9 @@ from compas.utilities import i_to_rgb
 from compas_rhino.conduits import BaseConduit
 from compas_rhino.ui import Mouse
 
+from compas_3gs.rhino.wrappers.transform_volmesh import _boundary_halfface_manifold_neighborhood
+
+
 try:
     from Rhino.Geometry import Point3d
 
@@ -147,7 +150,7 @@ class VolmeshHalffaceInspector(BaseConduit):
 
                 if self.dependents:
 
-                    d_hfkeys = self.volmesh.halfface_manifold_neighborhood(hfkey, ring=50)
+                    d_hfkeys = _boundary_halfface_manifold_neighborhood(self, hfkey, ring=50)
 
                     for d_hfkey in d_hfkeys:
                         face_coordinates = self.volmesh.halfface_coordinates(d_hfkey)
