@@ -383,7 +383,7 @@ def rhino_volmesh_cell_subdivide_barycentric(volmesh, formdiagram=None):
 def _volmesh_compute_dependent_face_intersections(volmesh,
                                                   hfkey,
                                                   xyz,
-                                                  wrap_self,
+
                                                   normal=None):
 
     if not normal:
@@ -391,7 +391,7 @@ def _volmesh_compute_dependent_face_intersections(volmesh,
 
     vertex_xyz = _cell_update_halfface(volmesh, hfkey, xyz, normal)
 
-    dep_hfkeys = _boundary_halfface_edge_dependents(volmesh, hfkey, wrap_self)
+    dep_hfkeys = _boundary_halfface_edge_dependents(volmesh, hfkey)
     # dep_hfkeys = volmesh.halfface_manifold_neighbors(hfkey)
     hf_centers = {}
 
@@ -400,7 +400,7 @@ def _volmesh_compute_dependent_face_intersections(volmesh,
         center_xyz = vertex_xyz[center_key]
         hf_centers[nbr_hfkey] = center_xyz
 
-    dependents = set(_boundary_halfface_edge_dependents(volmesh, hfkey, wrap_self).keys())
+    dependents = set(_boundary_halfface_edge_dependents(volmesh, hfkey).keys())
     # dependents = set(volmesh.halfface_manifold_neighbors(hfkey))
     seen = set()
 
@@ -426,7 +426,7 @@ def _volmesh_compute_dependent_face_intersections(volmesh,
                     if vkey not in vertex_xyz:
                         vertex_xyz[vkey] = next_xyz[vkey]
 
-                next_d_hfkeys = _boundary_halfface_edge_dependents(volmesh, d_hfkey, wrap_self)
+                next_d_hfkeys = _boundary_halfface_edge_dependents(volmesh, d_hfkey)
 
                 for fkey in next_d_hfkeys:
                     if fkey not in hf_centers:
@@ -496,25 +496,24 @@ def _volmesh_current_halfface_centers(volmesh):
 
 def _boundary_halfface_edge_dependents(volmesh, halfface):
     dep_hfkeys = {}
-    cell = volmesh.halfface_cell(halfface)
-    for halfedge in volmesh.halfface_halfedges(halfface):
-        for face in volmesh.edge_halffaces(halfedge):
-            if volmesh.is_halfface_on_boundary(face):
-                if face != halfface:
-                    if volmesh.halfface_cell(face) != cell:
-                        dep_hfkeys[face] = halfedge[0]
+    # cell = volmesh.halfface_cell(halfface)
+    # for halfedge in volmesh.halfface_halfedges(halfface):
+    #     for face in volmesh.edge_halffaces(halfedge):
+    #         if volmesh.is_halfface_on_boundary(face):
+    #             if volmesh.halfface_cell(face) != cell:
+    #                 dep_hfkeys[face] = halfedge[0]
 
-    # ckey = volmesh.halfface_cell(hfkey)
-    # hf_edges = volmesh.halfface_halfedges(hfkey)
-    # for edge in hf_edges:
-    #     u = edge[0]
-    #     v = edge[1]
-    #     adj_hfkey = volmesh._cell[ckey][v][u]
-    #     w = volmesh.halfface_vertex_ancestor(adj_hfkey, v)
-    #     nbr_ckey = volmesh._plane[u][v][w]
-    #     if nbr_ckey is not None:
-    #         dep_hfkey = volmesh._cell[nbr_ckey][v][u]
-    #         dep_hfkeys[dep_hfkey] = u
+    ckey = volmesh.halfface_cell(halfface)
+    hf_edges = volmesh.halfface_halfedges(halfface)
+    for edge in hf_edges:
+        u = edge[0]
+        v = edge[1]
+        adj_hfkey = volmesh._cell[ckey][v][u]
+        w = volmesh.halfface_vertex_ancestor(adj_hfkey, v)
+        nbr_ckey = volmesh._plane[u][v][w]
+        if nbr_ckey is not None:
+            dep_hfkey = volmesh._cell[nbr_ckey][v][u]
+            dep_hfkeys[dep_hfkey] = u
     return dep_hfkeys
 
 

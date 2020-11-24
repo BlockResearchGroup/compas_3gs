@@ -19,8 +19,8 @@ class ForceVolMeshObject(VolMeshObject):
     SETTINGS = {
         'layer': "3GS::ForceDiagram",
 
-        'show.vertices': False,
-        'show.edges': True,
+        'show.vertices': True,
+        'show.edges': False,
         'show.faces': True,
         'show.vertexlabels': False,
         'show.facelabels': False,
@@ -288,7 +288,7 @@ class ForceVolMeshObject(VolMeshObject):
         # halffaces ------------------------------------------------------------
         halffaces = list(self.diagram.faces())
         halffaces_color = {}
-        # halffaces_labels_color = {}
+        halffaces_labels_color = {}
 
         halffaces_color.update({halfface: self.settings['color.faces'] for halfface in halffaces})
 
@@ -301,16 +301,16 @@ class ForceVolMeshObject(VolMeshObject):
         else:
             compas_rhino.rs.HideGroup(group_halffaces)
 
-        # # halfface labels ------------------------------------------------------
-        # text = {halfface: index for index, halfface in enumerate(halffaces)}
-        # guids = self.artist.draw_facelabels(text=text, color=halffaces_labels_color)
-        # self.guid_facelabel = zip(guids, halffaces)
-        # compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces_labels)
+        # halfface labels ------------------------------------------------------
+        text = {halfface: index for index, halfface in enumerate(halffaces)}
+        guids = self.artist.draw_facelabels(text=text, color=halffaces_labels_color)
+        self.guid_facelabel = zip(guids, halffaces)
+        compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces_labels)
 
-        # if self.settings["show.facelabels"]:
-        #     compas_rhino.rs.ShowGroup(group_halffaces_labels)
-        # else:
-        #     compas_rhino.rs.HideGroup(group_halffaces_labels)
+        if self.settings["show.facelabels"]:
+            compas_rhino.rs.ShowGroup(group_halffaces_labels)
+        else:
+            compas_rhino.rs.HideGroup(group_halffaces_labels)
 
         # ======================================================================
         # cell labels
