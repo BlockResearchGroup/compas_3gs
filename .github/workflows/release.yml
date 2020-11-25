@@ -12,8 +12,8 @@ jobs:
     steps:
 
       - name: Get the tag version
+        uses: dawidd6/action-get-tag@v1
         id: tagName
-        run: echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
 
       - uses: actions/checkout@v2
       
