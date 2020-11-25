@@ -106,3 +106,4 @@ ENV/
 *.ffs_db
 
 docsource/reference/generated
+.vscode
