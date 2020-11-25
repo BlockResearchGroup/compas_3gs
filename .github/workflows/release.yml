@@ -10,8 +10,10 @@ jobs:
     name: Release-Windows
     runs-on: "windows-latest"
     steps:
-      - uses: olegtarasov/get-tag@v2
+
+      - name: Get the tag version
         id: tagName
+        run: echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
 
       - uses: actions/checkout@v2
       
