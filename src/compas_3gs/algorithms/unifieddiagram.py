@@ -79,17 +79,17 @@ def volmesh_ud(volmesh,
     # --------------------------------------------------------------------------
     #   3. compute scaled halffaces
     # --------------------------------------------------------------------------
-    halffaces = {}
+    # halffaces = {}
 
-    for ckey in volmesh.cells():
-        cell_hfs = volmesh.cell_faces(ckey)
-        for hfkey in cell_hfs:
-            hf_vertices = {}
-            for vkey in volmesh.halfface_vertices(hfkey):
-                xyz = volmesh.vertex_coordinates(vkey)
-                arm = scale_vector(subtract_vectors(xyz, base_xyz[ckey]), scale)
-                hf_vertices[vkey] = add_vectors(base_xyz[ckey], arm)
-            halffaces[hfkey] = hf_vertices
+    # for ckey in volmesh.cells():
+    #     cell_hfs = volmesh.cell_faces(ckey)
+    #     for hfkey in cell_hfs:
+    #         hf_vertices = {}
+    #         for vkey in volmesh.halfface_vertices(hfkey):
+    #             xyz = volmesh.vertex_coordinates(vkey)
+    #             arm = scale_vector(subtract_vectors(xyz, base_xyz[ckey]), scale)
+    #             hf_vertices[vkey] = add_vectors(base_xyz[ckey], arm)
+    #         halffaces[hfkey] = hf_vertices
 
     scaled_halffaces = {}
     cells = {}
@@ -115,9 +115,6 @@ def volmesh_ud(volmesh,
         gkey_index = dict((gkey, index) for index, gkey in enumerate(gkey_xyz))
         vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
         scaled_faces = [[gkey_index[gkey] for gkey in face] for face in faces]
-
-
-
 
         cells[cell] = {'vertices': vertices, 'faces': scaled_faces}
 

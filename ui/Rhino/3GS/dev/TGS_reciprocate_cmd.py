@@ -41,10 +41,9 @@ def RunCommand(is_interactive):
     alpha = scene.settings['Solvers']['reciprocation.alpha']
     refresh = scene.settings['Solvers']['reciprocation.refreshrate']
 
-    options = ['Alpha', 'Iterations', 'Refreshrate']
+    options = ['Iterations', 'Refreshrate']
 
     # --------------------------------------------------------------------------
-
     while True:
         option = compas_rhino. rs.GetString('Press Enter to run or ESC to exit.', strings=options)
 
@@ -55,20 +54,20 @@ def RunCommand(is_interactive):
         if not option:
             break
 
-        if option == 'Alpha':
-            alpha_options = ['form{}'.format(int(i * 0.1)) for i in range(11)]
-            alpha_default = 0
-            for i in range(11):
-                if alpha == i * 0.1:
-                    alpha_default = i
-                    break
-            temp = compas_rhino.rs.GetString('Select reciprocation weight', alpha_options[alpha_default], alpha_options)
-            if not temp:
-                alpha = 1.0
-            else:
-                alpha = int(temp[4:])
+        # if option == 'Alpha':
+        #     alpha_options = ['form{}'.format(int(i * 0.1)) for i in range(11)]
+        #     alpha_default = 0
+        #     for i in range(11):
+        #         if alpha == i * 0.1:
+        #             alpha_default = i
+        #             break
+        #     temp = compas_rhino.rs.GetString('Select reciprocation weight', alpha_options[alpha_default], alpha_options)
+        #     if not temp:
+        #         alpha = 1.0
+        #     else:
+        #         alpha = int(temp[4:])
 
-        elif option == 'Iterations':
+        if option == 'Iterations':
             new_kmax = compas_rhino.rs.GetInteger('Enter number of iterations', kmax, 1, 10000)
             if new_kmax or new_kmax is not None:
                 kmax = new_kmax
@@ -99,8 +98,7 @@ def RunCommand(is_interactive):
         with conduit.enabled():
             volmesh_reciprocate(force.diagram,
                                 form.diagram,
-                                kmax=500,
-                                weight=alpha,
+                                kmax=kmax,
                                 tolerance=scene.settings['3GS']['tol.angles'],
                                 callback=callback,
                                 print_result_info=True)
@@ -108,8 +106,7 @@ def RunCommand(is_interactive):
     else:
         volmesh_reciprocate(force.diagram,
                             form.diagram,
-                            kmax=500,
-                            weight=alpha,
+                            kmax=kmax,
                             tolerance=scene.settings['3GS']['tol.angles'],
                             callback=callback,
                             print_result_info=True)
