@@ -30,6 +30,7 @@ def RunCommand(is_interactive):
     # draw skeleton from form ...
 
     scene.update()
+    scene.save()
 
 
 # ==============================================================================

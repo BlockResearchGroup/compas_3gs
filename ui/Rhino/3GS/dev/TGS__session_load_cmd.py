@@ -67,8 +67,6 @@ def RunCommand(is_interactive):
     if 'scale' in session['scene']['form']:
         force.scale = session['scene']['force']['scale']
 
-    
-
     if session['data']['form']:
 
         formdiagram = FormNetwork.from_data(session['data']['form'])
@@ -90,7 +88,6 @@ def RunCommand(is_interactive):
 
         if 'scale' in session['scene']['form']:
             form.scale = session['scene']['form']['scale']
-
 
     scene.update()
     scene.save()

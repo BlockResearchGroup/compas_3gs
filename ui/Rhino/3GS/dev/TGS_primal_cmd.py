@@ -29,7 +29,7 @@ def RunCommand(is_interactive):
     # get ForceVolMeshObject from scene
     objects = scene.find_by_name('force')
     if not objects:
-        compas_rhino.display_message("There is no ForceDiagram in the scene.")
+        compas_rhino.display_message("There is no force diagram in the scene.")
         return
     force = objects[0]
 
@@ -44,13 +44,21 @@ def RunCommand(is_interactive):
     translation = relocate_formdiagram(force.diagram, form)
     form.transform(Translation.from_vector(translation))
     form.update_angle_deviations()
+
     scene.add_formnetwork(form, name='form', layer='3GS::FormDiagram')
+
+    # form
+    objects = scene.find_by_name('form')
+    form = objects[0]
+
+    force.check_eq()
+    form.check_eq()
 
     # update
     scene.update()
     scene.save()
 
-    print('Dual diagram successfully created.')
+    print('Primal diagram successfully created.')
 
 
 # ==============================================================================

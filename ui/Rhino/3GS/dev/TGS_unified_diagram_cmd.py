@@ -32,16 +32,32 @@ def RunCommand(is_interactive):
     # get ForceVolMeshObject from scene
     objects = scene.find_by_name('force')
     if not objects:
-        compas_rhino.display_message("There is no force.diagram in the scene.")
+        compas_rhino.display_message("There is no force diagram in the scene.")
         return
     force = objects[0]
 
     # get ForceVolMeshObject from scene
     objects = scene.find_by_name('form')
     if not objects:
-        compas_rhino.display_message("There is no form.diagram in the scene.")
+        compas_rhino.display_message("There is no form diagram in the scene.")
         return
     form = objects[0]
+
+    # check global constraints -------------------------------------------------
+
+    force.check_eq()
+    form.check_eq()
+
+    if not force.settings['_is.valid'] or not form.settings['_is.valid']:
+        options = ["Yes", "No"]
+        option = compas_rhino.rs.GetString("System is not in equilibrium... proceed?", strings=options, defaultString="No")
+        if not option:
+            return
+        if option == "No":
+            return
+
+    show_loads = form.settings['show.loads']
+    form.settings['show.loads'] = False
 
     # unified diagram ----------------------------------------------------------
     while True:
@@ -80,6 +96,9 @@ def RunCommand(is_interactive):
 
         form.artist.draw_edges(color=uv_c_dict)
 
+    form.settings['show.loads'] = show_loads
+
+    scene.save()
 
 # ==============================================================================
 # Main

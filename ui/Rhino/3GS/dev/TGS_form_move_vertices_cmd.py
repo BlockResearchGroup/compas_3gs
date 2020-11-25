@@ -23,7 +23,7 @@ def RunCommand(is_interactive):
     # get ForceVolMeshObject from scene
     objects = scene.find_by_name('form')
     if not objects:
-        compas_rhino.display_message("There is no ForceDiagram in the scene.")
+        compas_rhino.display_message("There is no form diagram in the scene.")
         return
     form = objects[0]
 
@@ -34,7 +34,19 @@ def RunCommand(is_interactive):
     rhino_vertex_move(form.diagram, vertices)
 
     form.diagram.update_angle_deviations()
+
+    objects = scene.find_by_name('force')
+    if not objects:
+        form.check_eq()
+        scene.update()
+        return
+    force = objects[0]
+
+    force.check_eq()
+    form.check_eq()
+
     scene.update()
+    scene.save()
 
 
 # ==============================================================================

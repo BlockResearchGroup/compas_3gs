@@ -23,6 +23,7 @@ def RunCommand(is_interactive):
         return
 
     scene.update()
+    scene.save()
 
 
 # ==============================================================================

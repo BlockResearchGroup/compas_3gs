@@ -137,7 +137,8 @@ class ForceVolMesh(VolMesh3gs):
         super(ForceVolMesh, self).__init__()
         self.primal = None
 
-        a = {'scale': 1}
+        a = {'scale': 1,
+             'convention': -1}
 
         va = {'x_fix': False,
               'y_fix': False,

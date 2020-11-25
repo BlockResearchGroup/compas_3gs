@@ -137,6 +137,7 @@ def get_force_mags(volmesh, network):
     """Returns a dictionary of (u,v)-magnitude pairs.
     Negative magnitude means compression, while positive magnitude means tension.
     """
+
     uv_hf_dict = pair_uv_to_hf(network, volmesh)
 
     mags = {}
@@ -154,7 +155,7 @@ def get_force_mags(volmesh, network):
         if dot > 0:
             factor = 1
 
-        force = face_area * factor
+        force = face_area * factor * volmesh.attributes['convention']
 
         mags[(u, v)] = force
 
@@ -177,7 +178,6 @@ def get_force_colors_uv(volmesh,
 
     for edge in f_dict:
         force = f_dict[edge]
-
         if force < 0:  # if compression
             color = (0, 0, 255)
             if gradient:
@@ -192,7 +192,7 @@ def get_force_colors_uv(volmesh,
                 max_t = t_forces[-1]
                 color = i_to_red((force - min_t) / (max_t - min_t))
 
-        if force == 0 or force < tol:  # if close to zero
+        if abs(force) < tol:  # if close to zero
             color = (255, 255, 255)
 
         c_dict[edge] = color

@@ -113,6 +113,9 @@ def RunCommand(is_interactive):
 
     form.diagram.update_angle_deviations()
 
+    force.check_eq()
+    form.check_eq()
+
     scene.update()
     scene.save()
 

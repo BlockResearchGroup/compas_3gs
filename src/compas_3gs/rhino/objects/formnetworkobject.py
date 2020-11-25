@@ -24,10 +24,17 @@ class FormNetworkObject(NetworkObject):
     SETTINGS = {
         'layer': "3GS::FormDiagram",
 
+        '_is.valid': False,
+
         'show.nodes': True,
         'show.edges': True,
+        'show.loads': True,
+        'show.pipes': True,
+        'show.forces': True,
 
         'show.nodelabels': False,
+
+        'color.invalid': (100, 255, 100),
 
         'color.node': (0, 0, 0),
         'color.nodelabels': (0, 0, 0),
@@ -35,6 +42,14 @@ class FormNetworkObject(NetworkObject):
 
         'color.edges': (0, 0, 0),
         'color.edgelabels': (255, 255, 255),
+
+        'color.pipes': (0, 0, 0),
+
+        'scale.loads': 0.1,
+        'scale.pipes': 0.1,
+
+        'tol.loads': 1e-3,
+        'tol.pipes': 1e-3
     }
 
     def __init__(self, diagram, *args, **kwargs):
@@ -43,13 +58,14 @@ class FormNetworkObject(NetworkObject):
         settings = kwargs.get('settings') or {}
         if settings:
             self.settings.update(settings)
+        self._guid_loads = {}
 
     @property
     def node_xyz(self):
         """dict : The view coordinates of the network object."""
         origin = Point(0, 0, 0)
         if self.anchor is not None:
-            xyz = self.network.node_attributes(self.anchor, 'xyz')
+            xyz = self.diagram.node_attributes(self.anchor, 'xyz')
             point = Point(* xyz)
             T1 = Translation.from_vector(origin - point)
             S = Scale.from_factors([self.scale] * 3)
@@ -61,9 +77,42 @@ class FormNetworkObject(NetworkObject):
             R = Rotation.from_euler_angles(self.rotation)
             T = Translation.from_vector(self.location)
             X = T * R * S
-        network = self.network.transformed(X)
+        network = self.diagram.transformed(X)
         node_xyz = {node: network.node_attributes(node, 'xyz') for node in network.nodes()}
         return node_xyz
+
+    @property
+    def guid_loads(self):
+        return self._guid_loads
+
+    @guid_loads.setter
+    def guid_loads(self, values):
+        self._guid_loads = dict(values)
+
+    @property
+    def guid_pipe(self):
+        return self._guid_pipe
+
+    @guid_pipe.setter
+    def guid_pipe(self, values):
+        self._guid_pipe = dict(values)
+
+    def check_eq(self):
+        tol = self.scene.settings['3GS']['tol.angles']
+        edges = list(self.diagram.edges())
+        angles = self.diagram.edges_attribute('_a', keys=edges)
+        amax = max(angles)
+        if amax > tol:
+            self.settings['_is.valid'] = False
+        else:
+            self.settings['_is.valid'] = True
+
+    def clear(self):
+        super(FormNetworkObject, self).clear()
+        guids = []
+        guids += list(self.guid_loads)
+        compas_rhino.delete_objects(guids, purge=True)
+        self._guid_loads = {}
 
     # --------------------------------------------------------------------------
     #   attributes
@@ -149,6 +198,8 @@ class FormNetworkObject(NetworkObject):
         group_nodes = "{}::nodes".format(layer)
         group_edges = "{}::edges".format(layer)
         group_angles = "{}::angles".format(layer)
+        group_loads = "{}::loads".format(layer)
+        group_pipes = "{}::pipes".format(layer)
 
         if not compas_rhino.rs.IsGroup(group_nodes):
             compas_rhino.rs.AddGroup(group_nodes)
@@ -156,8 +207,14 @@ class FormNetworkObject(NetworkObject):
         if not compas_rhino.rs.IsGroup(group_edges):
             compas_rhino.rs.AddGroup(group_edges)
 
+        if not compas_rhino.rs.IsGroup(group_loads):
+            compas_rhino.rs.AddGroup(group_loads)
+
         if not compas_rhino.rs.IsGroup(group_angles):
             compas_rhino.rs.AddGroup(group_angles)
+
+        if not compas_rhino.rs.IsGroup(group_pipes):
+            compas_rhino.rs.AddGroup(group_pipes)
 
         # ======================================================================
         # nodes
@@ -165,16 +222,16 @@ class FormNetworkObject(NetworkObject):
         # Draw the nodes and add them to the node group.
         # ======================================================================
 
-        nodes = list(self.network.nodes())
+        nodes = list(self.diagram.nodes())
         color = {node: self.settings['color.nodes'] for node in nodes}
         color_fixed = self.settings['color.nodes:is_fixed']
-        color.update({node: color_fixed for node in self.network.nodes_where({'is_fixed': True}) if node in nodes})
+        color.update({node: color_fixed for node in self.diagram.nodes_where({'is_fixed': True}) if node in nodes})
 
         guids = self.artist.draw_nodes(nodes, color)
         self.guid_node = zip(guids, nodes)
         compas_rhino.rs.AddObjectsToGroup(guids, group_nodes)
 
-        if self.settings['show.nodes']:
+        if self.settings['show.nodes'] and self.settings['_is.valid']:
             compas_rhino.rs.ShowGroup(group_nodes)
         else:
             compas_rhino.rs.HideGroup(group_nodes)
@@ -185,8 +242,8 @@ class FormNetworkObject(NetworkObject):
         # Draw the edges and add them to the edge group.
         # ======================================================================
 
-        edges = list(self.network.edges())
-        color = {edge: self.settings['color.edges'] for edge in edges}
+        edges = list(self.diagram.edges())
+        color = {edge: self.settings['color.edges'] if self.settings['_is.valid'] else self.settings['color.invalid'] for edge in edges}
 
         guids = self.artist.draw_edges(edges, color)
         self.guid_edge = zip(guids, edges)
@@ -203,7 +260,7 @@ class FormNetworkObject(NetworkObject):
         # Draw angle deviatinos as FormNetwork edge labels.
         # ======================================================================
 
-        if self.scene.settings['3GS']['show.angles']:
+        if self.scene and self.scene.settings['3GS']['show.angles']:
             tol = self.scene.settings['3GS']['tol.angles']
             edges = list(self.diagram.edges())
             angles = self.diagram.edges_attribute('_a', keys=edges)
@@ -222,5 +279,30 @@ class FormNetworkObject(NetworkObject):
                 compas_rhino.rs.ShowGroup(group_angles)
         else:
             compas_rhino.rs.HideGroup(group_angles)
+
+        # ======================================================================
+        # overlays
+        # ======================================================================
+
+        if self.settings['show.loads'] and self.settings['_is.valid']:
+            scale = self.settings['scale.loads']
+            guids = self.artist.draw_external_forces(gradient=False, scale=scale)
+            self.guid_edge = zip(guids, self.diagram.dual.cells_on_boundaries())
+            compas_rhino.rs.AddObjectsToGroup(guids, group_loads)
+            compas_rhino.rs.ShowGroup(group_loads)
+        else:
+            compas_rhino.rs.HideGroup(group_loads)
+
+        if self.settings['show.pipes'] and self.settings['_is.valid']:
+            tol = self.settings['tol.pipes']
+            edges = list(self.diagram.edges())
+            color = self.settings['color.pipes']
+            scale = self.settings['scale.pipes']
+            guids = self.artist.draw_pipes(edges, color, scale, tol)
+            self.guid_pipe = zip(guids, edges)
+            compas_rhino.rs.AddObjectsToGroup(guids, group_pipes)
+            compas_rhino.rs.ShowGroup(group_pipes)
+        else:
+            compas_rhino.rs.HideGroup(group_pipes)
 
         self.redraw()

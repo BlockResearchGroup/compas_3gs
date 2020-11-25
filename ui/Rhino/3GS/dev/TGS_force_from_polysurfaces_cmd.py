@@ -36,6 +36,12 @@ def RunCommand(is_interactive):
 
     scene.purge()
     scene.add_forcevolmesh(force, name='force', layer='3GS::ForceDiagram')
+
+    objects = scene.find_by_name('force')
+    force = objects[0]
+
+    force.check_eq()
+
     scene.update()
     scene.save()
 

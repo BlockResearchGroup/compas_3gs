@@ -22,17 +22,8 @@ def RunCommand(is_interactive):
     if not scene:
         return
 
-
-
-
-
-
-
-
-
-
     scene.update()
-
+    scene.save()
 
 # ==============================================================================
 # Main

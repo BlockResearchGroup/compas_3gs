@@ -8,6 +8,8 @@ import compas_rhino
 
 from compas_3gs.rhino.objects.volmeshobject import VolMeshObject
 
+from compas_3gs.utilities import volmesh_face_flatness
+
 
 __all__ = ['ForceVolMeshObject']
 
@@ -19,18 +21,22 @@ class ForceVolMeshObject(VolMeshObject):
     SETTINGS = {
         'layer': "3GS::ForceDiagram",
 
+        '_is.valid': False,
+
         'show.vertices': True,
-        'show.edges': False,
+        'show.edges': True,
         'show.faces': True,
         'show.vertexlabels': False,
         'show.facelabels': False,
         'show.celllabels': False,
 
-        'color.vertices': (255, 255, 255),
+        'color.invalid': (100, 255, 100),
+
+        'color.vertices': (0, 0, 0),
         'color.vertexlabels': (255, 255, 255),
         'color.vertices:is_fixed': (0, 0, 255),
 
-        'color.edges': (0, 0, 0),
+        'color.edges': (50, 50, 50),
         'color.edgelabels': (0, 0, 0),
 
         'color.faces': (200, 200, 200),
@@ -45,6 +51,19 @@ class ForceVolMeshObject(VolMeshObject):
         settings = kwargs.get('settings') or {}
         if settings:
             self.settings.update(settings)
+
+    def check_eq(self):
+        ftol = self.scene.settings['3GS']['tol.flatness']
+        fmax = max(volmesh_face_flatness(self.diagram).values())
+
+        atol = self.scene.settings['3GS']['tol.angles']
+        halffaces = list(self.diagram.faces())
+        amax = max(self.diagram.faces_attribute('_a', faces=halffaces))
+
+        if fmax > ftol or amax > atol:
+            self.settings['_is.valid'] = False
+        if fmax < ftol and amax < atol:
+            self.settings['_is.valid'] = True
 
     # @property
     # def vertex_xyz(self):
@@ -66,19 +85,6 @@ class ForceVolMeshObject(VolMeshObject):
     #     volmesh = self.volmesh.transformed(X)
     #     vertex_xyz = {vertex: volmesh.vertex_attributes(vertex, 'xy') + [0.0] for vertex in volmesh.vertices()}
     #     return vertex_xyz
-
-    # --------------------------------------------------------------------------
-    #   modify
-    # --------------------------------------------------------------------------
-
-    def move_vertex(self, vertex):
-        pass
-
-
-    def move_vertices(self, vertices):
-        pass
-
-
     # # --------------------------------------------------------------------------
     # #   attributes
     # # --------------------------------------------------------------------------
@@ -234,18 +240,18 @@ class ForceVolMeshObject(VolMeshObject):
         self.guid_vertex = zip(guids, vertices)
         compas_rhino.rs.AddObjectsToGroup(guids, group_vertices)
 
-        if self.settings["show.vertices"]:
+        if self.settings["show.vertices"] and self.settings['_is.valid']:
             compas_rhino.rs.ShowGroup(group_vertices)
         else:
             compas_rhino.rs.HideGroup(group_vertices)
 
         # vertices labels ------------------------------------------------------
-        text = {vertex: index for index, vertex in enumerate(vertices)}
-        guids = self.artist.draw_vertexlabels(text=text, color=vertices_labels_color)
-        self.guid_vertexlabel = zip(guids, vertices)
-        compas_rhino.rs.AddObjectsToGroup(guids, group_vertices_labels)
+        if self.settings["show.vertexlabels"] and self.settings['_is.valid']:
+            text = {vertex: index for index, vertex in enumerate(vertices)}
+            guids = self.artist.draw_vertexlabels(text=text, color=vertices_labels_color)
+            self.guid_vertexlabel = zip(guids, vertices)
+            compas_rhino.rs.AddObjectsToGroup(guids, group_vertices_labels)
 
-        if self.settings["show.vertexlabels"]:
             compas_rhino.rs.ShowGroup(group_vertices_labels)
         else:
             compas_rhino.rs.HideGroup(group_vertices_labels)
@@ -256,16 +262,13 @@ class ForceVolMeshObject(VolMeshObject):
 
         # edges ----------------------------------------------------------------
         edges = list(self.diagram.edges())
-        edges_color = {}
-        # edges_labels_color = {}
+        color = {edge: self.settings['color.edges'] if self.settings['_is.valid'] else self.settings['color.invalid'] for edge in edges}
 
-        edges_color.update({edge: self.settings['color.edges'] for edge in edges})
-
-        guids = self.artist.draw_edges(color=edges_color)
+        guids = self.artist.draw_edges(edges, color)
         self.guid_edge = zip(guids, edges)
         compas_rhino.rs.AddObjectsToGroup(guids, group_edges)
 
-        if self.settings["show.edges"]:
+        if self.settings["show.edges"] and self.settings['_is.valid']:
             compas_rhino.rs.ShowGroup(group_edges)
         else:
             compas_rhino.rs.HideGroup(group_edges)
@@ -287,13 +290,10 @@ class ForceVolMeshObject(VolMeshObject):
 
         # halffaces ------------------------------------------------------------
         halffaces = list(self.diagram.faces())
-        halffaces_color = {}
-        halffaces_labels_color = {}
-
-        halffaces_color.update({halfface: self.settings['color.faces'] for halfface in halffaces})
+        color = {face: self.settings['color.faces'] if self.settings['_is.valid'] else self.settings['color.invalid'] for face in halffaces}
 
         if self.settings['show.faces']:
-            guids = self.artist.draw_faces(color=halffaces_color)
+            guids = self.artist.draw_faces(halffaces, color)
             self.guid_face = zip(guids, halffaces)
         # compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces)
 
@@ -303,12 +303,12 @@ class ForceVolMeshObject(VolMeshObject):
         #     compas_rhino.rs.HideGroup(group_halffaces)
 
         # halfface labels ------------------------------------------------------
-        text = {halfface: index for index, halfface in enumerate(halffaces)}
-        guids = self.artist.draw_facelabels(text=text, color=halffaces_labels_color)
-        self.guid_facelabel = zip(guids, halffaces)
-        compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces_labels)
+        if self.settings["show.facelabels"] and self.settings['_is.valid']:
+            text = {halfface: index for index, halfface in enumerate(halffaces)}
+            guids = self.artist.draw_facelabels(text=text, color=color)
+            self.guid_facelabel = zip(guids, halffaces)
+            compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces_labels)
 
-        if self.settings["show.facelabels"]:
             compas_rhino.rs.ShowGroup(group_halffaces_labels)
         else:
             compas_rhino.rs.HideGroup(group_halffaces_labels)
@@ -317,16 +317,14 @@ class ForceVolMeshObject(VolMeshObject):
         # cell labels
         # ======================================================================
 
-        cells = list(self.diagram.cells())
-        cells_labels_color = {}
+        if self.settings["show.celllabels"] and self.settings['_is.valid']:
+            cells = list(self.diagram.cells())
+            cells_labels_color = {}
+            cells_labels_color.update({cell: self.settings['color.celllabels'] for cell in cells})
+            guids = self.artist.draw_celllabels(color=cells_labels_color)
+            self.guid_celllabel = zip(guids, cells)
+            compas_rhino.rs.AddObjectsToGroup(guids, group_cells_labels)
 
-        cells_labels_color.update({cell: self.settings['color.celllabels'] for cell in cells})
-
-        guids = self.artist.draw_celllabels(color=cells_labels_color)
-        self.guid_celllabel = zip(guids, cells)
-        compas_rhino.rs.AddObjectsToGroup(guids, group_cells_labels)
-
-        if self.settings["show.celllabels"]:
             compas_rhino.rs.ShowGroup(group_cells_labels)
         else:
             compas_rhino.rs.HideGroup(group_cells_labels)
@@ -335,7 +333,7 @@ class ForceVolMeshObject(VolMeshObject):
         # angle deviations
         # ======================================================================
 
-        if self.scene.settings['3GS']['show.angles']:
+        if self.scene and self.scene.settings['3GS']['show.angles']:
             tol = self.scene.settings['3GS']['tol.angles']
             halffaces = [halfface for halfface in self.diagram.faces() if not self.diagram.is_halfface_on_boundary(halfface)]
             angles = self.diagram.faces_attribute('_a', faces=halffaces)
