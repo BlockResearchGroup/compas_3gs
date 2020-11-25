@@ -12,7 +12,7 @@ import compas
 import compas_rhino
 
 from compas_3gs.rhino import Scene
-# from compas_3gs.web import Browser
+from compas_3gs.web import Browser
 
 
 __commandname__ = "TGS__init"
@@ -77,7 +77,7 @@ def RunCommand(is_interactive):
 
     scene.update()
 
-    # Browser()
+    Browser()
 
 
 # ==============================================================================

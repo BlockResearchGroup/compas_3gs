@@ -12,7 +12,7 @@ def Browser():
         BIN = os.path.join(HERE, 'electron', 'frontpage.app', 'Contents', 'MacOS', 'frontpage')
 
         if not os.path.exists(BIN):
-            print("Init page skipped. To enable it, go to src/compas_rv2/web, delete electron folder, then run: npm install && npm run build")
+            print("Init page skipped. To enable it, go to src/compas_3gs/web, delete electron folder, then run: npm install && npm run build")
         else:
             subprocess.Popen('%s' % BIN)
 
