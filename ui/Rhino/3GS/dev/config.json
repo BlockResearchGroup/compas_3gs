@@ -25,17 +25,18 @@
                 "6_force_move_vertices",
                 "7_force_pull_halffaces",
                 "8_force_planarize",
-                "9_force_modify",
+                "9_force_arearize",
+                "10_force_modify",
 
-                "10_form_move_vertices",
-                "11_form_modify",
+                "11_form_move_vertices",
+                "12_form_modify",
 
-                "12_unified_diagram",
-                "13_skeleton",
+                "13_unified_diagram",
+                "14_skeleton",
 
-                "14_settings",
-                "15_redraw",
-                "16_clear"
+                "15_settings",
+                "16_redraw",
+                "17_clear"
 
             ]
         },
@@ -67,12 +68,12 @@
 
             {"name": "TGS__scene_clear",
              "menu_text": "3GS clear scene",
-             "icon":16,
+             "icon":17,
              "tooltip": "3GS clear scene"},
 
             {"name": "TGS__scene_redraw",
              "menu_text": "3GS redraw scene",
-             "icon":15,
+             "icon":16,
              "tooltip": "3GS redraw scene"},
 
 
@@ -108,37 +109,42 @@
              "icon":8,
              "tooltip": "3GS force diagram planarize"},
 
+            {"name": "TGS_force_arearize",
+             "menu_text": "3GS force diagram arearize",
+             "icon":9,
+             "tooltip": "3GS force diagram arearize"},
+
             {"name": "TGS_force_modify",
              "menu_text": "3GS force diagram modify",
-             "icon":9,
+             "icon":10,
              "tooltip": "3GS force diagram modify"},
 
 
             {"name": "TGS_form_move_vertices",
              "menu_text": "3GS form diagram move vertices",
-             "icon":10,
+             "icon":11,
              "tooltip": "3GS form diagram move vertices"},
 
             {"name": "TGS_form_modify",
              "menu_text": "3GS form diagram modify",
-             "icon":11,
+             "icon":12,
              "tooltip": "3GS form diagram modify"},
 
 
             {"name": "TGS_unified_diagram",
              "menu_text": "3GS draw unified diagram",
-             "icon":12,
+             "icon":13,
              "tooltip": "3GS draw unified diagram"},
 
             {"name": "TGS_skeleton",
              "menu_text": "3GS draw skeleton",
-             "icon":13,
+             "icon":14,
              "tooltip": "3GS draw skeleton"},
 
 
             {"name": "TGS_settings",
              "menu_text": "3GS settings",
-             "icon":14,
+             "icon":15,
              "tooltip": "3GS settings"}
 
         ],
@@ -169,6 +175,7 @@
 
                     {"command": "TGS_force_move_vertices"},
                     {"command": "TGS_force_pull_halffaces"},
+                    {"command": "TGS_force_planarize"},
                     {"command": "TGS_force_planarize"},
                     {"command": "TGS_force_modify"},
 
@@ -218,6 +225,7 @@
                     {"left": "TGS_force_move_vertices"},
                     {"left": "TGS_force_pull_halffaces"},
                     {"left": "TGS_force_planarize"},
+                    {"left": "TGS_force_arearize"},
                     {"left": "TGS_force_modify"},
 
                     {"type": "separator"},

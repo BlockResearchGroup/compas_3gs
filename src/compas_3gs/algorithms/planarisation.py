@@ -388,17 +388,18 @@ def volmesh_planarise(volmesh,
             # ------------------------------------------------------------------
             #   4. arearise
             # ------------------------------------------------------------------
-            if fkey in target_areas:
-                target_area = target_areas[fkey]
-                scale = (target_area / f_area) ** 0.5
+            if target_areas:
+                if fkey in target_areas:
+                    target_area = target_areas[fkey]
+                    scale = (target_area / f_area) ** 0.5
 
-                # scale
-                new_face = scale_polygon(new_face, scale)
+                    # scale
+                    new_face = scale_polygon(new_face, scale)
 
-                # arearisation deviation
-                areaness = abs(f_area - target_area)
-                if areaness > deviation_area:
-                    deviation_area = areaness
+                    # arearisation deviation
+                    areaness = abs(f_area - target_area)
+                    if areaness > deviation_area:
+                        deviation_area = areaness
 
             # collect new coordinates ------------------------------------------
             for i in range(len(f_vkeys)):

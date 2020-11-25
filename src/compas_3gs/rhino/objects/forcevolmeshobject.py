@@ -292,14 +292,15 @@ class ForceVolMeshObject(VolMeshObject):
 
         halffaces_color.update({halfface: self.settings['color.faces'] for halfface in halffaces})
 
-        guids = self.artist.draw_faces(color=halffaces_color)
-        self.guid_face = zip(guids, halffaces)
-        compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces)
-
         if self.settings['show.faces']:
-            compas_rhino.rs.ShowGroup(group_halffaces)
-        else:
-            compas_rhino.rs.HideGroup(group_halffaces)
+            guids = self.artist.draw_faces(color=halffaces_color)
+            self.guid_face = zip(guids, halffaces)
+        # compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces)
+
+        # if self.settings['show.faces']:
+        #     compas_rhino.rs.ShowGroup(group_halffaces)
+        # else:
+        #     compas_rhino.rs.HideGroup(group_halffaces)
 
         # halfface labels ------------------------------------------------------
         text = {halfface: index for index, halfface in enumerate(halffaces)}

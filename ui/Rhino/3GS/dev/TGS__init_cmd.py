@@ -34,9 +34,13 @@ SETTINGS = {
         "reciprocation.refreshrate": 10,
 
         "planarization.kmax": 500,
-        "planarization.flat.tol": 0.01,
-        "planarization.area.tol": 0.01,
-        "planarization.refreshrate": 10
+        "planarization.tol": 0.01,
+        "planarization.refreshrate": 10,
+
+        "arearization.kmax": 500,
+        "arearization.tol": 0.01,
+        "arearization.refreshrate": 10,
+
     }
 }
 
