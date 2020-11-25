@@ -13,6 +13,7 @@ import compas_rhino
 
 from compas_3gs.rhino.objects.networkobject import NetworkObject
 
+from compas_3gs.utilities import get_force_colors_uv
 
 __all__ = ['FormNetworkObject']
 
@@ -30,23 +31,17 @@ class FormNetworkObject(NetworkObject):
         'show.edges': True,
         'show.loads': True,
         'show.pipes': True,
-        'show.forces': True,
-
-        'show.nodelabels': False,
 
         'color.invalid': (100, 255, 100),
 
         'color.node': (0, 0, 0),
-        'color.nodelabels': (0, 0, 0),
         'color.nodes:is_fixed': (0, 0, 255),
 
         'color.edges': (0, 0, 0),
-        'color.edgelabels': (255, 255, 255),
-
         'color.pipes': (0, 0, 0),
 
-        'scale.loads': 0.1,
-        'scale.pipes': 0.1,
+        'scale.loads': 0.100,
+        'scale.pipes': 0.100,
 
         'tol.loads': 1e-3,
         'tol.pipes': 1e-3
@@ -222,16 +217,16 @@ class FormNetworkObject(NetworkObject):
         # Draw the nodes and add them to the node group.
         # ======================================================================
 
-        nodes = list(self.diagram.nodes())
-        color = {node: self.settings['color.nodes'] for node in nodes}
-        color_fixed = self.settings['color.nodes:is_fixed']
-        color.update({node: color_fixed for node in self.diagram.nodes_where({'is_fixed': True}) if node in nodes})
-
-        guids = self.artist.draw_nodes(nodes, color)
-        self.guid_node = zip(guids, nodes)
-        compas_rhino.rs.AddObjectsToGroup(guids, group_nodes)
-
         if self.settings['show.nodes'] and self.settings['_is.valid']:
+            nodes = list(self.diagram.nodes())
+            color = {node: self.settings['color.nodes'] for node in nodes}
+            color_fixed = self.settings['color.nodes:is_fixed']
+            color.update({node: color_fixed for node in self.diagram.nodes_where({'is_fixed': True}) if node in nodes})
+
+            guids = self.artist.draw_nodes(nodes, color)
+            self.guid_node = zip(guids, nodes)
+            compas_rhino.rs.AddObjectsToGroup(guids, group_nodes)
+
             compas_rhino.rs.ShowGroup(group_nodes)
         else:
             compas_rhino.rs.HideGroup(group_nodes)
@@ -242,14 +237,19 @@ class FormNetworkObject(NetworkObject):
         # Draw the edges and add them to the edge group.
         # ======================================================================
 
-        edges = list(self.diagram.edges())
-        color = {edge: self.settings['color.edges'] if self.settings['_is.valid'] else self.settings['color.invalid'] for edge in edges}
-
-        guids = self.artist.draw_edges(edges, color)
-        self.guid_edge = zip(guids, edges)
-        compas_rhino.rs.AddObjectsToGroup(guids, group_edges)
-
         if self.settings['show.edges']:
+            edges = list(self.diagram.edges())
+            colors = {edge: self.settings['color.edges'] for edge in edges}
+            if self.scene.settings['3GS']['show.forces']:
+                colors = get_force_colors_uv(self.diagram.dual,
+                                             self.diagram,
+                                             gradient=True)
+            colordict = {edge: colors[edge] if self.settings['_is.valid'] else self.settings['color.invalid'] for edge in edges}
+
+            guids = self.artist.draw_edges(edges, colordict)
+            self.guid_edge = zip(guids, edges)
+            compas_rhino.rs.AddObjectsToGroup(guids, group_edges)
+
             compas_rhino.rs.ShowGroup(group_edges)
         else:
             compas_rhino.rs.HideGroup(group_edges)
@@ -296,9 +296,14 @@ class FormNetworkObject(NetworkObject):
         if self.settings['show.pipes'] and self.settings['_is.valid']:
             tol = self.settings['tol.pipes']
             edges = list(self.diagram.edges())
-            color = self.settings['color.pipes']
+            colors = {edge: self.settings['color.pipes'] for edge in edges}
+
+            if self.scene.settings['3GS']['show.forces']:
+                colors = get_force_colors_uv(self.diagram.dual,
+                                             self.diagram,
+                                             gradient=True)
             scale = self.settings['scale.pipes']
-            guids = self.artist.draw_pipes(edges, color, scale, tol)
+            guids = self.artist.draw_pipes(edges, colors, scale, tol)
             self.guid_pipe = zip(guids, edges)
             compas_rhino.rs.AddObjectsToGroup(guids, group_pipes)
             compas_rhino.rs.ShowGroup(group_pipes)

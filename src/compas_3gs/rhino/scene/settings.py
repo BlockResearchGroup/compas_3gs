@@ -70,8 +70,8 @@ class Settings_Tab(forms.TabPage):
                     control = forms.NumericUpDown()
                     if type(value) == float:
                         digits = len(str(value).split('.')[-1])
-                        control.DecimalPlaces = digits
-                        control.Increment = 0.1 ** digits
+                        control.DecimalPlaces = (digits + 1)
+                        control.Increment = 0.1 ** (digits + 1)
                     control.Value = value
                     control.ValueChanged += tab.EditEvent(key)
                 else:

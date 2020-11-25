@@ -10,6 +10,8 @@ from compas_3gs.rhino.objects.volmeshobject import VolMeshObject
 
 from compas_3gs.utilities import volmesh_face_flatness
 
+from compas_3gs.utilities import get_force_colors_hf
+
 
 __all__ = ['ForceVolMeshObject']
 
@@ -37,7 +39,6 @@ class ForceVolMeshObject(VolMeshObject):
         'color.vertices:is_fixed': (0, 0, 255),
 
         'color.edges': (50, 50, 50),
-        'color.edgelabels': (0, 0, 0),
 
         'color.faces': (200, 200, 200),
         'color.facelabels': (200, 200, 200),
@@ -290,11 +291,21 @@ class ForceVolMeshObject(VolMeshObject):
 
         # halffaces ------------------------------------------------------------
         halffaces = list(self.diagram.faces())
-        color = {face: self.settings['color.faces'] if self.settings['_is.valid'] else self.settings['color.invalid'] for face in halffaces}
+
+        colors = {face: self.settings['color.faces'] for face in halffaces}
+
+        if self.scene.settings['3GS']['show.forces']:
+            colors = get_force_colors_hf(self.diagram,
+                                         self.diagram.primal,
+                                         gradient=True)
+            halffaces = colors.keys()
+
+        colordict = {face: colors[face] if self.settings['_is.valid'] else self.settings['color.invalid'] for face in halffaces}
 
         if self.settings['show.faces']:
-            guids = self.artist.draw_faces(halffaces, color)
+            guids = self.artist.draw_faces(halffaces, colordict)
             self.guid_face = zip(guids, halffaces)
+
         # compas_rhino.rs.AddObjectsToGroup(guids, group_halffaces)
 
         # if self.settings['show.faces']:

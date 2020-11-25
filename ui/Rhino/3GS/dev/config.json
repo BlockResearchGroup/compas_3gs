@@ -177,12 +177,10 @@
                     {"command": "TGS_force_pull_halffaces"},
                     {"command": "TGS_force_planarize"},
                     {"command": "TGS_force_planarize"},
-                    {"command": "TGS_force_modify"},
 
                     {"type": "separator"},
 
                     {"command": "TGS_form_move_vertices"},
-                    {"command": "TGS_form_modify"},
 
                     {"type": "separator"},
 
@@ -226,12 +224,10 @@
                     {"left": "TGS_force_pull_halffaces"},
                     {"left": "TGS_force_planarize"},
                     {"left": "TGS_force_arearize"},
-                    {"left": "TGS_force_modify"},
 
                     {"type": "separator"},
 
                     {"left": "TGS_form_move_vertices"},
-                    {"left": "TGS_form_modify"},
 
                     {"type": "separator"},
 

@@ -6,6 +6,10 @@ import scriptcontext as sc
 
 import compas_rhino
 
+from compas_3gs.rhino import SettingsForm
+from compas_3gs.rhino import ForceVolMeshObject
+from compas_3gs.rhino import FormNetworkObject
+
 
 __commandname__ = "TGS_settings"
 
@@ -19,8 +23,10 @@ def RunCommand(is_interactive):
     scene = sc.sticky['3GS']['scene']
 
     # settings here ...
+    SettingsForm.from_scene(scene, object_types=[ForceVolMeshObject, FormNetworkObject], global_settings=['3GS'])
 
     scene.update()
+    scene.save()
 
 
 # ==============================================================================
