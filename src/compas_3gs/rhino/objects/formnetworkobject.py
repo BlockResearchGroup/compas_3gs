@@ -32,7 +32,7 @@ class FormNetworkObject(NetworkObject):
         'show.loads': True,
         'show.pipes': False,
 
-        'color.invalid': (100, 255, 100),
+        'color.invalid': (242, 118, 160),
 
         'color.node': (0, 0, 0),
         'color.nodes:is_fixed': (0, 0, 255),
