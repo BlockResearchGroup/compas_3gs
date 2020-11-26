@@ -1,1 +1,2 @@
 compas @ git+git://github.com/Licini/compas.git@1325aea5a3ce0a72b269ad73b45d3cd4481044b1
+compas_skeleton @ git+git://github.com/BlockResearchGroup/compas_skeleton.git@38b3baf488be60e341f838196c254930d3fab469
