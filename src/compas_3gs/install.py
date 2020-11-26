@@ -1,6 +1,6 @@
 if __name__ == '__main__':
 
-    packages = ['compas', 'compas_rhino', 'compas_3gs']
+    packages = ['compas', 'compas_rhino', 'compas_3gs', 'compas_skeleton']
 
     import importlib
 
