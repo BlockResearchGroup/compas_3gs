@@ -29,7 +29,16 @@ def RunCommand(is_interactive):
 
     scene = sc.sticky['3GS']['scene']
 
+    # get ForceVolMeshObject from scene
+    objects = scene.find_by_name('force')
+    if objects:
+        compas_rhino.display_message("Force diagram already exists in the scene!")
+        return
+
     guids = rs.GetObjects("select polysurfaces", filter=rs.filter.polysurface)
+    if not guids:
+        return
+
     compas_rhino.rs.HideObjects(guids)
 
     force = volmesh_from_polysurfaces(ForceVolMesh, guids)

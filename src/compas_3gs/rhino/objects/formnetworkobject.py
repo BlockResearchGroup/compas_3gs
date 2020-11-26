@@ -30,7 +30,7 @@ class FormNetworkObject(NetworkObject):
         'show.nodes': True,
         'show.edges': True,
         'show.loads': True,
-        'show.pipes': True,
+        'show.pipes': False,
 
         'color.invalid': (100, 255, 100),
 

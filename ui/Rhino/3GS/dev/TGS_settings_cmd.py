@@ -22,8 +22,7 @@ def RunCommand(is_interactive):
 
     scene = sc.sticky['3GS']['scene']
 
-    # settings here ...
-    SettingsForm.from_scene(scene, object_types=[ForceVolMeshObject, FormNetworkObject], global_settings=['3GS'])
+    SettingsForm.from_scene(scene, object_types=[ForceVolMeshObject, FormNetworkObject], global_settings=['3GS', 'Solvers'])
 
     scene.update()
     scene.save()
