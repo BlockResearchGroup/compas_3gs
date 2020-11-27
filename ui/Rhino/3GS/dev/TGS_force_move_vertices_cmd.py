@@ -29,9 +29,18 @@ def RunCommand(is_interactive):
 
     # --------------------------------------------------------------------------
 
+    current_setting = force.settings['show.vertices']
+    if not current_setting:
+        force.settings['show.vertices'] = True
+        scene.update()
+
     vertices = force.select_vertices()
 
     rhino_vertex_move(force.diagram, vertices)
+
+    force.settings['show.vertices'] = current_setting
+
+    # --------------------------------------------------------------------------
 
     objects = scene.find_by_name('form')
     if not objects:

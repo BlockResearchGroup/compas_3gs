@@ -22,6 +22,7 @@ def RunCommand(is_interactive):
         return
 
     if option == "Yes":
+        scene.clear_layers()
         scene.purge()
 
 

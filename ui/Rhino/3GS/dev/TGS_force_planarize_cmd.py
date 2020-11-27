@@ -38,6 +38,13 @@ def RunCommand(is_interactive):
         return
     force = objects[0]
 
+    # --------------------------------------------------------------------------
+
+    current_setting = force.settings['show.vertices']
+    if not current_setting:
+        force.settings['show.vertices'] = True
+        scene.update()
+
     # get global settings ------------------------------------------------------
     kmax = scene.settings['Solvers']['planarization.kmax']
     refresh = scene.settings['Solvers']['planarization.refreshrate']
@@ -122,6 +129,8 @@ def RunCommand(is_interactive):
     form = objects[0]
 
     # update -------------------------------------------------------------------
+    force.settings['show.vertices'] = current_setting
+
     form.diagram.update_angle_deviations()
 
     form.check_eq()

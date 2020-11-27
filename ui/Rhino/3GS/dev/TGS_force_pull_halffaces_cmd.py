@@ -30,6 +30,11 @@ def RunCommand(is_interactive):
         return
     force = objects[0]
 
+    current_setting = force.settings['show.faces']
+    if not current_setting:
+        force.settings['show.faces'] = True
+        scene.update()
+
     # select halfface ----------------------------------------------------------
     boundary_halffaces = force.diagram.halffaces_on_boundaries()
 
@@ -44,6 +49,8 @@ def RunCommand(is_interactive):
 
     # pull faces ---------------------------------------------------------------
     rhino_volmesh_pull_halffaces(force.diagram, hfkey=halfface)
+
+    force.settings['show.faces'] = current_setting
 
     # check if there is form diagram -------------------------------------------
     objects = scene.find_by_name('form')

@@ -217,9 +217,9 @@ class FormNetworkObject(NetworkObject):
         # Draw the nodes and add them to the node group.
         # ======================================================================
 
-        if self.settings['show.nodes'] and self.settings['_is.valid']:
+        if self.settings['show.nodes']:
             nodes = list(self.diagram.nodes())
-            color = {node: self.settings['color.nodes'] for node in nodes}
+            color = {node: self.settings['color.nodes'] if self.settings['_is.valid'] else self.settings['color.invalid'] for node in nodes}
             color_fixed = self.settings['color.nodes:is_fixed']
             color.update({node: color_fixed for node in self.diagram.nodes_where({'is_fixed': True}) if node in nodes})
 

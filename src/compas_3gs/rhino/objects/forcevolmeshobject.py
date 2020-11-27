@@ -226,30 +226,25 @@ class ForceVolMeshObject(VolMeshObject):
 
         # vertices -------------------------------------------------------------
         vertices = list(self.diagram.vertices())
-        vertices_color = {}
-        vertices_labels_color = {}
-
+        color = {vertex: self.settings['color.vertices'] if self.settings['_is.valid'] else self.settings['color.invalid'] for vertex in vertices}
         for vertex in vertices:
             if self.diagram.vertex_attribute(vertex, 'is_fixed'):
-                vertices_color[vertex] = self.settings['color.vertices:is_fixed']
-                vertices_labels_color[vertex] = self.settings['color.vertices:is_fixed']
-            else:
-                vertices_color[vertex] = self.settings['color.vertices']
-                vertices_labels_color[vertex] = self.settings['color.vertexlabels']
+                color[vertex] = self.settings['color.vertices:is_fixed']
 
-        guids = self.artist.draw_vertices(color=vertices_color)
-        self.guid_vertex = zip(guids, vertices)
-        compas_rhino.rs.AddObjectsToGroup(guids, group_vertices)
+        if self.settings["show.vertices"]:
+            guids = self.artist.draw_vertices(color=color)
+            self.guid_vertex = zip(guids, vertices)
+            compas_rhino.rs.AddObjectsToGroup(guids, group_vertices)
 
-        if self.settings["show.vertices"] and self.settings['_is.valid']:
             compas_rhino.rs.ShowGroup(group_vertices)
         else:
             compas_rhino.rs.HideGroup(group_vertices)
 
         # vertices labels ------------------------------------------------------
-        if self.settings["show.vertexlabels"] and self.settings['_is.valid']:
+        if self.settings["show.vertexlabels"]:
             text = {vertex: index for index, vertex in enumerate(vertices)}
-            guids = self.artist.draw_vertexlabels(text=text, color=vertices_labels_color)
+
+            guids = self.artist.draw_vertexlabels(text=text, color=color)
             self.guid_vertexlabel = zip(guids, vertices)
             compas_rhino.rs.AddObjectsToGroup(guids, group_vertices_labels)
 

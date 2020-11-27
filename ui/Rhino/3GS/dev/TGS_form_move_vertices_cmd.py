@@ -29,9 +29,18 @@ def RunCommand(is_interactive):
 
     # --------------------------------------------------------------------------
 
+    current_setting = form.settings['show.nodes']
+    if not current_setting:
+        form.settings['show.nodes'] = True
+        scene.update()
+
     vertices = form.select_vertices()
 
     rhino_vertex_move(form.diagram, vertices)
+
+    form.settings['show.nodes'] = current_setting
+
+    # --------------------------------------------------------------------------
 
     form.diagram.update_angle_deviations()
 

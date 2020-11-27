@@ -28,8 +28,10 @@ SETTINGS = {
     },
 
     "Solvers": {
-        "reciprocation.kmax": 500,
         "reciprocation.alpha": 1.0,
+        "reciprocation.l_min": 0.1,
+        "reciprocation.l_max": 100000,
+        "reciprocation.kmax": 500,
         "reciprocation.tol": 0.01,
         "reciprocation.refreshrate": 10,
 
@@ -51,6 +53,8 @@ CWD = HERE or HOME
 
 
 def RunCommand(is_interactive):
+
+    Browser()
 
     shelvepath = os.path.join(compas.APPTEMP, '3GS', '.history')
     if not os.path.exists(os.path.dirname(shelvepath)):
@@ -76,8 +80,6 @@ def RunCommand(is_interactive):
     }
 
     scene.update()
-
-    Browser()
 
 
 # ==============================================================================
