@@ -13,6 +13,8 @@ import compas_rhino
 
 from compas_3gs.rhino import Scene
 from compas_3gs.web import Browser
+from compas_3gs.activate import check
+from compas_3gs.activate import activate
 
 
 __commandname__ = "TGS__init"
@@ -53,6 +55,16 @@ CWD = HERE or HOME
 
 
 def RunCommand(is_interactive):
+
+    if check():
+        print("Current plugin is already activated")
+    else:
+        compas_rhino.rs.MessageBox("Detected environment change, re-activating plugin", 0, "Re-activating Needed")
+        if activate():
+            compas_rhino.rs.MessageBox("Restart Rhino for the change to take effect", 0, "Restart Rhino")
+        else:
+            compas_rhino.rs.MessageBox("Someting wrong during re-activation", 0, "Error")
+        return
 
     Browser()
 
