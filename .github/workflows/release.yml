@@ -23,6 +23,7 @@ jobs:
         shell: PowerShell
         run: |
           cd src/compas_3gs/web
+          npm install
           npm run build -- ${{ steps.tagName.outputs.tag }}
       
       - uses: conda-incubator/setup-miniconda@v2.0.0
