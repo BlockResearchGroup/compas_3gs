@@ -16,6 +16,15 @@ jobs:
         id: tagName
 
       - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+
+      - name: build electron front page
+        shell: PowerShell
+        run: |
+          cd src/compas_3gs/web
+          npm install
+          npm run build -- ${{ steps.tagName.outputs.tag }}
       
       - uses: conda-incubator/setup-miniconda@v2.0.0
         with:
@@ -28,11 +37,6 @@ jobs:
         run: |
           conda install conda-pack cython -y
 
-      
-      - name: extract-electron
-        shell: PowerShell
-        run: |
-          python scripts/unzip_electron.py
       
       - name: 3gs-install
         shell: PowerShell
