@@ -1,2 +1,2 @@
-compas @ git+git://github.com/Licini/compas.git@1325aea5a3ce0a72b269ad73b45d3cd4481044b1
+compas
 compas_skeleton == 1.1.0
