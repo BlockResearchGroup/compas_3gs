@@ -105,7 +105,9 @@ ENV/
 
 *.ffs_db
 
-docsource/reference/generated
 .vscode
 node_modules
 src/compas_3gs/web/electron
+
+docs/reference/generated
+dist/docs

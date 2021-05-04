@@ -4,6 +4,8 @@
 #
 # needs_sphinx = '1.0'
 
+from sphinx.ext.napoleon.docstring import NumpyDocstring
+
 import sphinx_compas_theme
 
 # -- General configuration ------------------------------------------------
@@ -17,7 +19,7 @@ version = '.'.join(release.split('.')[0:2])
 
 master_doc = 'index'
 source_suffix = ['.rst', ]
-templates_path = ['_templates', ]
+templates_path = ['_templates']
 exclude_patterns = []
 
 pygments_style = 'sphinx'
@@ -59,10 +61,10 @@ autosummary_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsynt
 
 # napoleon options
 
-napoleon_google_docstring = True
+napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 napoleon_include_init_with_doc = False
-napoleon_include_private_with_doc = True
+napoleon_include_private_with_doc = False
 napoleon_include_special_with_doc = True
 napoleon_use_admonition_for_examples = False
 napoleon_use_admonition_for_notes = False
@@ -70,6 +72,40 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = False
 napoleon_use_rtype = False
+
+
+# first, we define new methods for any new sections and add them to the class
+def parse_keys_section(self, section):
+    return self._format_fields('Keys', self._consume_fields())
+
+
+NumpyDocstring._parse_keys_section = parse_keys_section
+
+
+def parse_attributes_section(self, section):
+    return self._format_fields('Attributes', self._consume_fields())
+
+
+NumpyDocstring._parse_attributes_section = parse_attributes_section
+
+
+def parse_class_attributes_section(self, section):
+    return self._format_fields('Class Attributes', self._consume_fields())
+
+
+NumpyDocstring._parse_class_attributes_section = parse_class_attributes_section
+
+
+# we now patch the parse method to guarantee that the the above methods are
+# assigned to the _section dict
+def patched_parse(self):
+    self._sections['keys'] = self._parse_keys_section
+    self._sections['class attributes'] = self._parse_class_attributes_section
+    self._unpatched_parse()
+
+
+NumpyDocstring._unpatched_parse = NumpyDocstring._parse
+NumpyDocstring._parse = patched_parse
 
 # plot options
 
@@ -87,7 +123,10 @@ plot_html_show_formats = False
 
 # intersphinx options
 
-intersphinx_mapping = {'python': ('https://docs.python.org/', None)}
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/', None),
+    'compas': ('https://compas-dev.github.io/compas', 'https://compas-dev.github.io/compas/objects.inv'),
+}
 
 
 # -- Options for HTML output ----------------------------------------------
@@ -98,6 +137,11 @@ html_theme_options = {
     "package_name": "compas_3gs",
     "package_title": project,
     "package_version": release,
+    "package_author": "Juney Lee",
+    "package_description": "COMPAS package for Algebraic Graph Statics",
+    "package_repo": "https://github.com/BlockResearchGroup/compas_3gs",
+    "package_docs": "https://blockresearchgroup.github.io/compas_3gs/",
+    "package_old_versions_txt": "https://blockresearchgroup.github.io/compas_3gs/doc_versions.txt"
 }
 html_context = {}
 html_static_path = []
