@@ -336,7 +336,7 @@ def is_polygon_self_intersecting(polygon):
                     if distance_point_point(int_1, int_2) > 0:
                         overlapping = True
                     if is_point_on_segment(int_1, (a, b)) or is_point_on_segment(int_2, (c, d)):
-                            intersecting = True
+                        intersecting = True
 
     return overlapping, intersecting
 

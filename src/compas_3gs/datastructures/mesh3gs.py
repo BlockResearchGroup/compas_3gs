@@ -98,7 +98,7 @@ class Mesh3gs(Mesh):
     def face_normal(self, fkey, unitized=True):
         points = self.face_coordinates(fkey)
         normal = polygon_normal_oriented(points, unitized)
-        if length_vector(normal) == 0 :
+        if length_vector(normal) == 0:
             uv = subtract_vectors(points[1], points[0])
             vw = subtract_vectors(points[2], points[1])
             normal = normalize_vector(cross_vectors(uv, vw))

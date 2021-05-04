@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     import importlib
 
-    print("\n", "-"*10, "Checking packages", "-"*10)
+    print("\n", "-" * 10, "Checking packages", "-" * 10)
     for p in packages:
         try:
             importlib.import_module(p)
@@ -19,11 +19,8 @@ if __name__ == '__main__':
             print(p, "ERROR: cannot be imported, make sure it is installed")
             raise ImportError(e)
 
-    import compas_rhino
     from compas_rhino.install import install
-    # from compas_rhino.uninstall import uninstall
     from compas_rhino.install_plugin import install_plugin
-    from compas_rhino.uninstall_plugin import uninstall_plugin
     import argparse
     import os
 
@@ -34,8 +31,7 @@ if __name__ == '__main__':
     parser.add_argument('--plugin_path', help="The path to the plugin directory.")
     args = parser.parse_args()
 
-
-    print("\n", "-"*10, "Installing 3GS python plugin", "-"*10)
+    print("\n", "-" * 10, "Installing 3GS python plugin", "-" * 10)
 
     if args.dev:
         rpy_plugin_path = os.path.join(os.path.dirname(__file__), "..", "..", 'ui/Rhino/3GS')
@@ -49,13 +45,13 @@ if __name__ == '__main__':
 
     install_plugin(rpy_plugin_path, version="6.0")
 
-    print("\n", "-"*10, "Installing COMPAS packages", "-"*10)
+    print("\n", "-" * 10, "Installing COMPAS packages", "-" * 10)
 
     install(packages=packages)
 
-    print("\n", "-"*10, "Installation is successful", "-"*10)
+    print("\n", "-" * 10, "Installation is successful", "-" * 10)
 
-    print("\n", "-"*10, "Registering Installation", "-"*10)
+    print("\n", "-" * 10, "Registering Installation", "-" * 10)
 
     os.makedirs(compas.APPDATA, exist_ok=True)
     register_json_path = os.path.join(compas.APPDATA, "compas_plugins.json")
@@ -92,7 +88,7 @@ if __name__ == '__main__':
     register_json["Plugins"][PLUGIN_NAME] = plugin_info
     register_json["Current"] = PLUGIN_NAME
 
-    print(" "*4, plugin_path, "is registered")
+    print(" " * 4, plugin_path, "is registered")
 
     for name in register_json["Plugins"]:
         plugin = register_json["Plugins"][name]
@@ -102,4 +98,4 @@ if __name__ == '__main__':
 
     json.dump(register_json, open(register_json_path, "w"), indent=4)
 
-    print("\n", "-"*10, "Installation is Registered", "-"*10)
+    print("\n", "-" * 10, "Installation is Registered", "-" * 10)

@@ -24,7 +24,8 @@ def pair_hf_to_uv(volmesh, network):
 
     Notes
     -----
-    u_hfkey is an interior halfface of the volmesh that belongs to volmesh.cell[u], which points to volmesh.cell[v]. In another words, its pair (or opposite) halfface belongs to volmesh.cell[v].
+    u_hfkey is an interior halfface of the volmesh that belongs to volmesh.cell[u], which points to volmesh.cell[v].
+    In another words, its pair (or opposite) halfface belongs to volmesh.cell[v].
 
     """
     hf_uv_dict = {}

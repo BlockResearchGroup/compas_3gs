@@ -62,7 +62,8 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
 
     Notes
     -----
-    This algorithm is dependent on Rhinoceros objects; the adjacency arcs are implemented using Rhino.Geometry.Arc, and the cross-adjacencies (arc-arc intersections) are computed using Rhino.Geometry.Intersect.Intersection.CurveCurve.
+    This algorithm is dependent on Rhinoceros objects; the adjacency arcs are implemented using Rhino.Geometry.Arc,
+    and the cross-adjacencies (arc-arc intersections) are computed using Rhino.Geometry.Intersect.Intersection.CurveCurve.
 
     Warning
     -------
@@ -221,9 +222,9 @@ def egi_from_vectors(vectordict, origin, tol=0.001):
             arcs[arckey]['vkeys'] = _reorder_pts_on_arc(pt_list,
                                                         arcs[arckey]['vkeys'],
                                                         arcs[arckey]['arc'])[1]
-            edge_type = 'cross'
-        else:
-            edge_type = 'main'
+        #     edge_type = 'cross'
+        # else:
+        #     edge_type = 'main'
         for i in range(len(arcs[arckey]['vkeys']) - 1):
             vkey_1 = arcs[arckey]['vkeys'][i]
             vkey_2 = arcs[arckey]['vkeys'][i + 1]
@@ -341,11 +342,11 @@ def _egi_sort_v_nbrs(egi):
     """
     xyz = dict((key, [attr[_] for _ in 'xyz']) for key, attr in egi.vertices(True))
     for vkey in egi.vertex:
-        nbrs    = egi.vertex[vkey]['nbrs']
-        plane   = Plane(Point3d(*xyz[vkey]),
-                        Vector3d(*[axis for axis in egi.vertex[vkey]['normal']]))
-        circle  = Circle(plane, 1)
-        p_list  = []
+        nbrs = egi.vertex[vkey]['nbrs']
+        plane = Plane(Point3d(*xyz[vkey]),
+                      Vector3d(*[axis for axis in egi.vertex[vkey]['normal']]))
+        circle = Circle(plane, 1)
+        p_list = []
         for nbr_vkey in nbrs:
             boolean, parameter = ArcCurve(circle).ClosestPoint(Point3d(*xyz[nbr_vkey]))
             p_list.append(parameter)
@@ -359,9 +360,9 @@ def _egi_find_edge_face(u, v, egi):
     cycle = [u]
     while True:
         cycle.append(v)
-        nbrs    = egi.vertex[v]['sorted_nbrs']
-        nbr     = nbrs[nbrs.index(u) - 1]
-        u, v    = v, nbr
+        nbrs = egi.vertex[v]['sorted_nbrs']
+        nbr = nbrs[nbrs.index(u) - 1]
+        u, v = v, nbr
         if v == cycle[0]:
             cycle.append(v)
             break

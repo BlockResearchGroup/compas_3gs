@@ -241,9 +241,11 @@ class Scene(object):
         for data in state:
             diagram = data['diagram']['type'].from_data(data['diagram']['data'])
             if data['object']['name'] == 'form':
-                guid = self.add_formnetwork(diagram, name=data['object']['name'], layer=data['object']['layer'], visible=data['object']['visible'], settings=data['object']['settings'])
+                guid = self.add_formnetwork(diagram, name=data['object']['name'], layer=data['object']['layer'],
+                                            visible=data['object']['visible'], settings=data['object']['settings'])
             if data['object']['name'] == 'force':
-                guid = self.add_forcevolmesh(diagram, name=data['object']['name'], layer=data['object']['layer'], visible=data['object']['visible'], settings=data['object']['settings'])
+                guid = self.add_forcevolmesh(diagram, name=data['object']['name'], layer=data['object']['layer'],
+                                             visible=data['object']['visible'], settings=data['object']['settings'])
 
             obj = self.find(guid)
             obj.anchor = data['object']['anchor']
@@ -285,9 +287,11 @@ class Scene(object):
         for data in state:
             diagram = data['diagram']['type'].from_data(data['diagram']['data'])
             if data['object']['name'] == 'form':
-                guid = self.add_formnetwork(diagram, name=data['object']['name'], layer=data['object']['layer'], visible=data['object']['visible'], settings=data['object']['settings'])
+                guid = self.add_formnetwork(diagram, name=data['object']['name'], layer=data['object']['layer'],
+                                            visible=data['object']['visible'], settings=data['object']['settings'])
             if data['object']['name'] == 'force':
-                guid = self.add_forcevolmesh(diagram, name=data['object']['name'], layer=data['object']['layer'], visible=data['object']['visible'], settings=data['object']['settings'])
+                guid = self.add_forcevolmesh(diagram, name=data['object']['name'], layer=data['object']['layer'],
+                                             visible=data['object']['visible'], settings=data['object']['settings'])
             obj = self.find(guid)
             obj.anchor = data['object']['anchor']
             obj.location = data['object']['location']

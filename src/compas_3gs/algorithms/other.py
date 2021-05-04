@@ -7,7 +7,8 @@ __all__ = ['golden_section_search']
 
 
 def golden_section_search(function, a, b, tol=1e-3):
-    """Golden section search algorithm for finding the minimum or maximum of a strictly unimodal function by successively narrowing the range of values inside which the extremum is known to exist.
+    """Golden section search algorithm for finding the minimum or maximum of a strictly unimodal function
+    by successively narrowing the range of values inside which the extremum is known to exist.
 
     Parameters
     ----------
