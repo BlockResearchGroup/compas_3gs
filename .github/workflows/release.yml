@@ -16,7 +16,7 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
 
       - name: build electron front page
         shell: PowerShell
@@ -40,10 +40,11 @@ jobs:
       - name: 3gs-install
         shell: PowerShell
         run: |
+          Set-Content -Path MANIFEST.in -Value (get-content -Path MANIFEST.in | Select-String -Pattern 'prune src/compas_3gs/web' -NotMatch)
           python ui/Rhino/3GS/dev/rui.py
           pip install .
 
-      - name: rv2-pack
+      - name: 3gs-pack
         run: |
           python scripts/pack.py --version ${{ steps.tagName.outputs.tag }}
 
@@ -53,11 +54,6 @@ jobs:
           repository: BlockResearchGroup/compas_installer
           ref: 3gs
           path: compas_installer
-
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
       
       - name: wrap installer
         run: |
