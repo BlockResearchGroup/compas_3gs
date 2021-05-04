@@ -6,6 +6,7 @@ prune docsource
 prune examples
 prune temp
 prune tests
+prune scripts
 prune ui
 prune src/compas_3gs/web
 
