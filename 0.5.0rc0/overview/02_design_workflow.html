@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <title>compas_3gs - Design workflow</title>
+  
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Juney Lee" />
+  <meta name="description" content="COMPAS package for Algebraic Graph Statics" />
+
+  <link rel="shortcut icon" href="../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
+
+  
+    <link rel="next" title="Implementation" href="03_implementation.html" />
+  
+
+  
+    <link rel="prev" title="Motivation" href="01_motivation.html" />
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="https://blockresearchgroup.github.io/compas_3gs/">
+        <img src="../_static/images/compas_icon_white.png" alt="compas_3gs" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item active"><a class="nav-link" href="https://blockresearchgroup.github.io/compas_3gs/">compas_3gs</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://blockresearchgroup.github.io/compas_3gs/doc_versions.txt" data-docs="https://blockresearchgroup.github.io/compas_3gs/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            0.5.0rc0
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/BlockResearchGroup/compas_3gs" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../03_theoretical_background.html">Theoretical background</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">Design workflow</li>
+          </ol>
+        </nav>
+        
+
+        
+        
+        <section id="design-workflow">
+<h1>Design workflow</h1>
+<p>The conceptual development of <code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> is based on key open problems in 3D graphic statics, as outlined in <a class="footnote-reference brackets" href="#id4" id="id1">1</a>.
+These problems are addressed from the perspective of a designer in practice, with particular focus on maximising the applicability and usability of the mathematical theories behind the reciprocal relationship of form and force diagrams in real-world applications.
+The suggested design workflow using <code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> is summarised as follows.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<a class="reference internal image-reference" href="../_images/03_3gs_workflow_labeled.jpg"><img alt="../_images/03_3gs_workflow_labeled.jpg" src="../_images/03_3gs_workflow_labeled.jpg" style="width: 100%;" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<hr class="docutils" />
+<section id="addressing-boundary-conditions">
+<h2>1. Addressing boundary conditions</h2>
+<p>During the beginning stages of a project, the only known information to the designer are typically the type of loading the structure will carry (applied load locations and magnitudes) and the physical constraints of the site (i.e. support locations, types, allowable reaction force magnitudes, etc.).
+Before any design explorations using 3D graphics can take place, the quantitative (force magnitudes) and spatial (force locations) site constraints, which are unique for each project, need to be incorporated during the construction of the initial global force polyhedron.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="generating-new-topologies">
+<h2>2. Generating new topologies</h2>
+<p>Once the global force polyhedron has been constructed, various subdivision schemes can be applied to generate and explore structural topologies.
+Subdivision of internal polyhedral cells increases the complexity of the structural topology without changing the initial boundary conditions (<a class="footnote-reference brackets" href="#id5" id="id2">2</a>).
+As a result of subdividing a polyhedral cell, a single member of the corresponding form diagram is replaced with multiple members that together carry the same magnitude of axial force as the replaced member.
+Therefore, subdivision can be an effective method for addressing buckling, although it is a trade-off for challenging fabrication due to the diminishing member-to-member angles as the increasing number of members.
+Subdivision schemes are highly dependent on the initial funicular topology embedded within the global force polyhedron.
+The repeated subdivision of a given global force polyhedron generally results in the refinement of the same, initial funicular form.
+In addition to subdivision, additive polyhedral transformations can generate new topologies by enabling the designer to introduce new members to a structure in a more non-automated, sculptural manner (<a class="footnote-reference brackets" href="#id6" id="id3">3</a>).</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="exploring-non-polyhedral-structures">
+<h2>3. Exploring non-polyhedral structures</h2>
+<p>The reciprocal relationship between the polyhedral form and force diagrams restricts design explorations to structures that are polyhedral in its geometry (i.e. subdivided tree structures, faceted domes, polyhedral mesh or surface structures, crystalline aggregations, etc.).
+Inherent geometric constraints of polyhedral form and force diagrams make it impossible to construct force diagrams for spatial structures in equilibrium which may be non-polyhedral in its geometry (i.e. structures with overlapping members, non-planar faces, etc.).
+Polyhedral constraint is beneficial for applying global manipulations and transformations, but ultimately limits the range of structural typologies that can be explored.</p>
+<p>In current implementations of 3D graphic statics, polyhedral force diagrams are computationally constructed as volumetric meshes with matching contact faces and shared vertex coordinates between any pair of adjacent cells.
+In a disjointed cell network, any pair of adjacent cells are constrained to have the same contact face orientations and areas, but each with its own vertex locations and topology.
+Cell networks allow integration of quantitative, force-driven constraints and exploration of new typologies that are not realisable with volumetric-mesh-based applications of 3D graphic statics.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="materialising-3d-graphic-statics">
+<h2>4. Materialising 3D graphic statics</h2>
+<p>The final step of the 3D graphic statics design workflow is the materialisation of the network of lines that represents the form diagram.
+The form diagrams in graphic statics applications represent the topology and geometry of equilibrium structures, but they do not carry any material information.
+While complex structural toplogies can be quickly generated using the 3D graphic statics design workflow, addressing the materialisation and practical feasibility of complex network of lines in space, especially the nodes, is important in expanding 3D graphic statics applications beyond computational form-finding explorations of abstract shapes.</p>
+<p>Existing “wire thickening” methods can be acceptable for small scale applications where the geometric complexity of the components can be resolved through additive fabrication methods such as 3D printing.
+However, as the structure increases in scale, a more generalised method for
+rationalising the fabrication geometry of complex spatial nodes is
+needed for both economic and practical reasons.
+By exploiting the inherent polyhedral properties of form and force diagrams used in 3D graphic statics, a more feasible method for materialising spatial networks of lines can be developed.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="references">
+<h2>References</h2>
+<dl class="footnote brackets">
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Lee J. (2018). <em>Computational Design Framework for 3D Graphic Statics</em>. PhD thesis, ETH Zurich, Zurich, Switzerland.</p>
+</dd>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Akbarzadeh, M., T. Van Mele, and P. Block (2014). Compression-only form finding through finite subdivision of the external force polygon. <em>In Proceedings of the 2014 International Association for Shell and Spatial Structures (IASS) Symposium</em>, Brasilia, Brazil.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Lee, J., T. Van Mele, and P. Block (2016). Form-finding explorations through geometric transformations and modifications of force polyhedrons. In <em>Proceedings of the 2016 International Association for Shell and Spatial Structures (IASS) Symposium</em>, Tokyo, Japan.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation">
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+          <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../00_introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../01_getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../02_overview.html">Overview</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../03_theoretical_background.html">Theoretical background</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="00_graphic_statics.html">Graphic Statics</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="01_motivation.html">Motivation</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Design workflow</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="03_implementation.html">Implementation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="04_nomenclature.html">Nomenclature</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../04_user_manual.html">User manual</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../05_api_reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../06_license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../07_citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../08_publications.html">Publications</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../09_how_to_contribute.html">How to contribute</a></li>
+</ul>
+
+          </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">Design workflow</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#addressing-boundary-conditions">1. Addressing boundary conditions</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#generating-new-topologies">2. Generating new topologies</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#exploring-non-polyhedral-structures">3. Exploring non-polyhedral structures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#materialising-3d-graphic-statics">4. Materialising 3D graphic statics</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+        <a href="01_motivation.html" title="Motivation" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+          <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
+          <div class="nav-title flex-grow-1 align-self-center">
+            <div class="nav-direction small font-weight-light">Previous</div>
+            Motivation
+          </div>
+        </a>
+      
+
+      
+        <a href="03_implementation.html" title="Implementation" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+          <div class="nav-title footer-link flex-grow-1 align-self-center">
+            <div class="nav-direction small font-weight-light">Next</div>
+            Implementation
+          </div>
+          <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
+        </a>
+      
+    </nav>  
+  </footer>
+  <!-- footer -->
+  <!-- below -->
+  <div class="below py-5" style="background-color: #222;">
+    <div class="container">
+      <div class="row flex-column">
+      <div class="col-12 col-md-6 mx-md-auto text-center">
+        <h4 class="pb-3 below-text">COMPAS</h4>
+        <p class="below-text">
+          A computational framework for collaboration and research
+          in Architecture, Engineering, Fabrication, and Construction.
+        </p>
+        <nav class="nav justify-content-center pb-3">
+          <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </nav>
+      </div>
+      </div>
+      <div class="row">
+      <div class="col text-center">
+        <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- below -->
+  <!-- scripts -->
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+  URL_ROOT          : '',
+  VERSION           : '0.5.0rc0',
+  COLLAPSE_INDEX    : false,
+  FILE_SUFFIX       : '.html',
+  HAS_SOURCE        : 'false',
+  SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../_static/underscore.js"></script>
+  <script src="../_static/doctools.js"></script>
+  <script src="../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+    $(".language-default code").addClass("python");
+    $(".language-python code").addClass("python");
+    $(".language-bash code").addClass("bash");
+    $(".language-cpp code").addClass("cpp");
+    $(".language-json code").addClass("json");
+    $(".language-none code").addClass("plaintext");
+
+    hljs.initHighlighting();
+    anchors.add();
+
+    $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+    }).addClass("active");
+
+  });
+
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+  <!-- scripts -->
+  
+  
+</body>
+</html>
