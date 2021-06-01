@@ -9,17 +9,13 @@ from compas_rhino.ui import CommandMenu
 from compas.datastructures import Network
 from compas.datastructures import Mesh
 from compas.datastructures import mesh_subdivide_catmullclark
-from compas.datastructures import mesh_subdivide_quad
 from compas.utilities import geometric_key
-from compas.utilities import reverse_geometric_key
 from compas.datastructures import meshes_join
-from compas.datastructures import meshes_join_and_weld
 from compas.geometry import closest_point_in_cloud
 from compas.geometry import convex_hull
 from compas.geometry import add_vectors
 from compas.topology import unify_cycles
 from compas.utilities import flatten
-from compas.utilities import pairwise
 from compas_skeleton.datastructure import Skeleton3D_Node
 from compas_skeleton.datastructure import Skeleton3D
 from compas_rhino.artists import MeshArtist
@@ -59,12 +55,12 @@ def create_sk3_quad(lines, joint_width=1, leaf_width=1, joint_length=0.4):
             network_local = Network.from_lines(lines)
             key_local = list(set(list(network_local.nodes())) - set(network_local.leaves()))[0]
             global_local.update({u: key_local})
-            
+
             gkeys_global_network = [geometric_key(line[1]) for line in lines]
             gkeys_local_network = [
                 geometric_key(network_local.node_coordinates(key))
                 for key in network_local.leaves()
-                ]
+            ]
 
             for i, key_global in enumerate(nbrs):
                 gkey_global = gkeys_global_network[i]
@@ -82,7 +78,7 @@ def create_sk3_quad(lines, joint_width=1, leaf_width=1, joint_length=0.4):
             sk3_joint_u = sk3_joints[u]
 
             # inside of network_u, find vertices on the verge
-            leaf_u = descendent_tree[u][v] # this is network local key, not convexhull mesh
+            leaf_u = descendent_tree[u][v]  # this is network local key, not convexhull mesh
             leaf_u = sk3_joint_u.network_convexhull[leaf_u]
             nbrs = sk3_joint_u.convexhull_mesh.vertex_neighbors(leaf_u, ordered=True)
             keys = [sk3_joint_u.descendent_tree[leaf_u][nbr]['lp'] for nbr in nbrs]
@@ -107,26 +103,26 @@ def create_sk3_quad(lines, joint_width=1, leaf_width=1, joint_length=0.4):
                 n = len(points_u)
                 for i in range(n):
                     faces.append(
-                        [i, (i+1)%n, (i+1)%n+n, i+n]
-                        )
+                        [i, (i + 1) % n, (i + 1) % n + n, i + n]
+                    )
 
                 mesh = Mesh.from_vertices_and_faces(vertices, faces)
-        
+
         else:
             if u in leafs:
                 leaf, joint = u, v
             elif v in leafs:
                 leaf, joint = v, u
-            
-            points_joint = find_vertices(joint, leaf)
-            network = networks[joint]
 
-            u_local = descendent_tree[joint][joint]
-            v_local = descendent_tree[joint][leaf]
+            points_joint = find_vertices(joint, leaf)
+            # network = networks[joint]
+
+            # u_local = descendent_tree[joint][joint]
+            # v_local = descendent_tree[joint][leaf]
 
             vec = [
                 i * (1 - joint_length) for i in network_global.edge_vector(joint, leaf)
-                ]
+            ]
             points_leaf = [add_vectors(pt, vec) for pt in points_joint]
 
             vertices = points_joint + points_leaf
@@ -134,8 +130,8 @@ def create_sk3_quad(lines, joint_width=1, leaf_width=1, joint_length=0.4):
             n = len(points_joint)
             for i in range(n):
                 faces.append(
-                    [i, (i+1)%n, (i+1)%n+n, i+n]
-                    )
+                    [i, (i + 1) % n, (i + 1) % n + n, i + n]
+                )
 
             mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
@@ -154,7 +150,7 @@ def create_sk3_quad(lines, joint_width=1, leaf_width=1, joint_length=0.4):
             sk3_joint.leaf_width = leaf_width
             sk3_joint.update_vertices_location()
             sk3_joints.update({u: sk3_joint})
-        
+
         return sk3_joints
 
     def draw_mesh_faces(mesh):
@@ -170,7 +166,7 @@ def create_sk3_quad(lines, joint_width=1, leaf_width=1, joint_length=0.4):
     joints = []
     leafs = []
     for key in network_global.node:
-        if network_global.is_leaf(key): 
+        if network_global.is_leaf(key):
             leafs.append(key)
         else:
             joints.append(key)
@@ -247,6 +243,7 @@ config_modify = {
     ]
 }
 
+
 def RunCommand(is_interactive):
 
     if '3GS' not in sc.sticky:
@@ -268,7 +265,7 @@ def RunCommand(is_interactive):
 
     menu = CommandMenu(config)
     action = menu.select_action()
-    
+
     lines = [form.network.edge_coordinates(u, v) for u, v in form.network.edges()]
 
     if action['name'] == 'Exoskeleton':
@@ -300,7 +297,7 @@ def RunCommand(is_interactive):
         action = menu.select_action()
         if not action:
             return
-        
+
         if action['name'] == 'Finish':
             break
 

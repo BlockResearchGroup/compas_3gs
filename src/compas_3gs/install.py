@@ -34,7 +34,7 @@ if __name__ == '__main__':
     parser.add_argument('--rhino_version', default='6.0', choices=['6.0', '7.0'], help="remove all existing compas packages")
     args = parser.parse_args()
 
-    print("\n", "-"*10, "Checking packages", "-"*10)
+    print("\n", "-" * 10, "Checking packages", "-" * 10)
 
     for p in PACKAGES:
         try:
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     print("compas_3gs is editable install: ", is_dev)
 
     if args.remove_plugins:
-        print("\n", "-"*10, "Removing existing plugins", "-"*10)
+        print("\n", "-" * 10, "Removing existing plugins", "-" * 10)
         python_plugins_path = compas_rhino._get_python_plugins_path(args.rhino_version)
         print("Plugin location: ", python_plugins_path)
         plugins = os.listdir(python_plugins_path)
@@ -57,10 +57,10 @@ if __name__ == '__main__':
             uninstall_plugin(p, version=args.rhino_version)
 
     if args.remove_packages:
-        print("\n", "-"*10, "Removing existing packages", "-"*10)
+        print("\n", "-" * 10, "Removing existing packages", "-" * 10)
         uninstall()
 
-    print("\n", "-"*10, "Installing compas_3gs python plugin", "-"*10)
+    print("\n", "-" * 10, "Installing compas_3gs python plugin", "-" * 10)
 
     plugin_path = os.path.dirname(__file__)
     plugin_path = os.path.join(plugin_path, 'ui/Rhino/3GS')
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     else:
         raise RuntimeError("%s does not exist" % plugin_path)
 
-    print("\n", "-"*10, "Installing COMPAS packages", "-"*10)
+    print("\n", "-" * 10, "Installing COMPAS packages", "-" * 10)
 
     if not is_dev:
         os.environ["CONDA_PREFIX"] = ""
@@ -86,9 +86,9 @@ if __name__ == '__main__':
 
     install(packages=PACKAGES, version=args.rhino_version)
 
-    print("\n", "-"*10, "Installation is successful", "-"*10)
+    print("\n", "-" * 10, "Installation is successful", "-" * 10)
 
-    print("\n", "-"*10, "Registering Installation", "-"*10)
+    print("\n", "-" * 10, "Registering Installation", "-" * 10)
 
     os.makedirs(compas.APPDATA, exist_ok=True)
     register_json_path = os.path.join(compas.APPDATA, "compas_plugins.json")
@@ -118,7 +118,7 @@ if __name__ == '__main__':
     register_json["Plugins"][PLUGIN_NAME] = plugin_info
     register_json["Current"] = PLUGIN_NAME
 
-    print(" "*4, plugin_path, "is registered")
+    print(" " * 4, plugin_path, "is registered")
 
     for name in register_json["Plugins"]:
         plugin = register_json["Plugins"][name]
@@ -128,4 +128,4 @@ if __name__ == '__main__':
 
     json.dump(register_json, open(register_json_path, "w"), indent=4)
 
-    print("\n", "-"*10, "Installation is Registered", "-"*10)
+    print("\n", "-" * 10, "Installation is Registered", "-" * 10)
