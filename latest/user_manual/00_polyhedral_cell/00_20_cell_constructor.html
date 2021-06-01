@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -93,10 +93,10 @@
 
         
         
-        <div class="section" id="constructor">
-<h1>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="background">
-<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+        <section id="constructor">
+<h1>Constructor</h1>
+<section id="background">
+<h2>Background</h2>
 <p>Computation of polyhedral geometry, or more commonly known as polyhedral reconstruction in the literature, is a well-researched topic for a variety of applications in many disciplines, such as computer vision, computational geometry and combinatorics.
 In most applications, the objective is to reconstruct the polyhedral geometry
 from partial information about the polyhedra (i.e. from projected images, vertex locations, edge lengths, face geometries, face normals, face areas, dihedral angles, etc.) (<a class="footnote-reference brackets" href="#id9" id="id1">1</a>).
@@ -105,16 +105,16 @@ The polyhedral reconstruction method that is most relevant to 3D graphic statics
 The iterative polyhedral reconstruction method of <code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> uses the Extended Gaussian Image (<a class="footnote-reference brackets" href="#id11" id="id3">3</a>) of polyhedral cells, and builds on the initial implementations by Little (<a class="footnote-reference brackets" href="#id12" id="id4">4</a>) and Moni (<a class="footnote-reference brackets" href="#id13" id="id5">5</a>).
 For a detailed theoretical background and a technical overview of the implementation, please refer to <a class="footnote-reference brackets" href="#id14" id="id6">6</a>.</p>
 <p>By modifying the target normal vectors and face areas, this method can be used to construct global force polyhedrons that address various site condition constraints. For more examples, please refer to <a class="footnote-reference brackets" href="#id14" id="id7">6</a> and <a class="footnote-reference brackets" href="#id15" id="id8">7</a>.</p>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/04_egi_cell_constructor_wide_labeled.jpg"><img alt="../../_images/04_egi_cell_constructor_wide_labeled.jpg" src="../../_images/04_egi_cell_constructor_wide_labeled.jpg" style="width: 100%;" /></a>
-</div>
+</figure>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<section id="example">
+<h2>Example</h2>
 <a class="reference internal image-reference" href="../../_images/04_egi_examples_animations.gif"><img alt="../../_images/04_egi_examples_animations.gif" src="../../_images/04_egi_examples_animations.gif" style="width: 100%;" /></a>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -129,10 +129,10 @@ For a detailed theoretical background and a technical overview of the implementa
 <p class="admonition-title">Note</p>
 <p>As implemented, the method is optimised for convex polyhedral cells, and may not converge to stable solutions when there are multiple parallel force vectors present.</p>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<section id="references">
+<h2>References</h2>
 <dl class="footnote brackets">
 <dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Demaine, E. D. and J. O’Rourke (2007). <em>Geometric Folding Algorithms: Linkages, Origami, Polyhedra</em>, Chapter 23, pp. 339–357. Cambridge University Press.</p>
@@ -156,8 +156,8 @@ For a detailed theoretical background and a technical overview of the implementa
 <dd><p>Lee J. (2018). <em>Computational Design Framework for 3D Graphic Statics</em>. PhD thesis, ETH Zurich, Zurich, Switzerland.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>
@@ -282,7 +282,7 @@ For a detailed theoretical background and a technical overview of the implementa
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

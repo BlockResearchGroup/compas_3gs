@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -97,11 +97,11 @@
 
         
         
-        <div class="detail section" id="egi-merge-faces">
-<h1>EGI.merge_faces<a class="headerlink" href="#egi-merge-faces" title="Permalink to this headline">¶</a></h1>
+        <section class="detail" id="egi-merge-faces">
+<h1>EGI.merge_faces</h1>
 <dl class="py method">
-<dt id="compas_3gs.diagrams.EGI.merge_faces">
-<code class="sig-prename descclassname"><span class="pre">EGI.</span></code><code class="sig-name descname"><span class="pre">merge_faces</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#compas_3gs.diagrams.EGI.merge_faces" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="compas_3gs.diagrams.EGI.merge_faces">
+<span class="sig-prename descclassname"><span class="pre">EGI.</span></span><span class="sig-name descname"><span class="pre">merge_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Merge two faces of a mesh over their shared edge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -119,15 +119,18 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">subdivide</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="s1">&#39;quad&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_merge_faces</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_merge_faces</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="go">6</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_merge_faces</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="go">7</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 <span class="go">[3, 5, 0, 4, 1, 6, 2, 7]</span>
 </code></pre></div>
 </div>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -244,7 +247,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

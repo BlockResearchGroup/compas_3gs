@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -93,17 +93,17 @@
 
         
         
-        <div class="section" id="datastructure">
-<h1>Datastructure<a class="headerlink" href="#datastructure" title="Permalink to this headline">¶</a></h1>
+        <section id="datastructure">
+<h1>Datastructure</h1>
 <p>A polyhedral cell which is typically used for the representation of a global
 force polyhedron <span class="math notranslate nohighlight">\(\Lambda^{\perp}\)</span>, is modelled as a <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.
 The initial form diagram <span class="math notranslate nohighlight">\(\Lambda\)</span>, which contains the information of the magnitudes and locations of the external forces, are typically a disconnected set of vectors or “lines” in space.
 These vectors can be moved to one location such that the heads of the
 vectors are coincident.
 The consolidated vectors then can be modelled as a <code class="docutils literal notranslate"><span class="pre">network</span></code>, where each external force is represented with an edge.</p>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/04_datastructures_01_cell.jpg"><img alt="../../_images/04_datastructures_01_cell.jpg" src="../../_images/04_datastructures_01_cell.jpg" style="width: 100%;" /></a>
-</div>
+</figure>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -117,10 +117,10 @@ Each halfedge stores the information of the face that it belongs to.
 Using the halfedge directions and incident face information, various data of the mesh can be accessed and traversed.
 The data of a <code class="docutils literal notranslate"><span class="pre">mesh</span></code> thus consists of vertices, faces and halfedges.</p>
 <p>For a detiled overview of the <code class="docutils literal notranslate"><span class="pre">mesh</span></code> datastructure, please refer to this page <a class="reference external" href="https://compas-dev.github.io/main/tutorials/meshes.html">page</a> of the online documentation of COMPAS.</p>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_datastructure_mesh.jpg"><img alt="../../_images/compas_3gs_datastructure_mesh.jpg" src="../../_images/compas_3gs_datastructure_mesh.jpg" style="width: 100%;" /></a>
-</div>
-</div>
+</figure>
+</section>
 
         
       </main>
@@ -240,7 +240,7 @@ The data of a <code class="docutils literal notranslate"><span class="pre">mesh<
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

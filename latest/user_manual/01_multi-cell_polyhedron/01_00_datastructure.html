@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -93,16 +93,16 @@
 
         
         
-        <div class="section" id="datastructure">
-<h1>Datastructure<a class="headerlink" href="#datastructure" title="Permalink to this headline">¶</a></h1>
+        <section id="datastructure">
+<h1>Datastructure</h1>
 <p>A multi-cell polyhedron <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> and its corresponding polyhedral form diagram <span class="math notranslate nohighlight">\(\Gamma\)</span> are modelled as <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> and <code class="docutils literal notranslate"><span class="pre">network</span></code>, respectively.
 Because <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> and <span class="math notranslate nohighlight">\(\Gamma\)</span> are topologically dual to each other, <span class="math notranslate nohighlight">\(\Gamma\)</span> can also be modelled as a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code>.
 However, because the topological information of <span class="math notranslate nohighlight">\(\Gamma\)</span> is embedded in <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span>, some information do not need to be duplicated.
 For example, the face and cell information of <span class="math notranslate nohighlight">\(\Gamma\)</span> can be computed from the topology of <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span>.
 The polyhedral form diagram <span class="math notranslate nohighlight">\(\Gamma\)</span> as a <code class="docutils literal notranslate"><span class="pre">network</span></code> is essentially a visualisation of the cell connectivity information of <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span>, where each edge of <span class="math notranslate nohighlight">\(\Gamma\)</span> is perpendicular to its corresponding face of <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span>.</p>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/04_datastructures_02_mcp.jpg"><img alt="../../_images/04_datastructures_02_mcp.jpg" src="../../_images/04_datastructures_02_mcp.jpg" style="width: 100%;" /></a>
-</div>
+</figure>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -110,10 +110,10 @@ The polyhedral form diagram <span class="math notranslate nohighlight">\(\Gamma\
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/compas_3gs_datastructure_volmesh.jpg"><img alt="../../_images/compas_3gs_datastructure_volmesh.jpg" src="../../_images/compas_3gs_datastructure_volmesh.jpg" style="width: 100%;" /></a>
-</div>
-</div>
+</figure>
+</section>
 
         
       </main>
@@ -239,7 +239,7 @@ The polyhedral form diagram <span class="math notranslate nohighlight">\(\Gamma\
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

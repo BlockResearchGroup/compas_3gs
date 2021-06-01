@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -93,8 +93,8 @@
 
         
         
-        <div class="section" id="transformation">
-<h1>Transformation<a class="headerlink" href="#transformation" title="Permalink to this headline">¶</a></h1>
+        <section id="transformation">
+<h1>Transformation</h1>
 <p>In some design scenarios, it may be convenient to manipulate several faces at once.
 Unlike the face pull operation of a single polyhedral cell, pulling a face of a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> has a cascading geometric effect on a series of faces.
 Constrained geometric manipulations of a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> while maintaining the initial face orientations can be conceptualised as a face relocation problem, where the localised face pull operations are applied at the cell level.</p>
@@ -122,13 +122,15 @@ Furthermore, pulling of interior faces can have multiple solutions, depending on
 Most importantly, a large number of triangular faces, especially in the interior cells of a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> can be extremely constraining for any geometric operation.
 Unifying transformations such as aligning all dependent faces to a target plane, especially for boundary faces, can be useful in enforcing geometric constraints to multiple cells at once.
 However, geometric manipulations of <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> instances in general, are highly constrained problems that are directly dependent on the the initial topology.</p>
-<div class="figure align-default" id="id3">
+<figure class="align-default" id="id3">
 <a class="reference internal image-reference" href="../../_images/volmesh_pull_face.jpg"><img alt="../../_images/volmesh_pull_face.jpg" src="../../_images/volmesh_pull_face.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><strong>Figure 1.</strong> a), b) , c) Constrained transformations of <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> instance through recursive face pull operations (selected face for transformation shown in blue, and their dependent faces shown in gold); and d) face pull operations of the selected face and its dependent faces with a target plane.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1.</strong> a), b) , c) Constrained transformations of <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> instance through recursive face pull operations (selected face for transformation shown in blue, and their dependent faces shown in gold); and d) face pull operations of the selected face and its dependent faces with a target plane.</span></p>
+</figcaption>
+</figure>
 <hr class="docutils" />
-<div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<section id="example">
+<h2>Example</h2>
 <p>This example shows how the boundary faces of a <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> can be pulled in a constrained manner.</p>
 <a class="reference internal image-reference" href="../../_images/volmesh_face_pull_gif.gif"><img alt="../../_images/volmesh_face_pull_gif.gif" src="../../_images/volmesh_face_pull_gif.gif" style="width: 100%;" /></a>
 <div class="line-block">
@@ -140,8 +142,8 @@ However, geometric manipulations of <code class="docutils literal notranslate"><
 <li><p><a class="reference download internal" download="" href="../../_downloads/61542565c35cc5e43a35be2ca4c33b93/volmesh_donut.3dm"><code class="xref download docutils literal notranslate"><span class="pre">volmesh_donut.3dm</span></code></a></p></li>
 </ul>
 </div>
-</div></div>
-</div>
+</div></section>
+</section>
 
         
       </main>
@@ -270,7 +272,7 @@ However, geometric manipulations of <code class="docutils literal notranslate"><
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

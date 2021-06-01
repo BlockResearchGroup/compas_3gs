@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -93,10 +93,10 @@
 
         
         
-        <div class="section" id="interpreting-diagrams">
-<h1>Interpreting diagrams<a class="headerlink" href="#interpreting-diagrams" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="direction-of-forces">
-<h2>Direction of forces<a class="headerlink" href="#direction-of-forces" title="Permalink to this headline">¶</a></h2>
+        <section id="interpreting-diagrams">
+<h1>Interpreting diagrams</h1>
+<section id="direction-of-forces">
+<h2>Direction of forces</h2>
 <p>Based on the same convention used for interpreting the forces of a single polyhedral cell, the two nodes that define a member in tension will correspond to two cells with positive cell directions in <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> (Figure 1-a); two nodes that define a member in compression will correspond to two cells with negative cell directions (Figure 1-b).
 <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> for compression-only funicular structures will only
 consist of cells with negative directions, whereas tension-only funicular
@@ -106,14 +106,16 @@ It is possible for a polyhedral cell to have no cell direction.
 For example, a complex polyhedral cell where all of its faces are complex and have oriented areas of zero (and therefore no oriented normals), would have no
 cell direction.
 Therefore, if either of the pair of adjacent cells have no cell direction, the corresponding member in <span class="math notranslate nohighlight">\(\Gamma\)</span> would be a zero-force member.</p>
-<div class="figure align-default" id="id5">
+<figure class="align-default" id="id5">
 <a class="reference internal image-reference" href="../../_images/volmesh_interpretation.jpg"><img alt="../../_images/volmesh_interpretation.jpg" src="../../_images/volmesh_interpretation.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><strong>Figure 1.</strong> Interpretation of member forces in relation to the cell directions of the corresponding pair of adjacent cells: a) two adjacent cells with positive cell directions, which corresponds to a member in tension; b) two adjacent cells with negative cell directions, which corresponds to a member compression; c) and d) two adjacent cells that have different cell directions may correspond to a member in either compression or tension.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
-</div>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1.</strong> Interpretation of member forces in relation to the cell directions of the corresponding pair of adjacent cells: a) two adjacent cells with positive cell directions, which corresponds to a member in tension; b) two adjacent cells with negative cell directions, which corresponds to a member compression; c) and d) two adjacent cells that have different cell directions may correspond to a member in either compression or tension.</span></p>
+</figcaption>
+</figure>
+</section>
 <hr class="docutils" />
-<div class="section" id="computational-interpretation">
-<h2>Computational interpretation<a class="headerlink" href="#computational-interpretation" title="Permalink to this headline">¶</a></h2>
+<section id="computational-interpretation">
+<h2>Computational interpretation</h2>
 <p>In a <code class="docutils literal notranslate"><span class="pre">network</span></code> or <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> representation of a polyhedral form diagram, the directed edges can also be used for the interpretation of forces.
 In 2D and 2.5D applications of computational graphic statics, a directed
 edge of the form diagram <cite>e</cite><sub>i→j</sub> and the corresponding directed edge <cite>e</cite><sup>*</sup><sub>i→j</sub> in the force diagram are parallel and have the same orientations for tensile forces or members (<a class="footnote-reference brackets" href="#id3" id="id1">1</a>).
@@ -129,14 +131,16 @@ Figure 2-c, d, and e are three different configurations of <span class="math not
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default" id="id6">
+<figure class="align-default" id="id6">
 <a class="reference internal image-reference" href="../../_images/volmesh_computational_interpretation.jpg"><img alt="../../_images/volmesh_computational_interpretation.jpg" src="../../_images/volmesh_computational_interpretation.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><strong>Figure 2.</strong> Interpretation of the forces using the directed edges of the <code class="docutils literal notranslate"><span class="pre">network</span></code> and the corresponding directed faces of the <code class="docutils literal notranslate"><span class="pre">mesh</span></code> or <code class="docutils literal notranslate"><span class="pre">volmesh</span></code>: a) a multi-cell polyhedron <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> with four prismatic cells; b) the “directed faces” of <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span>; c), d) and e) various configurations of the form diagram <span class="math notranslate nohighlight">\(\Gamma\)</span>, where perpendicularity is enforced but the force distributions are different.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
-</div>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 2.</strong> Interpretation of the forces using the directed edges of the <code class="docutils literal notranslate"><span class="pre">network</span></code> and the corresponding directed faces of the <code class="docutils literal notranslate"><span class="pre">mesh</span></code> or <code class="docutils literal notranslate"><span class="pre">volmesh</span></code>: a) a multi-cell polyhedron <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> with four prismatic cells; b) the “directed faces” of <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span>; c), d) and e) various configurations of the form diagram <span class="math notranslate nohighlight">\(\Gamma\)</span>, where perpendicularity is enforced but the force distributions are different.</span></p>
+</figcaption>
+</figure>
+</section>
 <hr class="docutils" />
-<div class="section" id="diagram-hierarchy">
-<h2>Diagram hierarchy<a class="headerlink" href="#diagram-hierarchy" title="Permalink to this headline">¶</a></h2>
+<section id="diagram-hierarchy">
+<h2>Diagram hierarchy</h2>
 <p>For externally loaded structures, the cells of a <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> can be categorised into two groups: the global force polyhedron <span class="math notranslate nohighlight">\(\Lambda^{\perp}\)</span> representing the equilibrium of the external forces; and nodal polyhedral cells <cite>c</cite><sup>*</sup><sub>i</sub> that each represent the local equilibrium at node <strong>v</strong><sub>i</sub> . While each cell <cite>c</cite><sup>*</sup><sub>i</sub> corresponds to a node, a pair
 of conjoined cells represent a member in <span class="math notranslate nohighlight">\(\Gamma\)</span> (Figure 3-a).
 At the interface of two conjoined cells is a pair of halffaces.
@@ -147,14 +151,16 @@ polyhedron, <span class="math notranslate nohighlight">\(\Lambda^{\perp}\)</span
 Therefore, the corresponding <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> does not have any unpaired, boundary halffaces.
 The example shown in (Figure 3-b) has four triangular prismatic cells which are all contained within a single outer rectangular cell.
 In contrast to the example in Figure 2-a, the four external forces represented by the four boundary halffaces, is now internally resolved at a single central node whose equilibrium is represented by the outer rectangular cell.</p>
-<div class="figure align-default" id="id7">
+<figure class="align-default" id="id7">
 <a class="reference internal image-reference" href="../../_images/volmesh_hierarchy.jpg"><img alt="../../_images/volmesh_hierarchy.jpg" src="../../_images/volmesh_hierarchy.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><strong>Figure 2.</strong> A force diagram <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> with prismatic polyhedral cells and the corresponding 2D form diagram <span class="math notranslate nohighlight">\(\Gamma\)</span> (vertical forces not shown): a) a structure with four external forces; and b) a self-stressed structure with five cells and no external forces.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
-</div>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 2.</strong> A force diagram <span class="math notranslate nohighlight">\(\Gamma^{\perp}\)</span> with prismatic polyhedral cells and the corresponding 2D form diagram <span class="math notranslate nohighlight">\(\Gamma\)</span> (vertical forces not shown): a) a structure with four external forces; and b) a self-stressed structure with five cells and no external forces.</span></p>
+</figcaption>
+</figure>
+</section>
 <hr class="docutils" />
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<section id="references">
+<h2>References</h2>
 <dl class="footnote brackets">
 <dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Van Mele, T. and P. Block (2014). Algebraic graph statics. <em>Computer-Aided Design</em> 53, 104–116.</p>
@@ -163,8 +169,8 @@ In contrast to the example in Figure 2-a, the four external forces represented b
 <dd><p>Lee J. (2018). <em>Computational Design Framework for 3D Graphic Statics</em>. PhD thesis, ETH Zurich, Zurich, Switzerland.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>
@@ -296,7 +302,7 @@ In contrast to the example in Figure 2-a, the four external forces represented b
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

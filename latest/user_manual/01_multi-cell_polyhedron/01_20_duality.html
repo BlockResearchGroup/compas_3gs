@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -93,8 +93,8 @@
 
         
         
-        <div class="section" id="duality">
-<h1>Duality<a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h1>
+        <section id="duality">
+<h1>Duality</h1>
 <p>James Clerk Maxwell used the principle of duality in projective geometry to express the
 reciprocal relationship between the form and force diagrams in the context
 of graphic statics (<a class="footnote-reference brackets" href="#id7" id="id1">1</a>).
@@ -104,26 +104,28 @@ The mapping of one geometric object in one diagram to a different geometric obje
 force diagrams: n-dimensional reciprocal diagrams are projections of <span class="math notranslate nohighlight">\((n+1)\)</span>-dimensional stress functions (<a class="footnote-reference brackets" href="#id10" id="id4">4</a>, <a class="footnote-reference brackets" href="#id11" id="id5">5</a>)
 Based on this principle, three-dimensional form and force diagrams can be defined as projections of four-dimensional stress functions.
 The duality relationships between the elements of <span class="math notranslate nohighlight">\(n\)</span>-dimensional structures and the <span class="math notranslate nohighlight">\((n+1)\)</span>-dimension of the corresponding stress functions are summarised in the figure below.</p>
-<div class="figure align-default" id="id13">
+<figure class="align-default" id="id13">
 <a class="reference internal image-reference" href="../../_images/04_duality_relationships_simple.jpg"><img alt="../../_images/04_duality_relationships_simple.jpg" src="../../_images/04_duality_relationships_simple.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text">Summary of the duality relationships between the elements of <span class="math notranslate nohighlight">\(n\)</span>-dimensional structures and the <span class="math notranslate nohighlight">\((n+1)\)</span>-dimension of the corresponding stress functions (force diagrams) (after Figure 1 of <a class="footnote-reference brackets" href="#id12" id="id6">6</a>).</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-text">Summary of the duality relationships between the elements of <span class="math notranslate nohighlight">\(n\)</span>-dimensional structures and the <span class="math notranslate nohighlight">\((n+1)\)</span>-dimension of the corresponding stress functions (force diagrams) (after Figure 1 of <a class="footnote-reference brackets" href="#id12" id="id6">6</a>).</span></p>
+</figcaption>
+</figure>
 <hr class="docutils" />
-<div class="section" id="face-dual">
-<h2>Face dual<a class="headerlink" href="#face-dual" title="Permalink to this headline">¶</a></h2>
+<section id="face-dual">
+<h2>Face dual</h2>
 <p>The reciprocal diagrams of 2D structures have a “face dual” relationship, where the vertices one diagram corresponds to the faces of the other diagram.
 “Face dual” is equivalent to the <a class="reference external" href="https://compas-dev.github.io/main/api/generated/compas.datastructures.mesh_dual.html#compas.datastructures.mesh_dual">compas.datastructures.mesh_dual</a>.
 The steps of the “face_dual” constructor is graphically summarised below.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/dual_mesh.jpg"><img alt="../../_images/dual_mesh.jpg" src="../../_images/dual_mesh.jpg" style="width: 100%;" /></a>
-</div>
-</div>
+</figure>
+</section>
 <hr class="docutils" />
-<div class="section" id="cell-dual">
-<h2>Cell dual<a class="headerlink" href="#cell-dual" title="Permalink to this headline">¶</a></h2>
+<section id="cell-dual">
+<h2>Cell dual</h2>
 <p>The reciprocal diagrams of 3D structures have a “cell dual” relationship, where the vertices of one diagram corresponds to the cells of the other diagram.
 A polyhedral cell and the corresponding form diagram have a cell dual relationship; the polyhedral cell and its faces correspond to a vertex and edges of the form diagram, respectively.
 The “cell dual” constructor is implemented as <a class="reference internal" href="../../reference/generated/compas_3gs.algorithms.volmesh_dual_volmesh.html#compas_3gs.algorithms.volmesh_dual_volmesh" title="compas_3gs.algorithms.volmesh_dual_volmesh"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas_3gs.algorithms.volmesh_dual_volmesh()</span></code></a>.
@@ -131,17 +133,17 @@ The steps of the “cell_dual” constructor is graphically summarised below.</p
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/dual_volmesh.jpg"><img alt="../../_images/dual_volmesh.jpg" src="../../_images/dual_volmesh.jpg" style="width: 100%;" /></a>
-</div>
-</div>
+</figure>
+</section>
 <hr class="docutils" />
-<div class="section" id="from-volmesh-to-volmesh">
-<h2>From volmesh to volmesh<a class="headerlink" href="#from-volmesh-to-volmesh" title="Permalink to this headline">¶</a></h2>
+<section id="from-volmesh-to-volmesh">
+<h2>From volmesh to volmesh</h2>
 <p>Using the “cell dual” relationship, a dual volmesh can be constructed from an existing volmesh.</p>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/02_20_duality_volmesh_volmesh_screenshot_2.jpg"><img alt="../../_images/02_20_duality_volmesh_volmesh_screenshot_2.jpg" src="../../_images/02_20_duality_volmesh_volmesh_screenshot_2.jpg" style="width: 100%;" /></a>
-</div>
+</figure>
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Downloads</div><ul class="simple">
@@ -152,10 +154,10 @@ The steps of the “cell_dual” constructor is graphically summarised below.</p
 <p class="admonition-title">Note</p>
 <p>An input <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> with a minimum of four cells is required for the construction of a dual <code class="docutils literal notranslate"><span class="pre">volmesh</span></code> (a tetrahedron). In another words, in order for a volmesh to have a dual volmesh, the volmesh needs to have an interior vertex.</p>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="from-volmesh-to-network">
-<h2>From volmesh to network<a class="headerlink" href="#from-volmesh-to-network" title="Permalink to this headline">¶</a></h2>
+<section id="from-volmesh-to-network">
+<h2>From volmesh to network</h2>
 <p>If the initial volmesh is interpreted as a polyhedral force diagram, then the edges of the dual_volmesh then represents the polyhedral form diagram.
 The topological information (vertices, edges, faces and cells) of the dual_volmesh is intrinsically embedded in the volmesh.
 From a practical point of view, the edges of the form diagram are typically of interest to the designer.
@@ -166,19 +168,19 @@ For example, the face and cell information of the network can be computed from t
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/02_20_duality_volmesh_network_screenshot.jpg"><img alt="../../_images/02_20_duality_volmesh_network_screenshot.jpg" src="../../_images/02_20_duality_volmesh_network_screenshot.jpg" style="width: 100%;" /></a>
-</div>
+</figure>
 <div class="card bg-light">
 <div class="card-body">
 <div class="card-title">Downloads</div><ul class="simple">
 <li><p><a class="reference download internal" download="" href="../../_downloads/4cd65b84b7796b1ceba2dcfbbb26edd4/volmesh_cubes_4x4.3dm"><code class="xref download docutils literal notranslate"><span class="pre">volmesh_cubes_4x4.3dm</span></code></a></p></li>
 </ul>
 </div>
-</div></div>
+</div></section>
 <hr class="docutils" />
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<section id="references">
+<h2>References</h2>
 <dl class="footnote brackets">
 <dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Harman, P. M. (2001). <em>The Natural Philosophy of James Clerk Maxwell</em>. Cambridge University Press.</p>
@@ -199,8 +201,8 @@ For example, the face and cell information of the network can be computed from t
 <dd><p>Konstantatou, M. and A. Mcrobie (2018). Graphic statics for optimal trusses geometry-based structural optimisation. In <em>Proceedings of the 2018 International Association for Shell and Spatial Structures (IASS) Symposium</em>, Boston, USA.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>
@@ -333,7 +335,7 @@ For example, the face and cell information of the network can be computed from t
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

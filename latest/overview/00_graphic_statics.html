@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -91,33 +91,37 @@
 
         
         
-        <div class="section" id="graphic-statics">
-<h1>Graphic Statics<a class="headerlink" href="#graphic-statics" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="id1">
-<h2>Graphic statics<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+        <section id="graphic-statics">
+<h1>Graphic Statics</h1>
+<section id="id1">
+<h2>Graphic statics</h2>
 <p>Graphic statics is widely known as a design and analysis method for two-dimensional (2D) discrete structures, that relies on geometrical rather than analytical or numerical representations of the relation between a structure’s geometry and the equilibrium of its internal forces (<a class="footnote-reference brackets" href="#id10" id="id2">1</a>, <a class="footnote-reference brackets" href="#id11" id="id3">2</a>, <a class="footnote-reference brackets" href="#id12" id="id4">3</a>).
 Graphical representation of equilibrium using reciprocal form and force diagrams provides invaluable insight for designers and improves intuitive understanding of a structure’s behaviour through a visual medium that is easier to understand and more transparent than conventional, arithmetic or numerical methods (<a class="footnote-reference brackets" href="#id13" id="id5">4</a>).</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default" id="id17">
+<figure class="align-default" id="id17">
 <a class="reference internal image-reference" href="../_images/cremona_gs.jpg"><img alt="../_images/cremona_gs.jpg" src="../_images/cremona_gs.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text">Pages from Cremona’s <em>Le figure reciproche nella statica grafica</em> (<a class="footnote-reference brackets" href="#id13" id="id6">4</a>).</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-text">Pages from Cremona’s <em>Le figure reciproche nella statica grafica</em> (<a class="footnote-reference brackets" href="#id13" id="id6">4</a>).</span></p>
+</figcaption>
+</figure>
 <p>Graphic statics gradually disappeared from structural engineering practice over the 20th century due to the advancement of computers and powerful numerical software.
 However, there has been a recent revival of graphic statics through computational implementations, which have enabled dynamic interaction between form and force diagrams with real-time, visual feedback.
 These interactive implementations of graphic statics allow users to directly control the geometry of forces, which enable force-driven design approaches with high formal freedom to create structurally informed geometries during early stages of design.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default" id="id18">
+<figure class="align-default" id="id18">
 <a class="reference internal image-reference" href="../_images/compas_3gs_interactive_gs.gif"><img alt="../_images/compas_3gs_interactive_gs.gif" src="../_images/compas_3gs_interactive_gs.gif" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text">An interactive graphic statics drawing of a constant-force truss using <a class="reference external" href="https://www.geogebra.org">GeoGebra</a> (available on <a class="reference external" href="http://block.arch.ethz.ch/eq/">eQuilibrium</a>, an online graphic-statics-based teaching platform developed by the <a class="reference external" href="http://block.arch.ethz.ch/brg/">Block Research Group</a>).</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
-</div>
-</div>
+<figcaption>
+<p><span class="caption-text">An interactive graphic statics drawing of a constant-force truss using <a class="reference external" href="https://www.geogebra.org">GeoGebra</a> (available on <a class="reference external" href="http://block.arch.ethz.ch/eq/">eQuilibrium</a>, an online graphic-statics-based teaching platform developed by the <a class="reference external" href="http://block.arch.ethz.ch/brg/">Block Research Group</a>).</span></p>
+</figcaption>
+</figure>
+</section>
 <hr class="docutils" />
-<div class="section" id="d-graphic-statics">
-<h2>3D graphic statics<a class="headerlink" href="#d-graphic-statics" title="Permalink to this headline">¶</a></h2>
+<section id="d-graphic-statics">
+<h2>3D graphic statics</h2>
 <p>In 2D graphic statics, the geometry of a structure and the static equilibrium of its internal forces are represented by a reciprocal form and force diagrams.
 Reciprocal form and force diagrams consist of an equal number of lines, such that the corresponding lines in the two diagrams are parallel (or perpendicular, or at any constant angle), and the corresponding lines which converge to a point in one diagram form a closed polygon in the other.
 The length of an edge in the force diagram represents the magnitude of internal axial force in the corresponding edge in the form diagram.</p>
@@ -127,10 +131,12 @@ For each polyhedral cell, the normal and the area of a face represent the direct
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default" id="id19">
+<figure class="align-default" id="id19">
 <a class="reference internal image-reference" href="../_images/compas_3gs_diagram_definition.jpg"><img alt="../_images/compas_3gs_diagram_definition.jpg" src="../_images/compas_3gs_diagram_definition.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text">Reciprocal polygonal diagrams of 2D graphic statics (left), and reciprocal polyhedral diagrams of 3D graphic statics (right).</span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-text">Reciprocal polygonal diagrams of 2D graphic statics (left), and reciprocal polyhedral diagrams of 3D graphic statics (right).</span></p>
+</figcaption>
+</figure>
 <p>One of the the most unique properties of computational graphic statics is that the form of the structure can be modified or controlled through the geometry of the force diagrams.
 Whereas most conventional structural design or analysis software are dependent on predefined forms, computational graphic statics provides drastically different ways of approaching structural design problems by using the geometry of the force diagrams as the catalyst for design, analysis and optimisation.
 Exploration of structural forms by constraining, optimising, manipulating and designing the geometry of the force diagrams has the potential to significantly broaden the design space.
@@ -138,14 +144,16 @@ Computational implementations of graphic statics (<a class="footnote-reference b
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default" id="id20">
+<figure class="align-default" id="id20">
 <a class="reference internal image-reference" href="../_images/08_mycotree_diagram.jpg"><img alt="../_images/08_mycotree_diagram.jpg" src="../_images/08_mycotree_diagram.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><span class="xref std std-ref">Unified diagram</span> of a compression-only, spatially branching structure.</span><a class="headerlink" href="#id20" title="Permalink to this image">¶</a></p>
-</div>
-</div>
+<figcaption>
+<p><span class="caption-text"><span class="xref std std-ref">Unified diagram</span> of a compression-only, spatially branching structure.</span></p>
+</figcaption>
+</figure>
+</section>
 <hr class="docutils" />
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<section id="references">
+<h2>References</h2>
 <dl class="footnote brackets">
 <dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
 <dd><p>Maxwell J.C. (1864). <em>On reciprocal figures and diagrams of forces</em>. Philosophical Magazine Series 4 27 (182), pp. 250-261.</p>
@@ -169,8 +177,8 @@ Computational implementations of graphic statics (<a class="footnote-reference b
 <dd><p>Lee J. (2018). <em>Computational Design Framework for 3D Graphic Statics</em>. PhD thesis, ETH Zurich, Zurich, Switzerland.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>
@@ -289,7 +297,7 @@ Computational implementations of graphic statics (<a class="footnote-reference b
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

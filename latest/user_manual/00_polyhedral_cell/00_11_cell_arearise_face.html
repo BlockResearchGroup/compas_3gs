@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -93,8 +93,8 @@
 
         
         
-        <div class="section" id="arearisation">
-<h1>Arearisation<a class="headerlink" href="#arearisation" title="Permalink to this headline">¶</a></h1>
+        <section id="arearisation">
+<h1>Arearisation</h1>
 <p>Face pull operation of a cell changes the distribution of the forces.
 However, the precise amount of change in the area of the pulled face is not visually quantifiable, and it is not immediately apparent how the opeartion will affect the face’s oriented normal.
 Rather than pulling the faces in arbitrary amounts, finding the new face location such that the resulting face area matches a target value will enable a more force-controlled geometric operation.</p>
@@ -103,9 +103,9 @@ A simple iterative minimisation technique, such as the <em>Golden Section Search
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/cell_arearise_gss.jpg"><img alt="../../_images/cell_arearise_gss.jpg" src="../../_images/cell_arearise_gss.jpg" style="width: 100%;" /></a>
-</div>
+</figure>
 <p>Because arearisation algorithm allows a more precise control of the areas of individual faces of a cell, and therefore the magnitudes of the forces in the corresponding members in the form diagram, it can be used to explain the concept of static indeterminacy of spatial structures.
 It can also demonstrate that polyhedral reciprocal diagrams are not limited to the exploration of statically determinate spatial structures, but also various possible equilibrium solutions for statically indeterminate structures
 (<a class="footnote-reference brackets" href="#id6" id="id2">2</a>, <a class="footnote-reference brackets" href="#id7" id="id3">3</a> and <a class="footnote-reference brackets" href="#id8" id="id4">4</a>).</p>
@@ -115,12 +115,12 @@ In the context of structural design, this indeterminacy can be exploited to expl
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="figure align-default">
+<figure class="align-default">
 <a class="reference internal image-reference" href="../../_images/cell_arearise_examples.jpg"><img alt="../../_images/cell_arearise_examples.jpg" src="../../_images/cell_arearise_examples.jpg" style="width: 100%;" /></a>
-</div>
+</figure>
 <hr class="docutils" />
-<div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<section id="example">
+<h2>Example</h2>
 <a class="reference internal image-reference" href="../../_images/cell_face_arearise_gif.gif"><img alt="../../_images/cell_face_arearise_gif.gif" src="../../_images/cell_face_arearise_gif.gif" style="width: 100%;" /></a>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -138,10 +138,10 @@ In the context of structural design, this indeterminacy can be exploited to expl
 <li><p>For a positive target area, two solutions exist. The solution with a <span class="math notranslate nohighlight">\(z\)</span> value that is closer to the initial face position will be given.</p></li>
 </ul>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<section id="references">
+<h2>References</h2>
 <dl class="footnote brackets">
 <dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Kiefer, J. (1953). Sequential minimax search for a maximum. In <em>Proceedings of the American Mathematical Society</em> 4(3), 502-506.</p>
@@ -156,8 +156,8 @@ In the context of structural design, this indeterminacy can be exploited to expl
 <dd><p>Van Mele, T., L. Lachauer, M. Rippmann and P. Block (2012). Geometry-based understanding of structures. <em>Journal of the International Association for Shell and Spatial Structures</em> 53(174), 285–295.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>
@@ -281,7 +281,7 @@ In the context of structural design, this indeterminacy can be exploited to expl
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

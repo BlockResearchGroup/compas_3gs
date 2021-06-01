@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -91,8 +91,8 @@
 
         
         
-        <div class="section" id="design-workflow">
-<h1>Design workflow<a class="headerlink" href="#design-workflow" title="Permalink to this headline">¶</a></h1>
+        <section id="design-workflow">
+<h1>Design workflow</h1>
 <p>The conceptual development of <code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> is based on key open problems in 3D graphic statics, as outlined in <a class="footnote-reference brackets" href="#id4" id="id1">1</a>.
 These problems are addressed from the perspective of a designer in practice, with particular focus on maximising the applicability and usability of the mathematical theories behind the reciprocal relationship of form and force diagrams in real-world applications.
 The suggested design workflow using <code class="docutils literal notranslate"><span class="pre">compas_3gs</span></code> is summarised as follows.</p>
@@ -104,17 +104,17 @@ The suggested design workflow using <code class="docutils literal notranslate"><
 <div class="line"><br /></div>
 </div>
 <hr class="docutils" />
-<div class="section" id="addressing-boundary-conditions">
-<h2>1. Addressing boundary conditions<a class="headerlink" href="#addressing-boundary-conditions" title="Permalink to this headline">¶</a></h2>
+<section id="addressing-boundary-conditions">
+<h2>1. Addressing boundary conditions</h2>
 <p>During the beginning stages of a project, the only known information to the designer are typically the type of loading the structure will carry (applied load locations and magnitudes) and the physical constraints of the site (i.e. support locations, types, allowable reaction force magnitudes, etc.).
 Before any design explorations using 3D graphics can take place, the quantitative (force magnitudes) and spatial (force locations) site constraints, which are unique for each project, need to be incorporated during the construction of the initial global force polyhedron.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="generating-new-topologies">
-<h2>2. Generating new topologies<a class="headerlink" href="#generating-new-topologies" title="Permalink to this headline">¶</a></h2>
+<section id="generating-new-topologies">
+<h2>2. Generating new topologies</h2>
 <p>Once the global force polyhedron has been constructed, various subdivision schemes can be applied to generate and explore structural topologies.
 Subdivision of internal polyhedral cells increases the complexity of the structural topology without changing the initial boundary conditions (<a class="footnote-reference brackets" href="#id5" id="id2">2</a>).
 As a result of subdividing a polyhedral cell, a single member of the corresponding form diagram is replaced with multiple members that together carry the same magnitude of axial force as the replaced member.
@@ -125,10 +125,10 @@ In addition to subdivision, additive polyhedral transformations can generate new
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="exploring-non-polyhedral-structures">
-<h2>3. Exploring non-polyhedral structures<a class="headerlink" href="#exploring-non-polyhedral-structures" title="Permalink to this headline">¶</a></h2>
+<section id="exploring-non-polyhedral-structures">
+<h2>3. Exploring non-polyhedral structures</h2>
 <p>The reciprocal relationship between the polyhedral form and force diagrams restricts design explorations to structures that are polyhedral in its geometry (i.e. subdivided tree structures, faceted domes, polyhedral mesh or surface structures, crystalline aggregations, etc.).
 Inherent geometric constraints of polyhedral form and force diagrams make it impossible to construct force diagrams for spatial structures in equilibrium which may be non-polyhedral in its geometry (i.e. structures with overlapping members, non-planar faces, etc.).
 Polyhedral constraint is beneficial for applying global manipulations and transformations, but ultimately limits the range of structural typologies that can be explored.</p>
@@ -138,10 +138,10 @@ Cell networks allow integration of quantitative, force-driven constraints and ex
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="materialising-3d-graphic-statics">
-<h2>4. Materialising 3D graphic statics<a class="headerlink" href="#materialising-3d-graphic-statics" title="Permalink to this headline">¶</a></h2>
+<section id="materialising-3d-graphic-statics">
+<h2>4. Materialising 3D graphic statics</h2>
 <p>The final step of the 3D graphic statics design workflow is the materialisation of the network of lines that represents the form diagram.
 The form diagrams in graphic statics applications represent the topology and geometry of equilibrium structures, but they do not carry any material information.
 While complex structural toplogies can be quickly generated using the 3D graphic statics design workflow, addressing the materialisation and practical feasibility of complex network of lines in space, especially the nodes, is important in expanding 3D graphic statics applications beyond computational form-finding explorations of abstract shapes.</p>
@@ -153,10 +153,10 @@ By exploiting the inherent polyhedral properties of form and force diagrams used
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<section id="references">
+<h2>References</h2>
 <dl class="footnote brackets">
 <dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Lee J. (2018). <em>Computational Design Framework for 3D Graphic Statics</em>. PhD thesis, ETH Zurich, Zurich, Switzerland.</p>
@@ -168,8 +168,8 @@ By exploiting the inherent polyhedral properties of form and force diagrams used
 <dd><p>Lee, J., T. Van Mele, and P. Block (2016). Form-finding explorations through geometric transformations and modifications of force polyhedrons. In <em>Proceedings of the 2016 International Association for Shell and Spatial Structures (IASS) Symposium</em>, Tokyo, Japan.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>
@@ -290,7 +290,7 @@ By exploiting the inherent polyhedral properties of form and force diagrams used
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

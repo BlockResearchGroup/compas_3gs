@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -93,8 +93,8 @@
 
         
         
-        <div class="section" id="planarisation">
-<h1>Planarisation<a class="headerlink" href="#planarisation" title="Permalink to this headline">¶</a></h1>
+        <section id="planarisation">
+<h1>Planarisation</h1>
 <p>At any point during the design process, the faces of polyhedral cells or multi-cell polyhedrons may become non-planar.
 Before any further design explorations can be made, the non-planar faces need to be planarised.
 Planarisation of non-planar faces can be formulated as an iterative projection method, which is a tried-and-tested methodology in computational geometry (<a class="footnote-reference brackets" href="#id4" id="id1">1</a>, <a class="footnote-reference brackets" href="#id5" id="id2">2</a> and <a class="footnote-reference brackets" href="#id6" id="id3">3</a>).</p>
@@ -111,13 +111,15 @@ In addition, it may sometimes be desired to fix the orientations of certain memb
 <p>The orientation constraint can be enforced by updating the <code class="docutils literal notranslate"><span class="pre">fix_normal</span></code> attribute of the specified faces.
 Individual vertex constraints can also be set by updating the <code class="docutils literal notranslate"><span class="pre">x_fix</span></code>, <code class="docutils literal notranslate"><span class="pre">y_fix</span></code>, <code class="docutils literal notranslate"><span class="pre">z_fix</span></code> attributes for the specified vertices.
 Figure 1-c shows the planarisation, but this time with faces 2, 1 and 5 constrained to be perpendicular to the x, y and z axes, respectively.</p>
-<div class="figure align-default" id="id7">
+<figure class="align-default" id="id7">
 <a class="reference internal image-reference" href="../../_images/planarisation.jpg"><img alt="../../_images/planarisation.jpg" src="../../_images/planarisation.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><strong>Figure 1.</strong> Planarisation of a polyhedral cell with non-planar faces: a) unconstrained planarisation, where the best-fit planes is used for each face at every iteration; and b) constrained planarisation, where some of the faces are given target normal vectors (faces 2, 1 and 5 are constrained to be perpendicular the x, y and z axes, respectively).</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-text"><strong>Figure 1.</strong> Planarisation of a polyhedral cell with non-planar faces: a) unconstrained planarisation, where the best-fit planes is used for each face at every iteration; and b) constrained planarisation, where some of the faces are given target normal vectors (faces 2, 1 and 5 are constrained to be perpendicular the x, y and z axes, respectively).</span></p>
+</figcaption>
+</figure>
 <hr class="docutils" />
-<div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<section id="example">
+<h2>Example</h2>
 <p>In this example, three random vertices are chosen to remain fixed during the planarisation.</p>
 <a class="reference internal image-reference" href="../../_images/volmesh_planarisation_gif.gif"><img alt="../../_images/volmesh_planarisation_gif.gif" src="../../_images/volmesh_planarisation_gif.gif" style="width: 100%;" /></a>
 <div class="line-block">
@@ -132,10 +134,10 @@ Figure 1-c shows the planarisation, but this time with faces 2, 1 and 5 constrai
 </div><div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<section id="references">
+<h2>References</h2>
 <dl class="footnote brackets">
 <dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Liu, Y., H. Pottmann, J. Wallner, Y.-L. Yang, and W. Wang (2006, July). Geometric modeling with conical meshes and developable surfaces. <strong>ACM Trans. Graph.</strong> 25(3), 681–689.</p>
@@ -147,8 +149,8 @@ Figure 1-c shows the planarisation, but this time with faces 2, 1 and 5 constrai
 <dd><p>Deuss, M., A. H. Deleuran, S. Bouaziz, B. Deng, D. Piker, and M. Pauly (2015). Shapeop—a robust and extensible geometric modelling paradigm. In R. M. Thomsen, M. Tamke, C. Gengnagel, B. Faircloth, and F. Scheurer (Eds.), <strong>Modelling Behaviour: Design Modelling Symposium 2015</strong> , pp. 505–515. Cham: Springer International Publishing.</p>
 </dd>
 </dl>
-</div>
-</div>
+</section>
+</section>
 
         
       </main>
@@ -278,7 +280,7 @@ Figure 1-c shows the planarisation, but this time with faces 2, 1 and 5 constrai
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',

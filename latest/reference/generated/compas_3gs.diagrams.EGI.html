@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.4.3rc1
+            0.5.0rc0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -95,12 +95,12 @@
 
         
         
-        <div class="detail section" id="egi">
-<h1>EGI<a class="headerlink" href="#egi" title="Permalink to this headline">¶</a></h1>
+        <section class="detail" id="egi">
+<h1>EGI</h1>
 <dl class="py class">
-<dt id="compas_3gs.diagrams.EGI">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_3gs.diagrams.</span></code><code class="sig-name descname"><span class="pre">EGI</span></code><a class="reference internal" href="../../_modules/compas_3gs/diagrams/egi.html#EGI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_3gs.diagrams.EGI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_3gs.datastructures.mesh3gs.Mesh3gs</span></code></p>
+<dt class="sig sig-object py" id="compas_3gs.diagrams.EGI">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_3gs.diagrams.</span></span><span class="sig-name descname"><span class="pre">EGI</span></span><a class="reference internal" href="../../_modules/compas_3gs/diagrams/egi.html#EGI"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="compas_3gs.datastructures.Mesh3gs.html#compas_3gs.datastructures.Mesh3gs" title="compas_3gs.datastructures.mesh3gs.Mesh3gs"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_3gs.datastructures.mesh3gs.Mesh3gs</span></code></a></p>
 <p>An EGI, represented as a mesh object.</p>
 <p>An EGI is a topological (mesh) dual of a cell of a volmesh, with all of its elements represented on a unit sphere.</p>
 <p class="rubric">Attributes</p>
@@ -401,191 +401,197 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_json.html#compas_3gs.diagrams.EGI.from_json" title="compas_3gs.diagrams.EGI.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_lines.html#compas_3gs.diagrams.EGI.from_lines" title="compas_3gs.diagrams.EGI.from_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_lines</span></code></a>(lines[, delete_boundary_face, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_jsonstring.html#compas_3gs.diagrams.EGI.from_jsonstring" title="compas_3gs.diagrams.EGI.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a>(string)</p></td>
+<td><p>Construct an object from serialized data contained in a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_lines.html#compas_3gs.diagrams.EGI.from_lines" title="compas_3gs.diagrams.EGI.from_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_lines</span></code></a>(lines[, delete_boundary_face, …])</p></td>
 <td><p>Construct a mesh object from a list of lines described by start and end point coordinates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_obj.html#compas_3gs.diagrams.EGI.from_obj" title="compas_3gs.diagrams.EGI.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a>(filepath[, precision])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_obj.html#compas_3gs.diagrams.EGI.from_obj" title="compas_3gs.diagrams.EGI.from_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_obj</span></code></a>(filepath[, precision])</p></td>
 <td><p>Construct a mesh object from the data described in an OBJ file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_off.html#compas_3gs.diagrams.EGI.from_off" title="compas_3gs.diagrams.EGI.from_off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_off</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_off.html#compas_3gs.diagrams.EGI.from_off" title="compas_3gs.diagrams.EGI.from_off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_off</span></code></a>(filepath)</p></td>
 <td><p>Construct a mesh object from the data described in a OFF file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_ply.html#compas_3gs.diagrams.EGI.from_ply" title="compas_3gs.diagrams.EGI.from_ply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ply</span></code></a>(filepath[, precision])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_ply.html#compas_3gs.diagrams.EGI.from_ply" title="compas_3gs.diagrams.EGI.from_ply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_ply</span></code></a>(filepath[, precision])</p></td>
 <td><p>Construct a mesh object from the data described in a PLY file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_points.html#compas_3gs.diagrams.EGI.from_points" title="compas_3gs.diagrams.EGI.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a>(points[, boundary, holes])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_points.html#compas_3gs.diagrams.EGI.from_points" title="compas_3gs.diagrams.EGI.from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_points</span></code></a>(points[, boundary, holes])</p></td>
 <td><p>Construct a mesh from a delaunay triangulation of a set of points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_polygons.html#compas_3gs.diagrams.EGI.from_polygons" title="compas_3gs.diagrams.EGI.from_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code></a>(polygons[, precision])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_polygons.html#compas_3gs.diagrams.EGI.from_polygons" title="compas_3gs.diagrams.EGI.from_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code></a>(polygons[, precision])</p></td>
 <td><p>Construct a mesh from a series of polygons.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_polyhedron.html#compas_3gs.diagrams.EGI.from_polyhedron" title="compas_3gs.diagrams.EGI.from_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polyhedron</span></code></a>(f)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_polyhedron.html#compas_3gs.diagrams.EGI.from_polyhedron" title="compas_3gs.diagrams.EGI.from_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polyhedron</span></code></a>(f)</p></td>
 <td><p>Construct a mesh from a platonic solid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_polylines.html#compas_3gs.diagrams.EGI.from_polylines" title="compas_3gs.diagrams.EGI.from_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polylines</span></code></a>(boundary_polylines, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_polylines.html#compas_3gs.diagrams.EGI.from_polylines" title="compas_3gs.diagrams.EGI.from_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polylines</span></code></a>(boundary_polylines, …)</p></td>
 <td><p>Construct mesh from polylines.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_shape.html#compas_3gs.diagrams.EGI.from_shape" title="compas_3gs.diagrams.EGI.from_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_shape</span></code></a>(shape, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_shape.html#compas_3gs.diagrams.EGI.from_shape" title="compas_3gs.diagrams.EGI.from_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_shape</span></code></a>(shape, **kwargs)</p></td>
 <td><p>Construct a mesh from a primitive shape.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_stl.html#compas_3gs.diagrams.EGI.from_stl" title="compas_3gs.diagrams.EGI.from_stl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_stl</span></code></a>(filepath[, precision])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_stl.html#compas_3gs.diagrams.EGI.from_stl" title="compas_3gs.diagrams.EGI.from_stl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_stl</span></code></a>(filepath[, precision])</p></td>
 <td><p>Construct a mesh object from the data described in a STL file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_vertices_and_faces.html#compas_3gs.diagrams.EGI.from_vertices_and_faces" title="compas_3gs.diagrams.EGI.from_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code></a>(vertices, faces)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.from_vertices_and_faces.html#compas_3gs.diagrams.EGI.from_vertices_and_faces" title="compas_3gs.diagrams.EGI.from_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vertices_and_faces</span></code></a>(vertices, faces)</p></td>
 <td><p>Construct a mesh object from a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.genus.html#compas_3gs.diagrams.EGI.genus" title="compas_3gs.diagrams.EGI.genus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">genus</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.genus.html#compas_3gs.diagrams.EGI.genus" title="compas_3gs.diagrams.EGI.genus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">genus</span></code></a>()</p></td>
 <td><p>Calculate the genus.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.get_any_face.html#compas_3gs.diagrams.EGI.get_any_face" title="compas_3gs.diagrams.EGI.get_any_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.get_any_face.html#compas_3gs.diagrams.EGI.get_any_face" title="compas_3gs.diagrams.EGI.get_any_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face</span></code></a>()</p></td>
 <td><p>Get the identifier of a random face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.get_any_face_vertex.html#compas_3gs.diagrams.EGI.get_any_face_vertex" title="compas_3gs.diagrams.EGI.get_any_face_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face_vertex</span></code></a>(fkey)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.get_any_face_vertex.html#compas_3gs.diagrams.EGI.get_any_face_vertex" title="compas_3gs.diagrams.EGI.get_any_face_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face_vertex</span></code></a>(fkey)</p></td>
 <td><p>Get the identifier of a random vertex of a specific face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.get_any_vertex.html#compas_3gs.diagrams.EGI.get_any_vertex" title="compas_3gs.diagrams.EGI.get_any_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertex</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.get_any_vertex.html#compas_3gs.diagrams.EGI.get_any_vertex" title="compas_3gs.diagrams.EGI.get_any_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertex</span></code></a>()</p></td>
 <td><p>Get the identifier of a random vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.get_any_vertices.html#compas_3gs.diagrams.EGI.get_any_vertices" title="compas_3gs.diagrams.EGI.get_any_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertices</span></code></a>(n[, exclude_leaves])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.get_any_vertices.html#compas_3gs.diagrams.EGI.get_any_vertices" title="compas_3gs.diagrams.EGI.get_any_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertices</span></code></a>(n[, exclude_leaves])</p></td>
 <td><p>Get a list of identifiers of a random set of n vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.gkey_key.html#compas_3gs.diagrams.EGI.gkey_key" title="compas_3gs.diagrams.EGI.gkey_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_key</span></code></a>([precision])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.gkey_key.html#compas_3gs.diagrams.EGI.gkey_key" title="compas_3gs.diagrams.EGI.gkey_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_key</span></code></a>([precision])</p></td>
 <td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.gkey_vertex.html#compas_3gs.diagrams.EGI.gkey_vertex" title="compas_3gs.diagrams.EGI.gkey_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_vertex</span></code></a>([precision])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.gkey_vertex.html#compas_3gs.diagrams.EGI.gkey_vertex" title="compas_3gs.diagrams.EGI.gkey_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_vertex</span></code></a>([precision])</p></td>
 <td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.halfedge_after.html#compas_3gs.diagrams.EGI.halfedge_after" title="compas_3gs.diagrams.EGI.halfedge_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_after</span></code></a>(u, v)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.halfedge_after.html#compas_3gs.diagrams.EGI.halfedge_after" title="compas_3gs.diagrams.EGI.halfedge_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_after</span></code></a>(u, v)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.halfedge_before.html#compas_3gs.diagrams.EGI.halfedge_before" title="compas_3gs.diagrams.EGI.halfedge_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_before</span></code></a>(u, v)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.halfedge_before.html#compas_3gs.diagrams.EGI.halfedge_before" title="compas_3gs.diagrams.EGI.halfedge_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_before</span></code></a>(u, v)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.halfedge_face.html#compas_3gs.diagrams.EGI.halfedge_face" title="compas_3gs.diagrams.EGI.halfedge_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_face</span></code></a>(u, v)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.halfedge_face.html#compas_3gs.diagrams.EGI.halfedge_face" title="compas_3gs.diagrams.EGI.halfedge_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_face</span></code></a>(u, v)</p></td>
 <td><p>Find the face corresponding to a halfedge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.halfedge_strip.html#compas_3gs.diagrams.EGI.halfedge_strip" title="compas_3gs.diagrams.EGI.halfedge_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_strip</span></code></a>(edge)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.halfedge_strip.html#compas_3gs.diagrams.EGI.halfedge_strip" title="compas_3gs.diagrams.EGI.halfedge_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_strip</span></code></a>(edge)</p></td>
 <td><p>Find all edges on the same strip as a given halfedge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.has_edge.html#compas_3gs.diagrams.EGI.has_edge" title="compas_3gs.diagrams.EGI.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.has_edge.html#compas_3gs.diagrams.EGI.has_edge" title="compas_3gs.diagrams.EGI.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(key)</p></td>
 <td><p>Verify that the mesh contains a specific edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.has_face.html#compas_3gs.diagrams.EGI.has_face" title="compas_3gs.diagrams.EGI.has_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_face</span></code></a>(fkey)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.has_face.html#compas_3gs.diagrams.EGI.has_face" title="compas_3gs.diagrams.EGI.has_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_face</span></code></a>(fkey)</p></td>
 <td><p>Verify that a face is part of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.has_halfedge.html#compas_3gs.diagrams.EGI.has_halfedge" title="compas_3gs.diagrams.EGI.has_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfedge</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.has_halfedge.html#compas_3gs.diagrams.EGI.has_halfedge" title="compas_3gs.diagrams.EGI.has_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfedge</span></code></a>(key)</p></td>
 <td><p>Verify that a halfedge is part of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.has_vertex.html#compas_3gs.diagrams.EGI.has_vertex" title="compas_3gs.diagrams.EGI.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.has_vertex.html#compas_3gs.diagrams.EGI.has_vertex" title="compas_3gs.diagrams.EGI.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a>(key)</p></td>
 <td><p>Verify that a vertex is in the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.index_key.html#compas_3gs.diagrams.EGI.index_key" title="compas_3gs.diagrams.EGI.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.index_key.html#compas_3gs.diagrams.EGI.index_key" title="compas_3gs.diagrams.EGI.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.index_vertex.html#compas_3gs.diagrams.EGI.index_vertex" title="compas_3gs.diagrams.EGI.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.index_vertex.html#compas_3gs.diagrams.EGI.index_vertex" title="compas_3gs.diagrams.EGI.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.insert_vertex.html#compas_3gs.diagrams.EGI.insert_vertex" title="compas_3gs.diagrams.EGI.insert_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code></a>(fkey[, key, xyz, return_fkeys])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.insert_vertex.html#compas_3gs.diagrams.EGI.insert_vertex" title="compas_3gs.diagrams.EGI.insert_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code></a>(fkey[, key, xyz, return_fkeys])</p></td>
 <td><p>Insert a vertex in the specified face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_closed.html#compas_3gs.diagrams.EGI.is_closed" title="compas_3gs.diagrams.EGI.is_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_closed</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_closed.html#compas_3gs.diagrams.EGI.is_closed" title="compas_3gs.diagrams.EGI.is_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_closed</span></code></a>()</p></td>
 <td><p>Verify that the mesh is closed.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_connected.html#compas_3gs.diagrams.EGI.is_connected" title="compas_3gs.diagrams.EGI.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_connected.html#compas_3gs.diagrams.EGI.is_connected" title="compas_3gs.diagrams.EGI.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a>()</p></td>
 <td><p>Verify that the mesh is connected.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_edge_on_boundary.html#compas_3gs.diagrams.EGI.is_edge_on_boundary" title="compas_3gs.diagrams.EGI.is_edge_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code></a>(u, v)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_edge_on_boundary.html#compas_3gs.diagrams.EGI.is_edge_on_boundary" title="compas_3gs.diagrams.EGI.is_edge_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code></a>(u, v)</p></td>
 <td><p>Verify that an edge is on the boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_empty.html#compas_3gs.diagrams.EGI.is_empty" title="compas_3gs.diagrams.EGI.is_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_empty</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_empty.html#compas_3gs.diagrams.EGI.is_empty" title="compas_3gs.diagrams.EGI.is_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_empty</span></code></a>()</p></td>
 <td><p>Verify that the mesh is empty.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_face_on_boundary.html#compas_3gs.diagrams.EGI.is_face_on_boundary" title="compas_3gs.diagrams.EGI.is_face_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_on_boundary</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_face_on_boundary.html#compas_3gs.diagrams.EGI.is_face_on_boundary" title="compas_3gs.diagrams.EGI.is_face_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_on_boundary</span></code></a>(key)</p></td>
 <td><p>Verify that a face is on a boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_manifold.html#compas_3gs.diagrams.EGI.is_manifold" title="compas_3gs.diagrams.EGI.is_manifold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_manifold</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_manifold.html#compas_3gs.diagrams.EGI.is_manifold" title="compas_3gs.diagrams.EGI.is_manifold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_manifold</span></code></a>()</p></td>
 <td><p>Verify that the mesh is manifold.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_orientable.html#compas_3gs.diagrams.EGI.is_orientable" title="compas_3gs.diagrams.EGI.is_orientable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_orientable</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_orientable.html#compas_3gs.diagrams.EGI.is_orientable" title="compas_3gs.diagrams.EGI.is_orientable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_orientable</span></code></a>()</p></td>
 <td><p>Verify that the mesh is orientable.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_quadmesh.html#compas_3gs.diagrams.EGI.is_quadmesh" title="compas_3gs.diagrams.EGI.is_quadmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_quadmesh</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_quadmesh.html#compas_3gs.diagrams.EGI.is_quadmesh" title="compas_3gs.diagrams.EGI.is_quadmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_quadmesh</span></code></a>()</p></td>
 <td><p>Verify that the mesh consists of only quads.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_regular.html#compas_3gs.diagrams.EGI.is_regular" title="compas_3gs.diagrams.EGI.is_regular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_regular</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_regular.html#compas_3gs.diagrams.EGI.is_regular" title="compas_3gs.diagrams.EGI.is_regular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_regular</span></code></a>()</p></td>
 <td><p>Verify that the mesh is regular.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_trimesh.html#compas_3gs.diagrams.EGI.is_trimesh" title="compas_3gs.diagrams.EGI.is_trimesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_trimesh</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_trimesh.html#compas_3gs.diagrams.EGI.is_trimesh" title="compas_3gs.diagrams.EGI.is_trimesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_trimesh</span></code></a>()</p></td>
 <td><p>Verify that the mesh consists of only triangles.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_valid.html#compas_3gs.diagrams.EGI.is_valid" title="compas_3gs.diagrams.EGI.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_valid.html#compas_3gs.diagrams.EGI.is_valid" title="compas_3gs.diagrams.EGI.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a>()</p></td>
 <td><p>Verify that the mesh is valid.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_vertex_connected.html#compas_3gs.diagrams.EGI.is_vertex_connected" title="compas_3gs.diagrams.EGI.is_vertex_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_connected</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_vertex_connected.html#compas_3gs.diagrams.EGI.is_vertex_connected" title="compas_3gs.diagrams.EGI.is_vertex_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_connected</span></code></a>(key)</p></td>
 <td><p>Verify that a vertex is connected.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_vertex_on_boundary.html#compas_3gs.diagrams.EGI.is_vertex_on_boundary" title="compas_3gs.diagrams.EGI.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.is_vertex_on_boundary.html#compas_3gs.diagrams.EGI.is_vertex_on_boundary" title="compas_3gs.diagrams.EGI.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a>(key)</p></td>
 <td><p>Verify that a vertex is on a boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.join.html#compas_3gs.diagrams.EGI.join" title="compas_3gs.diagrams.EGI.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.join.html#compas_3gs.diagrams.EGI.join" title="compas_3gs.diagrams.EGI.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a>(other)</p></td>
 <td><p>Add the vertices and faces of another mesh to the current mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.key_gkey.html#compas_3gs.diagrams.EGI.key_gkey" title="compas_3gs.diagrams.EGI.key_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_gkey</span></code></a>([precision])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.key_gkey.html#compas_3gs.diagrams.EGI.key_gkey" title="compas_3gs.diagrams.EGI.key_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_gkey</span></code></a>([precision])</p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.key_index.html#compas_3gs.diagrams.EGI.key_index" title="compas_3gs.diagrams.EGI.key_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.key_index.html#compas_3gs.diagrams.EGI.key_index" title="compas_3gs.diagrams.EGI.key_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding index in a vertex list or array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.merge_faces.html#compas_3gs.diagrams.EGI.merge_faces" title="compas_3gs.diagrams.EGI.merge_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_faces</span></code></a>(faces)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.merge_faces.html#compas_3gs.diagrams.EGI.merge_faces" title="compas_3gs.diagrams.EGI.merge_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_faces</span></code></a>(faces)</p></td>
 <td><p>Merge two faces of a mesh over their shared edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.mesh_split_face.html#compas_3gs.diagrams.EGI.mesh_split_face" title="compas_3gs.diagrams.EGI.mesh_split_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_split_face</span></code></a>(fkey, u, v)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.mesh_split_face.html#compas_3gs.diagrams.EGI.mesh_split_face" title="compas_3gs.diagrams.EGI.mesh_split_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_split_face</span></code></a>(fkey, u, v)</p></td>
 <td><p>Split a face by inserting an edge between two specified vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.normal.html#compas_3gs.diagrams.EGI.normal" title="compas_3gs.diagrams.EGI.normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.normal.html#compas_3gs.diagrams.EGI.normal" title="compas_3gs.diagrams.EGI.normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal</span></code></a>()</p></td>
 <td><p>Calculate the average mesh normal.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.number_of_edges.html#compas_3gs.diagrams.EGI.number_of_edges" title="compas_3gs.diagrams.EGI.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.number_of_edges.html#compas_3gs.diagrams.EGI.number_of_edges" title="compas_3gs.diagrams.EGI.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a>()</p></td>
 <td><p>Count the number of edges in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.number_of_faces.html#compas_3gs.diagrams.EGI.number_of_faces" title="compas_3gs.diagrams.EGI.number_of_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.number_of_faces.html#compas_3gs.diagrams.EGI.number_of_faces" title="compas_3gs.diagrams.EGI.number_of_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code></a>()</p></td>
 <td><p>Count the number of faces in the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.number_of_vertices.html#compas_3gs.diagrams.EGI.number_of_vertices" title="compas_3gs.diagrams.EGI.number_of_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.number_of_vertices.html#compas_3gs.diagrams.EGI.number_of_vertices" title="compas_3gs.diagrams.EGI.number_of_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code></a>()</p></td>
 <td><p>Count the number of vertices in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.quads_to_triangles.html#compas_3gs.diagrams.EGI.quads_to_triangles" title="compas_3gs.diagrams.EGI.quads_to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quads_to_triangles</span></code></a>([check_angles])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.quads_to_triangles.html#compas_3gs.diagrams.EGI.quads_to_triangles" title="compas_3gs.diagrams.EGI.quads_to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quads_to_triangles</span></code></a>([check_angles])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.remove_unused_vertices.html#compas_3gs.diagrams.EGI.remove_unused_vertices" title="compas_3gs.diagrams.EGI.remove_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unused_vertices</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.remove_unused_vertices.html#compas_3gs.diagrams.EGI.remove_unused_vertices" title="compas_3gs.diagrams.EGI.remove_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unused_vertices</span></code></a>()</p></td>
 <td><p>Remove all unused vertices from the mesh object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.slice_plane.html#compas_3gs.diagrams.EGI.slice_plane" title="compas_3gs.diagrams.EGI.slice_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice_plane</span></code></a>(plane)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.slice_plane.html#compas_3gs.diagrams.EGI.slice_plane" title="compas_3gs.diagrams.EGI.slice_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice_plane</span></code></a>(plane)</p></td>
 <td><p>Slice a mesh with a plane and construct the resulting submeshes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.smooth_area.html#compas_3gs.diagrams.EGI.smooth_area" title="compas_3gs.diagrams.EGI.smooth_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_area</span></code></a>([fixed, kmax, damping, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.smooth_area.html#compas_3gs.diagrams.EGI.smooth_area" title="compas_3gs.diagrams.EGI.smooth_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_area</span></code></a>([fixed, kmax, damping, …])</p></td>
 <td><p>Smooth a mesh by moving each vertex to the barycenter of the centroids of the surrounding faces, weighted by area.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.smooth_centroid.html#compas_3gs.diagrams.EGI.smooth_centroid" title="compas_3gs.diagrams.EGI.smooth_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_centroid</span></code></a>([fixed, kmax, damping, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.smooth_centroid.html#compas_3gs.diagrams.EGI.smooth_centroid" title="compas_3gs.diagrams.EGI.smooth_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_centroid</span></code></a>([fixed, kmax, damping, …])</p></td>
 <td><p>Smooth a mesh by moving every free vertex to the centroid of its neighbors.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.split_edge.html#compas_3gs.diagrams.EGI.split_edge" title="compas_3gs.diagrams.EGI.split_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge</span></code></a>(u, v[, t, allow_boundary])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.split_edge.html#compas_3gs.diagrams.EGI.split_edge" title="compas_3gs.diagrams.EGI.split_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge</span></code></a>(u, v[, t, allow_boundary])</p></td>
 <td><p>Split and edge by inserting a vertex along its length.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.split_face.html#compas_3gs.diagrams.EGI.split_face" title="compas_3gs.diagrams.EGI.split_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_face</span></code></a>(fkey, u, v)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.split_face.html#compas_3gs.diagrams.EGI.split_face" title="compas_3gs.diagrams.EGI.split_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_face</span></code></a>(fkey, u, v)</p></td>
 <td><p>Split a face by inserting an edge between two specified vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.subdivide.html#compas_3gs.diagrams.EGI.subdivide" title="compas_3gs.diagrams.EGI.subdivide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subdivide</span></code></a>([scheme])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.subdivide.html#compas_3gs.diagrams.EGI.subdivide" title="compas_3gs.diagrams.EGI.subdivide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subdivide</span></code></a>([scheme])</p></td>
 <td><p>Subdivide the input mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.summary.html#compas_3gs.diagrams.EGI.summary" title="compas_3gs.diagrams.EGI.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.summary.html#compas_3gs.diagrams.EGI.summary" title="compas_3gs.diagrams.EGI.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a>()</p></td>
 <td><p>Print a summary of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.to_data.html#compas_3gs.diagrams.EGI.to_data" title="compas_3gs.diagrams.EGI.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.to_data.html#compas_3gs.diagrams.EGI.to_data" title="compas_3gs.diagrams.EGI.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.to_json.html#compas_3gs.diagrams.EGI.to_json" title="compas_3gs.diagrams.EGI.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.to_json.html#compas_3gs.diagrams.EGI.to_json" title="compas_3gs.diagrams.EGI.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.to_jsonstring.html#compas_3gs.diagrams.EGI.to_jsonstring" title="compas_3gs.diagrams.EGI.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
+<td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.to_lines.html#compas_3gs.diagrams.EGI.to_lines" title="compas_3gs.diagrams.EGI.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a>(filepath)</p></td>
 <td><p></p></td>
@@ -642,10 +648,10 @@
 <td><p>Update the default vertex attributes.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.validate_data.html#compas_3gs.diagrams.EGI.validate_data" title="compas_3gs.diagrams.EGI.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
-<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+<td><p>Validate the object’s data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.validate_json.html#compas_3gs.diagrams.EGI.validate_json" title="compas_3gs.diagrams.EGI.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
-<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+<td><p>Validate the object’s data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.EGI.vertex_area.html#compas_3gs.diagrams.EGI.vertex_area" title="compas_3gs.diagrams.EGI.vertex_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_area</span></code></a>(key)</p></td>
 <td><p>Compute the tributary area of a vertex.</p></td>
@@ -723,7 +729,7 @@
 </table>
 </dd></dl>
 
-</div>
+</section>
 
         
       </main>
@@ -842,7 +848,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.4.3rc1',
+  VERSION           : '0.5.0rc0',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',
