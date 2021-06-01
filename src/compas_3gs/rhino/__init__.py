@@ -155,5 +155,6 @@ from .objects import *  # noqa: F401 F403
 from .scene import *  # noqa: F401 F403
 from .wrappers import *  # noqa: F401 F403
 from .helpers import *  # noqa: F401 F403
+from .forms import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

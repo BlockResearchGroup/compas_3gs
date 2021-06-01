@@ -40,8 +40,7 @@ jobs:
       - name: 3gs-install
         shell: PowerShell
         run: |
-          Set-Content -Path MANIFEST.in -Value (get-content -Path MANIFEST.in | Select-String -Pattern 'prune src/compas_3gs/web' -NotMatch)
-          python ui/Rhino/3GS/dev/rui.py
+          python src/compas_3gs/ui/Rhino/3GS/dev/rui.py
           pip install .
 
       - name: 3gs-pack
