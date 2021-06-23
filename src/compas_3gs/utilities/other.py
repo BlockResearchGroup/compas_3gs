@@ -183,14 +183,16 @@ def get_force_colors_uv(volmesh,
             if gradient:
                 min_c = abs(c_forces[-1])
                 max_c = abs(c_forces[0])
-                color = i_to_blue((abs(force) - min_c) / (max_c - min_c))
+                if min_c != max_c:
+                    color = i_to_blue((abs(force) - min_c) / (max_c - min_c))
 
         if force > 0:  # if tension
             color = (255, 0, 0)
             if gradient:
                 min_t = t_forces[0]
                 max_t = t_forces[-1]
-                color = i_to_red((force - min_t) / (max_t - min_t))
+                if min_t != max_t:
+                    color = i_to_red((force - min_t) / (max_t - min_t))
 
         if abs(force) < tol:  # if close to zero
             color = (255, 255, 255)
