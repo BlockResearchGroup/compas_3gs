@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <title>compas_3gs - compas_3gs.algorithms.unifieddiagram</title>
+  
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Juney Lee" />
+  <meta name="description" content="COMPAS package for Algebraic Graph Statics" />
+
+  <link rel="shortcut icon" href="../../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../../_static/css/compas-reference.css" />
+
+  
+
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="https://blockresearchgroup.github.io/compas_3gs/">
+        <img src="../../../_static/images/compas_icon_white.png" alt="compas_3gs" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item active"><a class="nav-link" href="https://blockresearchgroup.github.io/compas_3gs/">compas_3gs</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://blockresearchgroup.github.io/compas_3gs/doc_versions.txt" data-docs="https://blockresearchgroup.github.io/compas_3gs/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            0.5.1
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        
+        <!-- version -->
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/BlockResearchGroup/compas_3gs" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 pt-2 pb-5 compas-content" role="main">
+        
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-3 bg-white px-0">
+            <li class="breadcrumb-item"><a href="../../../index.html">docs</a></li>
+            
+              <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+            
+            <li class="breadcrumb-item active" aria-current="page">compas_3gs.algorithms.unifieddiagram</li>
+          </ol>
+        </nav>
+        
+
+        
+        
+        <h1>Source code for compas_3gs.algorithms.unifieddiagram</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">convex_hull</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">scale_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
+
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">geometric_key</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;volmesh_ud&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;cellnetwork_ud&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="volmesh_ud"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.algorithms.volmesh_ud.html#compas_3gs.algorithms.volmesh_ud">[docs]</a><span class="k">def</span> <span class="nf">volmesh_ud</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span>
+               <span class="n">network</span><span class="p">,</span>
+               <span class="n">scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes temporary vertex coordinates for every halfface of a volmesh, for the visualisation of the unified diagram.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    volmesh : VolMesh</span>
+<span class="sd">        A volmesh object representing a polyhedral force diagram.</span>
+<span class="sd">    network : Network</span>
+<span class="sd">        A network object representing a polyhedral form diagram.</span>
+<span class="sd">    scale : float</span>
+<span class="sd">        Unified diagram scale factor,</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    halffaces : dictionary</span>
+<span class="sd">        A dictionary of dictionaries: hfkey-{vkey: (x, y, z)}.</span>
+<span class="sd">    prisms : dictionary</span>
+<span class="sd">        A dictinoary of dictinoaries: uv - [face coordinates]</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    Exception</span>
+<span class="sd">        If scale is 0, which means the unified diagram is equivalent to the polyhedral force diagram.</span>
+<span class="sd">    Exception</span>
+<span class="sd">        If scale is 0, which means the unified diagram is equivalent to the polyhedral form diagram.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The prisms are implemented as convex hull of two halffaces for simplicity and to resolve any small geometric errors.</span>
+<span class="sd">    - Unified diagram with a scale of 0 is equivalent to the polyhedral force diagram, while a scale of 1 is equivalent to the polyhedral form diagram.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   0. evaluate unified diagram scale</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;A unified diagram with a scale of 0 is equivalent to the polyhedral force diagram.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;A unified diagram with a scale of 1 is equivalent to the polyhedral form diagram.&quot;</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">scale</span> <span class="ow">and</span> <span class="n">scale</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Scale needs to be between 0 and 1.&quot;</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   1. current positions of diagrams</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">volmesh_center</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">centroid</span><span class="p">()</span>
+    <span class="n">network_center</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">datastructure_centroid</span><span class="p">()</span>
+    <span class="n">translation</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">volmesh_center</span><span class="p">,</span> <span class="n">network_center</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   2. get base points</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">base_xyz</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
+        <span class="n">init_xyz</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span>
+        <span class="n">base_xyz</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">init_xyz</span><span class="p">,</span> <span class="n">translation</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   3. compute scaled halffaces</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># halffaces = {}</span>
+
+    <span class="c1"># for ckey in volmesh.cells():</span>
+    <span class="c1">#     cell_hfs = volmesh.cell_faces(ckey)</span>
+    <span class="c1">#     for hfkey in cell_hfs:</span>
+    <span class="c1">#         hf_vertices = {}</span>
+    <span class="c1">#         for vkey in volmesh.halfface_vertices(hfkey):</span>
+    <span class="c1">#             xyz = volmesh.vertex_coordinates(vkey)</span>
+    <span class="c1">#             arm = scale_vector(subtract_vectors(xyz, base_xyz[ckey]), scale)</span>
+    <span class="c1">#             hf_vertices[vkey] = add_vectors(base_xyz[ckey], arm)</span>
+    <span class="c1">#         halffaces[hfkey] = hf_vertices</span>
+
+    <span class="n">scaled_halffaces</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">cells</span><span class="p">():</span>
+        <span class="n">gkey_xyz</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
+            <span class="n">new_face</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">scaled_face_xyz</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+                <span class="n">xyz</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+                <span class="n">arm</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">base_xyz</span><span class="p">[</span><span class="n">cell</span><span class="p">]),</span> <span class="n">scale</span><span class="p">)</span>
+                <span class="n">scaled_xyz</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">base_xyz</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span> <span class="n">arm</span><span class="p">)</span>
+                <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">scaled_xyz</span><span class="p">)</span>
+                <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">gkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaled_xyz</span>
+                <span class="n">new_face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gkey</span><span class="p">)</span>
+                <span class="n">scaled_face_xyz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scaled_xyz</span><span class="p">)</span>
+            <span class="n">scaled_halffaces</span><span class="p">[</span><span class="n">face</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaled_face_xyz</span>
+            <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_face</span><span class="p">)</span>
+
+        <span class="n">gkey_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">gkey</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gkey_xyz</span><span class="p">))</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">gkey</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">gkey_xyz</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="n">scaled_faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">gkey_index</span><span class="p">[</span><span class="n">gkey</span><span class="p">]</span> <span class="k">for</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+
+        <span class="n">cells</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;vertices&#39;</span><span class="p">:</span> <span class="n">vertices</span><span class="p">,</span> <span class="s1">&#39;faces&#39;</span><span class="p">:</span> <span class="n">scaled_faces</span><span class="p">}</span>
+
+    <span class="c1"># cells = {}</span>
+    <span class="c1"># for cell in volmesh.cells():</span>
+    <span class="c1">#     vertices = volmesh.cell_vertices(cell)</span>
+    <span class="c1">#     faces = volmesh.cell_faces(cell)</span>
+    <span class="c1">#     vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))</span>
+    <span class="c1">#     scaled_vertices = []</span>
+    <span class="c1">#     for vertex in vertices:</span>
+    <span class="c1">#         xyz = volmesh.vertex_coordinates(vertex)</span>
+    <span class="c1">#         arm = scale_vector(subtract_vectors(xyz, base_xyz[cell]), scale)</span>
+    <span class="c1">#         scaled_vertices.append(add_vectors(base_xyz[cell], arm))</span>
+    <span class="c1">#     faces = [[vertex_index[vertex] for vertex in volmesh.halfface_vertices(face)] for face in faces]</span>
+    <span class="c1">#     cells[cell] = {&#39;vertices&#39;: scaled_vertices, &#39;faces&#39;: faces}</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1">#   4. compute prism faces</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># prism_faces = {}</span>
+
+    <span class="n">prism_cells</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+        <span class="n">u_hfkey</span><span class="p">,</span> <span class="n">v_hfkey</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">cell_pair_halffaces</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">u_pts</span> <span class="o">=</span> <span class="n">scaled_halffaces</span><span class="p">[</span><span class="n">u_hfkey</span><span class="p">]</span>
+        <span class="n">v_pts</span> <span class="o">=</span> <span class="n">scaled_halffaces</span><span class="p">[</span><span class="n">v_hfkey</span><span class="p">]</span>
+        <span class="n">pts</span> <span class="o">=</span> <span class="n">u_pts</span> <span class="o">+</span> <span class="n">v_pts</span>
+        <span class="n">prism</span> <span class="o">=</span> <span class="n">convex_hull</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>  <span class="c1"># face as indices of pt_list</span>
+        <span class="n">prism_cells</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;vertices&#39;</span><span class="p">:</span> <span class="n">pts</span><span class="p">,</span> <span class="s1">&#39;faces&#39;</span><span class="p">:</span> <span class="n">prism</span><span class="p">}</span>
+
+    <span class="c1"># for u, v in network.edges():</span>
+    <span class="c1">#     u_hfkey, v_hfkey = volmesh.cell_pair_halffaces(u, v)</span>
+    <span class="c1">#     u_pts = halffaces[u_hfkey].values()</span>
+    <span class="c1">#     v_pts = halffaces[v_hfkey].values()</span>
+    <span class="c1">#     pt_list = u_pts + v_pts</span>
+    <span class="c1">#     prism = convex_hull(u_pts + v_pts)  # face as indices of pt_list</span>
+    <span class="c1">#     face_list = []</span>
+    <span class="c1">#     for face in prism:</span>
+    <span class="c1">#         face_xyz = [pt_list[i] for i in face]  # get face xyz in order</span>
+    <span class="c1">#         face_list.append(face_xyz)</span>
+    <span class="c1">#     prism_faces[(u, v)] = face_list</span>
+    <span class="c1">#     prism_cells[(u, v)] = {&#39;vertices&#39;: pt_list, &#39;faces&#39;: face_list}</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># return halffaces, prism_faces</span>
+    <span class="k">return</span> <span class="n">cells</span><span class="p">,</span> <span class="n">prism_cells</span></div>
+
+
+<div class="viewcode-block" id="cellnetwork_ud"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.algorithms.cellnetwork_ud.html#compas_3gs.algorithms.cellnetwork_ud">[docs]</a><span class="k">def</span> <span class="nf">cellnetwork_ud</span><span class="p">(</span><span class="n">cellnetwork</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1">#</span>
+<span class="c1">#   Main</span>
+<span class="c1">#</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+<span class="c1"># ******************************************************************************</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div>
+        
+      </main>
+      <!-- content -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation">
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+          <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../00_introduction.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../01_getting_started.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../02_overview.html">Overview</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../03_theoretical_background.html">Theoretical background</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../04_user_manual.html">User manual</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../05_api_reference.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../06_license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../07_citing.html">Citing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../08_publications.html">Publications</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../09_how_to_contribute.html">How to contribute</a></li>
+</ul>
+
+          </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+  <!-- main -->
+  <!-- footer -->
+  <footer class="compas-footer">
+    <nav class="nav p-2">
+      
+
+      
+    </nav>  
+  </footer>
+  <!-- footer -->
+  <!-- below -->
+  <div class="below py-5" style="background-color: #222;">
+    <div class="container">
+      <div class="row flex-column">
+      <div class="col-12 col-md-6 mx-md-auto text-center">
+        <h4 class="pb-3 below-text">COMPAS</h4>
+        <p class="below-text">
+          A computational framework for collaboration and research
+          in Architecture, Engineering, Fabrication, and Construction.
+        </p>
+        <nav class="nav justify-content-center pb-3">
+          <a class="nav-link mx-2 px-0 below-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 below-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+          <a class="nav-link mx-2 px-0 below-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </nav>
+      </div>
+      </div>
+      <div class="row">
+      <div class="col text-center">
+        <p class="p-0 m-0 below-text">Copyright &copy; 2017-2021 compas-dev</p>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- below -->
+  <!-- scripts -->
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+  URL_ROOT          : '',
+  VERSION           : '0.5.1',
+  COLLAPSE_INDEX    : false,
+  FILE_SUFFIX       : '.html',
+  HAS_SOURCE        : 'false',
+  SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../../_static/underscore.js"></script>
+  <script src="../../../_static/doctools.js"></script>
+  <script src="../../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+    $(".language-default code").addClass("python");
+    $(".language-python code").addClass("python");
+    $(".language-bash code").addClass("bash");
+    $(".language-cpp code").addClass("cpp");
+    $(".language-json code").addClass("json");
+    $(".language-none code").addClass("plaintext");
+
+    hljs.initHighlighting();
+    anchors.add();
+
+    $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+    }).addClass("active");
+
+  });
+
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+  <!-- scripts -->
+  
+  
+</body>
+</html>
