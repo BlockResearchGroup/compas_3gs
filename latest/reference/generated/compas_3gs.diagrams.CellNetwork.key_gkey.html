@@ -23,7 +23,7 @@
   
 
   
-    <link rel="prev" title="CellNetwork.is_node_connected" href="compas_3gs.diagrams.CellNetwork.is_node_connected.html" />
+    <link rel="prev" title="CellNetwork.is_xy" href="compas_3gs.diagrams.CellNetwork.is_xy.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.5.1
+            0.5.2
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -175,11 +175,11 @@
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-        <a href="compas_3gs.diagrams.CellNetwork.is_node_connected.html" title="CellNetwork.is_node_connected" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+        <a href="compas_3gs.diagrams.CellNetwork.is_xy.html" title="CellNetwork.is_xy" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
           <div class="nav-title flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Previous</div>
-            CellNetwork.is_node_connected
+            CellNetwork.is_xy
           </div>
         </a>
       
@@ -231,7 +231,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.5.1',
+  VERSION           : '0.5.2',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',
@@ -262,10 +262,6 @@
     hljs.initHighlighting();
     anchors.add();
 
-    $('.nav-versions .dropdown-item').filter(function(i, ver) {
-      return window.location.href.startsWith(ver.href);
-    }).addClass("active");
-
   });
 
 
@@ -278,6 +274,13 @@
       lines.forEach(version => {
         $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
       });
+
+      var selected_version = $('.nav-versions .dropdown-item').filter(function(i, ver) {
+        return window.location.href.startsWith(ver.href);
+      });
+      selected_version.addClass('active');
+      $("#bd-versions").text(selected_version.text());
+
     })
   }
   </script>

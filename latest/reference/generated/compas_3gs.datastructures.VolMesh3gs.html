@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.5.1
+            0.5.2
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -100,7 +100,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_3gs.datastructures.VolMesh3gs">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_3gs.datastructures.</span></span><span class="sig-name descname"><span class="pre">VolMesh3gs</span></span><a class="reference internal" href="../../_modules/compas_3gs/datastructures/volmesh3gs.html#VolMesh3gs"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.volmesh._volmesh.VolMesh</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.volmesh.volmesh.VolMesh</span></code></p>
 <p>Inherits and extends the compas VolMesh class, such that it is more suitable for 3D graphic statics applications.</p>
 <p>Primarily used for polyhedral form and force diagrams.</p>
 <p class="rubric">Attributes</p>
@@ -125,14 +125,26 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMA</span></code></p></td>
 <td><p>The schema of the JSON representation of the data of this object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMANAME</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
 <td><p>A data dict representing the volmesh data structure for serialization.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
-<td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
+<td><p>The type of the object in the form of a '2-level' import and a class name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
 <td><p>The globally unique identifier of the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsondefinitions</span></code></p></td>
+<td><p>Reusable schema definitions.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonstring</span></code></p></td>
+<td><p>The representation of the object data in JSON format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonvalidator</span></code></p></td>
+<td><p>JSON schema validator for draft 7.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
 <td><p>The name of the data structure.</p></td>
@@ -147,7 +159,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.datastructures.VolMesh3gs.__init__.html#compas_3gs.datastructures.VolMesh3gs.__init__" title="compas_3gs.datastructures.VolMesh3gs.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
-<td><p>Initialize self.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.datastructures.VolMesh3gs.boundary_halfface_manifold_neighborhood.html#compas_3gs.datastructures.VolMesh3gs.boundary_halfface_manifold_neighborhood" title="compas_3gs.datastructures.VolMesh3gs.boundary_halfface_manifold_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundary_halfface_manifold_neighborhood</span></code></a>(hfkey)</p></td>
 <td><p></p></td>
@@ -156,7 +168,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.datastructures.VolMesh3gs.cell_pair_halffaces.html#compas_3gs.datastructures.VolMesh3gs.cell_pair_halffaces" title="compas_3gs.datastructures.VolMesh3gs.cell_pair_halffaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_pair_halffaces</span></code></a>(cell_1, cell_2)</p></td>
-<td><p>Given 2 ckeys, returns the interfacing halffaces, respectively. :Parameters: * <strong>ckey_1</strong> (<em>hashable</em>) – Identifier of the cell 1. * <strong>ckey_2</strong> (<em>hashable</em>) – Identifier of the cell 2.</p></td>
+<td><p>Given 2 ckeys, returns the interfacing halffaces, respectively. :Parameters: * <strong>ckey_1</strong> (<em>hashable</em>) -- Identifier of the cell 1. * <strong>ckey_2</strong> (<em>hashable</em>) -- Identifier of the cell 2.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.datastructures.VolMesh3gs.cell_vertex_delete.html#compas_3gs.datastructures.VolMesh3gs.cell_vertex_delete" title="compas_3gs.datastructures.VolMesh3gs.cell_vertex_delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_vertex_delete</span></code></a>(vkey)</p></td>
 <td><p>This removes the vertex, and everything that is attached to the vertex EXCEPT the cell itself.</p></td>
@@ -345,7 +357,7 @@
 <td><p>The vertices of a face.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.datastructures.VolMesh3gs.faces.html#compas_3gs.datastructures.VolMesh3gs.faces" title="compas_3gs.datastructures.VolMesh3gs.faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces</span></code></a>([data])</p></td>
-<td><p>“Iterate over the halffaces of the volmesh and yield faces.</p></td>
+<td><p>&quot;Iterate over the halffaces of the volmesh and yield faces.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.datastructures.VolMesh3gs.faces_attribute.html#compas_3gs.datastructures.VolMesh3gs.faces_attribute" title="compas_3gs.datastructures.VolMesh3gs.faces_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_attribute</span></code></a>(name[, value, faces])</p></td>
 <td><p>Get or set an attribute of multiple faces.</p></td>
@@ -528,10 +540,10 @@
 <td><p>Update the default vertex attributes.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.datastructures.VolMesh3gs.validate_data.html#compas_3gs.datastructures.VolMesh3gs.validate_data" title="compas_3gs.datastructures.VolMesh3gs.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
-<td><p>Validate the object’s data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+<td><p>Validate the object's data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.datastructures.VolMesh3gs.validate_json.html#compas_3gs.datastructures.VolMesh3gs.validate_json" title="compas_3gs.datastructures.VolMesh3gs.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
-<td><p>Validate the object’s data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+<td><p>Validate the object's data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.datastructures.VolMesh3gs.vertex_attribute.html#compas_3gs.datastructures.VolMesh3gs.vertex_attribute" title="compas_3gs.datastructures.VolMesh3gs.vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attribute</span></code></a>(vertex, name[, value])</p></td>
 <td><p>Get or set an attribute of a vertex.</p></td>
@@ -713,7 +725,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.5.1',
+  VERSION           : '0.5.2',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',
@@ -744,10 +756,6 @@
     hljs.initHighlighting();
     anchors.add();
 
-    $('.nav-versions .dropdown-item').filter(function(i, ver) {
-      return window.location.href.startsWith(ver.href);
-    }).addClass("active");
-
   });
 
 
@@ -760,6 +768,13 @@
       lines.forEach(version => {
         $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
       });
+
+      var selected_version = $('.nav-versions .dropdown-item').filter(function(i, ver) {
+        return window.location.href.startsWith(ver.href);
+      });
+      selected_version.addClass('active');
+      $("#bd-versions").text(selected_version.text());
+
     })
   }
   </script>

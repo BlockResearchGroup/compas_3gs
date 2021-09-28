@@ -19,7 +19,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Network3gs.clear" href="compas_3gs.datastructures.Network3gs.clear.html" />
+    <link rel="next" title="Network3gs.adjacency_matrix" href="compas_3gs.datastructures.Network3gs.adjacency_matrix.html" />
   
 
   
@@ -50,7 +50,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.5.1
+            0.5.2
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -113,7 +113,7 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">None</s
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>str</em> – The key of the node.</p>
+<dd class="field-even"><p><em>hashable</em> – The key of the node.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -200,10 +200,10 @@ key in use by 1:</p>
       
 
       
-        <a href="compas_3gs.datastructures.Network3gs.clear.html" title="Network3gs.clear" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+        <a href="compas_3gs.datastructures.Network3gs.adjacency_matrix.html" title="Network3gs.adjacency_matrix" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
           <div class="nav-title footer-link flex-grow-1 align-self-center">
             <div class="nav-direction small font-weight-light">Next</div>
-            Network3gs.clear
+            Network3gs.adjacency_matrix
           </div>
           <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
         </a>
@@ -246,7 +246,7 @@ key in use by 1:</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.5.1',
+  VERSION           : '0.5.2',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',
@@ -277,10 +277,6 @@ key in use by 1:</p>
     hljs.initHighlighting();
     anchors.add();
 
-    $('.nav-versions .dropdown-item').filter(function(i, ver) {
-      return window.location.href.startsWith(ver.href);
-    }).addClass("active");
-
   });
 
 
@@ -293,6 +289,13 @@ key in use by 1:</p>
       lines.forEach(version => {
         $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
       });
+
+      var selected_version = $('.nav-versions .dropdown-item').filter(function(i, ver) {
+        return window.location.href.startsWith(ver.href);
+      });
+      selected_version.addClass('active');
+      $("#bd-versions").text(selected_version.text());
+
     })
   }
   </script>
