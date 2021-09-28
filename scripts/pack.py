@@ -8,20 +8,30 @@ import argparse
 
 parser = argparse.ArgumentParser(description='3GS release package tool.')
 parser.add_argument('--skip_packing', action='store_true', help="skip packaging to dist folder")
-parser.add_argument('--rhi', action='store_true', help="pack into rhi installer")
-parser.add_argument('--version', default="v0.4.0", help="version number")
+parser.add_argument('--version', default="v0.0.0", help="version number")
 
 args = parser.parse_args()
 
+HERE = os.path.dirname(__file__)
+
+if os.path.exists("dist"):
+    shutil.rmtree("dist")
+os.makedirs("dist/3GS")
 
 start = time.time()
-conda_pack.pack(output="env.zip", verbose=True, n_threads=-1, force=True)
+conda_pack.pack(output="dist/env.zip", verbose=True, n_threads=-1, force=True)
 
-print('unpacking to ui/Rhino/3GS/dev/env')
-shutil.unpack_archive("env.zip", "ui/Rhino/3GS/dev/env")
+print('unpacking to dist/env')
+shutil.unpack_archive("dist/env.zip", "dist/3GS/env")
+
+print("copy install.bat")
+shutil.copyfile(os.path.join(HERE, "..", "src/compas_3gs/ui/Rhino/3GS/dev/install.bat"), "dist/3GS/install.bat")
+
+print("copy rui")
+shutil.copyfile(os.path.join(HERE, "..", "src/compas_3gs/ui/Rhino/3GS/dev/3GS.rui"), "dist/3GS/3GS.rui")
 
 print('removing unnecessary files')
-for root, dirs, files in os.walk("ui/Rhino/3GS/dev/env"):
+for root, dirs, files in os.walk("dist/3GS/env"):
 
     for d in dirs:
         if d.find("node_modules") >= 0:
@@ -39,19 +49,10 @@ if args.skip_packing:
 
 else:
 
-    os.remove("env.zip")
+    os.remove("dist/env.zip")
     print('re-packing whole plugin')
 
-    if os.path.exists("dist"):
-        shutil.rmtree("dist")
-        os.mkdir("dist")
-
-    if args.rhi:
-        shutil.make_archive("dist/3GS", "zip", "ui/Rhino/3GS/dev")
-        os.rename("dist/3GS.zip", "dist/3GS.rhi")
-    else:
-        shutil.make_archive(f"dist/3GS_{args.version}", "zip", "ui/Rhino/3GS")
-
-    shutil.rmtree("ui/Rhino/3GS/dev/env")
+    shutil.make_archive(f"dist/3GS_{args.version}", "zip", "dist/3GS")
+    shutil.rmtree("dist/3GS")
 
     print('finished, took %s s' % (time.time()-start))
