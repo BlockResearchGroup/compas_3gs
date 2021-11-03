@@ -1,2 +1,2 @@
 compas
-compas_skeleton == 1.1.0
+compas_skeleton >= 1.1.0
