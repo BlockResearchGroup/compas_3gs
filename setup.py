@@ -26,7 +26,7 @@ optional_requirements = {}
 
 setup(
     name='compas_3gs',
-    version='0.5.2',
+    version='0.5.3rc0',
     description='A COMPAS package for 3D Graphic Statics',
     long_description=long_description,
     long_description_content_type='text/markdown',
