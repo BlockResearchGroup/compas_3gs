@@ -7,59 +7,10 @@ on:
 
 jobs:
   Release:
-    runs-on: "windows-latest"
+    runs-on: ubuntu-latest
     steps:
 
-      - name: Get the tag version
-        uses: dawidd6/action-get-tag@v1
-        id: tagName
-
       - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v2
-
-      - name: build electron front page
-        shell: PowerShell
-        run: |
-          cd src/compas_3gs/web
-          npm install
-          npm run build -- ${{ steps.tagName.outputs.tag }}
-      
-      - uses: conda-incubator/setup-miniconda@v2.0.0
-        with:
-          miniconda-version: "latest"
-          activate-environment: 3gs
-          python-version: 3.7
-      
-      - name: conda-install
-        shell: PowerShell
-        run: |
-          conda install conda-pack cython -y
-
-      
-      - name: 3gs-install
-        shell: PowerShell
-        run: |
-          python src/compas_3gs/ui/Rhino/3GS/dev/rui.py
-          pip install .
-
-      - name: 3gs-pack
-        run: |
-          python scripts/pack.py --version ${{ steps.tagName.outputs.tag }}
-
-      - name: Check out compas_installer
-        uses: actions/checkout@master
-        with:
-          repository: BlockResearchGroup/compas_installer
-          ref: 3gs
-          path: compas_installer
-      
-      - name: wrap installer
-        run: |
-          cd compas_installer
-          npm install
-          copy ../dist/3GS_${{ steps.tagName.outputs.tag }}.zip src/plugins/3GS.zip
-          npm run build
 
       - name: Create Release
         id: create_release
@@ -69,19 +20,8 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          draft: True
+          draft: false
           prerelease: false
-
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: compas_installer/dist/rhino3GS Setup 0.0.1.exe
-          asset_name: rhino3GS_${{ steps.tagName.outputs.tag }}.exe
-          asset_content_type: application/octet-stream
 
   Publish:
     needs: Release
