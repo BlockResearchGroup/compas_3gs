@@ -99,7 +99,7 @@
 <h1>ForceVolMesh</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_3gs.diagrams.ForceVolMesh">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">compas_3gs.diagrams.</span></span><span class="sig-name descname"><span class="pre">ForceVolMesh</span></span></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_3gs.diagrams.</span></span><span class="sig-name descname"><span class="pre">ForceVolMesh</span></span></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_3gs.datastructures.VolMesh3gs.html#compas_3gs.datastructures.VolMesh3gs" title="compas_3gs.datastructures.volmesh3gs.VolMesh3gs"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_3gs.datastructures.volmesh3gs.VolMesh3gs</span></code></a></p>
 <p>A polyhedral force diagram, represented as a volmesh object.</p>
 <p class="rubric">Attributes</p>
@@ -776,6 +776,8 @@
   if (url) {
     $.get(url, res=>{
       var lines = res.match(/[^\r\n]+/g);
+      lines.sort( (a, b) => a.localeCompare(b, undefined, { numeric:true }) );
+      lines.reverse();
       lines.forEach(version => {
         $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
       });

@@ -1801,6 +1801,14 @@
           <li><a href="reference/generated/compas_3gs.diagrams.EGI.halfedge_face.html#compas_3gs.diagrams.EGI.halfedge_face">(compas_3gs.diagrams.EGI method)</a>
 </li>
         </ul></li>
+        <li><a href="reference/generated/compas_3gs.datastructures.Mesh3gs.halfedge_loop.html#compas_3gs.datastructures.Mesh3gs.halfedge_loop">halfedge_loop() (compas_3gs.datastructures.Mesh3gs method)</a>
+
+        <ul>
+          <li><a href="reference/generated/compas_3gs.diagrams.Cell.halfedge_loop.html#compas_3gs.diagrams.Cell.halfedge_loop">(compas_3gs.diagrams.Cell method)</a>
+</li>
+          <li><a href="reference/generated/compas_3gs.diagrams.EGI.halfedge_loop.html#compas_3gs.diagrams.EGI.halfedge_loop">(compas_3gs.diagrams.EGI method)</a>
+</li>
+        </ul></li>
         <li><a href="reference/generated/compas_3gs.datastructures.Mesh3gs.halfedge_strip.html#compas_3gs.datastructures.Mesh3gs.halfedge_strip">halfedge_strip() (compas_3gs.datastructures.Mesh3gs method)</a>
 
         <ul>
@@ -1881,14 +1889,14 @@
           <li><a href="reference/generated/compas_3gs.diagrams.ForceVolMesh.halfface_normal.html#compas_3gs.diagrams.ForceVolMesh.halfface_normal">(compas_3gs.diagrams.ForceVolMesh method)</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td><ul>
         <li><a href="reference/generated/compas_3gs.datastructures.VolMesh3gs.halfface_opposite_cell.html#compas_3gs.datastructures.VolMesh3gs.halfface_opposite_cell">halfface_opposite_cell() (compas_3gs.datastructures.VolMesh3gs method)</a>
 
         <ul>
           <li><a href="reference/generated/compas_3gs.diagrams.ForceVolMesh.halfface_opposite_cell.html#compas_3gs.diagrams.ForceVolMesh.halfface_opposite_cell">(compas_3gs.diagrams.ForceVolMesh method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td><ul>
         <li><a href="reference/generated/compas_3gs.datastructures.VolMesh3gs.halfface_opposite_halfface.html#compas_3gs.datastructures.VolMesh3gs.halfface_opposite_halfface">halfface_opposite_halfface() (compas_3gs.datastructures.VolMesh3gs method)</a>
 
         <ul>
@@ -2770,6 +2778,14 @@
           <li><a href="reference/generated/compas_3gs.diagrams.Cell.split_face.html#compas_3gs.diagrams.Cell.split_face">(compas_3gs.diagrams.Cell method)</a>
 </li>
           <li><a href="reference/generated/compas_3gs.diagrams.EGI.split_face.html#compas_3gs.diagrams.EGI.split_face">(compas_3gs.diagrams.EGI method)</a>
+</li>
+        </ul></li>
+        <li><a href="reference/generated/compas_3gs.datastructures.Mesh3gs.split_strip.html#compas_3gs.datastructures.Mesh3gs.split_strip">split_strip() (compas_3gs.datastructures.Mesh3gs method)</a>
+
+        <ul>
+          <li><a href="reference/generated/compas_3gs.diagrams.Cell.split_strip.html#compas_3gs.diagrams.Cell.split_strip">(compas_3gs.diagrams.Cell method)</a>
+</li>
+          <li><a href="reference/generated/compas_3gs.diagrams.EGI.split_strip.html#compas_3gs.diagrams.EGI.split_strip">(compas_3gs.diagrams.EGI method)</a>
 </li>
         </ul></li>
         <li><a href="reference/generated/compas_3gs.datastructures.Mesh3gs.subdivide.html#compas_3gs.datastructures.Mesh3gs.subdivide">subdivide() (compas_3gs.datastructures.Mesh3gs method)</a>
@@ -3678,6 +3694,8 @@
   if (url) {
     $.get(url, res=>{
       var lines = res.match(/[^\r\n]+/g);
+      lines.sort( (a, b) => a.localeCompare(b, undefined, { numeric:true }) );
+      lines.reverse();
       lines.forEach(version => {
         $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
       });

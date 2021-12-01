@@ -101,7 +101,7 @@
 <h1>Network3gs.from_networkx</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_3gs.datastructures.Network3gs.from_networkx">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-prename descclassname"><span class="pre">Network3gs.</span></span><span class="sig-name descname"><span class="pre">from_networkx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Network3gs.</span></span><span class="sig-name descname"><span class="pre">from_networkx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Create a new graph instance from a NetworkX DiGraph instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -270,6 +270,8 @@
   if (url) {
     $.get(url, res=>{
       var lines = res.match(/[^\r\n]+/g);
+      lines.sort( (a, b) => a.localeCompare(b, undefined, { numeric:true }) );
+      lines.reverse();
       lines.forEach(version => {
         $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
       });

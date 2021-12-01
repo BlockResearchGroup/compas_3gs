@@ -112,7 +112,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Network3gs.__init__"><a class="viewcode-back" href="../../../reference/generated/compas_3gs.datastructures.Network3gs.__init__.html#compas_3gs.datastructures.Network3gs.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Network3gs</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Network3gs</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dual</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s1">&#39;lmin&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;lmax&#39;</span><span class="p">:</span> <span class="mf">1e+7</span><span class="p">,</span>
+
+            <span class="s1">&#39;_a&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">})</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1">#   inherited functions</span>
@@ -354,6 +361,8 @@
   if (url) {
     $.get(url, res=>{
       var lines = res.match(/[^\r\n]+/g);
+      lines.sort( (a, b) => a.localeCompare(b, undefined, { numeric:true }) );
+      lines.reverse();
       lines.forEach(version => {
         $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "\">" + version + "</a>");
       });
