@@ -23,6 +23,13 @@ class Network3gs(Network):
 
     def __init__(self):
         super(Network3gs, self).__init__()
+        self.dual = None
+        self.default_edge_attributes.update({
+            'lmin': 0.0,
+            'lmax': 1e+7,
+
+            '_a': 0.0,
+        })
 
     # --------------------------------------------------------------------------
     #   inherited functions

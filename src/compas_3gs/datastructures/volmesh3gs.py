@@ -19,6 +19,11 @@ class VolMesh3gs(VolMesh):
 
     def __init__(self):
         super(VolMesh3gs, self).__init__()
+        self.primal = None
+        self.scale = 1.0
+        self.default_face_attributes.update({
+            '_a': 0.0,
+        })
 
     # --------------------------------------------------------------------------
     #   deleting
