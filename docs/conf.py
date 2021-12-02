@@ -13,7 +13,7 @@ import sphinx_compas_theme
 project = 'compas_3gs'
 copyright = '2018, Block Research Group - ETH Zurich'
 author = 'Juney Lee'
-release = '0.5.3'
+release = '0.6.0rc0'
 
 version = '.'.join(release.split('.')[0:2])
 
