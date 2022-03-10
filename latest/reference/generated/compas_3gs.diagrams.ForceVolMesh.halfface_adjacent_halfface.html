@@ -107,11 +107,11 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>halfface</strong> (<em>int</em>) – The identifier of the halfface.</p></li>
-<li><p><strong>halfedge</strong> (<em>tuple of int</em>) – The identifier of the halfedge.</p></li>
+<li><p><strong>halfedge</strong> (<em>tuple[int, int]</em>) – The identifier of the halfedge.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>int or None</em> – The identifier of the halfface.</p>
+<dd class="field-even"><p><em>int | None</em> – The identifier of the adjacent half-face, or None if <cite>halfedge</cite> is on the boundary.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

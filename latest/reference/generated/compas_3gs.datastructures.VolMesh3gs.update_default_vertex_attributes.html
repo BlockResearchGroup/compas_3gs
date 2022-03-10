@@ -106,16 +106,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>attr_dict</strong> (<em>dict, optional</em>) – A dictionary of attributes with their default values.
-Defaults to an empty <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p></li>
-<li><p><strong>kwattr</strong> (<em>dict</em>) – A dictionary compiled of remaining named arguments.
-Defaults to an empty dict.</p></li>
+<li><p><strong>attr_dict</strong> (<em>dict[str, Any], optional</em>) – A dictionary of attributes with their default values.</p></li>
+<li><p><strong>**kwattr</strong> (<em>dict[str, Any], optional</em>) – A dictionary of additional attributes compiled of remaining named arguments.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>None</em></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Named arguments overwrite correpsonding vertex-value pairs in the attribute dictionary,
-if they exist.</p>
+<p>Named arguments overwrite correpsonding name-value pairs in the attribute dictionary.</p>
 </dd></dl>
 
 </section>

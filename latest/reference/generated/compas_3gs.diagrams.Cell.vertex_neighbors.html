@@ -107,12 +107,11 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>int</em>) – The identifier of the vertex.</p></li>
-<li><p><strong>ordered</strong> (<em>bool, optional</em>) – Return the neighbors in the cycling order of the faces.
-Default is false.</p></li>
+<li><p><strong>ordered</strong> (<em>bool, optional</em>) – If True, return the neighbors in the cycling order of the faces.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The list of neighboring vertices.
+<dd class="field-even"><p><em>list[int]</em> – The list of neighboring vertices.
 If the vertex lies on the boundary of the mesh,
 an ordered list always starts and ends with with boundary vertices.</p>
 </dd>
@@ -123,10 +122,6 @@ the node in the opposite direction as the cycling direction of the faces.
 For some algorithms this produces the expected results. For others it doesn’t.
 For example, a dual mesh constructed relying on these conventions will have
 oposite face cycle directions compared to the original.</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

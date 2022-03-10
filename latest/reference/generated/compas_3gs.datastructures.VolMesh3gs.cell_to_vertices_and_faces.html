@@ -105,15 +105,13 @@
 <dd><p>Return the vertices and faces of a cell.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cell</strong> (<em>hashable</em>) – Identifier of the cell.</p>
+<dd class="field-odd"><p><strong>cell</strong> (<em>int</em>) – Identifier of the cell.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p><em>tuple</em> – A 2-tuple containing</p>
-<ul class="simple">
-<li><p>a list of vertices, represented by their XYZ coordinates, and</p></li>
-<li><p>a list of faces.</p></li>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>list[list[float]]</em> – A list of vertices, represented by their XYZ coordinates,</p></li>
+<li><p><em>list[list[int]]</em> – A list of faces, with each face a list of vertex indices.</p></li>
 </ul>
-<p>Each face is a list of indices referencing the list of vertex coordinates.</p>
 </p>
 </dd>
 </dl>

@@ -102,21 +102,18 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_3gs.datastructures.Mesh3gs.transformed">
 <span class="sig-prename descclassname"><span class="pre">Mesh3gs.</span></span><span class="sig-name descname"><span class="pre">transformed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformation</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.</p>
+<dd><p>Return a transformed copy of the mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>compas.datastructures.Mesh</em>) – The mesh.</p></li>
-<li><p><strong>transformation</strong> (<em>compas.geometry.Transformation</em>) – The transformation.</p></li>
+<li><p><strong>mesh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code>) – The mesh.</p></li>
+<li><p><strong>transformation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code>) – The transformation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>Mesh</em> – A transformed independent copy of <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code> – A transformed independent copy of <cite>mesh</cite>.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>The original mesh is not modified.
-Instead a transformed independent copy is returned.</p>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">matrix_from_axis_and_angle</span>

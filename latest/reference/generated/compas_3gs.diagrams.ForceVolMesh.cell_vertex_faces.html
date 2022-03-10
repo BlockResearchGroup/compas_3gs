@@ -111,11 +111,13 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The ordered list of faces connected to a vertex of a cell.</p>
+<dd class="field-even"><p><em>list[int]</em> – The ordered list of faces connected to a vertex of a cell.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>All of the returned faces should be part of the cell.</p>
+<p>All of the returned faces should are part of the same cell.</p>
+<p>This method is similar to <code class="xref py py-meth docutils literal notranslate"><span class="pre">vertex_faces()</span></code>,
+but in the context of a cell of the <cite>VolMesh</cite>.</p>
 </dd></dl>
 
 </section>

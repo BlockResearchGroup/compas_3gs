@@ -108,12 +108,12 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>u</strong> (<em>hashable</em>) – The identifier of the first node of the edge.</p></li>
 <li><p><strong>v</strong> (<em>hashable</em>) – The identifier of the second node of the edge.</p></li>
-<li><p><strong>attr_dict</strong> (<em>dict, optional</em>) – A dictionary of edge attributes.</p></li>
-<li><p><strong>kwattr</strong> – Other edge attributes as additional keyword arguments.</p></li>
+<li><p><strong>attr_dict</strong> (<em>dict[str, Any], optional</em>) – A dictionary of edge attributes.</p></li>
+<li><p><strong>**kwattr</strong> (<em>dict[str, Any], optional</em>) – A dictionary of additional attributes compiled of remaining named arguments.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple</em> – The identifiers of the edge nodes.</p>
+<dd class="field-even"><p><em>tuple[hashable, hashable]</em> – The identifiers of the edge nodes.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

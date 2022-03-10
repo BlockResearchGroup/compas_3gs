@@ -106,15 +106,15 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>compas.datastructures.Mesh</em>) – Instance of a mesh.</p></li>
+<li><p><strong>mesh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code>) – Instance of a mesh.</p></li>
 <li><p><strong>u</strong> (<em>str</em>) – The first vertex of the (half-) edge.</p></li>
 <li><p><strong>v</strong> (<em>str</em>) – The second vertex of the (half-) edge.</p></li>
-<li><p><strong>t</strong> (<em>float (0.5)</em>) – Determines where to collapse to.
-If <cite>t == 0.0</cite> collapse to <cite>u</cite>.
-If <cite>t == 1.0</cite> collapse to <cite>v</cite>.
-If <cite>0.0 &lt; t &lt; 1.0</cite>, collapse to a point between <cite>u</cite> and <cite>v</cite>.</p></li>
-<li><p><strong>allow_boundary</strong> (<em>bool (False)</em>) – Allow collapses involving boundary vertices.</p></li>
-<li><p><strong>fixed</strong> (<em>list (None)</em>) – A list of identifiers of vertices that should stay fixed.</p></li>
+<li><p><strong>t</strong> (<em>float, optional</em>) – Determines where to collapse to.
+If <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">==</span> <span class="pre">0.0</span></code> collapse to <cite>u</cite>.
+If <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">==</span> <span class="pre">1.0</span></code> collapse to <cite>v</cite>.
+If <code class="docutils literal notranslate"><span class="pre">0.0</span> <span class="pre">&lt;</span> <span class="pre">t</span> <span class="pre">&lt;</span> <span class="pre">1.0</span></code>, collapse to a point between <cite>u</cite> and <cite>v</cite>.</p></li>
+<li><p><strong>allow_boundary</strong> (<em>bool, optional</em>) – If True, allow collapses involving boundary vertices.</p></li>
+<li><p><strong>fixed</strong> (<em>list[int], optional</em>) – A list of identifiers of vertices that should stay fixed.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

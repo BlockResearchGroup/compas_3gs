@@ -108,13 +108,13 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>u</strong> (<em>hashable</em>) – The key of the start node.</p></li>
 <li><p><strong>v</strong> (<em>hashable</em>) – The key of the end node.</p></li>
-<li><p><strong>t</strong> (<em>float (0.5)</em>) – The location of the point on the edge.
-If the value of <code class="docutils literal notranslate"><span class="pre">t</span></code> is outside the range <code class="docutils literal notranslate"><span class="pre">0-1</span></code>, the point will
+<li><p><strong>t</strong> (<em>float, optional</em>) – The location of the point on the edge.
+If the value of <cite>t</cite> is outside the range 0-1, the point will
 lie in the direction of the edge, but not on the edge vector.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The XYZ coordinates of the point.</p>
+<dd class="field-even"><p><em>list[float]</em> – The XYZ coordinates of the point.</p>
 </dd>
 </dl>
 </dd></dl>

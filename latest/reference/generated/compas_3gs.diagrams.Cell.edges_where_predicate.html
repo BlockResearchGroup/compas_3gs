@@ -106,22 +106,18 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>predicate</strong> (<em>callable</em>) – The condition you want to evaluate. The callable takes 3 parameters: <code class="docutils literal notranslate"><span class="pre">u</span></code>, <code class="docutils literal notranslate"><span class="pre">v</span></code>, <code class="docutils literal notranslate"><span class="pre">attr</span></code> and should return <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>data</strong> (<em>bool, optional</em>) – Yield the vertices and their data attributes.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>predicate</strong> (<em>callable</em>) – The condition you want to evaluate.
+The callable takes 3 parameters:
+the identifier of the first vertex, the identifier of the second vertex, and the edge attributes,
+and should return True or False.</p></li>
+<li><p><strong>data</strong> (<em>bool, optional</em>) – If True, yield the vertex attributes in addition ot the vertex identifiers.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Yields</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><em>2-tuple</em> – The next edge as a (u, v) tuple, if <code class="docutils literal notranslate"><span class="pre">data=False</span></code>.</p></li>
-<li><p><em>3-tuple</em> – The next edge as a (u, v, data) tuple, if <code class="docutils literal notranslate"><span class="pre">data=True</span></code>.</p></li>
-</ul>
+<dd class="field-even"><p><em>tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]</em> – If <cite>data</cite> is False, the next edge as a (u, v) tuple.
+If <cite>data</cite> is True, the next edge as a (u, v, data) tuple.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

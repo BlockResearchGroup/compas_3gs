@@ -106,12 +106,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>edge</strong> (<em>tuple of int</em>) – The edge identifier.</p></li>
-<li><p><strong>axes</strong> (<em>str (xyz)</em>) – The axes along which the coordinates should be included.</p></li>
+<li><p><strong>edge</strong> (<em>tuple[int, int]</em>) – The edge identifier.</p></li>
+<li><p><strong>axes</strong> (<em>str, optional</em>) – The axes along which the coordinates should be included.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple</em> – The coordinates of the start point and the coordinates of the end point.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>list[float]</em> – The coordinates of the start point.</p></li>
+<li><p><em>list[float]</em> – The coordinates of the end point.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>

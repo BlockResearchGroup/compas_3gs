@@ -109,15 +109,12 @@
 <li><p><strong>conditions</strong> (<em>dict</em>) – A set of conditions in the form of key-value pairs.
 The keys should be attribute names. The values can be attribute
 values or ranges of attribute values in the form of min/max pairs.</p></li>
-<li><p><strong>data</strong> (<em>bool, optional</em>) – Yield the vertices and their data attributes.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>data</strong> (<em>bool, optional</em>) – If True, yield the vertex attributes in addition to the vertex identifiers.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Yields</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>key</strong> (<em>hashable</em>) – The next vertex that matches the condition.</p></li>
-<li><p><em>2-tuple</em> – The next vertex and its attributes, if <code class="docutils literal notranslate"><span class="pre">data=True</span></code>.</p></li>
-</ul>
+<dd class="field-even"><p><em>int | tuple[int, dict[str, Any]]</em> – If <cite>data</cite> is False, the next vertex that matches the condition.
+If <cite>data</cite> is True, the next vertex and its attributes.</p>
 </dd>
 </dl>
 </dd></dl>

@@ -106,18 +106,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> (:class: <cite>compas.geometry.shape</cite>) – The input shape to generate a mesh from.</p></li>
-<li><p><strong>kwargs</strong> – Optional keyword arguments <code class="docutils literal notranslate"><span class="pre">u</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span></code> for the resolution in u (Torus, Sphere, Cylinder, Cone) and v direction (Torus and Sphere).</p></li>
+<li><p><strong>shape</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code>) – The input shape to generate a mesh from.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict[str, Any], optional</em>) – Optional keyword arguments to be passed on to <code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.geometry.Shape.to_vertices_and_faces()</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>Mesh</em> – A mesh object.</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code> – A mesh object.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

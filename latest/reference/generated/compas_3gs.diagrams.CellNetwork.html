@@ -125,28 +125,28 @@
 <td><p>The schema of the JSON representation of the data of this object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMANAME</span></code></p></td>
-<td><p></p></td>
+<td><p>The schema of the data of this object in JSON format.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p>Return a data dict of this data structure for serialization.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
-<td><p>The type of the object in the form of a '2-level' import and a class name.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
-<td><p>The globally unique identifier of the object.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsondefinitions</span></code></p></td>
 <td><p>Reusable schema definitions.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonstring</span></code></p></td>
-<td><p>The representation of the object data in JSON format.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonvalidator</span></code></p></td>
 <td><p>JSON schema validator for draft 7.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>The name of the data structure.</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -278,7 +278,7 @@
 <td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.from_edges.html#compas_3gs.diagrams.CellNetwork.from_edges" title="compas_3gs.diagrams.CellNetwork.from_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_edges</span></code></a>(edges)</p></td>
-<td><p></p></td>
+<td><p>Create a new graph instance from information about the edges.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.from_json.html#compas_3gs.diagrams.CellNetwork.from_json" title="compas_3gs.diagrams.CellNetwork.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct an object from serialized data contained in a JSON file.</p></td>
@@ -353,7 +353,7 @@
 <td><p>Returns a dictionary that maps node dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.key_index.html#compas_3gs.diagrams.CellNetwork.key_index" title="compas_3gs.diagrams.CellNetwork.key_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code></a>()</p></td>
-<td><p>Returns a dictionary that maps node dictionary keys to the corresponding index in a node list or array.</p></td>
+<td><p>Returns a dictionary that maps node identifiers to their corresponding index in a node list or array.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.laplacian_matrix.html#compas_3gs.diagrams.CellNetwork.laplacian_matrix" title="compas_3gs.diagrams.CellNetwork.laplacian_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplacian_matrix</span></code></a>([normalize, rtype])</p></td>
 <td><p>Construct a Laplacian matrix from a Network datastructure.</p></td>
@@ -431,10 +431,10 @@
 <td><p>Get nodes for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.number_of_edges.html#compas_3gs.diagrams.CellNetwork.number_of_edges" title="compas_3gs.diagrams.CellNetwork.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a>()</p></td>
-<td><p>Compute the number of edges of the network.</p></td>
+<td><p>Compute the number of edges of the graph.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.number_of_nodes.html#compas_3gs.diagrams.CellNetwork.number_of_nodes" title="compas_3gs.diagrams.CellNetwork.number_of_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code></a>()</p></td>
-<td><p>Compute the number of nodes of the network.</p></td>
+<td><p>Compute the number of nodes of the graph.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.shortest_path.html#compas_3gs.diagrams.CellNetwork.shortest_path" title="compas_3gs.diagrams.CellNetwork.shortest_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shortest_path</span></code></a>(start, end)</p></td>
 <td><p>Find the shortest path between two nodes of the network.</p></td>
@@ -446,7 +446,7 @@
 <td><p>Split and edge by inserting a node along its length.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.summary.html#compas_3gs.diagrams.CellNetwork.summary" title="compas_3gs.diagrams.CellNetwork.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a>()</p></td>
-<td><p>Print a summary of the graph.</p></td>
+<td><p>Return a summary of the graph.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.to_data.html#compas_3gs.diagrams.CellNetwork.to_data" title="compas_3gs.diagrams.CellNetwork.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
@@ -476,7 +476,7 @@
 <td><p>Transform a network.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.transformed.html#compas_3gs.diagrams.CellNetwork.transformed" title="compas_3gs.diagrams.CellNetwork.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
-<td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">network</span></code>.</p></td>
+<td><p>Return a transformed copy of the network.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.unset_edge_attribute.html#compas_3gs.diagrams.CellNetwork.unset_edge_attribute" title="compas_3gs.diagrams.CellNetwork.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a>(key, name)</p></td>
 <td><p>Unset the attribute of an edge.</p></td>
@@ -500,10 +500,10 @@
 <td><p>Returns a dictionary that maps edge keys (i.e.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.validate_data.html#compas_3gs.diagrams.CellNetwork.validate_data" title="compas_3gs.diagrams.CellNetwork.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
-<td><p>Validate the object's data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+<td><p>Validate the object's data against its data schema.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.validate_json.html#compas_3gs.diagrams.CellNetwork.validate_json" title="compas_3gs.diagrams.CellNetwork.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
-<td><p>Validate the object's data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+<td><p>Validate the object's data against its json schema.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_3gs.diagrams.CellNetwork.vertex_coordinates.html#compas_3gs.diagrams.CellNetwork.vertex_coordinates" title="compas_3gs.diagrams.CellNetwork.vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_coordinates</span></code></a>(key[, axes])</p></td>
 <td><p>Return the coordinates of a node.</p></td>

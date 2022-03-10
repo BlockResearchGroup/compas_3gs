@@ -102,7 +102,22 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_3gs.datastructures.VolMesh3gs.cell_halfedge_face">
 <span class="sig-prename descclassname"><span class="pre">VolMesh3gs.</span></span><span class="sig-name descname"><span class="pre">cell_halfedge_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">halfedge</span></span></em><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
+<dd><p>Find the face corresponding to a specific halfedge of a cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cell</strong> (<em>int</em>) – The identifier of the cell.</p></li>
+<li><p><strong>halfedge</strong> (<em>tuple[int, int]</em>) – The identifier of the halfedge.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – The identifier of the face.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method is similar to <code class="xref py py-meth docutils literal notranslate"><span class="pre">halfedge_face()</span></code>,
+but in the context of a cell of the <cite>VolMesh</cite>.</p>
+</dd></dl>
 
 </section>
 

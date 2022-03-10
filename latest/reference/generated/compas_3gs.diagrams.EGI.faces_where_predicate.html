@@ -106,22 +106,17 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>predicate</strong> (<em>callable</em>) – The condition you want to evaluate. The callable takes 2 parameters: <code class="docutils literal notranslate"><span class="pre">key</span></code>, <code class="docutils literal notranslate"><span class="pre">attr</span></code> and should return <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>data</strong> (<em>bool, optional</em>) – Yield the faces and their data attributes.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>predicate</strong> (<em>callable</em>) – The condition you want to evaluate.
+The callable takes 2 parameters: the face identifier and the face attributes,
+and should return True or False.</p></li>
+<li><p><strong>data</strong> (<em>bool, optional</em>) – If True, yield the face attributes in addition to the face identifiers.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Yields</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>key</strong> (<em>hashable</em>) – The next face that matches the condition.</p></li>
-<li><p><em>2-tuple</em> – The next face and its attributes, if <code class="docutils literal notranslate"><span class="pre">data=True</span></code>.</p></li>
-</ul>
+<dd class="field-even"><p><em>int | tuple[int, dict[str, Any]]</em> – If <cite>data</cite> is False, the next face that matches the condition.
+If <cite>data</cite> is True, the next face and its attributes.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>

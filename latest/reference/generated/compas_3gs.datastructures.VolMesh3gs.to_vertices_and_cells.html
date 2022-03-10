@@ -105,12 +105,10 @@
 <dd><p>Return the vertices and cells of a volmesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><p><em>tuple</em> – A 2-tuple containing</p>
-<ul class="simple">
-<li><p>a list of vertices, represented by their XYZ coordinates, and</p></li>
-<li><p>a list of cells.</p></li>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>list[list[float]]</em> – A list of vertices, represented by their XYZ coordinates.</p></li>
+<li><p><em>list[list[list[int]]]</em> – A list of cells, with each cell a list of faces, and each face a list of vertex indices.</p></li>
 </ul>
-<p>Each cell is a list of faces, which are lists of indices referencing the list of vertex coordinates.</p>
 </p>
 </dd>
 </dl>

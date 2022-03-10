@@ -108,25 +108,15 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fkey</strong> (<em>int</em>) – The key of the face in which the vertex should be inserted.</p></li>
 <li><p><strong>key</strong> (<em>int, optional</em>) – The key to be used to identify the inserted vertex.</p></li>
-<li><p><strong>xyz</strong> (<em>list, optional</em>) – Specific XYZ coordinates for the inserted vertex.</p></li>
-<li><p><strong>return_fkeys</strong> (<em>bool, optional</em>) – By default, this method returns only the key of the inserted vertex.
-This flag can be used to indicate that the keys of the newly created
-faces should be returned as well.</p></li>
+<li><p><strong>xyz</strong> (<em>list[float], optional</em>) – Specific XYZ coordinates for the inserted vertex.</p></li>
+<li><p><strong>return_fkeys</strong> (<em>bool, optional</em>) – If True, return the identifiers of the newly created faces in addition to the identifier of the inserted vertex.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>int</em> – The key of the inserted vertex, if <code class="docutils literal notranslate"><span class="pre">return_fkeys</span></code> is false.</p></li>
-<li><p><em>tuple</em> – The key of the newly created vertex
-and a list with the newly created faces, if <code class="docutils literal notranslate"><span class="pre">return_fkeys</span></code> is true.</p></li>
-</ul>
-</p>
+<dd class="field-even"><p><em>int | tuple[int, list[int]]</em> – If <cite>return_fkeys</cite> is False, the key of the inserted vertex.
+If <cite>return_fkeys</cite> is True, the key of the newly created vertex and a list with the newly created faces.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>
